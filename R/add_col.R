@@ -134,18 +134,16 @@ check_dm <-
 #' demo <- demo_
 #' drug <- drug_
 #'
-#' tmp <-
-#' demo %>%
-#'   add_drug(
-#'     exposure_df = ex_$d_drecno,
-#'     drug_names = "nivolumab",
-#'     # use lower case names
-#'     method = "DrecNo",
-#'     repbasis = "sci",
-#'     drug_data = drug
-#'   )
-#'
-#'   demo %>% mutate(eval_tidy(tmp))
+#' demo <-
+#'   demo %>%
+#'     add_drug(
+#'       exposure_df = ex_$d_drecno,
+#'       drug_names = "nivolumab",
+#'       # use lower case names
+#'       method = "DrecNo",
+#'       repbasis = "sci",
+#'       drug_data = drug
+#'     )
 
 add_drug <-
   function(.data,
@@ -157,6 +155,8 @@ add_drug <-
            )
   {
     method <- match.arg(method)
+    method_col <- rlang::sym(method)
+    exposure_df <- rlang::enexpr(exposure_df)
 
     drug_names <- tolower(drug_names)
 
@@ -179,32 +179,59 @@ add_drug <-
 
     # core function
 
-    add_single_drug <- function(drug_name, env, method_col = method, exposure_df) {
-      method_col <- rlang::sym(method_col)
-      exposure_df <- rlang::enexpr(exposure_df)
+    add_single_drug <- function(drug_name) {
+
       eval_tidy(
-        rlang::quo(ifelse(
-          UMCReportId %in%
-            dplyr::filter(!!drug_data,
-                          !!method_col %in%
-                            dplyr::filter(!!exposure_df,
-                                          drug == !!drug_name)[[method_col]])[["UMCReportId"]] &
-            !!basis_expr,
-          1, 0)),
-        env = .data)
+        rlang::quo({
+          # find method (drecno/mpi) values for drug_name
+          method_val <-
+            !!exposure_df %>%
+            dplyr::filter(
+              drug == !!drug_name) %>%
+            dplyr::pull(!!method_col)
+
+          # find matching UMCReportId in drug for this method values and this repbasis
+          umc_id <-
+            !!drug_data %>%
+            dplyr::filter(
+              !!method_col %in% method_val &
+                !!basis_expr
+            ) %>%
+            dplyr::pull(UMCReportId)
+
+          # create a vector length nrow(.data) based on whether UMCReportId match with above list
+          ifelse(
+            UMCReportId %in% umc_id,
+            1, 0)
+        }),
+      data = .data)
     }
+    # ifelse(
+    #   UMCReportId %in%
+    #     dplyr::filter(!!drug_data,
+    #                   !!method_col %in%
+    #                     dplyr::filter(!!exposure_df,
+    #                                   drug == !!drug_name)[[!!method_col]])[["UMCReportId"]] &
+    #     !!basis_expr,
+    #   1, 0))
 
-    demo %>%
-      mutate(a = add_single_drug("nivolumab", .data, method_col = "DrecNo", exposure_df = ex_$d_drecno))
 
-    e_l <- lapply(drug_names, function(x) {
-      rlang::call2(add_single_drug, x, rlang::expr(.data), method, enexpr(exposure_df))
-    })
+    e_l <- purrr::map(drug_names,
+                      function(x) {
+                        rlang::call2(
+                          rlang::quo(add_single_drug),
+                          rlang::quo(x)
+                        )
+                      }
+    )
 
-    var_expr <- rlang::call2(rlang::expr(list),
-                      !!!e_l)
+    names(e_l) <- drug_names
 
-    print(var_expr)
+    # Step 3: apply the functions in .data
+
+    .data %>%
+      dplyr::mutate(!!!e_l)
+
   }
 
 #' Expressions to add ATC columns to data.table
