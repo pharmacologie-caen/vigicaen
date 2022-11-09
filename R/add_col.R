@@ -206,15 +206,8 @@ add_drug <-
         }),
       data = .data)
     }
-    # ifelse(
-    #   UMCReportId %in%
-    #     dplyr::filter(!!drug_data,
-    #                   !!method_col %in%
-    #                     dplyr::filter(!!exposure_df,
-    #                                   drug == !!drug_name)[[!!method_col]])[["UMCReportId"]] &
-    #     !!basis_expr,
-    #   1, 0))
 
+    # Step 2: vectorize over drug_names and prepare call
 
     e_l <- purrr::map(drug_names,
                       function(x) {
@@ -234,19 +227,21 @@ add_drug <-
 
   }
 
-#' Expressions to add ATC columns to data.table
+#' Add ATC columns to a dataset (tidyverse syntax)
 #'
 #' This function creates an expression that must be evaluated in `j` in a data.table to produce new atc columns.
 #'
 #' IMPORTANT: At the moment, all `create_x_exp` functions assume default names for data.tables: drug, adr and thg.
 #' Vigilyze style means all conditioning of drugs will be retrieved after requesting an ATC class, even if a specific conditioning is not present in the ATC class. This is the default behavior in vigilyze.
 #'
-#' @param atc_codes A character vector of ATC codes
-#' @param vigilyze Should ATC classes be retrieved using the vigilyze style? See details
+#' @param .data The dataset used to identify individual reports (usually, it is `demo`)
+#' @param atc_codes A character vector. ATC codes
+#' @param vigilyze A logical. Should ATC classes be retrieved using the vigilyze style? See details
 #' @param mp_short A modified MP data.table. See \code{\link{ex_}}
+#' @param thg_data A data.frame. Correspondence between ATC codes and MedicinalProd_Id (usually, it is `thg`)
 #' @keywords atc
 #' @export
-#' @import data.table
+#' @importFrom dplyr %>%
 #' @examples
 #' atc_codes <- c("L03", "C")
 #'
@@ -260,7 +255,7 @@ add_drug <-
 #' demo[, c(atc_codes) := eval(atc_exp)]
 #' demo[, .N, by = list(L03, C)]
 
-create_atc_exp <-
+add_atc <-
   function(atc_codes, vigilyze = TRUE, mp_short)
   {
     drug_expression <-
