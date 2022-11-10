@@ -256,7 +256,11 @@ add_drug <-
 #' demo[, .N, by = list(L03, C)]
 
 add_atc <-
-  function(atc_codes, vigilyze = TRUE, mp_short)
+  function(.data,
+           atc_codes,
+           vigilyze = TRUE,
+           mp_short,
+           thg_data)
   {
     drug_expression <-
       if (vigilyze) {
