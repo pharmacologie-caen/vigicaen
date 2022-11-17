@@ -10,6 +10,7 @@
 #' @param a_names Names for adr columns (must be the same length as adr_list), default to `names(adr_list)`
 
 #' @param adr_data A data.frame containing the adr data (usually, it is `adr`)
+#' @export
 #' @importFrom dplyr %>%
 #' @keywords adr
 #' @examples
