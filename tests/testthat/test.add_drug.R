@@ -1,5 +1,3 @@
-context("add_drug")
-
 test_that("works with drecnos, regular names for demo and drug", {
 
   demo <- demo_

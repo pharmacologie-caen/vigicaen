@@ -1,5 +1,3 @@
-context("add_adr")
-
 test_that("works with regular names for demo and adr", {
 
   demo <- demo_

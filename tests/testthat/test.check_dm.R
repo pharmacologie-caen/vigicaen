@@ -1,5 +1,3 @@
-context("check_dm")
-
 test_that("returns proper counts", {
 
   a_names <- paste0("adr_", names(ex_$adr_list))
