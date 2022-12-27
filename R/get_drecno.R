@@ -10,6 +10,7 @@
 #' @param allow_combination A logical. Should fixed associations including the drug of interest be retrieved? See details.
 #' @param method Should DrecNo be found from drug names or from MedicinalProd_Id?
 #' @param inspect Instead of providing a list of drecnos, do you wish to see a larger data.frame with additional data? See details.
+#' @param show_all Do you wish to see all MP_Ids entries from `mp_short` when working with drug names, or just one entry per DrecNo? Default to FALSE
 #' @keywords atc
 #' @export
 #' @importFrom dplyr %>%
