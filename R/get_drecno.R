@@ -14,7 +14,7 @@
 #' @export
 #' @importFrom dplyr %>%
 #' @examples
-#' d_sel_names <- list2(
+#' d_sel_names <- rlang::list2(
 #'   nivolumab = "nivolumab",
 #'   ipilimumab = "ipilimumab",
 #'   nivo_ipi = c("nivolumab", "ipilimumab")
@@ -31,7 +31,7 @@
 #' d_name <- "nivolumab"
 #'
 #' d_drecno <-
-#'   find_drecno(d_name,
+#'   get_drecno(d_name,
 #'               mp_short = ex_$mp_short,
 #'               allow_combination = FALSE,
 #'               method = "drug_name")
@@ -43,26 +43,46 @@
 #'               mp_short = ex_$mp_short,
 #'               allow_combination = TRUE,
 #'               method = "drug_name")
+#'
+  #' get_drecno(d_sel = d_sel_names[[1]],
+  #'             mp_short = mp_short,
+  #'             allow_combination = FALSE,
+  #'             method = "drug_name"
+  #'
+  #'             )
 
 get_drecno <- function(
     d_sel,
     mp_short,
     allow_combination = TRUE,
     method = c("drug_name", "mpi_list"),
-    inspect = FALSE)
-{
+    inspect = FALSE,
+    show_all = FALSE
+    ){
 
   method <- match.arg(method)
 
   if(method == "mpi_list" && allow_combination)
     warning("allow_combination set to TRUE but mpi requested")
 
-  drug_name_reshaped <-
-    d_sel %>%
-    stringr::str_trim() %>%
-    stringr::str_to_lower()
+  # drug_name_reshaped <-
+  #   d_sel %>%
+  #   stringr::str_trim() %>%
+  #   stringr::str_to_lower()
 
-  names(drug_name_reshaped) <- drug_name_reshaped
+  d_sel_renamed <-
+    d_sel %>%
+    rlang::set_names(
+      ~ .x %>%
+        stringr::str_trim() %>%
+        stringr::str_to_lower()
+    )
+
+  if(!all.equal(d_sel_renamed, d_sel)){
+    warning("names of d_sel were tolower-ed and trimed")
+  }
+
+  # names(drug_name_reshaped) <- drug_name_reshaped
 
   find_combination <- function(x_drug_name, env = mp_short){
     x_drug_name <-
@@ -83,7 +103,61 @@ get_drecno <- function(
     eval(rlang::expr(MedicinalProd_Id %in% x_mpi_list), envir = env)
 
 
-  # ---- Drug_name finding ----
+  # ---- Core function for drug_name finding ----
+
+  # drug finder and exist checker (works for a single drug at a time, then it is vectorized)
+
+  find_drug_and_check_exist <- function(x) {
+    # single drug checking
+    if (length(x) > 1)
+      stop(
+        "function is meant to be used for a single drug at a time. This is likely an internal error message"
+      )
+
+    # drug finder
+    drecno_list <- mp_short[find_select(x),]
+    # 2022 06 25 il faut ajouter, quelque part par ici, un checker sur le nom du medicament isole, pour ne pas admettre des erreurs dorthographe dans le find combination, qui est plus permissif que find isolated. ou plutot modifier find combination pour etre moins permissif aux noms incomplets.
+
+    # exist checker
+    if (nrow(drecno_list) == 0)
+      warning(paste0(
+        "there is no match for `",
+        x,
+        "`, check spelling and/or use WHO name"
+      ))
+
+    # exist + WHO name checker
+    if (nrow(drecno_list) > 0 &&
+        nrow(drecno_list[Sequence.number.1 == "01" &
+                         Sequence.number.2 == "001",]) == 0) {
+      drecno <-
+        drecno_list[find_isolated(x, env = drecno_list), unique(DrecNo)]
+      # there can be combinations and there can be multiple MP_Ids
+
+      who_name <- mp_short[DrecNo == drecno  &
+                             Sequence.number.1 == "01" &
+                             Sequence.number.2 == "001",
+                           unique(drug_name_t)] # there can be multiple packagings for a non WHO name drug
+
+      warning(
+        paste0(
+          "`",
+          x,
+          "` is NOT a WHO name. WHO name is `",
+          who_name,
+          "`. DrecNo will be missing if show_all is set to FALSE. You should rename to `",
+          who_name,
+          "`."
+        )
+      )
+
+    }
+
+    # return
+    drecno_list
+  }
+
+  # ---- drug name finding ----
 
   if (method == "drug_name") {
     # Pick one
@@ -94,70 +168,31 @@ get_drecno <- function(
         find_isolated
       }
 
-    # drug finder and exist checker (works for a single drug at a time, then it is used in an lapply)
+    # res <- purrr::map_dfr(
+    #   drug_name_reshaped,
+    #   find_drug_and_check_exist,
+    #   .id = "drug")
 
-    drug_finder_and_exist_checker <- function(x) {
-      # single drug checking
-      if (length(x) > 1)
-        stop(
-          "function is meant to be used for a single drug at a time. This is likely an internal error message"
-        )
-
-      # drug finder
-      drecno_list <- mp_short[find_select(x),]
-      # 2022 06 25 il faut ajouter, quelque part par ici, un checker sur le nom du medicament isole, pour ne pas admettre des erreurs dorthographe dans le find combination, qui est plus permissif que find isolated. ou plutot modifier find combination pour etre moins permissif aux noms incomplets.
-
-      # exist checker
-      if (nrow(drecno_list) == 0)
-        warning(paste0(
-          "there is no match for `",
-          x,
-          "`, check spelling and/or use WHO name"
-        ))
-
-      # exist + WHO name checker
-      if (nrow(drecno_list) > 0 &&
-          nrow(drecno_list[Sequence.number.1 == "01" &
-                           Sequence.number.2 == "001",]) == 0) {
-        drecno <-
-          drecno_list[find_isolated(x, env = drecno_list), unique(DrecNo)]
-        # there can be combinations and there can be multiple MP_Ids
-
-        who_name <- mp_short[DrecNo == drecno  &
-                               Sequence.number.1 == "01" &
-                               Sequence.number.2 == "001",
-                             unique(drug_name_t)] # there can be multiple packagings for a non WHO name drug
-
-        warning(
-          paste0(
-            "`",
-            x,
-            "` is NOT a WHO name. WHO name is `",
-            who_name,
-            "`. DrecNo will be missing if show_all is set to FALSE. You should rename to `",
-            who_name,
-            "`."
-          )
-        )
-
-      }
-
-      # return
-      drecno_list
-    }
-
-    res <- data.table::rbindlist(lapply(drug_name_reshaped,
-                                        drug_finder_and_exist_checker),
-                                 idcol = "drug")
+    res_list <-
+      d_sel_renamed %>%
+      purrr::map(function(d_n) # 2 level map, because find_drug_and_check_exist is working with an atomic character vector
+        purrr::map_dfr(d_n,
+                       find_drug_and_check_exist,
+                       .id = "drug"
+                       ))
   }
+
+  # drug_finder_and_exist_checker(c("nivolumab", "ipilimumab"))
 
   # ---- MedicinalProd_Id finding ----
 
   if(method == "mpi_list") {
-    res <-
-      mp_short[find_mpi(x), ]
 
-    res[, c("drug") := .(mpi_meth_name)]
+    res_list <-
+      purrr::map(d_sel_renamed, function(d_n)
+        mp_short[find_mpi(d_n), ]
+      )
+
   }
 
 
@@ -165,11 +200,21 @@ get_drecno <- function(
 
   if (show_all)
   {
-    res
+    res_list
 
   } else {
 
-    unique(res[Sequence.number.1 == "01" &
-                 Sequence.number.2 == "001",], by = c("drug", "DrecNo"))
+    if(inspect == TRUE) {
+      purrr::map(res_list, function(r_l)
+        unique(r_l[Sequence.number.1 == "01" &
+                     Sequence.number.2 == "001",], by = c("drug", "DrecNo"))
+      )
+    } else {
+      purrr::map(res_list, function(r_l)
+        r_l[, unique(DrecNo)]
+        )
+    }
+
+
   }
 }
