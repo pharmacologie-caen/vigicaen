@@ -22,6 +22,95 @@
 
 "demo_"
 
+#' Drug of immune checkpoint inhibitors.
+#'
+#' Drug data related to `demo_`.
+#' See  \code{\link{demo_}}
+#'
+#' @docType data
+#'
+#' @usage data(drug_)
+#'
+#' @format An object of class `data.frame` and `data.table`.
+#'
+#' @keywords datasets
+#'
+#' @references There is none
+#'
+#' @source None
+#'
+#' @examples
+#' data(drug_)
+#' drug_[, .N, by = Basis]
+
+"drug_"
+
+#' Follow-up of immune checkpoint inhibitors.
+#'
+#' Follow-up data related to `demo_`.
+#' See  \code{\link{demo_}}
+#'
+#' @docType data
+#'
+#' @usage data(followup_)
+#'
+#' @format An object of class `data.frame` and `data.table`.
+#'
+#' @keywords datasets
+#'
+#' @references There is none
+#'
+#' @source None
+#'
+#' @examples
+#' data(followup_)
+#' followup_
+
+"followup_"
+
+#' Indication of immune checkpoint inhibitors.
+#'
+#' Indication data related to `drug_`.
+#' See  \code{\link{demo_}}
+#'
+#' @docType data
+#'
+#' @usage data(ind_)
+#'
+#' @format An object of class `data.frame` and `data.table`.
+#'
+#' @keywords datasets
+#'
+#' @references There is none
+#'
+#' @source None
+#'
+#' @examples
+#' data(ind_)
+#' ind_
+
+"ind_"
+
+#' @rdname demo_
+
+"adr_"
+
+#' @rdname demo_
+
+"link_"
+
+#' @rdname demo_
+
+"out_"
+
+#' @rdname demo_
+
+"srce_"
+
+#' @rdname demo_
+
+"thg_"
+
 
 #' Data for the immune checkpoint inhibitors example
 #'

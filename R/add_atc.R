@@ -37,7 +37,7 @@ add_atc <-
       if (vigilyze) {
         rlang::expr(
           DrecNo %in%
-            charles::find_drecno(
+            find_drecno(
               thg[substr(ATC.code, start = 1, stop = length_code) == atc_code,
                   as.integer(MedicinalProd_Id)],
               mp_short,

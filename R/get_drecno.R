@@ -65,11 +65,6 @@ get_drecno <- function(
   if(method == "mpi_list" && allow_combination)
     warning("allow_combination set to TRUE but mpi requested")
 
-  # drug_name_reshaped <-
-  #   d_sel %>%
-  #   stringr::str_trim() %>%
-  #   stringr::str_to_lower()
-
   d_sel_renamed <-
     d_sel %>%
     rlang::set_names(
@@ -81,8 +76,6 @@ get_drecno <- function(
   if(!all.equal(d_sel_renamed, d_sel)){
     warning("names of d_sel were tolower-ed and trimed")
   }
-
-  # names(drug_name_reshaped) <- drug_name_reshaped
 
   find_combination <- function(x_drug_name, env = mp_short){
     x_drug_name <-

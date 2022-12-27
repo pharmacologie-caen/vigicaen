@@ -9,7 +9,8 @@ get_drecno(
   mp_short,
   allow_combination = TRUE,
   method = c("drug_name", "mpi_list"),
-  inspect = FALSE
+  inspect = FALSE,
+  show_all = FALSE
 )
 }
 \arguments{
@@ -31,7 +32,7 @@ This is a function of the "create a drug column" workflow.
 Use \code{inspect = TRUE} whenever you use this function for the first time on a new set of drug names. It is a critical checkpoint to your data analysis.
 }
 \examples{
-d_sel_names <- list2(
+d_sel_names <- rlang::list2(
   nivolumab = "nivolumab",
   ipilimumab = "ipilimumab",
   nivo_ipi = c("nivolumab", "ipilimumab")
@@ -48,7 +49,7 @@ d_sel_names \%>\%
 d_name <- "nivolumab"
 
 d_drecno <-
-  find_drecno(d_name,
+  get_drecno(d_name,
               mp_short = ex_$mp_short,
               allow_combination = FALSE,
               method = "drug_name")
@@ -60,5 +61,12 @@ d_drecno <-
               mp_short = ex_$mp_short,
               allow_combination = TRUE,
               method = "drug_name")
+
+get_drecno(d_sel = d_sel_names[[1]],
+            mp_short = mp_short,
+            allow_combination = FALSE,
+            method = "drug_name"
+
+            )
 }
 \keyword{atc}

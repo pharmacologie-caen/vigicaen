@@ -69,7 +69,7 @@ add_drug <-
 
     add_single_drug <- function(drug_name) {
 
-      eval_tidy(
+      rlang::eval_tidy(
         rlang::quo({
           # find method (drecno/mpi) values for drug_name
           method_val <-
