@@ -2,14 +2,13 @@
 #'
 #' This function creates drug columns using dplyr::mutate.
 #'
-#' Exposure can be generated from either `tb_custom`,  with 'drug' and 'MedicinalProd_Id' columns, or from `find_drecno` with 'drug' and 'DrecNo' columns. Choose the appropriate method for the function (defaults to DrecNo).
+#' d_code is a named list containing drug codes. Either medicinalprod_ids (e.g., from `tb_custom`), or drug record numbers (e.g., from `get_drecno`). Default method is to DrecNos.
 #' Drugs can be reported according to one of three reputation bases: suspect, concomitant or interacting in the occurrence of the adverse drug reaction. You may want to study only reports with a specific reputation basis.
 #' Column names will be automatically tolower-ed, so you may wish to do this step explicitly in your workflow prior to using this function.
 #'
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
-#' @param exposure_df A data.table of exposure.
-#' @param drug_names A character vector of drug names. Default to all the names found in `exposure_df[["drug"]]`
-#' @param method A character string. The drug identifier to be used, depending on how you created `exposure_df`, see details.
+#' @param d_code A named list of drug codes (DrecNos or MPI). See Details.
+#' @param method A character string. The type of drug code (DrecNo or MedicinalProd_Id). See details.
 #' @param repbasis Suspect, interacting and/or concomitant. Type initial of those you wish to select (default to all)
 #' @param drug_data A data.frame containing the drug data (usually, it is `drug`)
 #' @keywords drug
@@ -22,6 +21,11 @@
 #' demo <- demo_
 #' drug <- drug_
 #'
+#' d_sel_names <- rlang::list2(nivolumab = "nivolumab")
+#'
+#' d_drecno <- get_drecno(d_sel_names,
+#'                         mp_short = ex_$mp_short)
+#'
 #' demo <-
 #'   demo %>%
 #'     add_drug(
@@ -33,10 +37,19 @@
 #'       drug_data = drug
 #'     )
 
+#' demo_ %>%
+#'   add_drug(
+#'     d_code = d_drecno,
+#'     method = "DrecNo",
+#'     repbasis = "sci",
+#'     drug_data = drug
+#'   )
+
 add_drug <-
   function(.data,
-           exposure_df,
-           drug_names = unique(exposure_df[["drug"]]),
+           d_code,
+           # exposure_df,
+           # drug_names = unique(exposure_df[["drug"]]),
            repbasis = "sci",
            method = c("DrecNo", "MedicinalProd_Id"),
            drug_data
@@ -44,9 +57,11 @@ add_drug <-
   {
     method <- match.arg(method)
     method_col <- rlang::sym(method)
-    exposure_df <- rlang::enexpr(exposure_df)
+    # exposure_df <- rlang::enexpr(exposure_df)
 
-    drug_names <- tolower(drug_names)
+    col_names <- names(d_code)
+
+    # drug_names <- tolower(drug_names)
 
     drug_data <- enexpr(drug_data)
 
@@ -67,22 +82,22 @@ add_drug <-
 
     # core function
 
-    add_single_drug <- function(drug_name) {
+    add_single_drug <- function(drug_code) {
 
       rlang::eval_tidy(
         rlang::quo({
           # find method (drecno/mpi) values for drug_name
-          method_val <-
-            !!exposure_df %>%
-            dplyr::filter(
-              drug == !!drug_name) %>%
-            dplyr::pull(!!method_col)
+          # method_val <-
+          #   !!exposure_df %>%
+          #   dplyr::filter(
+          #     drug == !!drug_name) %>%
+          #   dplyr::pull(!!method_col)
 
           # find matching UMCReportId in drug for this method values and this repbasis
           umc_id <-
             !!drug_data %>%
             dplyr::filter(
-              !!method_col %in% method_val &
+              !!method_col %in% drug_code &
                 !!basis_expr
             ) %>%
             dplyr::pull(UMCReportId)
@@ -97,7 +112,7 @@ add_drug <-
 
     # Step 2: vectorize over drug_names and prepare call
 
-    e_l <- purrr::map(drug_names,
+    e_l <- purrr::map(d_code,
                       function(x) {
                         rlang::call2(
                           rlang::quo(add_single_drug),
@@ -106,7 +121,7 @@ add_drug <-
                       }
     )
 
-    names(e_l) <- drug_names
+    names(e_l) <- col_names
 
     # Step 3: apply the functions in .data
 
