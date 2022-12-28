@@ -3,15 +3,40 @@
 \docType{data}
 \name{demo_}
 \alias{demo_}
+\alias{adr_}
+\alias{link_}
+\alias{out_}
+\alias{srce_}
+\alias{thg_}
 \title{Demo of immune checkpoint inhibitors.}
 \format{
 An object of class \code{data.frame} and \code{data.table}.
+
+An object of class \code{data.table} (inherits from \code{data.frame}) with 179407 rows and 4 columns.
+
+An object of class \code{data.table} (inherits from \code{data.frame}) with 325983 rows and 8 columns.
+
+An object of class \code{data.table} (inherits from \code{data.frame}) with 70715 rows and 3 columns.
+
+An object of class \code{data.table} (inherits from \code{data.frame}) with 70313 rows and 2 columns.
+
+An object of class \code{data.table} (inherits from \code{data.frame}) with 312196 rows and 5 columns.
 }
 \source{
 None
 }
 \usage{
 data(demo_)
+
+adr_
+
+link_
+
+out_
+
+srce_
+
+thg_
 }
 \description{
 Demo is the cornerstone table in Vigibase Extract Case Level data. It contains the \code{UMCReportId} identifier for individual case safety reports, which is a jointure key with most other tables (see "VigiBase Extract Case Level - file description.pdf" in VigiBase ECL folders for more details). It is the preferred table to update for drugs and adrs identification before performing disproportionality analyses.

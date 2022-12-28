@@ -6,8 +6,7 @@
 \usage{
 add_drug(
   .data,
-  exposure_df,
-  drug_names = unique(exposure_df[["drug"]]),
+  d_code,
   repbasis = "sci",
   method = c("DrecNo", "MedicinalProd_Id"),
   drug_data
@@ -16,13 +15,11 @@ add_drug(
 \arguments{
 \item{.data}{The dataset used to identify individual reports (usually, it is \code{demo})}
 
-\item{exposure_df}{A data.table of exposure.}
-
-\item{drug_names}{A character vector of drug names. Default to all the names found in \code{exposure_df[["drug"]]}}
+\item{d_code}{A named list of drug codes (DrecNos or MPI). See Details.}
 
 \item{repbasis}{Suspect, interacting and/or concomitant. Type initial of those you wish to select (default to all)}
 
-\item{method}{A character string. The drug identifier to be used, depending on how you created \code{exposure_df}, see details.}
+\item{method}{A character string. The type of drug code (DrecNo or MedicinalProd_Id). See details.}
 
 \item{drug_data}{A data.frame containing the drug data (usually, it is \code{drug})}
 }
@@ -30,7 +27,7 @@ add_drug(
 This function creates drug columns using dplyr::mutate.
 }
 \details{
-Exposure can be generated from either \code{tb_custom},  with 'drug' and 'MedicinalProd_Id' columns, or from \code{find_drecno} with 'drug' and 'DrecNo' columns. Choose the appropriate method for the function (defaults to DrecNo).
+d_code is a named list containing drug codes. Either medicinalprod_ids (e.g., from \code{tb_custom}), or drug record numbers (e.g., from \code{get_drecno}). Default method is to DrecNos.
 Drugs can be reported according to one of three reputation bases: suspect, concomitant or interacting in the occurrence of the adverse drug reaction. You may want to study only reports with a specific reputation basis.
 Column names will be automatically tolower-ed, so you may wish to do this step explicitly in your workflow prior to using this function.
 }
@@ -40,6 +37,11 @@ Column names will be automatically tolower-ed, so you may wish to do this step e
 # You need to use standard names for the tables
 demo <- demo_
 drug <- drug_
+
+d_sel_names <- rlang::list2(nivolumab = "nivolumab")
+
+d_drecno <- get_drecno(d_sel_names,
+                        mp_short = ex_$mp_short)
 
 demo <-
   demo \%>\%
@@ -51,5 +53,12 @@ demo <-
       repbasis = "sci",
       drug_data = drug
     )
+demo_ \%>\%
+  add_drug(
+    d_code = d_drecno,
+    method = "DrecNo",
+    repbasis = "sci",
+    drug_data = drug
+  )
 }
 \keyword{drug}

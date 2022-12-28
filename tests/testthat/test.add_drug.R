@@ -3,15 +3,23 @@ test_that("works with drecnos, regular names for demo and drug", {
   demo <- demo_
   drug <- drug_
 
-  d_names <- c("nivolumab", "pembrolizumab")
+  d_names <- rlang::list2(
+    nivolumab = "nivolumab",
+    pembrolizumab = "pembrolizumab"
+    )
 
   n_drug <- length(d_names)
 
+  d_drecno <-
+    d_names %>%
+    get_drecno(
+      mp_short = ex_$mp_short
+    )
+
   demo <-
-    demo %>%
+    demo_ %>%
     add_drug(
-      exposure_df = ex_$d_drecno,
-      drug_names = d_names,
+      d_code = d_drecno,
       method = "DrecNo",
       repbasis = "sci",
       drug_data = drug
@@ -21,7 +29,7 @@ test_that("works with drecnos, regular names for demo and drug", {
                ncol(demo_) + n_drug)
 
   purrr::walk(
-    d_names,
+    names(d_names),
     function(d_n){
       expect_gt(sum(demo[[d_n]]),
                 expected = 1)
@@ -30,20 +38,36 @@ test_that("works with drecnos, regular names for demo and drug", {
 
 })
 
+test_that("anything", {
+  a <- 1
+
+  b <- a + a
+
+  expect_equal(b, 2)
+})
+
 test_that("works with irregular names for demo and drug", {
 
   dema <- demo_
   druga <- drug_
 
-  d_names <- c("nivolumab", "pembrolizumab")
+  d_names <- rlang::list2(
+    nivolumab = "nivolumab",
+    pembrolizumab = "pembrolizumab"
+  )
 
   n_drug <- length(d_names)
+
+  d_drecno <-
+    d_names %>%
+    get_drecno(
+      mp_short = ex_$mp_short
+    )
 
   dema <-
     dema %>%
     add_drug(
-      exposure_df = ex_$d_drecno,
-      drug_names = d_names,
+      d_code = d_drecno,
       method = "DrecNo",
       repbasis = "sci",
       drug_data = druga
@@ -53,7 +77,7 @@ test_that("works with irregular names for demo and drug", {
                ncol(demo_) + n_drug)
 
   purrr::walk(
-    d_names,
+    names(d_names),
     function(d_n){
       expect_gt(sum(dema[[d_n]]),
                 expected = 1)
@@ -64,28 +88,26 @@ test_that("works with irregular names for demo and drug", {
 
 test_that("works with mpi_list", {
 
-  demo <- demo_
-  drug <- drug_
+  mpi <- rlang::list2(
+    para = ex_$mp_short[DrecNo == "000200", MedicinalProd_Id]
+  )
 
-  d_names <- c("nivolumab", "pembrolizumab")
-
-  n_drug <- length(d_names)
+  n_drug <- length(mpi)
 
   demo <-
-    demo %>%
+    demo_ %>%
     add_drug(
-      exposure_df = ex_$d_drecno,
-      drug_names = d_names,
+      d_code = mpi,
       method = "MedicinalProd_Id",
       repbasis = "sci",
-      drug_data = drug
+      drug_data = drug_
     )
 
   expect_equal(ncol(demo),
                ncol(demo_) + n_drug)
 
   purrr::walk(
-    d_names,
+    names(mpi),
     function(d_n){
       expect_gt(sum(demo[[d_n]]),
                 expected = 1)
@@ -95,45 +117,50 @@ test_that("works with mpi_list", {
 })
 
 test_that("selecting only s, c, i works and provide less cases than sci altogether", {
-  demo <- demo_
-  drug <- drug_
 
-  d_names <- c("nivolumab", "pembrolizumab")
+  d_names <- rlang::list2(
+    nivolumab = "nivolumab",
+    pembrolizumab = "pembrolizumab"
+  )
 
   n_drug <- length(d_names)
+
+  d_drecno <-
+    d_names %>%
+    get_drecno(
+      mp_short = ex_$mp_short
+    )
 
   bas <- c("s", "c", "i")
 
   res_each <-
     purrr::map(bas, function(repbasis_)
-      demo %>%
+      demo_ %>%
         add_drug(
-          exposure_df = ex_$d_drecno,
-          drug_names = d_names,
+          d_code = d_drecno,
           method = "DrecNo",
           repbasis = repbasis_,
-          drug_data = drug
+          drug_data = drug_
         ))
 
   res_all <-
-    demo %>%
+    demo_ %>%
     add_drug(
-      exposure_df = ex_$d_drecno,
-      drug_names = d_names,
+      d_code = d_drecno,
       method = "DrecNo",
       repbasis = "sci",
-      drug_data = drug
+      drug_data = drug_
     )
 
   res_each_nivo_sum <-
     res_each %>%
     purrr::map_dbl(function(x)
-      sum(x[[d_names[1]]]))
+      sum(x[[names(d_names)[1]]]))
 
   res_all_nivo_sum <-
-    sum(res_all[[d_names[1]]])
+    sum(res_all[[names(d_names)[1]]])
 
-  expect_equal(ncol(demo),
+  expect_equal(ncol(res_all),
                ncol(demo_) + n_drug)
 
   # found cases with s, c, i
