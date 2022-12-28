@@ -72,8 +72,7 @@ get_atc_code <-
     # vigilyze is FALSE : return result ----
 
     if (vigilyze) {
-      cat("vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)",
-          "\n")
+      message("vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)")
 
       get_drecno(
         d_sel = atc_sel_mpi,
@@ -86,8 +85,7 @@ get_atc_code <-
 
     } else {
 
-      cat("vigilyze set to FALSE, extracting MedicinalProd_ids (?get_atc_code for details)",
-          "\n")
+      message("vigilyze set to FALSE, extracting MedicinalProd_ids (?get_atc_code for details)")
 
       atc_sel_mpi
     }
