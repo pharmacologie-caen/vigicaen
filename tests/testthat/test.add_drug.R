@@ -8,6 +8,11 @@ test_that("works with drecnos, regular names for demo and drug", {
     pembrolizumab = "pembrolizumab"
     )
 
+  d_count <- rlang::list2(
+    nivolumab     = 36729,
+    pembrolizumab = 18994
+  )
+
   n_drug <- length(d_names)
 
   d_drecno <-
@@ -28,22 +33,14 @@ test_that("works with drecnos, regular names for demo and drug", {
   expect_equal(ncol(demo),
                ncol(demo_) + n_drug)
 
-  purrr::walk(
-    names(d_names),
-    function(d_n){
-      expect_gt(sum(demo[[d_n]]),
-                expected = 1)
+  purrr::iwalk(
+    d_count,
+    function(d_n, id_n){
+      expect_equal(sum(demo[[id_n]]),
+                expected = d_n)
     }
   )
 
-})
-
-test_that("anything", {
-  a <- 1
-
-  b <- a + a
-
-  expect_equal(b, 2)
 })
 
 test_that("works with irregular names for demo and drug", {
@@ -54,6 +51,11 @@ test_that("works with irregular names for demo and drug", {
   d_names <- rlang::list2(
     nivolumab = "nivolumab",
     pembrolizumab = "pembrolizumab"
+  )
+
+  d_count <- rlang::list2(
+    nivolumab     = 36729,
+    pembrolizumab = 18994
   )
 
   n_drug <- length(d_names)
@@ -76,11 +78,11 @@ test_that("works with irregular names for demo and drug", {
   expect_equal(ncol(dema),
                ncol(demo_) + n_drug)
 
-  purrr::walk(
-    names(d_names),
-    function(d_n){
-      expect_gt(sum(dema[[d_n]]),
-                expected = 1)
+  purrr::iwalk(
+    d_count,
+    function(d_n, id_n){
+      expect_equal(sum(demo[[id_n]]),
+                   expected = d_n)
     }
   )
 
@@ -90,6 +92,10 @@ test_that("works with mpi_list", {
 
   mpi <- rlang::list2(
     para = ex_$mp_short[DrecNo == "000200", MedicinalProd_Id]
+  )
+
+  mpi_count <- rlang::list2(
+    para = 3311
   )
 
   n_drug <- length(mpi)
@@ -106,11 +112,11 @@ test_that("works with mpi_list", {
   expect_equal(ncol(demo),
                ncol(demo_) + n_drug)
 
-  purrr::walk(
-    names(mpi),
-    function(d_n){
-      expect_gt(sum(demo[[d_n]]),
-                expected = 1)
+  purrr::iwalk(
+    mpi_count,
+    function(d_n, id_n){
+      expect_equal(sum(demo[[id_n]]),
+                   expected = d_n)
     }
   )
 
