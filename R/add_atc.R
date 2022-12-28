@@ -1,69 +1,95 @@
-#' Add ATC columns to a dataset (tidyverse syntax)
+#' Get ATC codes (DrecNos or MPIs)
 #'
-#' This function creates an expression that must be evaluated in `j` in a data.table to produce new atc columns.
+#' This function gets Drug Record Numbers or MedicinalProd_Ids associated to one or more ATC classes.
 #'
-#' IMPORTANT: At the moment, all `create_x_exp` functions assume default names for data.tables: drug, adr and thg.
-#' Vigilyze style means all conditioning of drugs will be retrieved after requesting an ATC class, even if a specific conditioning is not present in the ATC class. This is the default behavior in vigilyze.
+#' Provide `atc_code` in the same way as `d_code` with \code{\link{add_drug}}.
+#' Vigilyze style means all conditioning of drugs will be retrieved after requesting an ATC class (i.e., drugs are identified with their DrecNos), even if a specific conditioning is not present in the ATC class. This is the default behavior in vigilyze.
 #'
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
-#' @param atc_codes A character vector. ATC codes
+#' @param atc_code A named list of ATC codes. See Details.
 #' @param vigilyze A logical. Should ATC classes be retrieved using the vigilyze style? See details
 #' @param mp_short A modified MP data.table. See \code{\link{ex_}}
-#' @param thg_data A data.frame. Correspondence between ATC codes and MedicinalProd_Id (usually, it is `thg`)
+#' @param thg_data A data.table. Correspondence between ATC codes and MedicinalProd_Id (usually, it is `thg`)
 #' @keywords atc
 #' @export
 #' @importFrom dplyr %>%
 #' @examples
-#' atc_codes <- c("L03", "C")
+#' Find codes associated with one or more atc classes
 #'
-#' thg <- thg_ # table dans laquelle sont lus les codes ATC
-#' demo <- demo_
-#' drug <- drug_
+#' # First, define which atc you want to use
+#' atc_sel <-
+#'   rlang::list2(l03_l04 = c("L03", "L04"),
+#'                c01 = c("C01")
 #'
-#' atc_exp <-
-#'   create_atc_exp(atc_codes, mp_short = ex_$mp_short)
+#' # You can get DrecNos for you ATCs (if vigilyze is TRUE)
 #'
-#' demo[, c(atc_codes) := eval(atc_exp)]
-#' demo[, .N, by = list(L03, C)]
+#' atc_drecno <-
+#'   get_atc_code(atc_sel = atc_sel,
+#'                mp_short = ex_$mp_short,
+#'                thg_data = thg_,
+#'                vigilyze = TRUE)
+#'
+#' # Or you can get MedicinalProd_Ids (if vigilyze is FALSE)
+#'
+#' atc_mpi <-
+#'   get_atc_code(atc_sel = atc_sel,
+#'                mp_short = ex_$mp_short,
+#'                thg_data = thg_,
+#'                vigilyze = FALSE)
 
-add_atc <-
-  function(.data,
-           atc_codes,
-           vigilyze = TRUE,
+
+get_atc_code <-
+  function(atc_sel,
            mp_short,
-           thg_data)
-  {
-    drug_expression <-
-      if (vigilyze) {
-        rlang::expr(
-          DrecNo %in%
-            find_drecno(
-              thg[substr(ATC.code, start = 1, stop = length_code) == atc_code,
-                  as.integer(MedicinalProd_Id)],
-              mp_short,
-              allow_combination = FALSE,
-              method = "mpi_list"
-            )[["DrecNo"]])
-      } else {
-        rlang::expr(MedicinalProd_Id %in%
-                      thg[substr(ATC.code, start = 1, stop = length_code) == atc_code,
-                          as.integer(MedicinalProd_Id)])
+           thg_data,
+           vigilyze = TRUE) {
+
+    # core function ----
+    core_get_atc_code <-
+      function(atc_) {
+        length_code <- stringr::str_count(atc_)
+
+        atc_mpi <-
+          thg_data[stringr::str_sub(ATC.code,
+                                    start = 1,
+                                    end = length_code) == atc_,
+                   as.integer(MedicinalProd_Id)]
+
+        atc_mpi
       }
 
-    atc_exp <- function(atc_code, env, drug_expression) {
-      drug_expression <- rlang::enexpr(drug_expression)
-      length_code <- nchar(atc_code)
-      eval(rlang::expr(data.table::fifelse(UMCReportId %in%
-                                             drug[!!drug_expression, unique(UMCReportId)],
-                                           1, 0)), envir = env)
+    # apply core function to each element ----
+    # extract mpi (requested even if you want drecnos) ----
+
+    atc_sel_mpi <-
+      purrr::map(atc_sel, function(one_sel)
+        purrr::map(one_sel,
+                   core_get_atc_code) %>%
+          purrr::flatten_dbl()
+      )
+
+    # vigilyze is TRUE : use get_drecno ----
+    # vigilyze is FALSE : return result ----
+
+    if (vigilyze) {
+      cat("vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)",
+          "\n")
+
+      get_drecno(
+        d_sel = atc_sel_mpi,
+        mp_short = mp_short,
+        allow_combination = FALSE,
+        method = "mpi_list",
+        inspect = FALSE,
+        show_all = FALSE
+      )
+
+    } else {
+
+      cat("vigilyze set to FALSE, extracting MedicinalProd_ids (?get_atc_code for details)",
+          "\n")
+
+      atc_sel_mpi
     }
 
-    e_l <- lapply(atc_codes, function(x) {
-      rlang::call2(rlang::expr(!!atc_exp), x, rlang::expr(.SD), drug_expression)
-    })
-
-    var_expr <- rlang::call2(rlang::expr(list),
-                             !!!e_l)
-
-    var_expr
   }
