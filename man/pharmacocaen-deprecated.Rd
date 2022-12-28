@@ -36,6 +36,7 @@ functionality are also mentioned. Help pages for deprecated functions are
 available at \code{help("<function>-deprecated")}.
 }
 \details{
+This function is superseeded by \code{\link{get_drecno}}.
 \strong{Remember to check the results by hand before using the output.}
 This function uses perl style regex to find drug names in generic names OR exact matching to MedicinalProd_Id, from the WHO shortened MP tables.
 \code{mp_short} data.table is typically created using the \code{tb_mp.R} script in \verb{/STAT/R_FUN}, or \code{tb_who.R}. \code{mp_short} is MP whose  \code{Drug.name} column has been \code{tolower(trimws())}-ed and with less details on MP.

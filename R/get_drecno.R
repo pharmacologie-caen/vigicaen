@@ -4,6 +4,13 @@
 #'
 #' This is a function of the "create a drug column" workflow.
 #' Use `inspect = TRUE` whenever you use this function for the first time on a new set of drug names. It is a critical checkpoint to your data analysis.
+#' This function uses perl style regex to find drug names in generic names OR exact matching to MedicinalProd_Id, from the WHO shortened MP tables.
+#' A drug can have multiple MedicinalProd_Ids, corresponding to different packagings. The MedicinalProd_Id matching is typically used to identify DrecNo(s) contained in an ATC class (extracted from THG), since not all MPI of drugs are present in THG (see Helena Skold 2020-07-01 mail for details).
+#' WHO names are attributed to drugs by... the WHO. There is only one WHO name, when there can be multiple international nonproprietary names (e.g. tretinoin and all-trans retinoic acid). You should use WHO names to ensure proper identification of drugs and DrecNos.
+#' Negative lookarounds are used to ensure that a string does not match to composite drug names including the string, i.e. `trastuzumab emtasine` is not retrieved when looking for `trastuzumab` and `alitretinoin` is not found when looking for `tretinoin`.
+#' Fixed associations of drugs refers to specialty containing more than one active ingredient (for example, acetylsalicylic acid and clopidogrel). In VigiLyze, the default is NOT to account for these fixed associations. For example, when you call "acetylsalicylic acid" in VigiLyze, you don't have the cases reported with the fixed-association "acetylsalicylic acid; clopidogrel" **unless the substances were distinctly coded by the reporter.** Here, the default is to find a drug even if it is prescribed in a fixed association.
+#' Importantly, when retrieving fixed-association drugs, the non-of-interest drug alone drecno is not found, hence the cases related to this drug will not be added to those of the drug of interest.
+#' Drug names are automatically `tolower(trimws())`-ed in the function.
 #'
 #' @param d_sel A named list of character vectors. Selection of drug names or medicinalprod_id.
 #' @param mp_short A modified MP data.table. See \code{\link{ex_}}

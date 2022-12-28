@@ -3,6 +3,7 @@
 #'
 #' Find drug record number from character string matching from a modified MP data.table.
 #'
+#' This function is superseeded by \code{\link{get_drecno}}.
 #' __Remember to check the results by hand before using the output.__
 #' This function uses perl style regex to find drug names in generic names OR exact matching to MedicinalProd_Id, from the WHO shortened MP tables.
 #' `mp_short` data.table is typically created using the `tb_mp.R` script in `/STAT/R_FUN`, or `tb_who.R`. `mp_short` is MP whose  `Drug.name` column has been `tolower(trimws())`-ed and with less details on MP.
