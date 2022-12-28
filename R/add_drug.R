@@ -15,34 +15,19 @@
 #' @export
 #' @importFrom dplyr %>%
 #' @examples
-#' # create a nivolumab column in demo
-#'
-#' # You need to use standard names for the tables
-#' demo <- demo_
-#' drug <- drug_
+#' # create a nivolumab column in demo_
 #'
 #' d_sel_names <- rlang::list2(nivolumab = "nivolumab")
 #'
 #' d_drecno <- get_drecno(d_sel_names,
 #'                         mp_short = ex_$mp_short)
 #'
-#' demo <-
-#'   demo %>%
-#'     add_drug(
-#'       exposure_df = ex_$d_drecno,
-#'       drug_names = "nivolumab",
-#'       # use lower case names
-#'       method = "DrecNo",
-#'       repbasis = "sci",
-#'       drug_data = drug
-#'     )
-
 #' demo_ %>%
 #'   add_drug(
 #'     d_code = d_drecno,
 #'     method = "DrecNo",
 #'     repbasis = "sci",
-#'     drug_data = drug
+#'     drug_data = drug_
 #'   )
 
 add_drug <-
@@ -63,7 +48,7 @@ add_drug <-
 
     # drug_names <- tolower(drug_names)
 
-    drug_data <- enexpr(drug_data)
+    drug_data <- rlang::enquo(drug_data)
 
     basis_sel <-
       c(
