@@ -81,7 +81,7 @@ test_that("works with irregular names for demo and drug", {
   purrr::iwalk(
     d_count,
     function(d_n, id_n){
-      expect_equal(sum(demo[[id_n]]),
+      expect_equal(sum(dema[[id_n]]),
                    expected = d_n)
     }
   )

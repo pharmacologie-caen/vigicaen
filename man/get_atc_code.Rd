@@ -7,30 +7,29 @@
 get_atc_code(atc_sel, mp_short, thg_data, vigilyze = TRUE)
 }
 \arguments{
+\item{atc_sel}{A named list of ATC codes. See Details.}
+
 \item{mp_short}{A modified MP data.table. See \code{\link{ex_}}}
 
 \item{thg_data}{A data.table. Correspondence between ATC codes and MedicinalProd_Id (usually, it is \code{thg})}
 
 \item{vigilyze}{A logical. Should ATC classes be retrieved using the vigilyze style? See details}
-
-\item{.data}{The dataset used to identify individual reports (usually, it is \code{demo})}
-
-\item{atc_code}{A named list of ATC codes. See Details.}
 }
 \description{
 This function gets Drug Record Numbers or MedicinalProd_Ids associated to one or more ATC classes.
 }
 \details{
-Provide \code{atc_code} in the same way as \code{d_code} with \code{\link{add_drug}}.
+Provide \code{atc_sel} in the same way as \code{d_sel} with \code{\link{add_drug}}.
 Vigilyze style means all conditioning of drugs will be retrieved after requesting an ATC class (i.e., drugs are identified with their DrecNos), even if a specific conditioning is not present in the ATC class. This is the default behavior in vigilyze.
 }
 \examples{
-Find codes associated with one or more atc classes
+# ## Find codes associated with one or more atc classes
 
 # First, define which atc you want to use
 atc_sel <-
   rlang::list2(l03_l04 = c("L03", "L04"),
                c01 = c("C01")
+  )
 
 # You can get DrecNos for you ATCs (if vigilyze is TRUE)
 
