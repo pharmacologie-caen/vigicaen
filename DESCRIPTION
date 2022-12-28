@@ -5,7 +5,7 @@ Authors@R:
     person("Charles", "Dolladille", , "dolladille-c@chu-caen.fr", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: Tools to perform pharmacovigilance database analysis.
-Depends: R (>= 4.2.1),
+Depends: R (>= 4.2.0),
 	dplyr,
 	data.table,
 License: MIT + file LICENSE
