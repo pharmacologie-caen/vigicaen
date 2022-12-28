@@ -22,42 +22,40 @@
 #' @export
 #' @importFrom dplyr %>%
 #' @examples
+#'
+#' # ## Get drecnos for a list a drugs
+#'
 #' d_sel_names <- rlang::list2(
 #'   nivolumab = "nivolumab",
 #'   ipilimumab = "ipilimumab",
 #'   nivo_ipi = c("nivolumab", "ipilimumab")
 #'   )
 #'
-#' d_sel_names %>%
-#'   get_drecno(
+#' # Read mp_short with get_drecno, to identify drugs without combinations
 #'
-#'     mp_short = mp_short
-#'     )
+#' # First, you shall **always** inspect mp_short reading before getting the codes
 #'
-#' # Lire dans mp_short avec find_drecno, pour trouver les DrecNo nivolumab seul
+#' get_drecno(d_sel_names,
+#'            mp_short = ex_$mp_short,
+#'            allow_combination = FALSE,
+#'            method = "drug_name",
+#'            inspect = TRUE)
 #'
-#' d_name <- "nivolumab"
+#' # If this matches your needs, then extract (inspect = FALSE, by default)
 #'
-#' d_drecno <-
-#'   get_drecno(d_name,
-#'               mp_short = ex_$mp_short,
-#'               allow_combination = FALSE,
-#'               method = "drug_name")
+#' get_drecno(d_sel_names,
+#'              mp_short = ex_$mp_short,
+#'              allow_combination = FALSE,
+#'              method = "drug_name")
 #'
-#' # Et les DrecNo nivolumab en association
+#' # And DrecNos of drugs allowing for combinations
 #'
-#' d_drecno <-
-#'   find_drecno(d_name,
-#'               mp_short = ex_$mp_short,
-#'               allow_combination = TRUE,
-#'               method = "drug_name")
+#' get_drecno(d_sel = d_sel_names,
+#'             mp_short = ex_$mp_short,
+#'             allow_combination = TRUE,
+#'             method = "drug_name"
 #'
-  #' get_drecno(d_sel = d_sel_names[[1]],
-  #'             mp_short = mp_short,
-  #'             allow_combination = FALSE,
-  #'             method = "drug_name"
-  #'
-  #'             )
+#'             )
 
 get_drecno <- function(
     d_sel,
