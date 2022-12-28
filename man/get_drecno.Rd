@@ -23,6 +23,8 @@ get_drecno(
 \item{method}{Should DrecNo be found from drug names or from MedicinalProd_Id?}
 
 \item{inspect}{Instead of providing a list of drecnos, do you wish to see a larger data.frame with additional data? See details.}
+
+\item{show_all}{Do you wish to see all MP_Ids entries from \code{mp_short} when working with drug names, or just one entry per DrecNo? Default to FALSE}
 }
 \description{
 This function gets Drug Record Numbers associated to one or more drugs in a list.

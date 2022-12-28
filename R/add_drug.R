@@ -1,10 +1,10 @@
 #' Add DRUG column(s) to a dataset (tidyverse syntax)
 #'
-#' This function creates drug columns using dplyr::mutate.
+#' This function creates drug columns using `dplyr::mutate`.
+#'
 #'
 #' d_code is a named list containing drug codes. Either medicinalprod_ids (e.g., from `tb_custom`), or drug record numbers (e.g., from `get_drecno`). Default method is to DrecNos.
 #' Drugs can be reported according to one of three reputation bases: suspect, concomitant or interacting in the occurrence of the adverse drug reaction. You may want to study only reports with a specific reputation basis.
-#' Column names will be automatically tolower-ed, so you may wish to do this step explicitly in your workflow prior to using this function.
 #'
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
 #' @param d_code A named list of drug codes (DrecNos or MPI). See Details.
@@ -33,8 +33,6 @@
 add_drug <-
   function(.data,
            d_code,
-           # exposure_df,
-           # drug_names = unique(exposure_df[["drug"]]),
            repbasis = "sci",
            method = c("DrecNo", "MedicinalProd_Id"),
            drug_data
@@ -42,11 +40,8 @@ add_drug <-
   {
     method <- match.arg(method)
     method_col <- rlang::sym(method)
-    # exposure_df <- rlang::enexpr(exposure_df)
 
     col_names <- names(d_code)
-
-    # drug_names <- tolower(drug_names)
 
     drug_data <- rlang::enquo(drug_data)
 
