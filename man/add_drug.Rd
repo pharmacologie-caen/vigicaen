@@ -24,12 +24,11 @@ add_drug(
 \item{drug_data}{A data.frame containing the drug data (usually, it is \code{drug})}
 }
 \description{
-This function creates drug columns using dplyr::mutate.
+This function creates drug columns using \code{dplyr::mutate}.
 }
 \details{
 d_code is a named list containing drug codes. Either medicinalprod_ids (e.g., from \code{tb_custom}), or drug record numbers (e.g., from \code{get_drecno}). Default method is to DrecNos.
 Drugs can be reported according to one of three reputation bases: suspect, concomitant or interacting in the occurrence of the adverse drug reaction. You may want to study only reports with a specific reputation basis.
-Column names will be automatically tolower-ed, so you may wish to do this step explicitly in your workflow prior to using this function.
 }
 \examples{
 # create a nivolumab column in demo_
