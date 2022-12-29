@@ -1,4 +1,4 @@
-#' Demo of immune checkpoint inhibitors.
+#' Data of immune checkpoint inhibitors.
 #'
 #' Demo is the cornerstone table in Vigibase Extract Case Level data. It contains the `UMCReportId` identifier for individual case safety reports, which is a jointure key with most other tables (see "VigiBase Extract Case Level - file description.pdf" in VigiBase ECL folders for more details). It is the preferred table to update for drugs and adrs identification before performing disproportionality analyses.
 #' This `demo_` table is a subset of reports reporting at least one ICI, from the September 2019 version of Vigibase ECL. All other tables were subsetted to match these records. I used the "substance" table at this time, with substances `"Ipilimumab", "Atezolizumab", "Durvalumab", "Nivolumab", "Pembrolizumab", "Avelumab", "Cemiplimab","REGN 2810", "Tremelimumab"` identified.
@@ -22,72 +22,15 @@
 
 "demo_"
 
-#' Drug of immune checkpoint inhibitors.
-#'
-#' Drug data related to `demo_`.
-#' See  \code{\link{demo_}}
-#'
-#' @docType data
-#'
-#' @usage data(drug_)
-#'
-#' @format An object of class `data.frame` and `data.table`.
-#'
-#' @keywords datasets
-#'
-#' @references There is none
-#'
-#' @source None
-#'
-#' @examples
-#' data(drug_)
-#' drug_[, .N, by = Basis]
+#' @rdname demo_
 
 "drug_"
 
-#' Follow-up of immune checkpoint inhibitors.
-#'
-#' Follow-up data related to `demo_`.
-#' See  \code{\link{demo_}}
-#'
-#' @docType data
-#'
-#' @usage data(followup_)
-#'
-#' @format An object of class `data.frame` and `data.table`.
-#'
-#' @keywords datasets
-#'
-#' @references There is none
-#'
-#' @source None
-#'
-#' @examples
-#' data(followup_)
-#' followup_
+#' @rdname demo_
 
 "followup_"
 
-#' Indication of immune checkpoint inhibitors.
-#'
-#' Indication data related to `drug_`.
-#' See  \code{\link{demo_}}
-#'
-#' @docType data
-#'
-#' @usage data(ind_)
-#'
-#' @format An object of class `data.frame` and `data.table`.
-#'
-#' @keywords datasets
-#'
-#' @references There is none
-#'
-#' @source None
-#'
-#' @examples
-#' data(ind_)
-#' ind_
+#' @rdname demo_
 
 "ind_"
 
@@ -120,10 +63,10 @@
 #'   \item `smq_list_content` is a jointure of `smq_list` and `smq_content` from Meddra v X / english / medascii (full table)
 #'   \item `smq_sel` is a named list of smq names
 #'   \item `pt_sel` is a named list of pt names
-#'   \item `adr_list` is a named list of meddra codes related to adrs from `smq_sel` and `pt_sel`
+#'   \item `adr_list` is a named list of meddra llt codes related to adrs from `smq_sel` and `pt_sel`
 #'   \item `mp_short` is a correspondence table between drug names and drecnos (first created in Vigibase ECL / who data). `mp_short` data.table is typically created using the `tb_mp.R` script in `/STAT/R_FUN`, or `tb_who.R`. `mp_short` is MP whose  `Drug.name` column has been `tolower(trimws())`-ed and with less details on MP.
-#'   \item `d_names` is a character vector of drug names
-#'   \item `d_drecno` is a subset of `mp_short` on `d_names`
+#'   \item `d_sel_names` is a named list of character vectors with drug names
+#'   \item `d_drecno` is a named list of drecnos for d_sel_names
 #' }
 #'
 #' @docType data

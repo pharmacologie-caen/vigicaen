@@ -3,14 +3,23 @@
 \docType{data}
 \name{demo_}
 \alias{demo_}
+\alias{drug_}
+\alias{followup_}
+\alias{ind_}
 \alias{adr_}
 \alias{link_}
 \alias{out_}
 \alias{srce_}
 \alias{thg_}
-\title{Demo of immune checkpoint inhibitors.}
+\title{Data of immune checkpoint inhibitors.}
 \format{
 An object of class \code{data.frame} and \code{data.table}.
+
+An object of class \code{data.table} (inherits from \code{data.frame}) with 260597 rows and 12 columns.
+
+An object of class \code{data.table} (inherits from \code{data.frame}) with 58450 rows and 2 columns.
+
+An object of class \code{data.table} (inherits from \code{data.frame}) with 184606 rows and 2 columns.
 
 An object of class \code{data.table} (inherits from \code{data.frame}) with 179407 rows and 4 columns.
 
@@ -27,6 +36,12 @@ None
 }
 \usage{
 data(demo_)
+
+drug_
+
+followup_
+
+ind_
 
 adr_
 
