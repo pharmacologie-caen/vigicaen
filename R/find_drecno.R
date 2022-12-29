@@ -49,10 +49,9 @@
 #'               method = "drug_name")
 #'
 #' # Find DrecNos from an ATC class (dual step method)
-#' thg <- dt_fst("~/VigiBase Extract Case Level 2019 Sep 1/who_ddx_sep_1_2019/", "THG")
 #'
 #' mp_id_l04 <-
-#'   thg[substr(ATC.code, start = 1, stop = 3) %in% "L04", Medicinalprod_Id]
+#'   thg_[substr(ATC.code, start = 1, stop = 3) %in% "L04", MedicinalProd_Id]
 #'
 #' l04_drecno <-
 #'   find_drecno(mp_id_l04,
