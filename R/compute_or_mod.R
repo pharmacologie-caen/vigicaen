@@ -2,7 +2,7 @@
 #' Compute (r)OR from a model summary
 #'
 #' Helper in dplyr to compute and format OR based on `summary(glm)$coefficients`, or any equivalent in other modelling packages. Preferably, it is transformed into a data.table or data.frame before being evaluated in the function. Otherwise, `compute_or_mod` will transform it.
-#' Significant **R**-or column means low_ci is > 1.
+#' Significant **R**-or column means low_ci is > 1. The `p_val` argument is only required if you wished to display a `nice_p` column see \code{\link{nice_p}}
 #'
 #' Output is a data.table.
 #' Actually, the function computes an Odds-Ratio, which is not necessarily a *reporting* Odds-Ratio.
@@ -10,13 +10,14 @@
 #' @param .coef_table A coefficient table, see details.
 #' @param estimate Quasiquoted name of estimate parameter.
 #' @param std_er Quasiquoted name of standard error parameter.
-#' @param p_val Quasiquoted name of p-value parameter
+#' @param p_val Quasiquoted name of p-value parameter. Optional.
 #' @param alpha alpha risk.
 #' @keywords ror
 #' @export
 #' @importFrom dplyr %>%
 #' @importFrom dplyr mutate
 #' @examples
+#'
 #' # Reporting Odds-Ratio of colitis with nivolumab among ICI cases.
 #'
 #' demo <-
@@ -30,20 +31,25 @@
 #'     adr_data = adr_
 #'   )
 #'
+#' # Compute the model
 #' mod <- glm(colitis ~ nivolumab, data = demo, family = "binomial")
 #'
+#' # Extract coefficients
 #' coef_table <-
 #'  mod %>%
 #'  summary() %>%
 #'  .$coefficients
 #'
+#' # Transform coefficients into ORs with their CI
+#'
 #' coef_table %>%
 #'   compute_or_mod(
 #'   estimate = Estimate,
 #'   std_er = Std..Error,
-#'   p_val = Pr...z..) # Preferably, you would transform x before passing it to the function.
+#'   p_val = Pr...z..)
 #'
-#'   coef_table %>%
+#' # Also works if you don't have a p_val column
+#'  coef_table %>%
 #'   compute_or_mod(
 #'   estimate = Estimate,
 #'   std_er = Std..Error)
@@ -55,6 +61,7 @@ compute_or_mod <-
            p_val = NULL,
            alpha = .05) {
 
+    # To data.frame class if not already
     if(!any(class(.coef_table) %in% c("data.table", "data.frame"))){
       .coef_table <- data.frame(rn = row.names(.coef_table), .coef_table)
     }
@@ -77,7 +84,9 @@ compute_or_mod <-
              ) %>%
       data.table()
 
-    if(unique(calcs$p_val) == "p_val was NULL"){
+    # Drop p_val column if there was no p_val provided
+    if(all(unique(calcs$p_val) == "p_val was NULL") # this is the output of nice_p
+       ){
       calcs$p_val <- NULL
     }
 
