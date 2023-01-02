@@ -1,6 +1,6 @@
 test_that("computation is accurate", {
   demo <-
-    demo %>%
+    demo_ %>%
     add_drug(
       d_code = ex_$d_drecno,
       drug_data = drug_
@@ -18,13 +18,13 @@ test_that("computation is accurate", {
     )
 
   exp_res <- rlang::list2(
-    ror = cff(0.75, dig = 2),
+    or = cff(0.75, dig = 2),
     ic = cff(-0.20, dig = 2)
   )
 
   expect_equal(
-    res[["rorl"]],
-    exp_res[["ror"]]
+    res[["orl"]],
+    exp_res[["or"]]
   )
 
   expect_equal(
