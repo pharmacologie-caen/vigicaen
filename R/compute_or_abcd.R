@@ -84,8 +84,8 @@ compute_or_abcd <-
       up_ci = or * exp(+ z_val * std_er),
       orl = ifelse(or %in% c(0, Inf),
                     na_format,
-                    cff(num = ror, dig = dig, method = "num_only")),
-      ror_ci = ifelse(
+                    cff(num = or, dig = dig, method = "num_only")),
+      or_ci = ifelse(
         low_ci %in% c(NaN, 0, Inf),
         na_format,
         cff(low_ci = low_ci, up_ci = up_ci, dig = dig, method = "ci")
