@@ -17,11 +17,11 @@
 #' @importFrom dplyr %>%
 #' @import data.table
 #' @examples
-#' Say you want to perform a disproportionality analysis between colitis and
-#' nivolumab among ICI cases
+#' # Say you want to perform a disproportionality analysis between colitis and
+#' # nivolumab among ICI cases
 #'
 #' demo <-
-#'   demo %>%
+#'   demo_ %>%
 #'   add_drug(
 #'     d_code = ex_$d_drecno,
 #'     drug_data = drug_
@@ -84,11 +84,11 @@ compute_or_abcd <-
       up_ci = ror * exp(+ z_val * std_er),
       rorl = ifelse(ror %in% c(0, Inf),
                     na_format,
-                    charles::cff(num = ror, dig = dig, method = "num_only")),
+                    cff(num = ror, dig = dig, method = "num_only")),
       ror_ci = ifelse(
         low_ci %in% c(NaN, 0, Inf),
         na_format,
-        charles::cff(low_ci = low_ci, up_ci = up_ci, dig = dig, method = "ci")
+        cff(low_ci = low_ci, up_ci = up_ci, dig = dig, method = "ci")
         ),
       ic = log((a + .5) / (n_exp + .5), base = 2),
       ic_tail = ic_tail(n_obs = a, n_exp = n_exp, p = alpha / 2),

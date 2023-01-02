@@ -1,6 +1,6 @@
 test_that("computation is accurate", {
   demo <-
-    demo %>%
+    demo_ %>%
     add_drug(
       d_code = ex_$d_drecno,
       drug_data = drug_
