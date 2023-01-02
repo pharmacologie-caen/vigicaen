@@ -6,10 +6,10 @@
 #' Output is a data.table, containing the ror, the boundaries of the `1 - alpha` confidence interval, the ic, a simple formatting, and whether the result is significant (i.e. `low_ci > 1`).
 #' Actually, the function computes an Odds-Ratio, which is not necessarily a reporting Odds-Ratio.
 
+#' @param .data The data.table to compute from.
 #' @param y A character string, the variable to explain.
 #' @param x A character string, the explaining variable.
 #' @param alpha Alpha risk.
-#' @param dataset The data.table to compute from.
 #' @param na_format Character string to fill NA values in ror and ci legends.
 #' @param dig Number of digits for rounding (this argument is passed to `cff`)
 #' @keywords ror
@@ -17,22 +17,40 @@
 #' @importFrom dplyr %>%
 #' @import data.table
 #' @examples
-#' ## not yet ready
+#' Say you want to perform a disproportionality analysis between colitis and
+#' nivolumab among ICI cases
 #'
+#' demo <-
+#'   demo %>%
+#'   add_drug(
+#'     d_code = ex_$d_drecno,
+#'     drug_data = drug_
+#'   ) %>%
+#'   add_adr(
+#'     a_code = ex_$a_llt,
+#'     adr_data = adr_
+#'   )
+#'
+#' demo %>%
+#'   compute_or_abcd(
+#'     y = "colitis",
+#'     x = "nivolumab"
+#'   )
 
-compute_ror_abcd <-
-  function(y,
-           x,
-           alpha = .05,
-           dataset,
-           na_format = "-",
-           dig = 2) {
+compute_or_abcd <-
+  function(
+    .data,
+    y,
+    x,
+    alpha = .05,
+    na_format = "-",
+    dig = 2) {
 
   z_val <- qnorm(1 - alpha / 2)
 
   var <- c(y, x)
 
-  eff_table <- dataset[, .(eff = as.numeric(.N)), by = var]
+  eff_table <- .data[, .(eff = as.numeric(.N)), by = var]
 
   lc <- function(x){
     if(length(x) == 0) {
@@ -58,7 +76,7 @@ compute_ror_abcd <-
 
   std_er <- sqrt((1 / a) + (1 / b) + (1 / c) + (1 / d))
 
-  table_ror <-
+  output <-
     data.frame(y = y, x = x, a, b, c, d) %>%
     dplyr::mutate(
       ror = a * d / (b * c),
@@ -80,5 +98,5 @@ compute_ror_abcd <-
     ) %>%
     data.table
 
-  table_ror
+  output
   }
