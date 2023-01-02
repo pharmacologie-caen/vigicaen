@@ -34,6 +34,6 @@ nice_p <- function(p_val,
 
   format
   } else {
-    print("p_val was NULL")
+    "p_val was NULL"
   }
 }
