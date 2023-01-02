@@ -1,11 +1,11 @@
 test_that("returns proper counts", {
 
-  a_names <- paste0("adr_", names(ex_$adr_list))
+  a_names <- paste0("adr_", names(ex_$a_llt))
 
   demo <-
    demo_ %>%
      add_adr(
-       adr_list = ex_$adr_list,
+       a_code = ex_$a_llt,
        a_names = a_names,
        adr = adr_
      )

@@ -29,7 +29,8 @@ pt_sel <- rlang::list2(
   pneumonitis = ex_$pt_sel$pneumonitis
   )
 
-# Remember you can use more than one term to define each adverse reaction, but they should all be at the same hierarchical level in meddra.
+# Remember you can use more than one term to define each adverse reaction,
+# but they should all be at the same hierarchical level in meddra.
 
 get_llt_soc(
   term_sel = pt_sel,

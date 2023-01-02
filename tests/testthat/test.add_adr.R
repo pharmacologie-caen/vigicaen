@@ -3,16 +3,16 @@ test_that("works with regular names for demo and adr", {
   demo <- demo_
   adr <- adr_
 
-  n_adr <- length(ex_$adr_list)
+  n_adr <- length(ex_$a_llt)
 
-  a_names <- paste0("adr_", names(ex_$adr_list))
+  a_names <- paste0("adr_", names(ex_$a_llt))
 
   demo <-
    demo %>%
      add_adr(
-       adr_list = ex_$adr_list,
+       a_code = ex_$a_llt,
        a_names = a_names,
-       adr = adr
+       adr_data = adr
      )
 
   expect_equal(ncol(demo),
@@ -33,16 +33,16 @@ test_that("works with irregular names for demo and adr", {
   dema <- demo_
   adra <- adr_
 
-  n_adr <- length(ex_$adr_list)
+  n_adr <- length(ex_$a_llt)
 
-  a_names <- paste0("adr_", names(ex_$adr_list))
+  a_names <- paste0("adr_", names(ex_$a_llt))
 
   dema <-
     dema %>%
     add_adr(
-      adr_list = ex_$adr_list,
+      a_code = ex_$a_llt,
       a_names = a_names,
-      adr = adra
+      adr_data = adra
     )
 
   expect_equal(ncol(dema),

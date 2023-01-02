@@ -4,12 +4,12 @@
 \alias{add_adr}
 \title{Add ADR column(s) to a dataset (tidyverse syntax)}
 \usage{
-add_adr(.data, adr_list, a_names = names(adr_list), adr_data)
+add_adr(.data, a_code, a_names = names(a_code), adr_data)
 }
 \arguments{
 \item{.data}{The dataset used to identify individual reports (usually, it is \code{demo})}
 
-\item{adr_list}{A named list of low level terms codes (llt_codes).}
+\item{a_code}{A named list of low level terms codes (llt_codes).}
 
 \item{a_names}{Names for adr columns (must be the same length as adr_list), default to \code{names(adr_list)}}
 
@@ -27,12 +27,27 @@ The function was initially written to fight against the horrible double free or 
 # be careful, this example may overwrite your own demo dataset
 demo <- demo_
 
+a_pt_sel <- ex_$pt_sel
+
+meddra <- ex_$meddra
+
+adr <- adr_
+
+a_llt <-
+  get_llt_soc(
+  term_sel = a_pt_sel,
+  term_level = "pt",
+  meddra = meddra
+  )
+
 demo <-
   demo \%>\%
     add_adr(
-      adr_list = ex_$adr_list,
-      a_names = paste0("adr_", names(ex_$adr_list)),
-      adr = adr_
+      a_code = a_llt,
+      adr_data = adr
     )
+
+demo \%>\%
+  check_dm(names(a_pt_sel))
 }
 \keyword{adr}
