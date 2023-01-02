@@ -27,11 +27,11 @@ Output is a data.table, containing the ror, the boundaries of the \code{1 - alph
 Actually, the function computes an Odds-Ratio, which is not necessarily a reporting Odds-Ratio.
 }
 \examples{
-Say you want to perform a disproportionality analysis between colitis and
-nivolumab among ICI cases
+# Say you want to perform a disproportionality analysis between colitis and
+# nivolumab among ICI cases
 
 demo <-
-  demo \%>\%
+  demo_ \%>\%
   add_drug(
     d_code = ex_$d_drecno,
     drug_data = drug_
