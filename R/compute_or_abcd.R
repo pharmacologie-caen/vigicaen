@@ -79,13 +79,13 @@ compute_or_abcd <-
   output <-
     data.frame(y = y, x = x, a, b, c, d) %>%
     dplyr::mutate(
-      ror = a * d / (b * c),
-      low_ci = ror * exp(- z_val * std_er),
-      up_ci = ror * exp(+ z_val * std_er),
-      rorl = ifelse(ror %in% c(0, Inf),
+      or = a * d / (b * c),
+      low_ci = or * exp(- z_val * std_er),
+      up_ci = or * exp(+ z_val * std_er),
+      orl = ifelse(or %in% c(0, Inf),
                     na_format,
-                    charles::cff(num = ror, dig = dig, method = "num_only")),
-      ror_ci = ifelse(
+                    charles::cff(num = or, dig = dig, method = "num_only")),
+      or_ci = ifelse(
         low_ci %in% c(NaN, 0, Inf),
         na_format,
         charles::cff(low_ci = low_ci, up_ci = up_ci, dig = dig, method = "ci")
@@ -93,7 +93,7 @@ compute_or_abcd <-
       ic = log((a + .5) / (n_exp + .5), base = 2),
       ic_tail = ic_tail(n_obs = a, n_exp = n_exp, p = alpha / 2),
       ci_level = paste0((1 - alpha) * 100, "%"),
-      signif = ifelse(low_ci > 1, 1, 0),
+      signif_or = ifelse(low_ci > 1, 1, 0),
       signif_ic = ifelse(ic_tail > 0, 1, 0)
     ) %>%
     data.table
