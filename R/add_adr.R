@@ -5,7 +5,7 @@
 #' The function was initially written to fight against the horrible double free or corruption error occurring on the CHU server (with the french accent, please). See details on a word document on my CHU pc. Low-level term codes are the preferred level of requesting in the Vigibase extract case level since it captures all possible codes for a given Preferred Term. Standardized names for demo and adr cols are assumed (e.g. `UMCReportId`)
 
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
-#' @param adr_list A named list of low level terms codes (llt_codes).
+#' @param a_code A named list of low level terms codes (llt_codes).
 #' @param a_names Names for adr columns (must be the same length as adr_list), default to `names(adr_list)`
 
 #' @param adr_data A data.frame containing the adr data (usually, it is `adr`)
@@ -18,18 +18,33 @@
 #' # be careful, this example may overwrite your own demo dataset
 #' demo <- demo_
 #'
+#' a_pt_sel <- ex_$pt_sel
+#'
+#' meddra <- ex_$meddra
+#'
+#' adr <- adr_
+#'
+#' a_llt <-
+#'   get_llt_soc(
+#'   term_sel = a_pt_sel,
+#'   term_level = "pt",
+#'   meddra = meddra
+#'   )
+#'
 #' demo <-
 #'   demo %>%
 #'     add_adr(
-#'       adr_list = ex_$adr_list,
-#'       a_names = paste0("adr_", names(ex_$adr_list)),
-#'       adr = adr_
+#'       a_code = a_llt,
+#'       adr_data = adr
 #'     )
+#'
+#' demo %>%
+#'   check_dm(names(a_pt_sel))
 
 add_adr <-
   function(.data,
-           adr_list,
-           a_names = names(adr_list),
+           a_code,
+           a_names = names(a_code),
 
            adr_data){
 
@@ -50,7 +65,7 @@ add_adr <-
 
     # Step 2: build calls to core function for each adr
 
-    e_l <- purrr::map(adr_list,
+    e_l <- purrr::map(a_code,
                       function(x) {
                         rlang::call2(
                           rlang::quo(add_single_adr),

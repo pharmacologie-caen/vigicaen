@@ -25,14 +25,13 @@ demo <- demo_
 demo <-
   demo \%>\%
     add_adr(
-      adr_list = ex_$adr_list,
-      a_names = paste0("adr_", names(ex_$adr_list)),
-      adr = adr_
+      a_code = ex_$a_llt,
+      adr_data = adr_
     )
 
  # then check the number of reports with each feature
 
 demo \%>\%
-  check_dm(paste0("adr_", names(ex_$adr_list)))
+  check_dm(names(ex_$a_llt))
 }
 \keyword{check_dm}
