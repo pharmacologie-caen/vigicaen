@@ -1,0 +1,851 @@
+---
+title: "basic_workflow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{basic_workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+## Objectifs
+
+-   Comprendre et faire le data management usuel dans VigiBase ECL
+-   Faire une analyse de disproportionalité (uni puis multivariée)
+
+## Rappel structure de la base
+
+Chaque table possède une clé identifiante unique, et d'autres variables permettant de réaliser des jointures.
+
+| Table  | Clé           | Autres variables |
+|--------|---------------|------------------|
+| `demo` | `UMCReportId` |                  |
+| `drug` | `Drug_Id`     | `UMCReportId`    |
+| `adr`  | `Adr_Id`      | `UMCReportId`    |
+
+> Objectif du TD : réaliser une analyse de disproportionalité entre colites et nivolumab, parmi les cas inhibiteurs de checkpoint
+
+> Consigne générale : écrivez le code vous-même dans un script ou la console
+
+# Data management
+
+## Etape 0 : Charger les packages
+
+```{r library, warning=FALSE, message=FALSE}
+
+library(tidyverse)
+library(rlang)
+library(pharmacocaen)
+
+```
+
+
+## Médicament
+
+### Principe
+
+1.  Charger les tables demo, drug, mp_short
+2.  Choisir un/des médicaments d'intérêts
+3.  Identifier les codes médicaments (par ex. le(s) DrecNo(s)) associés à ces médicaments, grâce à la table `mp` (ou `mp_short`)
+4.  Chercher les cas exposés à ces médicaments, à l'aide des codes, dans la table `drug`
+5.  Mettre à jour la table `demo` : coder 1 si le cas rapporte le médicament d'intérêt, 0 sinon.
+6.  Vérifier son data_management
+
+L'étape 3 est réalisée à l'aide de la fonction `get_drecno`
+
+Les étapes 4 et 5 sont réalisées à l'aide de la fonction `add_drug`
+
+L'étape 6 est réalisée à l'aide de la fonction `check_dm`
+
+### Etape 1 : Charger les tables
+
+```{r table_loading, warning=FALSE, message=FALSE}
+demo <- demo_
+drug <- drug_
+
+mp_short <- ex_$mp_short
+```
+
+### Etape 2 : Choisir un/des médicaments d'intérêt
+
+```{r drug_sel}
+d_sel <- # drug selection
+  list2(
+    nivolumab = "nivolumab"
+  )
+
+d_sel
+```
+
+### Etape 3 : Identifier les codes médicaments
+
+La fonction `get_drecno` permet de requêter la table mp_short avec une sélection de nom de médicaments.
+
+Elle prend plusieurs arguments, dont 2 doivent absolument être renseignés : la sélection de médicaments et la table contenant la correspondance entre le nom et le/les codes (ici, `mp_short`)
+
+Il faut TOUJOURS procéder en deux étapes.
+
+1.  D'abord, on utilise `get_drecno` avec l'argument `inspect = TRUE`
+
+```{r inspect_with_get_drecno}
+d_sel %>% 
+  get_drecno(
+    mp_short = mp_short,
+    inspect = TRUE
+  )
+```
+
+On voit que `get_drecno` trouve deux entrées contenant le médicament nivolumab dans la table `mp_short`.
+
+-   La ligne du nivolumab seul
+
+-   La ligne de l'association ipilimumab;nivolumab
+
+Cette deuxième ligne a été identifiée car l'argument `allow_combination` est réglé sur TRUE par défaut. Cela permet d'identifier de façon plus large toutes les spécialités contenant du nivolumab. Dans cette situation, ce comportement est souhaitable car on veut être sur d'identifier tous les cas rapportant le médicament.
+
+2.  Puisqu'il s'agit bien des codes souhaités, on règle l'argument inspect sur FALSE et on garde le résultat dans un objet
+
+```{r d_drecno}
+d_drecno <-
+  d_sel %>% 
+  get_drecno(
+    mp_short = mp_short,
+    inspect = FALSE
+  )
+```
+
+### Etapes 4 et 5 : fonction add_drug
+
+Pour identifier les cas rapportant le médicament d'intérêt et ajouter la colonne correspondante dans demo, on se sert de la fonction `add_drug`.
+
+La fonction `add_drug` prend 3 arguments indispensables :
+
+-   Le jeu de données auquel ajouter la/les variable(s) médicament (ici, `demo`)
+
+-   Une liste nommée contenant les codes du/des médicaments
+
+-   La table `drug` qui rattache la prise des médicaments à chaque cas.
+
+```{r add_drug}
+demo <-
+  add_drug(
+    .data = demo,
+    d_code = d_drecno,
+    drug_data = drug)
+
+demo
+```
+
+Ou, en syntaxe tidyverse
+
+```{r, results='hide'}
+demo <- 
+  demo %>% 
+  add_drug(
+    d_code = d_drecno,
+    drug_data = drug
+  )
+```
+
+### Etape 6 : Vérifier son data management
+
+Cela peut paraitre trivial, mais c'est un temps **essentiel** de la construction d'un jeu de données +++
+
+Il y a de nombreuses façons de vérifier que le code a fonctionné. Ici, la fonction check_dm va compter le nombre de lignes du jeu de données où la colonne souhaitée vaut 1.
+
+```{r}
+demo %>% 
+  check_dm("nivolumab")
+```
+
+Ici, nous avons regardé dans `demo` combien de lignes nivolumab avaient la valeur 1, c'est à dire combien de cas ont été identifiés comme rapportant du nivolumab. Au total, 36,729 cas rapportent du nivolumab.
+
+### Etape 4 et 5 variante : Suspect, concomitant, interacting
+
+On peut choisir de travailler avec les médicaments en fonction de leur statut.\
+L'information est stockée dans la colonne `Basis` de la table `drug`.
+
+-   1 suspect\
+-   2 concomitant\
+-   3 interacting
+
+En utilisant la fonction add_drug, on peut spécifier quel type de statut nous intéresse, dans l'argument `repbasis`. Par défaut, la valeur `"sci"` indique qu'on considère le médicament qu'il soit suspect, concomitant ou interacting. On peut changer la sélection.
+
+```{r add_drug_repbasis}
+demo %>% 
+  add_drug(
+    d_code = d_drecno,
+    drug_data = drug,
+    repbasis = "sci"
+  ) %>% 
+  check_dm("nivolumab")
+
+# suspected only
+demo %>% 
+  add_drug(
+    d_code = d_drecno,
+    drug_data = drug,
+    repbasis = "s"
+  ) %>% 
+  check_dm("nivolumab")
+```
+
+### Classes ATC
+
+La correspondance entre les classes ATC et les codes médicaments se trouve dans la table `thg`. Dans cette table, les codes médicaments sont stockés sous forme de `MedicinalProd_Id`. Il faut donc réaliser une deuxième correspondance avec mp_short pour retrouver des `DrecNo`.
+
+Cela peut être réalisé avec la fonction `get_atc_code`
+
+```{r atc_drecno}
+atc_sel <-
+  list2(l03 = "L03")
+
+atc_drecno <- 
+  atc_sel %>% 
+    get_atc_code(
+      mp_short = mp_short,
+      thg_data = thg_
+    )
+```
+
+La fonction `get_atc_code` demande d'indiquer à la fois la table `mp_short`, et la table `thg`, du fait de cette double correspondance.
+
+```{r str_atc_drecno}
+str(atc_drecno)
+```
+
+Par défaut, cette fonction permet de récupérer des DrecNos associés à une classe ATC (voir l'aide pour une méthode alternative).
+
+On se sert ensuite de add_drug pour créer la variable dans demo.
+
+```{r}
+demo %>% 
+  add_drug(
+    d_code = atc_drecno,
+    drug_data = drug
+  )
+```
+
+### Créer plusieurs colonnes médicaments
+
+Pour travailler avec plusieurs médicaments, il faut mettre à jour la liste de sélection initiale.
+
+```{r many_drugs}
+d_sel <- 
+  list2(
+    nivolumab = "nivolumab",
+    pembrolizumab = "pembrolizumab"
+  )
+
+d_drecno <-
+  d_sel %>% 
+  get_drecno(mp_short = mp_short)
+
+demo %>% 
+  add_drug(
+    d_drecno,
+    drug_data = drug
+  ) %>% 
+  check_dm(c("nivolumab", "pembrolizumab"))
+```
+
+### Associer plusieurs médicaments
+
+Si on souhaite travailler à l'échelle d'un groupe de médicament, mais que les classes ATC ne correspondent pas parfaitement aux besoins, on peut les grouper dans la sélection initiale.
+
+```{r}
+d_sel <- 
+  list2(
+    antalgiques = c("paracetamol", "tramadol"),
+    ici = c("nivolumab", "pembrolizumab")
+  )
+
+d_drecno <-
+  d_sel %>% 
+  get_drecno(mp_short = mp_short)
+
+demo %>% 
+  add_drug(
+    d_drecno,
+    drug_data = drug
+  ) %>% 
+  check_dm(names(d_sel))
+```
+
+## Adverse drug reaction
+
+### Principe
+
+1.  Charger les tables `demo`, `adr`, `meddra`
+
+2.  Choisir l'/les évènement(s) indésirable(s) d'intérêt.
+
+3.  Identifier les codes évènements (ce sont des low-level term selon la classification meddra). On les trouve soit dans la table `meddra`, soit dans les tables `smq`.
+
+4.  Chercher les cas ayant présenté cet évènement, à l'aide des codes, dans la table `adr`
+
+5.  Mettre à jour la table `demo` : coder 1 si le cas rapporte l'évènement d'intérêt, 0 sinon.
+
+6.  Vérifier son data_management
+
+### Etape 1 : Charger les tables
+
+Nous avons déjà chargé demo, restent adr et meddra.
+
+```{r load_adr_table}
+adr <- adr_
+meddra <- ex_$meddra
+```
+
+### Etape 2 : Choisir les évènements d'intérêt
+
+```{r a_sel_pt}
+a_sel_pt <-
+  list2(
+    colitis = c(
+      "Colitis",
+      "Autoimmune colitis",
+      "Colitis microscopic",
+      "Diarrhoea",
+      "Diarrhoea haemorrhagic",
+      "Duodenitis",
+      "Enteritis",
+      "Enterocolitis",
+      "Enterocolitis haemorrhagic",
+      "Ulcerative gastritis"
+    )
+  )
+```
+
+Comme pour la sélection des médicaments, il est possible de choisir plus d'un terme pour définir un évènement. Il faudra néanmoins que tous les termes soient au même niveau hiérarchique dans meddra.
+
+Ici, ce sont tous des preferred terms.
+
+### Etape 3 : Identifier les codes évènements
+
+La fonction `get_llt_soc` permet de requêter la table meddra qui contient les codes de low-level term.
+
+```{r get_llt_soc}
+a_llt <- 
+  get_llt_soc(
+    term_sel = a_sel_pt,
+    term_level = "pt",
+    meddra = meddra
+    )
+
+a_llt
+```
+
+### Etape 4 et 5 : fonction add_adr
+
+L'identification des cas par la table `adr` et la création d'une ou plusieurs colonnes dans `demo` se fait en une seule opération, à l'aide de la fonction `add_adr`.
+
+```{r add_adr}
+demo <- 
+  demo %>% 
+  add_adr(
+    a_code = a_llt,
+    adr_data = adr
+    )
+```
+
+### Etape 6 : vérifier son data management
+
+La fonction check_dm peut être utilisée, comme pour les médicaments
+
+```{r check_dm_adr}
+demo %>% 
+  check_dm("colitis")
+```
+## Autres variables
+
+On peut avoir besoin d'exploiter l'âge où le sexe des patients en analyse multivariée.\
+Cela nécessite simplement de recoder une véritable existante de `demo` ou (préférable) d'en créer une autre avec la transformation souhaitée.\
+Pour le sexe, on va attribuer la valeur 1 aux hommes ("1"), 2 aux femmes ("2") et `NA` à tous les autres niveaux ("-", "9")
+
+### Avec ifelse {.tabset .tabset-fade .tabset-pills}
+
+#### Exercice
+
+Créer la colonne sex dans demo avec la fonction `ifelse` en série.
+
+#### Réponse
+
+Créer la colonne sex dans demo avec la fonction `ifelse` en série.
+
+```{r}
+demo %>% 
+  mutate(
+    sex = ifelse(Gender == "1", 1,
+                 ifelse(Gender == "2", 2, NA_real_)
+                 )
+    )
+```
+
+### Avec case_when
+
+La fonction `case_when` du package `dplyr`, permet de gérer plusieurs options en une seule fonction, d'une syntaxe un peu différente.
+
+```{r}
+demo <- 
+  demo %>% 
+  mutate(
+    sex = case_when(Gender == "1" ~ 1,
+                    Gender == "2" ~ 2,
+                    TRUE ~ NA_real_)
+    )
+```
+
+`TRUE` est utilisé ici dans le sens "dans tous les autres cas". Cette fonction suit une approche pas à pas, il faut donc que l'ordre des actions logiques aille du plus particulier au plus général, en finissant toujours par TRUE.
+
+## Joindre une table VigiLyze
+
+Pour travailler avec des données additionnelles de Vigilyze (typiquement l'âge y est rapporté de façon plus précise, on dispose des dates...) il faut faire une jointure entre la table demo et une autre table créée à partir de l'extraction excel.
+
+Pour lire des fichiers excel, la fonction `read.xlsx`, package `openxlsx`.
+
+Pour réaliser une jointure, il faut identifier la clé de jointure dans les deux tables. Attention, VigiLyze utilise `UMC.report.ID` et non `UMCReportId`. La fonction `left_join`, package `dplyr` permet de réaliser la jointure.
+
+La syntaxe est de la forme
+
+```{r eval=FALSE}
+fusion <-
+  demo %>% 
+  left_join(table_vigilyze,
+            by = c("UMCReportId" = "UMC.report.ID"))
+```
+
+Quelques conseils :
+
+-   Assurez-vous que les tables ne contiennent pas plusieurs lignes avec le même identifiant (`UMCReportId`). Cela peut arriver si vous travaillez avec d'autres tables de type `drug` ou `adr` avant de faire la jointure.
+-   Essayez d'assigner un nom à la table de fusion qui ne soit pas le nom d'une des tables.
+-   Si vous assignez malgré tout la fusion à l'un des deux noms initiaux, assurez vous de ne pas faire tourner ce code plusieurs fois (cela va réaliser des jointures itératives).
+-   Limitez le nombre de variables (colonnes) de la table ajoutée (ici, table_vigilyze) au strict minimum et veillez à ce que les noms de ces colonnes soient différents de ceux de la table jointe (demo).
+
+## Seriousness, death
+
+Le caractère serious et la mort sont renseignés dans une table tierce nommée `out`.
+
+```{r serious_death}
+# ---- Serious ---- ####
+
+out <- out_
+
+demo <- 
+  demo %>% 
+  mutate(
+    serious = ifelse(UMCReportId %in% out[, UMCReportId],
+                      UMCReportId %in% out[Serious == "Y", UMCReportId],
+                      NA)
+    )
+
+# ---- Death + disponibilite de l'outcome ---- ####
+
+demo <- 
+  demo %>% 
+  mutate(death = 
+           fifelse(UMCReportId %in% out[, UMCReportId],
+                   UMCReportId %in% out[Seriousness == "1", UMCReportId],
+                   NA)
+         )
+
+```
+
+Commentaire du code :
+
+-   Les colonnes serious et death ne sont pas codées en 0 ou 1, mais en résultat de vecteur logique TRUE/FALSE.
+-   On utilise des en-têtes pour identifier les créations de ces variables `# ---- Serious ---- ####`.
+-   La variable Seriousness peut avoir plusieurs niveaux, le niveau 1 est le décès (voir les fichiers subsidiaires).
+
+# Disproportionalité
+
+Maintenant que nous avons une colonne médicament et une colonne évènement, il est possible de réaliser une analyse de disproportionalité entre ces 2 variables.
+
+## ROR
+
+Le ROR se calcule à l'aide d'une table de contingence. Il suffit de trouver a, b, c, et d pour obtenir son estimation.
+
+| Effectifs | Nivolumab + | Nivolumab - |
+|-----------|-------------|-------------|
+| Colite +  | a           | c           |
+| Colite -  | b           | d           |
+
+### Effectifs {.tabset .tabset-fade .tabset-pills}
+
+#### Exercice
+
+A l'aide de conditions dans demo, trouver a, b, c, et d et assigner les résultats à des objets de même nom. La fonction `demo %>% summarise(n())` permet de compter le nombre de lignes dans demo. La fonction `filter()` permet de sélectionner des lignes selon certaines conditions. Pour passer du format data.frame au format vecteur, on utilise la fonction `pull()`.
+
+#### Réponse
+
+A l'aide de conditions dans demo, trouver a, b, c, et d et assigner les résultats à des objets de même nom. La fonction `demo %>% summarise(n())` permet de compter le nombre de lignes dans demo. La fonction `filter` permet de sélectionner des lignes selon certaines conditions.
+
+```{r abcd}
+a <- 
+  demo %>% 
+  filter(nivolumab == 1 & 
+           colitis == 1) %>% 
+  summarise(n()) %>% 
+  pull()
+
+b <- 
+  demo %>% 
+  filter(nivolumab == 1 & 
+           colitis == 0) %>% 
+  summarise(n()) %>% 
+  pull()
+
+c <- 
+  demo %>% 
+  filter(nivolumab == 0 & 
+           colitis == 1) %>% 
+  summarise(n()) %>% 
+  pull()
+
+d <- 
+  demo %>% 
+  filter(nivolumab == 0 & 
+           colitis == 0) %>% 
+  summarise(n()) %>% 
+  pull()
+```
+
+### Estimation {.tabset .tabset-fade .tabset-pills}
+
+A partir des effectifs a, b, c, et d, on peut calculer un ROR et son intervalle de confiance.\
+\* La formule du ROR est $\frac{ad}{bc}$\
+\* L'écart type vaut $\sqrt{\frac{1}{a} + \frac{1}{b} + \frac{1}{c} + \frac{1}{d}}$\
+\* Les bornes d'intervalle de confiance à 95% sont à $± 1,96 * l'écart type$ du ROR.
+
+#### Exercice
+
+Faire le calcul.
+
+#### Réponse
+
+Faire le calcul.
+
+```{r ror_abcd}
+ror <- a * d / (b * c)
+
+sd <- sqrt(1 / a + 1 / b + 1 / c + 1 / d)
+
+ci <- c(
+  ror - 1.96 * sd,
+  ror + 1.96 * sd
+)
+
+list(ror, sd, ci)
+```
+
+## Information component {.tabset .tabset-fade .tabset-pills}
+
+On peut aussi calculer l'information component selon la formule\
+$ic = log_2\frac{n obs + .5}{n exp + .5}$\
+\* n exp est égal à $\frac{n_{drug} * n_{adr}}{n_{total}}$ \* La borne inférieure de son intervalle de crédibilité 95% s'obtient avec la fonction `log(qgamma(p, shape = n_obs + .5, rate = n_exp + .5), 2)`
+
+### Exercice
+
+Faire le calcul.
+
+### Réponse
+
+Faire le calcul.
+
+```{r}
+n_exp <-
+    (a + b) * # n drug
+    (a + c) / # n event
+    (a + b + c + d) # n pop
+
+ic <- log((a + .5) / (n_exp + .5), base = 2)
+
+ic_025 <- log(qgamma(p = 0.025, shape = a + .5, rate = n_exp + .5), 2)
+
+list(ic, ic_025)
+```
+
+## Fonction compute_or_abcd
+
+Permet de réaliser directement le calcul du (R)OR et de l'IC, en donnant en entrée le nom de la colonne `y` et le nom de la colonne `x`.\
+Vérifiez la concordance de vos résultats avec ceux de la fonction `compute_or_abcd`.
+
+```{r compute_or_abcd}
+demo %>% 
+  compute_or_abcd(
+    y = "colitis",
+    x = "nivolumab"
+    )
+```
+
+La petite différence sur les bornes du ROR est liée à la valeur de Z-value utilisée (celle de la fonction est + précise).
+
+# Multivarié {.tabset .tabset-fade .tabset-pills}
+
+On a obtenu un ROR univarié en partant des effectifs. On aurait pu aussi utiliser un modèle de régression logistique univarié pour obtenir le même résultat. La régression logistique est obtenue à partir de la fonction `glm` dont l'argument `family` vaut `"binomial"`.\
+C'est beaucoup plus coûteux en temps de calcul, cela génère un modèle dont on extrait ensuite les résultats.\
+Le premier argument d'une fonction de modélisation est une formule de type `y ~ x`, où `y` est la variable d'intérêt et `x` la variable explicative.
+
+```{r}
+mod <- glm(colitis ~ nivolumab, 
+           data = demo, family = "binomial")
+
+summary(mod)
+```
+
+On obtient des estimates, dont on déduit les OR par l'exponentiel. `OR = exp(estimate)` (Cela n'est vrai que dans un modèle de régression logistique).
+
+On peut vérifier la concordance avec la méthode précédente.
+
+```{r}
+summary(mod)$coefficients # la table des coefficients
+
+exp(summary(mod)$coefficients[2, 1]) # choisir la 2ème ligne, 1ère colonne
+```
+
+Dans un modèle logistique, on peut spécifier plus d'une variable explicative, selon la formule `y ~ x1 + x2`.
+
+On pourrait ajuster notre analyse initiale sur le sexe des patients.
+
+## Exercice
+
+Faites une analyse de disproportionalité de colites sous nivolumab ajustée sur le sexe.
+
+## Réponse
+
+Faites une analyse de disproportionalité de colites sous nivolumab ajustée sur le sexe.
+
+```{r}
+mod2 <- glm(colitis ~ nivolumab + sex,
+            data = demo,
+            family = "binomial")
+
+summary(mod2)
+```
+
+Interprétation : ajuster sur le sexe dans notre analyse permet de répondre au biais suivant :\
+"si le fait d'être une femme augmente les notifications pour colite, et que par hasard on observe plus de notifications pour des femmes sous nivolumab que sous autres ICI, alors la surnotification attribuée au nivolumab est peut être liée, en fait, à la surnotification chez les femmes." En ajustant sur le sexe, on s'assure que ce possible delta de notification homme/femme est pris en compte dans l'analyse, et que la surnotification "restante" est bien liée au médicament.\
+Ceci est une introduction extrêmement basique aux modèles multivariés. Il faut garder en tête qu'on peut ajouter une variable toutes les 10 événements. Par exemple : si on a 50 cas de colite sous nivolumab, on peut mettre 5 paramètres dans le modèle.
+
+# Interactions
+
+Parfois plusieurs facteurs concourrent à augmenter la notification d'un événement.\
+Par exemple, les nausées sous tramadol pourraient être majorées par la prise d'un inducteur (ou inhibiteur ?) enzymatique.
+
+Les interactions médicamenteuses peuvent être additives ou multiplicatives.
+
+Reprise du code du début du script pour la partie interactions.
+
+```{r interaction_dm}
+# #### Import #### ####
+
+# ---- Tables ---- ####
+
+demo <- demo_
+drug <- drug_
+
+# ---- Dictionnaire ---- ####
+
+d_drecno <- ex_$d_drecno
+a_llt <- ex_$a_llt
+
+# #### Data management #### ####
+
+# ---- Drugs ---- ####
+
+demo <-
+    demo %>%
+    add_drug(
+      d_code = d_drecno,
+      drug_data = drug_
+    ) 
+
+# ---- Adrs ---- ####
+
+demo <- 
+  demo %>%
+    add_adr(
+      a_code = a_llt,
+      adr_data = adr_
+    )
+
+# ---- Sex ---- ####
+
+demo <- 
+  demo %>% 
+  mutate(
+    sex = case_when(Gender == "1" ~ 1,
+                    Gender == "2" ~ 2,
+                    TRUE ~ NA_real_)
+    )
+```
+
+## Interactions additives
+
+Par exemple, cela s'observe si 2 médicaments ont la même propriété pharmacodynamique. En Odds-Ratio, cela revient à multiplier les Odds entre eux. Exemple : si l'OR du médicament a vaut 2 et celui du médicament b vaut 3, alors l'OR sous la combinaison vaut 6.
+
+Ce type d'interaction médicamenteuse additive peut être exploré de plusieurs façons
+
+### Modèle multivarié
+
+Reprenons notre modèle de colites ajusté sur le sexe, mais regardons l'effet de l'ipilimumab plutôt que celui du nivolumab
+
+```{r}
+mod3 <- glm(colitis ~ ipilimumab + sex,
+            data = demo,
+            family = "binomial")
+
+summary(mod3)
+```
+
+```{r echo=FALSE}
+ror_ipi <- compute_or_mod(summary(mod3)$coefficients)[rn == "ipilimumab", orl]
+ror_sex <- compute_or_mod(summary(mod3)$coefficients)[rn == "sex", orl]
+```
+
+On trouve les coefficients 1.40 et 0.07 pour ipilimumab et sexe, respectivement.\
+De fait, l'odds-Ratio de colite, exponentiel de ces coefficients pour l'ipililumab est de `r ror_ipi` et pour le sexe féminin de `r ror_sex`.
+
+Alors, le "risque" de colite pour une femme sous ipilimumab est de
+
+```{r}
+exp(1.40) * exp(0.07)
+```
+
+On parle d'effets additifs car mathématiquement, l'opération est en fait
+
+```{r}
+exp(1.40 + 0.07)
+```
+
+2 limites importantes
+
+-   Interprétation : dans VigiBase, on ne parle pas de surrisque mais bien de surnotification. Donc ici, il s'agit d'une interaction sur la surnotification.
+-   Vocabulaire : il ne s'agit pas à proprement parler d'une interaction statistique (voir [la section dédiée](#inter_stat)).
+
+### Comparaison en sous-populations
+
+On peut regarder parmi les cas d'un médicament, si l'évènement est plus rapporté en présence du deuxième médicament. Par exemple, on pourrait regarder si parmi les cas nivolumab, les colites sont plus fréquentes quand l'ipilimumab est co-rapporté.\
+La fonction compute_ror_abcd permet de répondre à cette question, il suffit de filtrer le dataset
+
+```{r}
+demo %>% 
+  filter(nivolumab == 1) %>% 
+  compute_or_abcd(
+    y = "colitis",
+    x = "ipilimumab"
+    )
+```
+
+On voit ici que parmi les cas nivolumab, les cas de colite sont plus fréquents lorsque le patient reçoit en plus de l'ipilimumab.\
+Pour parler d'interaction, cependant, il faudrait que les cas de colites soient plus fréquents sous nivolumab seul (ce que nous ne pouvons pas démontrer dans notre dataset réduit aux seuls inhibiteurs de checkpoint, mais qui est vrai : Information component à 5.0 dans VigiLyze).\
+Pour compléter cette analyse, il faut également vérifier
+
+-   Si ipilimumab seul entraine une surnotification de colites
+-   Si le nivolumab, parmi les cas ipilimumab, entraine une surnotification de colite
+-   Si la combinaison ipilimumab + nivolumab versus toute base (ou tout le dataset d'intérêt) augmente les notifications de colite.
+
+Les deux mesures (ROR et IC) peuvent être utilisées ici.
+
+## Interaction statistique (ou multiplicative) {#inter_stat}
+
+### Modèle logistique
+
+En reprenant le modèle logistique, l'interaction statistique peut être testée en ajoutant un paramètre d'interaction à la formule.\
+Ainsi, si on cherche l'effet de x1, x2 et de l'interaction x1/x2 sur y, la formule est `y ~ x1 + x2 + x1 * x2`
+
+```{r}
+mod4 <- glm(colitis ~ ipilimumab + sex + ipilimumab * sex,
+            data = demo,
+            family = "binomial")
+
+summary(mod4)
+```
+
+On obient un estimate pour le paramètre d'interaction.\
+Cet estimate peut être
+
+-   Positif, témoignant d'une interaction *quantitative* : un effet multiplicatif de la présence des 2 facteurs sur la notification de l'évènement. C'est la seule interaction statistique simple d'interprétation.
+-   Négatif, témoignant d'une interaction *qualitative* : la présence d'un facteur inverse l'influence de l'autre.
+
+Dans notre exemple, l'estimate de `Ipilimumab:sex` est `-0.006`, il y a donc interaction qualitative.
+
+Enfin, une p-value est assortie, permettant de savoir si le résultat est significatif. (ici `p=0.90`, non significatif)
+
+### Modèle information component
+
+La formule d'interaction entre 3 variables (y, l'évènement d'intérêt, x1 et x2, deux facteurs explicatifs potentiels) en information component est
+
+$log_2\frac{n_{y, x1, x2}}{n.expected_{interaction}}$
+
+où $n.expected_{interaction}$ vaut
+
+$\frac{n_{x1, x2} * n_{y, x1} * n_{y, x2} * n.total}{n_{x1} * n_{x2} * n_y}$
+
+Les paramètres se lisent de la façon suivante
+
+| Paramètre       | Cas                                                                      |
+|-----------------|-------------------------------------------------------|
+| $n_{x1}$        | nombre de cas rapportant x1                                              |
+| $n_{x1, x2}$    | nombre de cas rapportant x1 **ET** x2                                    |
+| $n_{y, x1, x2}$ | nombre de cas rapportant x1 **ET** x2 **ET** y                           |
+| $n.total$       | nombre de cas total dans la population d'intérêt (peut être la fullbase) |
+
+Et la formule des bornes de l'intervale de crédibilité est identique à celle d'un IC classique. On peut utiliser [la fonction `ic_tail`](#ic_tail) comme raccourci.
+
+# Fonction compute_or_mod
+
+Il s'agit d'un raccourci pour exporter sous forme de tableau les résultats d'un modèle logistique (en fait, à partir de la table `coefficients` extraite après avoir appelé le `summary` du modèle).
+
+```{r compute_or_mod}
+coef_table <-
+  summary(mod2)$coefficients
+
+coef_table %>% 
+compute_or_mod()
+```
+
+# Ecrire un script R
+
+1.  On commence TOUJOURS par appeler des librairies de packages.
+
+2.  On ANNOTE le code : en commençant une ligne par un `#`, l'instruction de la ligne ne sera pas exécutée En terminant une ligne par `####`, on créé une section de code
+
+```{r eval=FALSE}
+# ceci est une annotation
+
+# ceci est une section ####
+```
+
+3.  On AERE le code : espace systématique après une virgule, autour d'un =, ...
+
+```{r eval=FALSE}
+# Sans espaces, le code est difficile à lire
+a<-round(exp(2+2),3)
+
+# Alors que si on aère
+
+a <- round(exp(2 + 2), 3)
+```
+
+On INDENTE le code, voulant dire qu'on revient souvent à la ligne (Rstudio fait l'indentation tout seul, si besoin Ctrl + Maj + A)
+
+```{r eval=FALSE}
+a <- round(mean(c(2, 3, 4, 5)))
+
+a <-
+  round(
+    mean(
+      c(2, 3, 4, 5)
+    )
+  )
+```

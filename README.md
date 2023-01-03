@@ -1,6 +1,4 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # pharmacocaen
 
 <!-- badges: start -->
@@ -19,38 +17,42 @@ You can install the development version of pharmacocaen from
 devtools::install_github("cdolladille/pharmacocaen")
 ```
 
+## Vignettes
+
+There is a detailed vignette to explain simple data management
+[here](https://github.com/cdolladille/pharmacocaen/tree/master/vignettes/)
+
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+Say you want to create columns of drug and adr, then perform a
+univariate disproportionality analysis. You may want to use the
+`add_drug`, `add_adr`, and `compute_or_abcd` functions.
 
 ``` r
 library(pharmacocaen)
-## basic example code
+
+demo <-
+  demo_ %>%
+  add_drug(
+    d_code = ex_$d_drecno,
+    drug_data = drug_
+  ) %>%
+  add_adr(
+    a_code = ex_$a_llt,
+    adr_data = adr_
+  )
+
+demo %>%
+  compute_or_abcd(
+    y = "colitis",
+    x = "nivolumab"
+  )
+#>          y         x    a    b     c     d        or    low_ci     up_ci  orl
+#> 1: colitis nivolumab 3137 3935 33592 31413 0.7454926 0.7095811 0.7832216 0.75
+#>          or_ci         ic    ic_tail ci_level signif_or signif_ic
+#> 1: (0.71-0.78) -0.2000836 -0.2510166      95%         0         0
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+<!-- Footnote for myself
 
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/v1/examples>. -->
