@@ -1,6 +1,8 @@
 ---
 title: "basic_workflow"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    keep_md: true
 vignette: >
   %\VignetteIndexEntry{basic_workflow}
   %\VignetteEngine{knitr::rmarkdown}
@@ -483,11 +485,11 @@ Le ROR se calcule à l'aide d'une table de contingence. Il suffit de trouver a, 
 
 #### Exercice
 
-A l'aide de conditions dans demo, trouver a, b, c, et d et assigner les résultats à des objets de même nom. La fonction `demo %>% summarise(n())` permet de compter le nombre de lignes dans demo. La fonction `filter()` permet de sélectionner des lignes selon certaines conditions. Pour passer du format data.frame au format vecteur, on utilise la fonction `pull()`.
+A l'aide de conditions dans demo, trouver a, b, c, et d et assigner les résultats à des objets de même nom. La fonction `demo %>% nrow()` permet de compter le nombre de lignes dans demo. La fonction `filter()` permet de sélectionner des lignes selon certaines conditions.
 
 #### Réponse
 
-A l'aide de conditions dans demo, trouver a, b, c, et d et assigner les résultats à des objets de même nom. La fonction `demo %>% summarise(n())` permet de compter le nombre de lignes dans demo. La fonction `filter` permet de sélectionner des lignes selon certaines conditions.
+A l'aide de conditions dans demo, trouver a, b, c, et d et assigner les résultats à des objets de même nom. La fonction `demo %>% nrow()` permet de compter le nombre de lignes dans demo. La fonction `filter` permet de sélectionner des lignes selon certaines conditions.
 
 ```{r abcd}
 a <- 
