@@ -1,0 +1,36 @@
+#' Read fst and convert to data.table
+#'
+#' Short hand to `as.data.table(read_fst())`. File extension can be omitted.
+#'
+#' Output is a data.table.
+
+
+#' @param path_base A character string, providing the path to read from.
+#' @param name A character string, the file name.
+#' @param ext A character string, optional, specifying the file extension.
+#' @keywords import
+#' @import fst
+#' @export
+#' @examples
+#' # Say you have a data.frame stored in an fst format, such as this one
+#' df <- data.frame(a = 1:100, b = rnorm(100))
+#'
+#' path <- tempdir()
+#'
+#' fst::write_fst(x = df,
+#'               path = paste0(path, "df.fst")
+#'               )
+#' # Now you have a new session without df.
+#' rm(df)
+#'
+#' # You may import the file directly to data.table format with dt_fst
+#' df <- dt_fst(path, "df")
+
+dt_fst <- function(path_base, name, ext = ".fst"){
+  ext <-
+    if(!grepl(".fst", name, fixed = TRUE)) {
+      ext
+    }
+  path <- paste0(path_base, name, ext)
+  data.table::as.data.table(fst::read_fst(path))
+}
