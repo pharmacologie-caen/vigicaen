@@ -48,28 +48,29 @@ get_llt_soc <-
 
     llt_list <- purrr::map(term_sel, get_one_term_llt)
 
-    length_llt_list_element <-
-      purrr::map(llt_list, length)
+    # check for unmatched terms
 
-    if(any(length_llt_list_element == 0)){
-      zero_llt_element <-
-        length_llt_list_element %>%
-        purrr::keep(~ .x == 0)
+    get_unmatched_terms <- function(one_term){
+      unmatch_request <-
+        rlang::expr(one_term[!(!!one_term %in% meddra[, unique(!!term_sym)]
+        )])
 
-      zero_llt_element_names <-
-        paste0(names(zero_llt_element), collapse = ", ")
+      unmatch <- eval(unmatch_request)
 
-      warning(paste0("no llt code found for '",
-                     zero_llt_element_names,
-                     "' at ",
-                     term_level,
-                     " level. Check spelling.")
-              )
+      unmatch
     }
 
-    if(length(llt_list) == 0){
-      warning(paste0("no llt code found for ", term, " at ", term_level, " level. Check spelling."))
-    }
+    um_term <- purrr::map(term_sel, get_unmatched_terms) %>%
+      purrr::compact()
+
+    if(length(um_term) > 0)
+      warning(paste0("In '",
+      paste0(names(um_term), collapse = ", "),
+      "', the following terms were not found at ",
+      term_level,
+      " level: ",
+      paste0(unlist(um_term), collapse = ", "),
+     ". Check spelling."))
 
     llt_list
 

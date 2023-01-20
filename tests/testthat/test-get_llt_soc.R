@@ -18,7 +18,18 @@ test_that("throws warning when nothing is found", {
       term_level = "pt",
       meddra = ex_$meddra
     ),
-    "no llt code found"
+    "the following terms were not found at pt level: youps"
+  )
+})
+
+test_that("warning even if one term good and one term bad", {
+  expect_warning(
+    get_llt_soc(
+      rlang::list2(rate = c("Hepatitis", "youps")),
+      term_level = "pt",
+      meddra = ex_$meddra
+    ),
+    "the following terms were not found at pt level: youps"
   )
 })
 
