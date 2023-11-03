@@ -12,6 +12,7 @@
 #' @param p End of chosen credibility interval
 #' @keywords ic
 #' @export
+#' @importFrom stats qgamma
 #' @examples
 #'
 #' ic_tail(n_obs = 12,

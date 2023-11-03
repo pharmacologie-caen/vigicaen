@@ -9,7 +9,8 @@ add_drug(
   d_code,
   repbasis = "sci",
   method = c("DrecNo", "MedicinalProd_Id"),
-  drug_data
+  drug_data,
+  data_type = c("demo", "link")
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ add_drug(
 \item{method}{A character string. The type of drug code (DrecNo or MedicinalProd_Id). See details.}
 
 \item{drug_data}{A data.frame containing the drug data (usually, it is \code{drug})}
+
+\item{data_type}{A character string. The type of data to add columns to. Either \code{demo} or \code{link} (default to \code{demo})}
 }
 \description{
 This function creates drug columns using \code{dplyr::mutate}.
@@ -29,6 +32,7 @@ This function creates drug columns using \code{dplyr::mutate}.
 \details{
 d_code is a named list containing drug codes. Either medicinalprod_ids (e.g., from \code{tb_custom}), or drug record numbers (e.g., from \code{get_drecno}). Default method is to DrecNos.
 Drugs can be reported according to one of three reputation bases: suspect, concomitant or interacting in the occurrence of the adverse drug reaction. You may want to study only reports with a specific reputation basis.
+You can add drug identification to a \code{demo} or a \code{link} dataset. Remember to set to the \code{data_type} argument to the appropriate value.
 }
 \examples{
 # create a nivolumab column in demo_
@@ -43,7 +47,8 @@ demo_ \%>\%
     d_code = d_drecno,
     method = "DrecNo",
     repbasis = "sci",
-    drug_data = drug_
+    drug_data = drug_,
+    data_type = c("demo", "link")
   )
 }
 \keyword{drug}

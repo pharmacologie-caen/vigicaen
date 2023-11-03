@@ -4,7 +4,13 @@
 \alias{add_adr}
 \title{Add ADR column(s) to a dataset (tidyverse syntax)}
 \usage{
-add_adr(.data, a_code, a_names = names(a_code), adr_data)
+add_adr(
+  .data,
+  a_code,
+  a_names = names(a_code),
+  adr_data,
+  data_type = c("demo", "link")
+)
 }
 \arguments{
 \item{.data}{The dataset used to identify individual reports (usually, it is \code{demo})}
@@ -14,6 +20,8 @@ add_adr(.data, a_code, a_names = names(a_code), adr_data)
 \item{a_names}{Names for adr columns (must be the same length as adr_list), default to \code{names(adr_list)}}
 
 \item{adr_data}{A data.frame containing the adr data (usually, it is \code{adr})}
+
+\item{data_type}{A character string. The type of data to add columns to. Either \code{demo} or \code{link} (default to \code{demo})}
 }
 \description{
 This function creates adr columns using dplyr::mutate.

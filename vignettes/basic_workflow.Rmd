@@ -44,7 +44,7 @@ Chaque table possède une clé identifiante unique, et d'autres variables permet
 
 ```{r library, warning=FALSE, message=FALSE}
 
-library(tidyverse)
+# library(tidyverse)
 library(rlang)
 library(pharmacocaen)
 
