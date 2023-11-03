@@ -7,8 +7,8 @@
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
 #' @param a_code A named list of low level terms codes (llt_codes).
 #' @param a_names Names for adr columns (must be the same length as adr_list), default to `names(adr_list)`
-
 #' @param adr_data A data.frame containing the adr data (usually, it is `adr`)
+#' @param data_type A character string. The type of data to add columns to. Either `demo` or `link` (default to `demo`)
 #' @export
 #' @importFrom dplyr %>%
 #' @keywords adr
@@ -46,13 +46,26 @@ add_adr <-
            a_code,
            a_names = names(a_code),
 
-           adr_data){
+           adr_data,
+
+           data_type = c("demo", "link")
+           ){
 
     adr_data <- rlang::enquo(adr_data)
 
-    # Step 1: core function, ifelse on UMCReportId
+    data_type <- match.arg(data_type)
 
-    add_single_adr <- function(adr_code) {
+    # use duplicates in UMCReportId to identify a link dataset versus a demo dataset.
+    # and check that data_type is set correctly
+    if(data_type == "demo" && any(duplicated(.data$UMCReportId))){
+      stop("The dataset contains duplicate UMCReportIds (like a `link` dataset). Yet data_type is set to `demo`. Please set data_type to `link` or use a `demo` dataset")
+    } else if(data_type == "link" && !any(duplicated(.data$UMCReportId))){
+      stop("The dataset does not contain duplicate UMCReportIds (like a `demo` dataset). Yet data_type is set to `link`. Please set data_type to `demo` or use a `link` dataset")
+    }
+
+    # Step 1: core function for demo data_type, ifelse on UMCReportId
+
+    add_single_adr_demo <- function(adr_code) {
       rlang::eval_tidy(rlang::quo(
         ifelse(UMCReportId %in%
                  dplyr::filter(!!adr_data, MedDRA_Id %in% adr_code)[["UMCReportId"]],
@@ -62,6 +75,25 @@ add_adr <-
         data = .data)
       # evaluated in .data
     }
+
+    add_single_adr_link <- function(adr_code) {
+      rlang::eval_tidy(rlang::quo(
+        ifelse(Adr_Id %in%
+                 dplyr::filter(!!adr_data, MedDRA_Id %in% adr_code)[["Adr_Id"]],
+               1,
+               0)
+      ),
+      data = .data)
+      # evaluated in .data
+    }
+
+    # select appropriate core function according to data type
+
+    add_single_adr <-
+      switch (data_type,
+              demo = add_single_adr_demo,
+              link = add_single_adr_link
+      )
 
     # Step 2: build calls to core function for each adr
 
