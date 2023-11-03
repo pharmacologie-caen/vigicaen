@@ -204,5 +204,118 @@ test_that("selecting only s, c, i works and provide less cases than sci altogeth
 
 })
 
+test_that("a dataset with duplicate UMCReportIds (like link) breaks the function if data_type is set to demo", {
+  d_drecno_test <-
+    rlang::list2(
+      ici1 = "ici1",
+      ici2 = "ici2",
+      ici3 = "ici3"
+    )
+
+  drug_test <-
+    data.table(
+      Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
+      DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
+      UMCReportId = c(1, 1, 2, 2, 3)
+    )
+
+  link_test <-
+    data.table(
+      Drug_Id =  c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
+      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
+      UMCReportId = c(1, 1, 2, 2, 3)
+    )
+
+  expect_error(
+    link_test %>%
+      add_drug(
+        d_code = d_drecno_test,
+        method = "DrecNo",
+        repbasis = "sci",
+        drug_data = drug_test,
+        data_type = "demo"
+      ),
+    "The dataset contains duplicate UMCReportIds"
+    )
+  }
+  )
+
+test_that("a dataset with no duplicate UMCReportIds (like demo) breaks the function if data_type is set to link", {
+  d_drecno_test <-
+    rlang::list2(
+      ici1 = "ici1",
+      ici2 = "ici2",
+      ici3 = "ici3"
+    )
+
+  drug_test <-
+    data.table(
+      Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
+      DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
+      UMCReportId = c(1, 1, 2, 2, 3)
+    )
+
+  demo_test <-
+    data.table(
+      Drug_Id =  c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
+      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
+      UMCReportId = c(1, 2, 3, 4, 5)
+    )
+
+  expect_error(
+    demo_test %>%
+      add_drug(
+        d_code = d_drecno_test,
+        method = "DrecNo",
+        repbasis = "sci",
+        drug_data = drug_test,
+        data_type = "link"
+      ),
+    "The dataset does not contain duplicate UMCReportIds"
+  )
+}
+)
+
+test_that("works with link data, drug identification is Drug_Id wise, not UMCReportId wise", {
+  d_drecno_test <-
+    rlang::list2(
+      ici1 = "ici1",
+      ici2 = "ici2",
+      ici3 = "ici3"
+    )
+
+  drug_test <-
+    data.table(
+      Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
+      DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
+      UMCReportId = c(1, 1, 2, 2, 3)
+    )
+
+  luda_test <-
+    data.table(
+      Drug_Id =  c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
+      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
+      UMCReportId = c(1, 1, 2, 2, 3)
+    ) %>%
+    add_drug(d_code = d_drecno_test,
+             drug_data = drug_test,
+             data_type = "link")
+
+  luda_correct <-
+    data.table(
+      Drug_Id =  c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
+      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
+      UMCReportId = c(1, 1, 2, 2, 3),
+      ici1 = c(1, 0, 0, 1, 1),
+      ici2 = c(0, 1, 0, 0, 0),
+      ici3 = c(0, 0, 1, 0, 0)
+    )
+
+  expect_equal(
+    luda_test,
+    luda_correct
+  )
+}
+)
 
 

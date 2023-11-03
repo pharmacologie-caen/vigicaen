@@ -5,12 +5,14 @@
 #'
 #' d_code is a named list containing drug codes. Either medicinalprod_ids (e.g., from `tb_custom`), or drug record numbers (e.g., from `get_drecno`). Default method is to DrecNos.
 #' Drugs can be reported according to one of three reputation bases: suspect, concomitant or interacting in the occurrence of the adverse drug reaction. You may want to study only reports with a specific reputation basis.
+#' You can add drug identification to a `demo` or a `link` dataset. Remember to set to the `data_type` argument to the appropriate value.
 #'
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
 #' @param d_code A named list of drug codes (DrecNos or MPI). See Details.
 #' @param method A character string. The type of drug code (DrecNo or MedicinalProd_Id). See details.
 #' @param repbasis Suspect, interacting and/or concomitant. Type initial of those you wish to select (default to all)
 #' @param drug_data A data.frame containing the drug data (usually, it is `drug`)
+#' @param data_type A character string. The type of data to add columns to. Either `demo` or `link` (default to `demo`)
 #' @keywords drug
 #' @export
 #' @importFrom dplyr %>%
@@ -27,7 +29,8 @@
 #'     d_code = d_drecno,
 #'     method = "DrecNo",
 #'     repbasis = "sci",
-#'     drug_data = drug_
+#'     drug_data = drug_,
+#'     data_type = c("demo", "link")
 #'   )
 
 add_drug <-
@@ -35,7 +38,8 @@ add_drug <-
            d_code,
            repbasis = "sci",
            method = c("DrecNo", "MedicinalProd_Id"),
-           drug_data
+           drug_data,
+           data_type = c("demo", "link")
   )
   {
     method <- match.arg(method)
@@ -44,6 +48,16 @@ add_drug <-
     col_names <- names(d_code)
 
     drug_data <- rlang::enquo(drug_data)
+
+    data_type <- match.arg(data_type)
+
+    # use duplicates in UMCReportId to identify a link dataset versus a demo dataset.
+    # and check that data_type is set correctly
+    if(data_type == "demo" && any(duplicated(.data$UMCReportId))){
+      stop("The dataset contains duplicate UMCReportIds (like a `link` dataset). Yet data_type is set to `demo`. Please set data_type to `link` or use a `demo` dataset")
+    } else if(data_type == "link" && !any(duplicated(.data$UMCReportId))){
+      stop("The dataset does not contain duplicate UMCReportIds (like a `demo` dataset). Yet data_type is set to `link`. Please set data_type to `demo` or use a `link` dataset")
+    }
 
     basis_sel <-
       c(
@@ -62,17 +76,10 @@ add_drug <-
 
     # core function
 
-    add_single_drug <- function(drug_code) {
+    add_single_drug_demo <- function(drug_code) {
 
       rlang::eval_tidy(
         rlang::quo({
-          # find method (drecno/mpi) values for drug_name
-          # method_val <-
-          #   !!exposure_df %>%
-          #   dplyr::filter(
-          #     drug == !!drug_name) %>%
-          #   dplyr::pull(!!method_col)
-
           # find matching UMCReportId in drug for this method values and this repbasis
           umc_id <-
             !!drug_data %>%
@@ -90,16 +97,47 @@ add_drug <-
         data = .data)
     }
 
+    # core function link
+
+    add_single_drug_link <- function(drug_code) {
+
+      rlang::eval_tidy(
+        rlang::quo({
+          # find matching Drug_Id in `drug_data` for this method values and this repbasis
+          d_id <-
+            !!drug_data %>%
+            dplyr::filter(
+              !!method_col %in% drug_code &
+                !!basis_expr
+            ) %>%
+            dplyr::pull(Drug_Id)
+
+          # create a vector length nrow(.data) based on whether Drug_Id match with above list
+          ifelse(
+            Drug_Id %in% d_id,
+            1, 0)
+        }),
+        data = .data)
+    }
+
+    # select appropriate core function according to data type
+
+    add_single_drug <-
+      switch (data_type,
+        demo = add_single_drug_demo,
+        link = add_single_drug_link
+      )
+
     # Step 2: vectorize over drug_names and prepare call
 
-    e_l <- purrr::map(d_code,
-                      function(x) {
-                        rlang::call2(
-                          rlang::quo(add_single_drug),
-                          rlang::quo(x)
-                        )
-                      }
-    )
+     e_l <- purrr::map(d_code,
+                       function(x) {
+                         rlang::call2(
+                           rlang::quo(add_single_drug),
+                           rlang::quo(x)
+                         )
+                         }
+     )
 
     names(e_l) <- col_names
 
