@@ -58,7 +58,7 @@
 #' Data for the immune checkpoint inhibitors example
 #'
 #' These are a set of data to provide examples on how my library works.
-#' #' \itemize{
+#' \itemize{
 #'   \item `meddra` is V24.0 of meddra (full table)
 #'   \item `smq_list_content` is a jointure of `smq_list` and `smq_content` from Meddra v X / english / medascii (full table)
 #'   \item `smq_sel` is a named list of smq names
@@ -87,3 +87,31 @@
 
 "ex_"
 
+
+
+#' Data for the rechallenge
+#'
+#' These are a set of data to provide examples on how my library works.
+#' \itemize{
+#'   \item `luda_` Is a Link table, augmented with Umcreportid, Drug and Adr identifiers. These identifiers are DrecNo and MedDRA_Id, respectively.
+#'   \item `demo_rch_` is a subsetted demo that encompass luda_ UMCReportIds.
+#' }
+#'
+#' @docType data
+#'
+#' @format Two objects of class data.table and data.frame.
+#'
+#' @keywords datasets
+#'
+#' @source VigiBase Extract Case Level
+#'
+#' @examples
+#' data(luda_)
+#' data(demo_rch_)
+#' rch_desc(luda_, demo_rch_)
+
+"luda_"
+
+#' @rdname luda_
+
+"demo_rch_"
