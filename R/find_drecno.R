@@ -4,15 +4,6 @@
 #' Find drug record number from character string matching from a modified MP data.table.
 #'
 #' This function is superseeded by \code{\link{get_drecno}}.
-#' __Remember to check the results by hand before using the output.__
-#' This function uses perl style regex to find drug names in generic names OR exact matching to MedicinalProd_Id, from the WHO shortened MP tables.
-#' `mp_short` data.table is typically created using the `tb_mp.R` script in `/STAT/R_FUN`, or `tb_who.R`. `mp_short` is MP whose  `Drug.name` column has been `tolower(trimws())`-ed and with less details on MP.
-#' A drug can have multiple MedicinalProd_Ids, corresponding to different packagings. The MedicinalProd_Id matching is typically used to identify DrecNo(s) contained in an ATC class (extracted from THG), since not all MPI of drugs are present in THG (see Helena Skold 2020-07-01 mail for details).
-#' WHO names are attributed to drugs by... the WHO. There is only one WHO name, when there can be multiple international nonproprietary names (e.g. tretinoin and all-trans retinoic acid). You should use WHO names to ensure proper identification of drugs and DrecNos.
-#' Negative lookarounds are used to ensure that a string does not match to composite drug names including the string, i.e. `trastuzumab emtasine` is not retrieved when looking for `trastuzumab` and `alitretinoin` is not found when looking for `tretinoin`.
-#' Fixed associations of drugs refers to specialty containing more than one active ingredient (for example, acetylsalicylic acid and clopidogrel). In VigiLyze, the default is NOT to account for these fixed associations. For example, when you call "acetylsalicylic acid" in VigiLyze, you don't have the cases reported with the fixed-association "acetylsalicylic acid; clopidogrel" **unless the substances were distinctly coded by the reporter.** Here, the default is to find a drug even if it is prescribed in a fixed association.
-#' Importantly, when retrieving fixed-association drugs, the non-of-interest drug alone drecno is not found, hence the cases related to this drug will not be added to those of the drug of interest.
-#' Drug names are automatically `tolower(trimws())`-ed in the function.
 
 #' @param x A character vector of either drug names (use WHO names, see details) or MedicinalProd_Ids to be matched.
 #' @param mp_short A modified data.table of medicinal products, see details.
@@ -29,38 +20,6 @@
 #' @export
 #' @import data.table
 #' @examples
-#'
-#' # Lire dans mp_short avec find_drecno, pour trouver les DrecNo nivolumab seul
-#'
-#' d_name <- "nivolumab"
-#'
-#' d_drecno <-
-#'   find_drecno(d_name,
-#'               mp_short = ex_$mp_short,
-#'               allow_combination = FALSE,
-#'               method = "drug_name")
-#'
-#' # Et les DrecNo nivolumab en association
-#'
-#' d_drecno <-
-#'   find_drecno(d_name,
-#'               mp_short = ex_$mp_short,
-#'               allow_combination = TRUE,
-#'               method = "drug_name")
-#'
-#' # Find DrecNos from an ATC class (dual step method)
-#'
-#' mp_id_l04 <-
-#'   thg_[substr(ATC.code, start = 1, stop = 3) %in% "L04", MedicinalProd_Id]
-#'
-#' l04_drecno <-
-#'   find_drecno(mp_id_l04,
-#'               mp_short = ex_$mp_short,
-#'               allow_combination = FALSE,
-#'               method = "mpi_list",
-#'               mpi_meth_name = "L04")
-#'
-#' # There is an alternative method to create ATC columns, see \code{\link{create_atc_exp}}
 
 
 # Matching from mp_short
