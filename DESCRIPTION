@@ -1,6 +1,6 @@
 Package: pharmacocaen
 Title: Worldwide pharmacovigilance analysis
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: 
     person("Charles", "Dolladille", , "dolladille-c@chu-caen.fr", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-0449-6261"))
