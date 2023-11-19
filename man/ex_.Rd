@@ -15,7 +15,7 @@ data(ex_)
 }
 \description{
 These are a set of data to provide examples on how my library works.
-#' \itemize{
+\itemize{
 \item \code{meddra} is V24.0 of meddra (full table)
 \item \code{smq_list_content} is a jointure of \code{smq_list} and \code{smq_content} from Meddra v X / english / medascii (full table)
 \item \code{smq_sel} is a named list of smq names
