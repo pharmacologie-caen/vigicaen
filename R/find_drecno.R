@@ -72,7 +72,7 @@ find_drecno <- function(x,
                         show_all = FALSE,
                         mpi_meth_name = "atc")
 {
-  .Deprecated("get_drecno")
+  .Defunct("get_drecno")
 
   method <- match.arg(method)
 
