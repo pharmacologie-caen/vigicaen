@@ -70,7 +70,7 @@ test_that("output type is consistent in presence or absence of tto data", {
              adr_s = "a_pneumonitis",
              drug_s = "pd1")
 
-  # should all be of type "character"
+  # counts (n) should all be of type "integer"
   expect_equal(
     class(rch_a1$n_tto_avail_no_rch),
     class(rch_a2$n_tto_avail_no_rch)
@@ -78,12 +78,12 @@ test_that("output type is consistent in presence or absence of tto data", {
 
   expect_equal(
     class(rch_a1$n_tto_avail_no_rch),
-    "character"
+    "integer"
   )
 
   expect_equal(
     class(rch_a2$n_tto_avail_no_rch),
-    "character"
+    "integer"
   )
 
   # generalization
