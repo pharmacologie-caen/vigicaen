@@ -155,7 +155,7 @@ rch_desc <- function(luda_data,
     distinct(UMCReportId, .keep_all = TRUE) %>%
     mutate(rc_inf = as.logical(rc_inf2)) %>% data.table
 
-  # TTO ? l'?chelle de l'umcreportid - d?lai le plus long intro d'un brafi - ?v?nement
+  # TTO a l'echelle de l'umcreportid - delai le plus long intro d'un brafi - evenement
 
   tmp3 <- tmp_tto_any[,.(TTO = paste0(round(median(tto_max, na.rm = TRUE)), " (",
                                       round(quantile(tto_max, .25, na.rm = TRUE)), "-",
@@ -245,7 +245,7 @@ rch_desc <- function(luda_data,
 
              n_tto_avail_inf,
              n_tto_avail_non_inf,
-             n_tto_avail_rch_2, # je laisse ces doublons car obtenus ? partir de manip diff?rentes, permet de v?rifier la consistance.
+             n_tto_avail_rch_2, # je laisse ces doublons car obtenus a partir de manip differentes, permet de verifier la consistance.
 
              tto_inf,
              tto_non_inf,

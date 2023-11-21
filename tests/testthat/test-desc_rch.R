@@ -98,3 +98,14 @@ test_that("output type is consistent in presence or absence of tto data", {
     all_classes_a2
   )
 })
+
+test_that("two methods for n_tto_avail_rch are consistent", {
+  rch_a1 <-
+    rch_desc(luda_data = luda_,
+             demo_data = demo_rch_,
+             adr_s = "a_colitis",
+             drug_s = "pd1")
+
+  expect_equal(rch_a1$n_tto_avail_rch,
+               rch_a1$n_tto_avail_rch_2)
+})
