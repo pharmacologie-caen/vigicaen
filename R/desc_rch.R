@@ -113,23 +113,31 @@ rch_desc <- function(luda_data,
                                   round(quantile(tto_max, .25, na.rm = TRUE)), "-",
                                   round(quantile(tto_max, .75, na.rm = TRUE)), ")"))]
 
-  tto_rch <- ifelse(length(tmp3[Rechallenged == TRUE, TTO]) == 0, "-", tmp3[Rechallenged == TRUE, TTO])
-  tto_no_rch <- ifelse(length(tmp3[Rechallenged == FALSE, TTO]) == 0, "-", tmp3[Rechallenged == FALSE, TTO])
+  tto_rch <- ifelse(length(tmp3[Rechallenged == TRUE, TTO]) == 0,
+                    "-",
+                    tmp3[Rechallenged == TRUE, TTO])
+  tto_no_rch <- ifelse(length(tmp3[Rechallenged == FALSE, TTO]) == 0,
+                       "-",
+                       tmp3[Rechallenged == FALSE, TTO])
 
-  tto_overall <- ifelse(length(tmp3[, TTO]) == 0, "-", tmp4[, TTO])
-  test_tto_rch_vs_no_rch <- ifelse(nrow(tmp3) != 2,"-", wilcox.test(tto_max ~ Rechallenged, data = tmp_tto)[["p.value"]])
+  tto_overall <- ifelse(length(tmp3[, TTO]) == 0,
+                        "-",
+                        tmp4[, TTO])
+  test_tto_rch_vs_no_rch <- ifelse(nrow(tmp3) != 2,
+                                   NA_real_,
+                                   wilcox.test(tto_max ~ Rechallenged, data = tmp_tto)[["p.value"]])
 
   # ---- Counting cases with a TTO ---- #
 
   tmp_tto_n <- tmp_tto[, .N, by = Rechallenged]
   n_tto_avail_rch <- ifelse(length(tmp_tto_n[Rechallenged == TRUE, N])==0,
-                                "-",
+                            NA_integer_,
                                 tmp_tto_n[Rechallenged == TRUE, N])
   n_tto_avail_no_rch <- ifelse(length(tmp_tto_n[Rechallenged == FALSE, N])==0,
-                                   "-",
+                                   NA_integer_,
                                    tmp_tto_n[Rechallenged == FALSE, N])
   n_tto_avail_overall <- ifelse(length(tmp_tto_n[, N]) == 0,
-                                "-",
+                                NA_integer_,
                                 tmp_tto_n[, sum(N)]) # n rechall + n not rechall = sum(N)
 
   # ++++ Inf ++++ # # ici l'id?e est de diff?rencier un inf d'un non_inf
@@ -156,11 +164,16 @@ rch_desc <- function(luda_data,
                                       round(quantile(tto_max, .25, na.rm = TRUE)), "-",
                                       round(quantile(tto_max, .75, na.rm = TRUE)), ")"))]
 
-  tto_non_inf <- ifelse(length(tmp3[rc_inf == FALSE, TTO]) == 0,"-",tmp3[rc_inf == FALSE, TTO])
-  tto_inf <- ifelse(length(tmp3[rc_inf == TRUE, TTO]) == 0,"-",tmp3[rc_inf == TRUE, TTO])
+  tto_non_inf <- ifelse(length(tmp3[rc_inf == FALSE, TTO]) == 0,
+                        "-",
+                        tmp3[rc_inf == FALSE, TTO])
+  tto_inf <- ifelse(length(tmp3[rc_inf == TRUE, TTO]) == 0,
+                    "-",
+                    tmp3[rc_inf == TRUE, TTO])
   tto_rch_2 <- ifelse(length(tmp3[, TTO]) == 0,"-",tmp4[, TTO])
-  test_tto_inf_vs_non_inf <- ifelse(nrow(tmp3) != 2, "-",
-                                            wilcox.test(tto_max ~ rc_inf, data = tmp_tto_any)[["p.value"]])
+  test_tto_inf_vs_non_inf <- ifelse(nrow(tmp3) != 2,
+                                    NA_real_,
+                                    wilcox.test(tto_max ~ rc_inf, data = tmp_tto_any)[["p.value"]])
 
   # TTO in recurring cases
   if(nrow(tmp_tto_any[rc_inf == TRUE]) == 0) {
@@ -176,21 +189,37 @@ rch_desc <- function(luda_data,
                           ")"
                         )), by = .(RC.statut)]}
 
-  tto_rec <- ifelse(length(tmp3[RC.statut == "1", TTO])==0,"-",tmp3[RC.statut == "1", TTO])
-  tto_no_rec <- ifelse(length(tmp3[RC.statut == "2", TTO])==0,"-",tmp3[RC.statut == "2", TTO])
-  test_tto_rec_vs_no_rec <- ifelse(nrow(tmp3) !=2,"-",wilcox.test(tto_max ~ RC.statut,
+  tto_rec <- ifelse(length(tmp3[RC.statut == "1", TTO])==0,
+                    "-",
+                    tmp3[RC.statut == "1", TTO])
+  tto_no_rec <- ifelse(length(tmp3[RC.statut == "2", TTO])==0,
+                       "-",
+                       tmp3[RC.statut == "2", TTO])
+  test_tto_rec_vs_no_rec <- ifelse(nrow(tmp3) !=2,
+                                   NA_real_,
+                                   wilcox.test(tto_max ~ RC.statut,
                                                                   data = tmp_tto_any[rc_inf==TRUE])[["p.value"]])
 
   # ---- Counting cases with a TTO ---- #
 
   tmp_tto_n_any <- tmp_tto_any[,.N, by=rc_inf]
-  n_tto_avail_inf <- ifelse(length(tmp_tto_n_any[rc_inf == TRUE, N])==0,"-",tmp_tto_n_any[rc_inf == TRUE, N])
-  n_tto_avail_non_inf <- ifelse(length(tmp_tto_n_any[rc_inf == FALSE, N])==0,"-",tmp_tto_n_any[rc_inf == FALSE, N])
-  n_tto_avail_rch_2 <- ifelse(length(tmp_tto_n_any[, N])==0,"-", tmp_tto_n_any[, sum(N)]) # n rechall + n not rechall = sum(N)
+  n_tto_avail_inf <- ifelse(length(tmp_tto_n_any[rc_inf == TRUE, N])==0,
+                            NA_integer_,
+                            tmp_tto_n_any[rc_inf == TRUE, N])
+  n_tto_avail_non_inf <- ifelse(length(tmp_tto_n_any[rc_inf == FALSE, N])==0,
+                                NA_integer_,
+                                tmp_tto_n_any[rc_inf == FALSE, N])
+  n_tto_avail_rch_2 <- ifelse(length(tmp_tto_n_any[, N])==0,
+                              NA_integer_,
+                              tmp_tto_n_any[, sum(N)]) # n rechall + n not rechall = sum(N)
 
   tmp3 <- tmp_tto_any[rc_inf == TRUE, .N, by = RC.statut]
-  n_tto_avail_rec <- ifelse(length(tmp3[RC.statut == "1", N])==0,"-",tmp3[RC.statut == "1", N])
-  n_tto_avail_no_rec <- ifelse(length(tmp3[RC.statut == "2", N])==0,"-",tmp3[RC.statut == "2", N])
+  n_tto_avail_rec <- ifelse(length(tmp3[RC.statut == "1", N])==0,
+                            NA_integer_,
+                            tmp3[RC.statut == "1", N])
+  n_tto_avail_no_rec <- ifelse(length(tmp3[RC.statut == "2", N])==0,
+                               NA_integer_,
+                               tmp3[RC.statut == "2", N])
 
   # Output of results
   data.table(adr = adr_s,
