@@ -56,3 +56,45 @@ test_that("find proper counts on a known dataset", {
   )
 
     })
+
+test_that("output type is consistent in presence or absence of tto data", {
+  rch_a1 <- # adr with some data for n_tto_avail_no_rch
+    rch_desc(luda_data = luda_,
+             demo_data = demo_rch_,
+             adr_s = "a_colitis",
+             drug_s = "pd1")
+
+  rch_a2 <- # adr with no data for n_tto_avail_no_rch
+    rch_desc(luda_data = luda_,
+             demo_data = demo_rch_,
+             adr_s = "a_pneumonitis",
+             drug_s = "pd1")
+
+  # should all be of type "character"
+  expect_equal(
+    class(rch_a1$n_tto_avail_no_rch),
+    class(rch_a2$n_tto_avail_no_rch)
+  )
+
+  expect_equal(
+    class(rch_a1$n_tto_avail_no_rch),
+    "character"
+  )
+
+  expect_equal(
+    class(rch_a2$n_tto_avail_no_rch),
+    "character"
+  )
+
+  # generalization
+  all_classes_a1 <-
+    lapply(rch_a1, class)
+
+  all_classes_a2 <-
+    lapply(rch_a2, class)
+
+  expect_equal(
+    all_classes_a1,
+    all_classes_a2
+  )
+})
