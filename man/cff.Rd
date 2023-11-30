@@ -25,7 +25,6 @@ Set \code{method} according to the printing you like: a unique number with \code
 The function properly returns \code{NA} when input is missing.
 }
 \examples{
-## not yet ready
 num <- c(0.1, 0.02, 1.658)
 
 cff(num)
