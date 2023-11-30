@@ -13,7 +13,6 @@
 #' @keywords number
 #' @export
 #' @examples
-#' ## not yet ready
 #' num <- c(0.1, 0.02, 1.658)
 #'
 #' cff(num)
@@ -38,7 +37,8 @@ cff <- function(num,
     format(round(n, digits = dig),
            nsmall = dig,
            big.mark = ",",
-           trim = TRUE)
+           trim = TRUE,
+           scientific = FALSE)
   }
 
   na_detector <- if(method == "ci"){
