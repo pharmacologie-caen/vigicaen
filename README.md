@@ -12,10 +12,33 @@ pharmacovigilance analysis.
 You can install the development version of pharmacocaen from
 [GitHub](https://github.com/) with:
 
-``` r
-# install.packages("devtools")
-devtools::install_github("cdolladille/pharmacocaen")
-```
+### Solution 1
+
+Look at the **Releases** panel on the right of this Github page. You may
+see something like “v0.3.1 (Latest)”.
+
+Click on the version you want to install.
+
+Download source code as a tar.gz file.
+
+Now go to RStudio, click on “Tools”, “Install Packages…”, select
+“Package Archive file” and locate the tar.gz file on your computer.
+
+### Solution 2
+
+You should first clone the repo on your local computer. You may use git
+command line,
+[GitKraken](https://help.gitkraken.com/gitkraken-client/open-clone-init/),
+or any other way to clone the repo.
+
+Once this is done, open the repo and click on “pharmacocaen.Rproj”. This
+will open RStudio.
+
+In RStudio, go to “Build” then “Install Package”. You will need an up to
+date version of Rtools to build the package.
+
+> `devtools::install_github("cdolladille/pharmacocaen")` isn’t working
+> for some unclear reason (#14).
 
 ## Vignettes
 
@@ -54,5 +77,4 @@ demo %>%
 ```
 
 <!-- Footnote for myself
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/v1/examples>. -->
+&#10;You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/v1/examples>. -->
