@@ -2,7 +2,7 @@
 #'
 #' After adding drugs and/or adrs/atc classes to a dataset, check the number of reports with the feature.
 #'
-#' It is a simple wrapper around `dplyr::summarise`. Be careful not to supply factors with > 2 levels or continuous outcome (the function does NOT have a checker for this, so that it is faster).
+#' It is a simple wrapper around `dplyr::summarise`. Be careful not to supply factors with > 2 levels or continuous outcome (the function does NOT have a checker for this, so that it is faster). Also, the function WONT work with NAs. Use \code{\link{desc_facvar}} if you need more detailed description of your dataset.
 #'
 #' @param .data A data.frame to be checked
 #' @param cols A character vector, name of columns to look at (usually will be `d_names`, `a_names`)
