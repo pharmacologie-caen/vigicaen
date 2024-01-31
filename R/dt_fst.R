@@ -31,6 +31,14 @@ dt_fst <- function(path_base, name, ext = ".fst"){
     if(!grepl(".fst", name, fixed = TRUE)) {
       ext
     }
+
+  # helps working with the "here" package, or tempdir
+
+  if(!grepl("(/|\\\\)$", path_base, perl = TRUE)){
+    path_base <-
+      paste0(path_base, "/")
+  }
+
   path <- paste0(path_base, name, ext)
   data.table::as.data.table(fst::read_fst(path))
 }
