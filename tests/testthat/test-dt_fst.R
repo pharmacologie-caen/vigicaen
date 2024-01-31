@@ -4,7 +4,7 @@ test_that("import is successful", {
   path <- tempdir()
 
   fst::write_fst(x = df,
-                path = paste0(path, "df.fst")
+                path = paste0(path, "/", "df.fst")
                 )
 
   # You may import the file directly to data.table format with dt_fst
@@ -21,7 +21,7 @@ test_that("works with here syntax seemlessly", {
   path <- tempdir()
 
   fst::write_fst(x = df,
-                 path = paste0(path, "df.fst")
+                 path = paste0(path, "/", "df.fst")
   )
 
   here_path <- here::here(path)
