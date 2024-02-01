@@ -26,7 +26,7 @@ df <- data.frame(a = 1:100, b = rnorm(100))
 path <- tempdir()
 
 fst::write_fst(x = df,
-              path = paste0(path, "df.fst")
+              path = paste0(path, "/", "df.fst")
               )
 # Now you have a new session without df.
 rm(df)

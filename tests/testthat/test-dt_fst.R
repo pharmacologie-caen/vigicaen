@@ -1,3 +1,5 @@
+library(here)
+
 test_that("import is successful", {
   df <- data.table(a = 1:100, b = rnorm(100))
 
