@@ -46,7 +46,7 @@ desc_facvar <-
       }
     }
 
-    purrr:::map(vf, lev_check)
+    purrr::map(vf, lev_check)
 
     # ---- formatting arguments ----
 
