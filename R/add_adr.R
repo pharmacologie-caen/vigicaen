@@ -51,8 +51,6 @@ add_adr <-
            data_type = c("demo", "link")
            ){
 
-    adr_data <- rlang::enquo(adr_data)
-
     data_type <- match.arg(data_type)
 
     # use duplicates in UMCReportId to identify a link dataset versus a demo dataset.
@@ -66,9 +64,14 @@ add_adr <-
     # Step 1: core function for demo data_type, ifelse on UMCReportId
 
     add_single_adr_demo <- function(adr_code) {
+      # promise in adr_data
+
+      umc_ic <-
+          dplyr::filter(adr_data, MedDRA_Id %in% adr_code)[["UMCReportId"]]
+
       rlang::eval_tidy(rlang::quo(
         ifelse(UMCReportId %in%
-                 dplyr::filter(!!adr_data, MedDRA_Id %in% adr_code)[["UMCReportId"]],
+                 umc_ic,
                1,
                0)
         ),
@@ -77,9 +80,13 @@ add_adr <-
     }
 
     add_single_adr_link <- function(adr_code) {
+
+      adr_id <-
+        dplyr::filter(adr_data, MedDRA_Id %in% adr_code)[["Adr_Id"]]
+
       rlang::eval_tidy(rlang::quo(
         ifelse(Adr_Id %in%
-                 dplyr::filter(!!adr_data, MedDRA_Id %in% adr_code)[["Adr_Id"]],
+                 adr_id,
                1,
                0)
       ),
