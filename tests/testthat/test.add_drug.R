@@ -319,3 +319,46 @@ test_that("works with link data, drug identification is Drug_Id wise, not UMCRep
 )
 
 
+test_that("handle ambiguous names in .data", {
+  d_drecno_test <-
+    rlang::list2(
+      ici1 = "ici1",
+      ici2 = "ici2",
+      ici3 = "ici3"
+    )
+
+  drug_test <-
+    data.table(
+      Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
+      DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
+      UMCReportId = c(1, 1, 2, 2, 3)
+    )
+
+  demo_test <-
+    data.table(
+      UMCReportId = c(1, 2, 3, 4, 5),
+
+      # ambiguous column name
+      drug_test = c(0, 0, 0, 0, 1)
+    )
+
+  res <-
+    demo_test %>%
+    add_drug(
+      d_code = d_drecno_test,
+      method = "DrecNo",
+      repbasis = "sci",
+      drug_data = drug_test,
+      data_type = "demo"
+    )
+
+  expect_equal(
+    res$ici1,
+    c(1, 1, 1, 0, 0)
+  )
+
+  expect_equal(
+    res$ici3,
+    c(0, 1, 0, 0, 0)
+  )
+})

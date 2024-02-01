@@ -47,7 +47,7 @@ add_drug <-
 
     col_names <- names(d_code)
 
-    drug_data <- rlang::enquo(drug_data)
+    # drug_data <- rlang::enquo(drug_data)
 
     data_type <- match.arg(data_type)
 
@@ -71,24 +71,29 @@ add_drug <-
       if(repbasis == "sci"){
         TRUE
       } else {
-        rlang::expr(Basis %in% !!basis_sel)
+        rlang::expr(.data$Basis %in% !!basis_sel)
       }
 
     # core function
 
     add_single_drug_demo <- function(drug_code) {
 
+      # find matching UMCReportId in drug for this method values and this repbasis
+
+      umc_id <-
+        rlang::eval_tidy(
+          rlang::quo({
+            drug_data %>%
+              dplyr::filter(
+                .data[[!!method]] %in% drug_code &
+                  !!basis_expr
+              ) %>%
+              dplyr::pull(UMCReportId)
+          })
+        )
+
       rlang::eval_tidy(
         rlang::quo({
-          # find matching UMCReportId in drug for this method values and this repbasis
-          umc_id <-
-            !!drug_data %>%
-            dplyr::filter(
-              !!method_col %in% drug_code &
-                !!basis_expr
-            ) %>%
-            dplyr::pull(UMCReportId)
-
           # create a vector length nrow(.data) based on whether UMCReportId match with above list
           ifelse(
             UMCReportId %in% umc_id,
@@ -101,20 +106,25 @@ add_drug <-
 
     add_single_drug_link <- function(drug_code) {
 
+      # find matching Drug_Id in `drug_data` for this method values and this repbasis
+      drug_id <-
+        rlang::eval_tidy(
+          rlang::quo({
+            drug_data %>%
+              dplyr::filter(
+                .data[[!!method]] %in% drug_code &
+                  !!basis_expr
+              ) %>%
+              dplyr::pull(Drug_Id)
+          })
+        )
       rlang::eval_tidy(
         rlang::quo({
-          # find matching Drug_Id in `drug_data` for this method values and this repbasis
-          d_id <-
-            !!drug_data %>%
-            dplyr::filter(
-              !!method_col %in% drug_code &
-                !!basis_expr
-            ) %>%
-            dplyr::pull(Drug_Id)
+
 
           # create a vector length nrow(.data) based on whether Drug_Id match with above list
           ifelse(
-            Drug_Id %in% d_id,
+            Drug_Id %in% .env$drug_id,
             1, 0)
         }),
         data = .data)

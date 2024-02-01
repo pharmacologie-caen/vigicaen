@@ -86,7 +86,7 @@ add_adr <-
 
       rlang::eval_tidy(rlang::quo(
         ifelse(Adr_Id %in%
-                 adr_id,
+                 .env$adr_id,
                1,
                0)
       ),

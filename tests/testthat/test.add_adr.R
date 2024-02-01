@@ -188,16 +188,25 @@ test_that("handle ambiguous names in .data", {
 
   demo_test <-
     data.table(
-      Drug_Id =  c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
-      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
       UMCReportId = c(1, 2, 3, 4, 5),
 
       # an ambiguous column name
       adr_test = c(1, 1, 0, 0, 0)
     )
 
-  demo_test %>%
+  res <-
+    demo_test %>%
     add_adr(a_code = adr_list_test,
             adr_data = adr_test,
             data_type = "demo")
+
+  expect_equal(
+    res$adr1,
+    c(1, 0, 0, 0, 0)
+  )
+
+  expect_equal(
+    res$adr4,
+    c(1, 1, 0, 0, 0)
+  )
 })
