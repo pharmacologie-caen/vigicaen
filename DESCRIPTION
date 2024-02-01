@@ -20,7 +20,8 @@ BugReports: https://github.com/cdolladille/pharmacocaen/issues
 Suggests: 
     knitr,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    here
 Config/testthat/edition: 3
 Imports: 
     purrr,

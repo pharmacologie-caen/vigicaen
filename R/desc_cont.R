@@ -10,7 +10,7 @@
 #' @param .data A data.frame, where vc are column names of continuous variables
 #' @param vc A character vector, list of column names. Should only contain continuous variables
 #' @param format A character string. How would you like the output? See details.
-#' @param digits A numeric. How many digits? This argument calls `charles::cff()`
+#' @param digits A numeric. How many digits? This argument calls `pharmacocaen::cff()`
 #' @export
 #'
 #' @examples
@@ -146,7 +146,7 @@ desc_cont <-
                 max({{ vc_s }}, na.rm = TRUE),
 
               across(c(median, q1, q3, min, max),
-                     ~ charles::cff(.x, dig = .env$digits)),
+                     ~ pharmacocaen::cff(.x, dig = .env$digits)),
 
               value =
                 if(sch_full){
