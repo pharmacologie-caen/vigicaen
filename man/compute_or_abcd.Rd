@@ -46,5 +46,70 @@ demo \%>\%
     y = "colitis",
     x = "nivolumab"
   )
+
+
+# Say you want to compute more than one univariate ror at a time.
+
+many_drugs <-
+  names(ex_$d_drecno)
+
+# use vectorization functions
+
+lapply(many_drugs, function(a_drug)
+  demo \%>\%
+    compute_or_abcd(
+      y = "colitis",
+      x = a_drug
+    )
+  ) \%>\%
+  rbindlist()
+
+# or purrr syntax (strictly identical)
+
+many_drugs \%>\%
+  purrr::map(
+    function(a_drug)
+      demo \%>\%
+      compute_or_abcd(
+        y = "colitis",
+        x = a_drug
+      )
+  ) \%>\%
+  purrr::list_rbind()
+
+# could do the same with adrs
+
+many_adrs <-
+  names(ex_$a_llt)
+
+many_adrs \%>\%
+  purrr::map(
+    function(an_adr)
+      demo \%>\%
+      compute_or_abcd(
+        y = an_adr,
+        x = "nivolumab"
+      )
+  ) \%>\%
+  purrr::list_rbind()
+
+# even with many adrs and many drugs!
+
+many_drugs \%>\%
+  purrr::map(
+    function(a_drug) {
+      many_adrs \%>\%
+        purrr::map(
+          function(an_adr)
+            demo \%>\%
+            compute_or_abcd(
+              y = an_adr,
+              x = a_drug
+              )
+          ) \%>\%
+        purrr::list_rbind()
+    }
+  ) \%>\%
+  purrr::list_rbind()
 }
 \keyword{ror}
