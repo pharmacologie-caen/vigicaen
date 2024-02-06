@@ -33,79 +33,48 @@ test_that("find proper counts on a known dataset", {
     true_n_rec
   )
 
-  true_n_tto_avail_rch <- 3 # we're not collecting negative ttos
-
-  expect_equal(
-    rch_test$n_tto_avail_rch,
-    true_n_tto_avail_rch
-  )
-
-  true_tto_rch <-
-    paste0(
-      (174), # median
-      " (",
-      round(quantile(c(56, 174, 448), .25)),
-      "-",
-      round(quantile(c(56, 174, 448), .75)),
-      ")"
-    )
-
-  expect_equal(
-    rch_test$tto_rch,
-    true_tto_rch
-  )
 
     })
 
-test_that("output type is consistent in presence or absence of tto data", {
-  rch_a1 <- # adr with some data for n_tto_avail_no_rch
-    rch_desc(luda_data = luda_,
-             demo_data = demo_rch_,
-             adr_s = "a_colitis",
-             drug_s = "pd1")
+test_that("works with few data", {
+   luda_rch <- data.table(
+     UMCReportId = c(1, 1, 2, 3, 4, 5, 5, 6, 7, 8),
+     Drug_Id = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+     Adr_Id = c(101, 102, 103, 104, 105, 106, 107, 108, 109, 110),
+     adr1         = c(0, 1, 1, 0, 1, 0, 1, 1, 1,  0),
+     adr2         = c(1, 0, 1, 0, 1, 0, 1, 0, 0,  1),
+     drug1        = c(1, 0, 1, 1, 0, 1, 0, 1, 1,  1),
+     drug2        = c(0, 1, 0, 1, 1, 0, 1, 0, 1,  0),
+     Dechallenge1 =
+     as.character(c(  3, 1, 5, 2, 4, 6, 1, 3, 2,  4)),
+     Dechallenge2 =
+     as.character(c(  4, 2, 1, 5, 3, 2, 4, 1, "-", 3)),
+     Rechallenge1 =
+     as.character(c(  1, 1, 1, 1, 1, 1, 0, 0, 0,   0)),
+     Rechallenge2 =
+     as.character(c(  3, 3, 3, 3, 3, 3, 0, 0, 0,   0))
+   )
 
-  rch_a2 <- # adr with no data for n_tto_avail_no_rch
-    rch_desc(luda_data = luda_,
-             demo_data = demo_rch_,
-             adr_s = "a_pneumonitis",
-             drug_s = "pd1")
+   demo_rch_test <- data.table(
+     UMCReportId =
+       c(1, 2, 3,4 ,5, 6, 7, 8)
+   )
 
-  # counts (n) should all be of type "integer"
-  expect_equal(
-    class(rch_a1$n_tto_avail_no_rch),
-    class(rch_a2$n_tto_avail_no_rch)
-  )
 
-  expect_equal(
-    class(rch_a1$n_tto_avail_no_rch),
-    "integer"
-  )
+   res <- desc_rch(
+     luda_data = luda_rch,
+     demo_data = demo_rch_test,
+     adr_s = "adr1",
+     drug_s = "drug1"
+   )
 
-  expect_equal(
-    class(rch_a2$n_tto_avail_no_rch),
-    "integer"
-  )
+   expect_equal(
+     res$n_rch,
+     1
+   )
 
-  # generalization
-  all_classes_a1 <-
-    lapply(rch_a1, class)
-
-  all_classes_a2 <-
-    lapply(rch_a2, class)
-
-  expect_equal(
-    all_classes_a1,
-    all_classes_a2
-  )
-})
-
-test_that("two methods for n_tto_avail_rch are consistent", {
-  rch_a1 <-
-    rch_desc(luda_data = luda_,
-             demo_data = demo_rch_,
-             adr_s = "a_colitis",
-             drug_s = "pd1")
-
-  expect_equal(rch_a1$n_tto_avail_rch,
-               rch_a1$n_tto_avail_rch_2)
+   expect_equal(
+     res$n_inf,
+     0
+   )
 })
