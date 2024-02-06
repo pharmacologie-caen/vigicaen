@@ -11,6 +11,7 @@
 #' @param vc A character vector, list of column names. Should only contain continuous variables
 #' @param format A character string. How would you like the output? See details.
 #' @param digits A numeric. How many digits? This argument calls `pharmacocaen::cff()`
+#' @importFrom stats median qnorm quantile var
 #' @export
 #'
 #' @examples

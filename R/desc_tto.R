@@ -11,6 +11,7 @@
 #' @param adr_s A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a luda table.
 #' @param drug_s A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a luda table.
 #' @param tto_time_range Incertitude range of Time to onset, in days. Defaults to 1 as recommended by umc
+#' @param ... Additional parameters to be passed to \code{\link{desc_cont}}. E.g. `format`, `digits`...
 #'
 #' @return A one row data.table with
 #' \itemize{

@@ -28,6 +28,6 @@ These are a set of data to provide examples on how my library works.
 \examples{
 data(luda_)
 data(demo_rch_)
-rch_desc(luda_, demo_rch_)
+desc_rch(luda_, demo_rch_)
 }
 \keyword{datasets}

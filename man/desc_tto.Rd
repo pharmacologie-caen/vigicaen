@@ -20,6 +20,8 @@ desc_tto(
 \item{drug_s}{A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a luda table.}
 
 \item{tto_time_range}{Incertitude range of Time to onset, in days. Defaults to 1 as recommended by umc}
+
+\item{...}{Additional parameters to be passed to \code{\link{desc_cont}}. E.g. \code{format}, \code{digits}...}
 }
 \value{
 A one row data.table with
