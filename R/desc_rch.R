@@ -31,10 +31,10 @@
 #'
 #' @examples
 #'
-#' rch_desc(luda_data = luda_,
+#' desc_rch(luda_data = luda_,
 #'          demo_data = demo_rch_)
-rch_desc <- function(luda_data,
-                     demo_data, # same here
+desc_rch <- function(luda_data,
+                     demo_data,
                      adr_s = "a_colitis",
                      drug_s = "pd1",
                      tto_time_range = 1
