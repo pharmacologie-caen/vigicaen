@@ -7,8 +7,8 @@
 desc_rch(
   luda_data,
   demo_data,
-  adr_s = "a_colitis",
   drug_s = "pd1",
+  adr_s = "a_colitis",
   tto_time_range = 1
 )
 }
@@ -17,9 +17,9 @@ desc_rch(
 
 \item{demo_data}{A data.table. demo should have a serious and death columns.}
 
-\item{adr_s}{A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a luda table.}
-
 \item{drug_s}{A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a luda table.}
+
+\item{adr_s}{A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a luda table.}
 
 \item{tto_time_range}{Incertitude range of Time to onset, in days. Defaults to 1 as recommended by umc}
 }
@@ -42,11 +42,19 @@ Terminology
 \item Among \code{rch}, \code{inf} (informative) as opposed to \code{non_inf} (\code{inf} + \code{non_inf} = \code{rch})
 \item Among \code{inf}, \code{rec} (recurring) as opposed to \code{non_rec} (\code{rec} + \code{non_rec} = \code{inf})
 }
-
-While it might look surprising to have 2 different purposes in the same function (e.g. describe rechallenge and time to onset), it happens data management steps are almost identical. In a bright future, the function might be splitted in 2.
 }
 \examples{
 
 desc_rch(luda_data = luda_,
-         demo_data = demo_rch_)
+         demo_data = demo_rch_,
+         drug_s = "pd1",
+         adr_s = "a_colitis")
+
+# You can vectorize over drugs and adrs
+
+desc_rch(luda_data = luda_,
+         demo_data = demo_rch_,
+         adr_s = c("a_colitis", "a_pneumonitis"),
+         drug_s = c("pd1", "pdl1")
+         )
 }
