@@ -183,16 +183,18 @@ desc_cont <-
                   )
                 },
               n_missing =
-                sum(is.na({{ vc_s }}))
+                sum(is.na({{ vc_s }})),
+              n_avail =
+                sum(!is.na({{ vc_s }}))
             ) %>%
-            select(var, level, value, n_missing)
+            select(var, level, value, n_avail)
         } else {
           .data %>%
             summarise(
               var = one_var,
               level = NA_character_,
               value = "-",
-              n_missing = sum(is.na({
+              n_avail = sum(!is.na({
                 {
                   vc_s
                 }
