@@ -46,8 +46,6 @@ desc_dch <-
            adr_s = "adr1"
            ) {
 
-    grouping_variables <- c(adr_s, drug_s, "UMCReportId")
-
     # dechallenge1_label <- data.frame(
     #   Dechallenge1 = as.character(1:6),
     #   drug_action = factor(c(
@@ -92,6 +90,10 @@ desc_dch <-
     dch_core <-
       function(one_drug,
                one_adr) {
+
+        grouping_variables <- c(one_drug, one_adr, "UMCReportId")
+
+        names(grouping_variables) <- NULL
 
         data_subset <-
           .data[.data[[one_drug]] == 1 &
