@@ -29,6 +29,24 @@ test_that("works with vectorization", {
     tto_test$adr_s,
     c("a_colitis", "a_pneumonitis")
   )
+
+  tto_test2 <-
+    desc_tto(luda_data = luda_,
+             adr_s = c("a_colitis"),
+             drug_s = c("pd1", "pdl1")
+    )
+
+  expect_equal(
+    tto_test2$value,
+    c("174.0 (115.0-311.0) [56.0-448.0]",
+      "681.0 (681.0-681.0) [681.0-681.0]"
+    )
+  )
+
+  expect_equal(
+    tto_test2$drug_s,
+    c("pd1", "pdl1")
+  )
 })
 
 test_that("format is appropriately passed to desc_cont", {
