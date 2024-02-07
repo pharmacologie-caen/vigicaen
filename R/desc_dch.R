@@ -1,19 +1,18 @@
 #' Dechallenge descriptive
 #'
-#' Compute dechallenge counts over a set of adr and drugs. You would need a
-#' `luda` data.table, that is a `link` data.table, joined for `UMCReportId`
+#' Compute positive dechallenge counts over a set of adr and drugs. Positive
+#' dechallenge refers to cases where drug was withdrawn or dose-reduced and
+#' reaction abated.
+#' You would need a `luda` data.table, that is a `link` data.table, joined for `UMCReportId`
 #' (via `drug` or `adr` tables), and with appropriate adrs and drugs columns,
 #' as adjuncted with `add_drug` and `add_adr`. See \code{\link{luda_}}.
-#' If `display_all_levels` is TRUE, Dechallenge actions are factored and you may
-#' see combinations that did not happen, with 0 counts
 #'
 #' @param .data A luda style data.table.
 #' @param drug_s A character vector, the drug column(s)
 #' @param adr_s A character vector, the adverse drug reaction column(s).
-#' @param display_all_levels A logical, do you want to see counts for all combinations, even those with 0?
-#' @return Dechallenge descriptive, which is best depicted as a matrix with drug_action as rows and adr_outcome as columns.
+#' @return A data.table with one row per drug-adr pair.
 #' @export
-#' @example
+#' @examples
 #'
 #' luda_dch <- data.table(
 #'   UMCReportId = 1:10,
@@ -33,31 +32,12 @@
 #'          drug_s = "drug1",
 #'          adr_s = "adr1")
 #'
-#' # do you want to see only combinations with n >0 ?
-#'
-#' desc_dch(luda_dch,
-#'          drug_s = "drug1",
-#'          adr_s = "adr1",
-#'          display_all_levels = FALSE)
 #'
 #' # you can vectorize over multiple adrs and drugs
 #'
 #' desc_dch(luda_dch,
 #'          drug_s = c("drug1", "drug2"),
-#'          adr_s = c("adr1", "adr2"),
-#'          display_all_levels = FALSE)
-#'
-#' # You may want to depict it as a matrix
-#'
-#' desc_dch(luda_dch,
-#'          drug_s = c("drug1"),
-#'          adr_s = c("adr1")
-#'          ) %>%
-#'   tidyr::pivot_wider(
-#'     id_cols = c( drug_s, adr_s, drug_action),
-#'     names_from = adr_outcome,
-#'     values_from = n
-#'   )
+#'          adr_s = c("adr1", "adr2"))
 
 
 desc_dch <-
@@ -69,46 +49,46 @@ desc_dch <-
 
     grouping_variables <- c(adr_s, drug_s, "UMCReportId")
 
-    dechallenge1_label <- data.frame(
-      Dechallenge1 = as.character(1:6),
-      drug_action = factor(c(
-        "Drug withdrawn",
-        "Dose reduced",
-        "Dose increased",
-        "Dose not changed",
-        "Unknown",
-        "Not applicable"
-      ),
-      # so as to order the output in a meaningful way
-      levels = c(
-        "Drug withdrawn",
-        "Dose reduced",
-        "Dose not changed",
-        "Dose increased",
-        "Not applicable",
-        "Unknown"
-      ))
-    )
-
-    dechallenge2_label <-
-      data.frame(
-        Dechallenge2 = as.character(1:5),
-        adr_outcome = factor(c(
-          "Reaction abated",
-          "Fatal",
-          "No effect observed",
-          "Not applicable",
-          "Effect unknown"
-        ),
-        # so as to order the output in a meaningful way
-        levels = c(
-          "No effect observed",
-          "Reaction abated",
-          "Fatal",
-          "Not applicable",
-          "Effect unknown"
-        ))
-      )
+    # dechallenge1_label <- data.frame(
+    #   Dechallenge1 = as.character(1:6),
+    #   drug_action = factor(c(
+    #     "Drug withdrawn",
+    #     "Dose reduced",
+    #     "Dose increased",
+    #     "Dose not changed",
+    #     "Unknown",
+    #     "Not applicable"
+    #   ),
+    #   # so as to order the output in a meaningful way
+    #   levels = c(
+    #     "Drug withdrawn",
+    #     "Dose reduced",
+    #     "Dose not changed",
+    #     "Dose increased",
+    #     "Not applicable",
+    #     "Unknown"
+    #   ))
+    # )
+    #
+    # dechallenge2_label <-
+    #   data.frame(
+    #     Dechallenge2 = as.character(1:5),
+    #     adr_outcome = factor(c(
+    #       "Reaction abated",
+    #       "Fatal",
+    #       "No effect observed",
+    #       "Not applicable",
+    #       "Effect unknown"
+    #     ),
+    #     # so as to order the output in a meaningful way
+    #     levels = c(
+    #       "No effect observed",
+    #       "Reaction abated",
+    #       "Fatal",
+    #       "Not applicable",
+    #       "Effect unknown"
+    #     ))
+    #   )
 
     dch_core <-
       function(one_drug,
@@ -122,31 +102,25 @@ desc_dch <-
 
         dch <-
           data_subset %>%
-          summarise(across(c(Dechallenge1, Dechallenge2),
-                           # max here is arbitral, had to make a choice
-                           ~ max(.x, na.rm = TRUE)),
-                    .by = all_of(grouping_variables)) %>%
-          # arrange(desc(Dechallenge1), desc(Dechallenge2)) %>%
-          left_join(dechallenge1_label,
-                    by = "Dechallenge1") %>%
-          left_join(dechallenge2_label,
-                    by = "Dechallenge2") %>%
-          data.table()
+          mutate(
+            pos_dch =
+              ifelse(
+                Dechallenge1 %in% c("1", "2") &
+                  Dechallenge2 %in% c("1"),
+                1,
+                # be careful with the 0, only use instead of
+                # NA to shut warning in max, below
+                0
+              )
+          ) %>%
+          summarise(max_pos_dch = max(pos_dch),
+                    .by = all_of(grouping_variables))
 
         dch %>%
-          group_by(drug_action,
-                   adr_outcome,
-                   .drop = !display_all_levels) %>%
-          arrange(drug_action, adr_outcome) %>%
           summarise(
             drug_s = .env$one_drug,
             adr_s = .env$one_adr,
-            n = n()
-          ) %>%
-          ungroup() %>%
-          mutate(
-            across(c(drug_action, adr_outcome),
-                   ~ as.character(.x))
+            pos_dch = sum(max_pos_dch)
           ) %>%
           relocate(drug_s, adr_s)
       }
