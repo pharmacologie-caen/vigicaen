@@ -15,8 +15,7 @@ test_that("finds appropriate counts on a known dataset", {
 
   r1 <- desc_dch(luda_dch,
           adr_s = "adr1",
-          drug_s = "drug1",
-          display_all_levels = FALSE)
+          drug_s = "drug1")
 
 
   true_r1 <-

@@ -43,8 +43,7 @@
 desc_dch <-
   function(.data,
            drug_s = "drug1",
-           adr_s = "adr1",
-           display_all_levels = TRUE
+           adr_s = "adr1"
            ) {
 
     grouping_variables <- c(adr_s, drug_s, "UMCReportId")
