@@ -150,7 +150,7 @@ desc_facvar <-
                              side = "both")
 
         ) %>%
-        dplyr::select(var, level, value, n_missing)
+        dplyr::select(var, level, value, n_avail)
     }
 
     # ---- apply core ----

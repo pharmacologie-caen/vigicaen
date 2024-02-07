@@ -177,8 +177,8 @@ test_that(
 
 
     expect_equal(
-      res$n_missing,
-      c(1, 1)
+      res$n_avail,
+      c(6, 6)
     )
 
   }
