@@ -26,15 +26,19 @@
 #' # You may import the file directly to data.table format with dt_fst
 #' df <- dt_fst(path, "df")
 
-dt_fst <- function(path_base, name, ext = ".fst"){
+dt_fst <- function(path_base,
+                   name = NULL,
+                   ext = ".fst"){
   ext <-
-    if(!grepl(".fst", name, fixed = TRUE)) {
+    if(!is.null(name) && !grepl(".fst$", name, perl = TRUE)) {
+      ext
+    } else if(is.null(name) && !grepl(".fst$", path_base, perl = TRUE)){
       ext
     }
 
   # helps working with the "here" package, or tempdir
 
-  if(!grepl("(/|\\\\)$", path_base, perl = TRUE)){
+  if(!is.null(name) && !grepl("(/|\\\\)$", path_base, perl = TRUE)){
     path_base <-
       paste0(path_base, "/")
   }
