@@ -10,14 +10,10 @@
 #'   \item Among `inf`, `rec` (recurring) as opposed to `non_rec` (`rec` + `non_rec` = `inf`)
 #' }
 #'
-#'
-#'
-#' While it might look surprising to have 2 different purposes in the same function (e.g. describe rechallenge and time to onset), it happens data management steps are almost identical. In a bright future, the function might be splitted in 2.
-#'
 #' @param luda_data A data.table. luda stands for Link with UmcreportId, Drug and Adr identifiers (see details).
 #' @param demo_data A data.table. demo should have a serious and death columns.
-#' @param adr_s A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a luda table.
 #' @param drug_s A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a luda table.
+#' @param adr_s A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a luda table.
 #' @param tto_time_range Incertitude range of Time to onset, in days. Defaults to 1 as recommended by umc
 #'
 #' @return A one-row data.table with
@@ -32,64 +28,93 @@
 #' @examples
 #'
 #' desc_rch(luda_data = luda_,
-#'          demo_data = demo_rch_)
+#'          demo_data = demo_rch_,
+#'          drug_s = "pd1",
+#'          adr_s = "a_colitis")
+#'
+#' # You can vectorize over drugs and adrs
+#'
+#' desc_rch(luda_data = luda_,
+#'          demo_data = demo_rch_,
+#'          adr_s = c("a_colitis", "a_pneumonitis"),
+#'          drug_s = c("pd1", "pdl1")
+#'          )
+
 desc_rch <- function(luda_data,
                      demo_data,
-                     adr_s = "a_colitis",
                      drug_s = "pd1",
+                     adr_s = "a_colitis",
                      tto_time_range = 1
 ){
 
-  luda_sel <- # selection
-    luda_data %>%
-    filter(if_any(all_of(adr_s), ~ .x == 1) &
-             if_any(all_of(drug_s), ~ .x == 1)
-           )
 
-  demo_sel <- demo_data[UMCReportId %in% luda_sel[, UMCReportId]]
+  core_desc_rch <-
+    function(one_drug,
+             one_adr
+    ){
+      luda_sel <- # selection
+        luda_data %>%
+        dplyr::filter(.data[[one_drug]] == 1 &
+                 .data[[one_adr]] == 1
+               )
 
-  luda_sel_rch <-
-    luda_sel %>%
-    filter(Rechallenge1 == "1")
+      demo_sel <- demo_data[UMCReportId %in% luda_sel[, UMCReportId]]
 
-  demo_sel_rch <- demo_sel[UMCReportId %in% luda_sel_rch[, UMCReportId]]
+      luda_sel_rch <-
+        luda_sel %>%
+        dplyr::filter(Rechallenge1 == "1")
 
-  luda_sel_inf <-
-    luda_sel %>%
-    filter(Rechallenge2 %in% c("1", "2"))
+      demo_sel_rch <- demo_sel[UMCReportId %in% luda_sel_rch[, UMCReportId]]
 
-  demo_sel_inf <- demo_sel[UMCReportId %in% luda_sel_inf[, UMCReportId]]
+      luda_sel_inf <-
+        luda_sel %>%
+        dplyr::filter(Rechallenge2 %in% c("1", "2"))
 
-  luda_sel_rec <-
-    luda_sel %>%
-    filter(Rechallenge2 %in% c("1"))
+      demo_sel_inf <- demo_sel[UMCReportId %in% luda_sel_inf[, UMCReportId]]
 
-  demo_sel_rec <- demo_sel[UMCReportId %in% luda_sel_rec[, UMCReportId]]
+      luda_sel_rec <-
+        luda_sel %>%
+        dplyr::filter(Rechallenge2 %in% c("1"))
 
-  n_overall <- demo_sel[, .N]
+      demo_sel_rec <- demo_sel[UMCReportId %in% luda_sel_rec[, UMCReportId]]
 
-  # ---- Counting rechal cases ---- #
+      n_overall <- demo_sel[, .N]
 
-  # ++++ Any ++++ #
-  n_rch <- demo_sel_rch[, .N]
+      # ---- Counting rechal cases ---- #
 
-  # ++++ Inf ++++ #
-  n_inf <- demo_sel_inf[, .N]
+      # ++++ Any ++++ #
+      n_rch <- demo_sel_rch[, .N]
 
-  # ++++ Recurring cases ++++ #
-  n_rec <- demo_sel_rec[, .N]
+      # ++++ Inf ++++ #
+      n_inf <- demo_sel_inf[, .N]
 
-  # Output of results
-  data.table(adr = adr_s,
+      # ++++ Recurring cases ++++ #
+      n_rec <- demo_sel_rec[, .N]
 
-             drug = drug_s,
+      # Output of results
+      data.table::data.table(
+        drug = one_drug,
+        adr = one_adr,
 
-             n_overall,
+        n_overall,
 
-             n_rch,
+        n_rch,
+        n_inf,
+        n_rec
+        )
+    }
 
-             n_inf,
+  purrr::map(
+    adr_s, function(one_adr_)
+      purrr::map(
+        drug_s, function(one_drug_)
+          core_desc_rch(
+            one_drug = one_drug_,
+            one_adr = one_adr_
+          )
+      ) %>%
+      purrr::list_rbind()
+  ) %>%
+    purrr::list_rbind()
 
-             n_rec
-  )
 }

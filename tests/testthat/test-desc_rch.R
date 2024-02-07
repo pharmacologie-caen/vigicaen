@@ -36,6 +36,55 @@ test_that("find proper counts on a known dataset", {
 
     })
 
+test_that("can be vectorized", {
+  rch_test <-
+    desc_rch(luda_data = luda_,
+             demo_data = demo_rch_,
+             adr_s = c("a_colitis", "a_pneumonitis"),
+             drug_s = "pd1")
+
+  true_rch <-
+    data.table(
+      drug = c("pd1", "pd1"),
+      adr = c("a_colitis", "a_pneumonitis"),
+      n_overall = c(8, 5),
+      n_rch     = c(6, 3),
+      n_inf     = c(5, 3),
+      n_rec     = c(5, 2)
+    )
+
+
+  expect_equal(
+    rch_test,
+    true_rch
+  )
+
+
+  rch_test2 <-
+    desc_rch(luda_data = luda_,
+             demo_data = demo_rch_,
+             adr_s = c("a_colitis"),
+             drug_s = c("pd1", "pdl1")
+    )
+
+  true_rch2 <-
+    data.table(
+      drug = c("pd1", "pdl1"),
+      adr = c("a_colitis", "a_colitis"),
+      n_overall = c(8, 2),
+      n_rch     = c(6, 1),
+      n_inf     = c(5, 0),
+      n_rec     = c(5, 0)
+    )
+
+
+  expect_equal(
+    rch_test2,
+    true_rch2
+  )
+
+})
+
 test_that("works with few data", {
    luda_rch <- data.table(
      UMCReportId = c(1, 1, 2, 3, 4, 5, 5, 6, 7, 8),
