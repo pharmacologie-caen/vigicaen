@@ -4,7 +4,7 @@
 \alias{dt_fst}
 \title{Read fst and convert to data.table}
 \usage{
-dt_fst(path_base, name, ext = ".fst")
+dt_fst(path_base, name = NULL, ext = ".fst")
 }
 \arguments{
 \item{path_base}{A character string, providing the path to read from.}
