@@ -35,7 +35,7 @@ pt_sel <- rlang::list2(
 get_llt_soc(
   term_sel = pt_sel,
   term_level = "pt",
-  meddra = ex_$meddra
+  meddra = meddra_
   )
 }
 \keyword{llt}

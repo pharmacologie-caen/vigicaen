@@ -6,8 +6,8 @@
 \usage{
 compute_or_mod(
   .coef_table,
-  estimate = NULL,
-  std_er = NULL,
+  estimate = Estimate,
+  std_er = Std..Error,
   p_val = NULL,
   alpha = 0.05
 )

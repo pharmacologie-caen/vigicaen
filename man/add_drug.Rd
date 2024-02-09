@@ -50,5 +50,7 @@ demo_ \%>\%
     drug_data = drug_,
     data_type = c("demo", "link")
   )
+
+# remember to assign the result to your actual demo dataset
 }
 \keyword{drug}

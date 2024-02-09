@@ -10,26 +10,23 @@
 \alias{link_}
 \alias{out_}
 \alias{srce_}
-\alias{thg_}
 \title{Data of immune checkpoint inhibitors.}
 \format{
 An object of class \code{data.frame} and \code{data.table}.
 
-An object of class \code{data.table} (inherits from \code{data.frame}) with 260597 rows and 12 columns.
+An object of class \code{data.table} (inherits from \code{data.frame}) with 3514 rows and 12 columns.
 
-An object of class \code{data.table} (inherits from \code{data.frame}) with 58450 rows and 2 columns.
+An object of class \code{data.table} (inherits from \code{data.frame}) with 902 rows and 2 columns.
 
-An object of class \code{data.table} (inherits from \code{data.frame}) with 184606 rows and 2 columns.
+An object of class \code{data.table} (inherits from \code{data.frame}) with 2426 rows and 2 columns.
 
-An object of class \code{data.table} (inherits from \code{data.frame}) with 179407 rows and 4 columns.
+An object of class \code{data.table} (inherits from \code{data.frame}) with 2133 rows and 4 columns.
 
-An object of class \code{data.table} (inherits from \code{data.frame}) with 325983 rows and 8 columns.
+An object of class \code{data.table} (inherits from \code{data.frame}) with 5136 rows and 8 columns.
 
-An object of class \code{data.table} (inherits from \code{data.frame}) with 70715 rows and 3 columns.
+An object of class \code{data.table} (inherits from \code{data.frame}) with 747 rows and 3 columns.
 
-An object of class \code{data.table} (inherits from \code{data.frame}) with 70313 rows and 2 columns.
-
-An object of class \code{data.table} (inherits from \code{data.frame}) with 312196 rows and 5 columns.
+An object of class \code{data.table} (inherits from \code{data.frame}) with 729 rows and 2 columns.
 }
 \source{
 None
@@ -50,13 +47,11 @@ link_
 out_
 
 srce_
-
-thg_
 }
 \description{
 Demo is the cornerstone table in Vigibase Extract Case Level data. It contains the \code{UMCReportId} identifier for individual case safety reports, which is a jointure key with most other tables (see "VigiBase Extract Case Level - file description.pdf" in VigiBase ECL folders for more details). It is the preferred table to update for drugs and adrs identification before performing disproportionality analyses.
 This \code{demo_} table is a subset of reports reporting at least one ICI, from the September 2019 version of Vigibase ECL. All other tables were subsetted to match these records. I used the "substance" table at this time, with substances \verb{"Ipilimumab", "Atezolizumab", "Durvalumab", "Nivolumab", "Pembrolizumab", "Avelumab", "Cemiplimab","REGN 2810", "Tremelimumab"} identified.
-Others tables are \code{drug_}, \code{adr_}, \code{link_}, \code{ind_}, \code{out_}, \code{srce_}, \code{followup}.
+Others tables are \code{drug_}, \code{adr_}, \code{link_}, \code{ind_}, \code{out_}, \code{srce_}, \code{followup_}.
 }
 \examples{
 data(demo_)

@@ -26,28 +26,28 @@ as adjuncted with \code{add_drug} and \code{add_adr}. See \code{\link{luda_}}.
 }
 \examples{
 
-luda_dch <- data.table(
-  UMCReportId = 1:10,
-  Drug_Id = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
-  Adr_Id = c(101, 102, 103, 104, 105, 106, 107, 108, 109, 110),
-  drug1        = c(1, 0, 1, 1, 0, 1, 0, 1, 1,   1, 1, 1, 1),
-  drug2        = c(0, 1, 0, 1, 1, 0, 1, 0, 1,   0, 0, 0, 0),
-  adr1         = c(0, 1, 1, 0, 1, 0, 1, 1, 1,   0, 1, 1, 1),
-  adr2         = c(1, 0, 1, 0, 1, 0, 1, 0, 0,   1, 0, 0, 0),
-  Dechallenge1 =
-  as.character(c(  3, 1, 5, 2, 4, 6, 1, 3, 2,   4, 1, 1, 2)),
-  Dechallenge2 =
-  as.character(c(  4, 2, 1, 5, 3, 2, 4, 1, "-", 3, 2, 2, 3))
-)
+luda_ <-
+  luda_ \%>\%
+  add_drug(
+    d_code = ex_$d_groups_drecno,
+    drug_data = drug_,
+    data_type = "link"
+  ) \%>\%
+  add_adr(
+    a_code = ex_$a_llt,
+    adr_data = adr_,
+    data_type = "link"
+  )
 
-desc_dch(luda_dch,
-         drug_s = "drug1",
-         adr_s = "adr1")
+
+desc_dch(luda_,
+         drug_s = "pd1",
+         adr_s = "a_colitis")
 
 
 # you can vectorize over multiple adrs and drugs
 
-desc_dch(luda_dch,
-         drug_s = c("drug1", "drug2"),
-         adr_s = c("adr1", "adr2"))
+desc_dch(luda_,
+         drug_s = c("pd1", "pdl1"),
+         adr_s = c("a_colitis", "a_pneumonitis"))
 }

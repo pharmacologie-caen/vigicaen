@@ -21,12 +21,13 @@ Extracts from a smq_list_content a list of llts given an SMQ.
 }
 \examples{
 ## Finding llt codes for Embolism (SMQ)
+
 smq_sel <- rlang::list2(
   embolism = "Embolic and thrombotic events, venous (SMQ)"
  )
 get_llt_smq(smq_sel,
                 smq_scope = "narrow",
-                smq_list_content = ex_[["smq_list_content"]]
+                smq_list_content = smq_list_content_
                 )
 }
 \keyword{llt}

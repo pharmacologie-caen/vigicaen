@@ -18,8 +18,22 @@
 #' }
 #' @export
 #' @import dplyr data.table
+#' @importFrom rlang .data
+#' @importFrom rlang .env
 #'
 #' @examples
+#' luda_ <-
+#'   luda_ %>%
+#'   add_drug(
+#'     d_code = ex_$d_groups_drecno,
+#'     drug_data = drug_,
+#'     data_type = "link"
+#'   ) %>%
+#'   add_adr(
+#'     a_code = ex_$a_llt,
+#'     adr_data = adr_,
+#'     data_type = "link"
+#'   )
 #'
 #' extract_tto(luda_data = luda_,
 #'          adr_s = "a_colitis",
@@ -37,10 +51,12 @@ extract_tto <-
 
     if(is.null(luda_data$tto_mean) || is.null(luda_data$range)){
 
-      luda_data[, `:=`(
-        tto_mean = (TimeToOnsetMax + TimeToOnsetMin) / 2,
-        range = (TimeToOnsetMax + TimeToOnsetMin) / 2 - TimeToOnsetMin
-      )]
+      luda_data <-
+        luda_data %>%
+        mutate(
+          tto_mean = (.data$TimeToOnsetMax + .data$TimeToOnsetMin) / 2,
+          range = (.data$TimeToOnsetMax + .data$TimeToOnsetMin) / 2 - .data$TimeToOnsetMin
+        )
 
     }
 
@@ -56,8 +72,8 @@ extract_tto <-
           luda_data %>%
           filter(if_any(all_of(.env$one_adr), ~ .x == 1) &
                    if_any(all_of(.env$one_drug), ~ .x == 1) &
-                   range <= .env$tto_time_range &
-                   tto_mean >= 0
+                   .data$range <= .env$tto_time_range &
+                   .data$tto_mean >= 0
           )
 
         # TTO for each drug-adr pair - longest delay between drug introduction
@@ -67,7 +83,7 @@ extract_tto <-
           luda_sel %>%
           summarise(
             tto_max = max(.data$tto_mean, na.rm = TRUE),
-            .by = UMCReportId
+            .by = .data$UMCReportId
             # its a bit ambiguous to use UMCReportId
             # but works since there is filtering on adr and drug of interest
             # at the previous step
@@ -86,7 +102,7 @@ extract_tto <-
           # } else {
             ttos %>%
               mutate(
-                tto_max,
+                .data$tto_max,
                 adr_s = .env$one_adr,
                 drug_s = .env$one_drug
               )
