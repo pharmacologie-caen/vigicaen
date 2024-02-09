@@ -11,6 +11,8 @@
 #' @param data_type A character string. The type of data to add columns to. Either `demo` or `link` (default to `demo`)
 #' @export
 #' @importFrom dplyr %>%
+#' @importFrom rlang .data
+#' @importFrom rlang .env
 #' @keywords adr
 #' @examples
 #' # create adr_colitis, adr_embolism and adr_pneumonitis columns in demo
@@ -20,7 +22,6 @@
 #'
 #' a_pt_sel <- ex_$pt_sel
 #'
-#' meddra <- ex_$meddra
 #'
 #' adr <- adr_
 #'
@@ -28,7 +29,7 @@
 #'   get_llt_soc(
 #'   term_sel = a_pt_sel,
 #'   term_level = "pt",
-#'   meddra = meddra
+#'   meddra = meddra_
 #'   )
 #'
 #' demo <-

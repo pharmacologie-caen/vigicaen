@@ -12,6 +12,8 @@
 #' @keywords atc
 #' @export
 #' @importFrom dplyr %>%
+#' @importFrom rlang .data
+#' @importFrom rlang .env
 #' @examples
 #' # ## Find codes associated with one or more atc classes
 #'

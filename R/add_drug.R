@@ -16,6 +16,8 @@
 #' @keywords drug
 #' @export
 #' @importFrom dplyr %>%
+#' @importFrom rlang .data
+#' @importFrom rlang .env
 #' @examples
 #' # create a nivolumab column in demo_
 #'

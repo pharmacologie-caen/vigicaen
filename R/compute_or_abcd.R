@@ -15,6 +15,8 @@
 #' @keywords ror
 #' @export
 #' @importFrom dplyr %>%
+#' @importFrom rlang .data
+#' @importFrom rlang .env
 #' @import data.table
 #' @examples
 #' # Say you want to perform a disproportionality analysis between colitis and
@@ -144,22 +146,30 @@ compute_or_abcd <-
   output <-
     data.frame(y = y, x = x, a, b, c, d) %>%
     dplyr::mutate(
-      or = a * d / (b * c),
-      low_ci = or * exp(- z_val * std_er),
-      up_ci = or * exp(+ z_val * std_er),
-      orl = ifelse(or %in% c(0, Inf),
-                    na_format,
-                    cff(num = or, dig = dig, method = "num_only")),
+      or = .data$a * .data$d / (.data$b * .data$c),
+      low_ci = .data$or * exp(- .env$z_val * .env$std_er),
+      up_ci = .data$or * exp(+ .env$z_val * .env$std_er),
+      orl = ifelse(.data$or %in% c(0, Inf),
+                    .env$na_format,
+                    cff(num = .data$or,
+                        dig = .env$dig,
+                        method = "num_only")
+                   ),
       or_ci = ifelse(
-        low_ci %in% c(NaN, 0, Inf),
-        na_format,
-        cff(low_ci = low_ci, up_ci = up_ci, dig = dig, method = "ci")
+        .data$low_ci %in% c(NaN, 0, Inf),
+        .env$na_format,
+        cff(low_ci = .data$low_ci,
+            up_ci = .data$up_ci,
+            dig = .env$dig,
+            method = "ci")
         ),
-      ic = log((a + .5) / (n_exp + .5), base = 2),
-      ic_tail = ic_tail(n_obs = a, n_exp = n_exp, p = alpha / 2),
-      ci_level = paste0((1 - alpha) * 100, "%"),
-      signif_or = ifelse(low_ci > 1, 1, 0),
-      signif_ic = ifelse(ic_tail > 0, 1, 0)
+      ic = log((.data$a + .5) / (.env$n_exp + .5), base = 2),
+      ic_tail = ic_tail(n_obs = .data$a,
+                        n_exp = .env$n_exp,
+                        p = .env$alpha / 2),
+      ci_level = paste0((1 - .env$alpha) * 100, "%"),
+      signif_or = ifelse(.data$low_ci > 1, 1, 0),
+      signif_ic = ifelse(.data$ic_tail > 0, 1, 0)
     ) %>%
     data.table
 

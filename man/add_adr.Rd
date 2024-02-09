@@ -37,7 +37,6 @@ demo <- demo_
 
 a_pt_sel <- ex_$pt_sel
 
-meddra <- ex_$meddra
 
 adr <- adr_
 
@@ -45,7 +44,7 @@ a_llt <-
   get_llt_soc(
   term_sel = a_pt_sel,
   term_level = "pt",
-  meddra = meddra
+  meddra = meddra_
   )
 
 demo <-

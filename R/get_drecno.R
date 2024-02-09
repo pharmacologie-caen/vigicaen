@@ -21,6 +21,8 @@
 #' @keywords atc
 #' @export
 #' @importFrom dplyr %>%
+#' @importFrom rlang .data
+#' @importFrom rlang .env
 #' @examples
 #'
 #' # ## Get drecnos for a list a drugs

@@ -6,8 +6,8 @@
 \usage{
 compute_or_mod(
   .coef_table,
-  estimate = Estimate,
-  std_er = Std..Error,
+  estimate = NULL,
+  std_er = NULL,
   p_val = NULL,
   alpha = 0.05
 )
@@ -47,7 +47,7 @@ demo <-
   )
 
 # Compute the model
-mod <- glm(colitis ~ nivolumab, data = demo, family = "binomial")
+mod <- glm(a_colitis ~ nivolumab, data = demo, family = "binomial")
 
 # Extract coefficients
 coef_table <-
