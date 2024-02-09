@@ -1,0 +1,62 @@
+---
+title: "descriptive"
+output: 
+  rmarkdown::html_vignette:
+    keep_md: true
+vignette: >
+  %\VignetteIndexEntry{descriptive}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+## Objectifs
+
+-   Obtenir des statistiques descriptives d'un jeu de donnees vigibase
+-   Comprendre la structure de la table luda
+
+## Pre-requis
+
+-   Savoir creer des colonnes medicament et evenement indesirable dans une table `demo`.
+
+# Data management
+
+## Etape 0 : Charger les packages
+
+```{r library, warning=FALSE, message=FALSE}
+
+# library(tidyverse)
+library(rlang)
+library(pharmacocaen)
+
+```
+
+## Etape 1 : Creer les colonnes medicament et evenement indesirable
+
+On reprend des éléments de la vignette basic_workflow.
+
+
+## Fonction desc_facvar()
+
+# Table LUDA
+
+La table Luda est dérivée de la table link. Le nom signifie
+
+> **L**ink table, with **U**mcreportid, **D**rug_id and **A**dr_id
+
+## Créer la table LUDA
+
+## Time to onset
+
+## Dechallenge
+
+## Rechallenge

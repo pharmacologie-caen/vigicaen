@@ -1,0 +1,20 @@
+---
+title: "generic_main"
+output: 
+  rmarkdown::html_vignette:
+    keep_md: true
+vignette: >
+  %\VignetteIndexEntry{generic_main}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Code d'un script principal generique reutilisable
