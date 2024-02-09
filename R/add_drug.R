@@ -31,7 +31,7 @@
 #'     .data = demo_,
 #'     d_code = d_drecno,
 #'     method = "DrecNo",
-#'     repbasis = "sci",
+#'     repbasis = "sci", #s for suspect, c for concomitant and i for interacting
 #'     drug_data = drug_,
 #'     data_type = c("demo", "link")
 #'   )
