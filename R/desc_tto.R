@@ -44,6 +44,7 @@ desc_tto <-
     ttos <-
       pharmacocaen::extract_tto(
         luda_data = luda_data,
+        drug_s = drug_s,
         adr_s = adr_s,
         tto_time_range = tto_time_range
       )
