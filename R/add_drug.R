@@ -26,8 +26,9 @@
 #' d_drecno <- get_drecno(d_sel_names,
 #'                         mp_short = mp_short_)
 #'
-#' demo_ %>%
+#' demo_ <-
 #'   add_drug(
+#'     .data = demo_,
 #'     d_code = d_drecno,
 #'     method = "DrecNo",
 #'     repbasis = "sci",
