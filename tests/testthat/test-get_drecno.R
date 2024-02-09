@@ -26,11 +26,11 @@ test_that("get drecno of a single drug, no combination allowed", {
   ) %>%
     rlang::set_names(names(d_sel_names))
 
-  mp_short <- ex_$mp_short
+  mp_short_
 
   expect_equal(
     get_drecno(d_sel = d_sel_names,
-               mp_short = mp_short,
+               mp_short = mp_short_,
                allow_combination = FALSE,
                method = "drug_name",
                show_all = FALSE,
@@ -40,7 +40,7 @@ test_that("get drecno of a single drug, no combination allowed", {
   )
 
   get_drecno(d_sel = d_sel_names,
-             mp_short = mp_short,
+             mp_short = mp_short_,
              allow_combination = FALSE,
              method = "drug_name",
              show_all = FALSE,
@@ -49,7 +49,7 @@ test_that("get drecno of a single drug, no combination allowed", {
 
   expect_equal(
     get_drecno(d_sel = d_sel_names,
-               mp_short = mp_short,
+               mp_short = mp_short_,
                allow_combination = TRUE,
                method = "drug_name",
                show_all = FALSE,
@@ -70,23 +70,23 @@ test_that("non WHO names raise appropriate warnings", {
 
   drug3 <- rlang::list2(medi = "medicament")
 
-  drug4 <- rlang::list2(doli = "paracetamo") # spelling error
+  drug4 <- rlang::list2(doli = "paracetam") # spelling error
 
   drug5 <- rlang::list2(att = "antithrombin") # correct name would be antithrombine iii
 
-  expect_warning(get_drecno(drug1, ex_$mp_short),
+  expect_warning(get_drecno(drug1, mp_short_),
                  "NOT a WHO name")
 
-  expect_warning(get_drecno(drug2, ex_$mp_short),
+  expect_warning(get_drecno(drug2, mp_short_),
                  "NOT a WHO name")
 
-  expect_warning(get_drecno(drug3, ex_$mp_short),
+  expect_warning(get_drecno(drug3, mp_short_),
                  "there is no match")
 
-  expect_warning(get_drecno(drug4, ex_$mp_short),
+  expect_warning(get_drecno(drug4, mp_short_),
                  "there is no match")
 
-  expect_warning(get_drecno(drug5, ex_$mp_short),
+  expect_warning(get_drecno(drug5, mp_short_),
                  "there is no match")
 })
 
@@ -101,7 +101,7 @@ test_that("works for drugs, which is the default setting", {
   pc_drecno <- "012493"
 
   res_drug1 <- get_drecno(drug1,
-                           ex_$mp_short,
+                           mp_short_,
                            allow_combination = FALSE
   )
 
@@ -111,7 +111,7 @@ test_that("works for drugs, which is the default setting", {
   expect_equal(res_drug1[["atra"]], atra_drecno)
 
   res_drug2 <- get_drecno(drug2,
-                           ex_$mp_short,
+                           mp_short_,
                            allow_combination = TRUE
   )
 
@@ -119,7 +119,7 @@ test_that("works for drugs, which is the default setting", {
                3)
 
   res_drug2_bis <- get_drecno(drug2,
-                               ex_$mp_short,
+                               mp_short_,
                                allow_combination = FALSE
   )
 
@@ -134,11 +134,11 @@ test_that("works for drugs, which is the default setting", {
 test_that("works for mpi_list as well", {
 
   mpi <- rlang::list2(
-    para = ex_$mp_short[DrecNo == "000200", MedicinalProd_Id]
+    para = mp_short_[DrecNo == "000200", MedicinalProd_Id]
   )
 
   res_mpi <- get_drecno(mpi,
-                         ex_$mp_short,
+                         mp_short_,
                          method = "mpi_list",
                          show_all = FALSE,
                          allow_combination = FALSE)
@@ -149,7 +149,7 @@ test_that("works for mpi_list as well", {
   expect_equal(res_mpi[["para"]], "000200")
 
   expect_warning(get_drecno(mpi,
-                             ex_$mp_short,
+                             mp_short_,
                              method = "mpi_list",
                              show_all = FALSE,
                              allow_combination = TRUE),

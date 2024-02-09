@@ -1,5 +1,20 @@
 test_that("find proper ttos on a known dataset", {
-  tto_test <-
+
+  luda_ <-
+    luda_ %>%
+    add_drug(
+      d_code = ex_$d_groups_drecno,
+      drug_data = drug_,
+      data_type = "link"
+    ) %>%
+    add_adr(
+      a_code = ex_$a_llt,
+      adr_data = adr_,
+      data_type = "link"
+    )
+
+
+   tto_test <-
     desc_tto(luda_data = luda_,
                 adr_s = "a_colitis",
                 drug_s = "pd1")
@@ -7,11 +22,25 @@ test_that("find proper ttos on a known dataset", {
 
   expect_equal(
     tto_test$value,
-    "174.0 (115.0-311.0) [56.0-448.0]"
+    "59.0 (26.5-190.0) [1.0-1,207.0]"
   )
 })
 
 test_that("works with vectorization", {
+
+  luda_ <-
+    luda_ %>%
+    add_drug(
+      d_code = ex_$d_groups_drecno,
+      drug_data = drug_,
+      data_type = "link"
+    ) %>%
+    add_adr(
+      a_code = ex_$a_llt,
+      adr_data = adr_,
+      data_type = "link"
+    )
+
   tto_test <-
     desc_tto(luda_data = luda_,
              adr_s = c("a_colitis", "a_pneumonitis"),
@@ -20,8 +49,8 @@ test_that("works with vectorization", {
 
   expect_equal(
     tto_test$value,
-    c("174.0 (115.0-311.0) [56.0-448.0]",
-      "115.0 (36.5-290.8) [17.0-602.0]"
+    c("59.0 (26.5-190.0) [1.0-1,207.0]",
+      "61.5 (32.8-127.8) [0.0-1,050.0]"
     )
   )
 
@@ -38,8 +67,8 @@ test_that("works with vectorization", {
 
   expect_equal(
     tto_test2$value,
-    c("174.0 (115.0-311.0) [56.0-448.0]",
-      "681.0 (681.0-681.0) [681.0-681.0]"
+    c("59.0 (26.5-190.0) [1.0-1,207.0]",
+      "67.0 (18.5-114.0) [1.0-681.0]"
     )
   )
 
@@ -50,6 +79,21 @@ test_that("works with vectorization", {
 })
 
 test_that("format is appropriately passed to desc_cont", {
+
+  luda_ <-
+    luda_ %>%
+    add_drug(
+      d_code = ex_$d_groups_drecno,
+      drug_data = drug_,
+      data_type = "link"
+    ) %>%
+    add_adr(
+      a_code = ex_$a_llt,
+      adr_data = adr_,
+      data_type = "link"
+    )
+
+
   tto_test <-
     desc_tto(luda_data = luda_,
              adr_s = "a_colitis",
@@ -59,11 +103,26 @@ test_that("format is appropriately passed to desc_cont", {
 
   expect_equal(
     tto_test$value,
-    "174.0 [115.0-311.0] ; (56.0 to 448.0)"
+    "59.0 [26.5-190.0] ; (1.0 to 1,207.0)"
   )
 })
 
 test_that("digits are appropriately passed to desc_cont", {
+
+  luda_ <-
+    luda_ %>%
+    add_drug(
+      d_code = ex_$d_groups_drecno,
+      drug_data = drug_,
+      data_type = "link"
+    ) %>%
+    add_adr(
+      a_code = ex_$a_llt,
+      adr_data = adr_,
+      data_type = "link"
+    )
+
+
   tto_test <-
     desc_tto(luda_data = luda_,
              adr_s = "a_colitis",
@@ -73,7 +132,7 @@ test_that("digits are appropriately passed to desc_cont", {
 
   expect_equal(
     tto_test$value,
-    "174 (115-311) [56-448]"
+    "59 (26-190) [1-1,207]"
   )
 })
 

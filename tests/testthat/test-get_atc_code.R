@@ -1,20 +1,24 @@
 test_that("Works for single and multiple ATC selections", {
 
   atc_sel <-
-    rlang::list2(l03_l04 = c("L03", "L04"),
-                 c01 = c("C01")
+    rlang::list2(l03_j01 = c("L03AA", "J01CA"),
+                 c09aa = c("C09AA")
     )
 
   atc_sel_drecno_counts <-
-    rlang::list2(l03_l04 = 301,
-                 c01 = 547
+    rlang::list2(l03_j01 = 77,
+                 c09aa = 26
     )
 
-  atc_drecno <-
+  expect_message({
+  atc_drecno <<-
     get_atc_code(atc_sel = atc_sel,
-                 mp_short = ex_$mp_short,
+                 mp_short = mp_short_,
                  thg_data = thg_,
                  vigilyze = TRUE)
+  },
+  "DrecNo"
+  )
 
   purrr::iwalk(
     atc_sel_drecno_counts,
@@ -25,49 +29,39 @@ test_that("Works for single and multiple ATC selections", {
         )
   )
 
-  expect_message(
-    get_atc_code(atc_sel = atc_sel,
-                 mp_short = ex_$mp_short,
-                 thg_data = thg_,
-                 vigilyze = TRUE),
-    "DrecNo"
-  )
+
 
   })
 
 test_that("extracts mpi if vigilyze is FALSE", {
 
   atc_sel <-
-    rlang::list2(l03_l04 = c("L03", "L04"),
-                 c01 = c("C01")
+    rlang::list2(l03_j01 = c("L03AA", "J01CA"),
+                 c09aa = c("C09AA")
     )
 
   atc_sel_mpi_counts <-
-    rlang::list2(l03_l04 = 4436,
-                 c01 = 5685
+    rlang::list2(l03_j01 = 1721,
+                 c09aa = 2185
     )
 
-  atc_drecno <-
-    get_atc_code(atc_sel = atc_sel,
-                 mp_short = ex_$mp_short,
-                 thg_data = thg_,
-                 vigilyze = FALSE)
+  expect_message({
+    atc_drecno <-
+      get_atc_code(atc_sel = atc_sel,
+                   mp_short = mp_short_,
+                   thg_data = thg_,
+                   vigilyze = FALSE)
 
-  purrr::iwalk(
-    atc_sel_mpi_counts,
-    function(a, a_n)
-      expect_equal(
-        length(atc_drecno[[a_n]]),
-        a
-      )
-  )
-
-  expect_message(
-    get_atc_code(atc_sel = atc_sel,
-                 mp_short = ex_$mp_short,
-                 thg_data = thg_,
-                 vigilyze = FALSE),
-    "MedicinalProd"
+    purrr::iwalk(
+      atc_sel_mpi_counts,
+      function(a, a_n)
+        expect_equal(
+          length(atc_drecno[[a_n]]),
+          a
+        )
+    )
+  },
+  "MedicinalProd"
   )
 
 })

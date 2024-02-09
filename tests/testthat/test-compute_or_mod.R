@@ -11,7 +11,7 @@ test_that("accurate results", {
     )
 
   # Compute the model
-  mod <- glm(colitis ~ nivolumab, data = demo, family = "binomial")
+  mod <- glm(a_colitis ~ nivolumab, data = demo, family = "binomial")
 
   # Extract coefficients
   coef_table <-
@@ -29,8 +29,8 @@ test_that("accurate results", {
       p_val = Pr...z..)
 
   r1_expect <- rlang::list2(
-    orl = c("0.13", "0.75"),
-    low_ci = c("0.12", "0.71")
+    orl = c("0.13", "1.88"),
+    low_ci = c("0.10", "1.23")
   )
 
   expect_equal(
@@ -57,7 +57,7 @@ test_that("works with and without p_val arg", {
     )
 
   # Compute the model
-  mod <- glm(colitis ~ nivolumab, data = demo, family = "binomial")
+  mod <- glm(a_colitis ~ nivolumab, data = demo, family = "binomial")
 
   # Extract coefficients
   coef_table <-
@@ -88,7 +88,7 @@ test_that("works with and without p_val arg", {
 
   expect_equal(
     r1$p_val,
-    c("<.0001", "<.0001")
+    c("<.0001", "<.01")
   )
 
   expect_null(

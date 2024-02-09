@@ -33,7 +33,7 @@
 #'
 #' demo %>%
 #'   compute_or_abcd(
-#'     y = "colitis",
+#'     y = "a_colitis",
 #'     x = "nivolumab"
 #'   )
 #'
@@ -48,7 +48,7 @@
 #' lapply(many_drugs, function(a_drug)
 #'   demo %>%
 #'     compute_or_abcd(
-#'       y = "colitis",
+#'       y = "a_colitis",
 #'       x = a_drug
 #'     )
 #'   ) %>%
@@ -61,7 +61,7 @@
 #'     function(a_drug)
 #'       demo %>%
 #'       compute_or_abcd(
-#'         y = "colitis",
+#'         y = "a_colitis",
 #'         x = a_drug
 #'       )
 #'   ) %>%

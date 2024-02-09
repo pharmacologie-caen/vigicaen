@@ -28,14 +28,14 @@
 #' @examples
 #'
 #' desc_rch(luda_data = luda_,
-#'          demo_data = demo_rch_,
+#'          demo_data = demo_,
 #'          drug_s = "pd1",
 #'          adr_s = "a_colitis")
 #'
 #' # You can vectorize over drugs and adrs
 #'
 #' desc_rch(luda_data = luda_,
-#'          demo_data = demo_rch_,
+#'          demo_data = demo_,
 #'          adr_s = c("a_colitis", "a_pneumonitis"),
 #'          drug_s = c("pd1", "pdl1")
 #'          )
