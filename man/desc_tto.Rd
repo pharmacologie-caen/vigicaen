@@ -39,6 +39,18 @@ Internally, this runs \code{\link{extract_tto}} and \code{\link{desc_cont}},
 you can supply extra arguments to \code{desc_cont} with \code{...}.
 }
 \examples{
+luda_ <-
+  luda_ \%>\%
+  add_drug(
+    d_code = ex_$d_groups_drecno,
+    drug_data = drug_,
+    data_type = "link"
+  ) \%>\%
+  add_adr(
+    a_code = ex_$a_llt,
+    adr_data = adr_,
+    data_type = "link"
+  )
 
 desc_tto(luda_data = luda_,
          adr_s = "a_colitis",

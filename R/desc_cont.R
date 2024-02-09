@@ -12,6 +12,8 @@
 #' @param format A character string. How would you like the output? See details.
 #' @param digits A numeric. How many digits? This argument calls `pharmacocaen::cff()`
 #' @importFrom stats median qnorm quantile var
+#' @importFrom rlang .data
+#' @importFrom rlang .env
 #' @export
 #'
 #' @examples

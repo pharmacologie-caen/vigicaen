@@ -47,7 +47,7 @@ demo <-
   )
 
 # Compute the model
-mod <- glm(colitis ~ nivolumab, data = demo, family = "binomial")
+mod <- glm(a_colitis ~ nivolumab, data = demo, family = "binomial")
 
 # Extract coefficients
 coef_table <-

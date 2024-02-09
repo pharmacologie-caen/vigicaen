@@ -40,7 +40,7 @@ You can add drug identification to a \code{demo} or a \code{link} dataset. Remem
 d_sel_names <- rlang::list2(nivolumab = "nivolumab")
 
 d_drecno <- get_drecno(d_sel_names,
-                        mp_short = ex_$mp_short)
+                        mp_short = mp_short_)
 
 demo_ \%>\%
   add_drug(
@@ -50,5 +50,7 @@ demo_ \%>\%
     drug_data = drug_,
     data_type = c("demo", "link")
   )
+
+# remember to assign the result to your actual demo dataset
 }
 \keyword{drug}

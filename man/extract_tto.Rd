@@ -31,6 +31,18 @@ You might want to run \code{\link{desc_tto}} to obtain summary statistics of
 time to onset.
 }
 \examples{
+luda_ <-
+  luda_ \%>\%
+  add_drug(
+    d_code = ex_$d_groups_drecno,
+    drug_data = drug_,
+    data_type = "link"
+  ) \%>\%
+  add_adr(
+    a_code = ex_$a_llt,
+    adr_data = adr_,
+    data_type = "link"
+  )
 
 extract_tto(luda_data = luda_,
          adr_s = "a_colitis",

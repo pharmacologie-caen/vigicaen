@@ -1,10 +1,24 @@
 test_that("find proper ttos on a known dataset", {
+
+  luda_ <-
+    luda_ %>%
+    add_drug(
+      d_code = ex_$d_groups_drecno,
+      drug_data = drug_,
+      data_type = "link"
+    ) %>%
+    add_adr(
+      a_code = ex_$a_llt,
+      adr_data = adr_,
+      data_type = "link"
+    )
+
   tto_test <-
     extract_tto(luda_data = luda_,
                 adr_s = "a_colitis",
                 drug_s = "pd1")
 
-  true_n_tto_avail <- 3 # we're not collecting negative ttos
+  true_n_tto_avail <- 39 # we're not collecting negative ttos
 
   expect_equal(
     nrow(tto_test),
@@ -12,29 +26,51 @@ test_that("find proper ttos on a known dataset", {
   )
 
   true_tto_rch <-
-    c(56, 174, 448)
+    c(205, 175, 36, 740, 379)
 
   expect_equal(
-    tto_test$tto_max,
+    head(tto_test$tto_max, 5),
     true_tto_rch
   )
 })
 
 test_that("works with vectorized adrs and drugs", {
+  luda_ <-
+    luda_ %>%
+    add_drug(
+      d_code = ex_$d_groups_drecno,
+      drug_data = drug_,
+      data_type = "link"
+    ) %>%
+    add_adr(
+      a_code = ex_$a_llt,
+      adr_data = adr_,
+      data_type = "link"
+    )
+
   tto_many_adr <-
     extract_tto(luda_data = luda_,
              adr_s = c("a_colitis", "a_pneumonitis"),
              drug_s = c("pd1"))
 
+  tto_many_adr2 <-
+    bind_rows(
+      tto_many_adr %>%
+        filter(adr_s == "a_colitis") %>%
+        slice_head(n = 3),
+      tto_many_adr %>%
+        filter(adr_s == "a_pneumonitis") %>%
+        slice_head(n = 3)
+    )
 
   correct_many_adr <-
     data.frame(
-      tto_max = c(56, 174, 448, 602, 43, 187, 17),
-      adr_s  = c(rep("a_colitis", 3), rep("a_pneumonitis", 4))
+      tto_max = c(205, 175, 36, 602, 43, 105),
+      adr_s  = c(rep("a_colitis", 3), rep("a_pneumonitis", 3))
     )
 
   expect_equal(
-    tto_many_adr %>%
+    tto_many_adr2 %>%
       select(tto_max, adr_s),
     correct_many_adr
   )
@@ -44,14 +80,24 @@ test_that("works with vectorized adrs and drugs", {
                 adr_s = c("a_colitis"),
                 drug_s = c("pd1", "pdl1"))
 
+  tto_many_drug2 <-
+    bind_rows(
+      tto_many_drug %>%
+        filter(drug_s == "pd1") %>%
+        slice_tail(n = 3),
+      tto_many_drug %>%
+        filter(drug_s == "pdl1") %>%
+        slice_head(n = 3)
+    )
+
   correct_many_drug <-
     data.frame(
-      tto_max = c(56, 174, 448, 681),
-      drug_s  = c("pd1", "pd1", "pd1", "pdl1")
+      tto_max = c(85, 26, 59, 681, 29, 105),
+      drug_s  = c(rep("pd1", 3), rep("pdl1", 3))
     )
 
   expect_equal(
-    tto_many_drug %>%
+    tto_many_drug2 %>%
       select(tto_max, drug_s),
     correct_many_drug
   )
@@ -61,22 +107,30 @@ test_that("works with vectorized adrs and drugs", {
                 adr_s = c("a_colitis", "a_pneumonitis"),
                 drug_s = c("pd1", "pdl1"))
 
-  correct_many_both <-
-    data.frame(
-      tto_max = c(56, 174, 448, 681, 602, 43, 187, 17, 84),
-      drug_s = c(rep("pd1", 3), "pdl1", rep("pd1", 4), "pdl1"),
-      adr_s  = c(rep("a_colitis", 4), rep("a_pneumonitis", 5))
-    )
+  correct_many_both_n <- 88
+
 
   expect_equal(
-    tto_many_both %>%
-      select(tto_max, drug_s, adr_s),
-    correct_many_both
+   nrow(tto_many_both),
+   correct_many_both_n
   )
 
 })
 
 test_that("output type is consistent in presence or absence of tto data", {
+  luda_ <-
+    luda_ %>%
+    add_drug(
+      d_code = ex_$d_groups_drecno,
+      drug_data = drug_,
+      data_type = "link"
+    ) %>%
+    add_adr(
+      a_code = ex_$a_llt,
+      adr_data = adr_,
+      data_type = "link"
+    )
+
   tto_a1 <- # adr with some tto data
     extract_tto(luda_data = luda_,
 

@@ -13,13 +13,13 @@ test_that("computation is accurate", {
   res <-
     demo %>%
     compute_or_abcd(
-      y = "colitis",
+      y = "a_colitis",
       x = "nivolumab"
     )
 
   exp_res <- rlang::list2(
-    or = cff(0.75, dig = 2),
-    ic = cff(-0.20, dig = 2)
+    or = cff(1.88, dig = 2),
+    ic = cff(0.49, dig = 2)
   )
 
   expect_equal(

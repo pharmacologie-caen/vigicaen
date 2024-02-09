@@ -4,7 +4,7 @@ test_that("there is no duplicate in extracted llts", {
   llt_extraction_smq <-
     get_llt_smq(
       "Embolic and thrombotic events, venous (SMQ)",
-      smq_list_content = ex_$smq_list_content)
+      smq_list_content = smq_list_content_)
 
   expect_equal(length(llt_extraction_smq),
                length(unique(llt_extraction_smq)))
@@ -16,12 +16,12 @@ test_that("find the appropriate number of codes", {
      )
 
 
-  smq_res_length <- rlang::list2(embolism = 324)
+  smq_res_length <- rlang::list2(embolism = 348)
 
   adr_llt <-
     get_llt_smq(smq_sel,
                 smq_scope = "narrow",
-                smq_list_content = ex_[["smq_list_content"]])
+                smq_list_content = smq_list_content_)
 
   purrr::iwalk(adr_llt,
                function(p, p_n)
@@ -37,7 +37,7 @@ test_that("omitting ' (SMQ)' is corrected", {
   r1 <-
     get_llt_smq(smq_sel,
                 smq_scope = "narrow",
-                smq_list_content = ex_[["smq_list_content"]])
+                smq_list_content = smq_list_content_)
 
   expect_equal(r1[["embolism"]], r1[["embolism2"]])
 })
@@ -67,25 +67,25 @@ test_that("errors and warnings pop as needed", {
 
   expect_warning(
     get_llt_smq(s1,
-                smq_list_content = ex_[["smq_list_content"]]),
+                smq_list_content = smq_list_content_),
     "high level smq"
   )
 
   expect_error(
     get_llt_smq(s_algorithmic,
-                smq_list_content = ex_[["smq_list_content"]]),
+                smq_list_content = smq_list_content_),
     "algorithmic"
   )
 
   expect_warning(
     get_llt_smq(s2,
-                smq_list_content = ex_[["smq_list_content"]]),
+                smq_list_content = smq_list_content_),
     "the following elements were not found: ouuioui"
   )
 
   expect_warning(
     get_llt_smq(s3,
-                smq_list_content = ex_[["smq_list_content"]]),
+                smq_list_content = smq_list_content_),
     "the following elements were not found: ouuioui"
   )
 

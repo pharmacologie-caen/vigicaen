@@ -32,7 +32,7 @@
 #'   )
 #'
 #' # Compute the model
-#' mod <- glm(colitis ~ nivolumab, data = demo, family = "binomial")
+#' mod <- glm(a_colitis ~ nivolumab, data = demo, family = "binomial")
 #'
 #' # Extract coefficients
 #' coef_table <-
@@ -73,13 +73,13 @@ compute_or_mod <-
       mutate(or = exp({{ estimate }}),
              low_ci = exp({{ estimate }} - .env$zval * {{ std_er }}),
              up_ci  = exp({{ estimate }} + .env$zval * {{ std_er }}),
-             orl = cff(or, dig = 2),
-             ci =  cff(low_ci = low_ci,
-                       up_ci = up_ci,
+             orl = cff(.data$or, dig = 2),
+             ci =  cff(low_ci = .data$low_ci,
+                       up_ci = .data$up_ci,
                        dig = 2,
                        method = "ci"),
              ci_level = paste0((1 - .env$alpha) * 100, "%"),
-             signif_ror = if_else(low_ci > 1, 1, 0),
+             signif_ror = if_else(.data$low_ci > 1, 1, 0),
              p_val = nice_p({{ p_val }})
              ) %>%
       data.table()

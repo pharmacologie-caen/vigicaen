@@ -19,7 +19,6 @@
 #'
 #' @export
 #' @import data.table
-#' @examples
 
 
 # Matching from mp_short

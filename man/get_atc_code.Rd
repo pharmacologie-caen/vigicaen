@@ -26,16 +26,17 @@ Vigilyze style means all conditioning of drugs will be retrieved after requestin
 # ## Find codes associated with one or more atc classes
 
 # First, define which atc you want to use
+
 atc_sel <-
-  rlang::list2(l03_l04 = c("L03", "L04"),
-               c01 = c("C01")
-  )
+     rlang::list2(l03_j01 = c("L03AA", "J01CA"),
+                  c09aa = c("C09AA")
+     )
 
 # You can get DrecNos for you ATCs (if vigilyze is TRUE)
 
 atc_drecno <-
   get_atc_code(atc_sel = atc_sel,
-               mp_short = ex_$mp_short,
+               mp_short = mp_short_,
                thg_data = thg_,
                vigilyze = TRUE)
 
@@ -43,7 +44,7 @@ atc_drecno <-
 
 atc_mpi <-
   get_atc_code(atc_sel = atc_sel,
-               mp_short = ex_$mp_short,
+               mp_short = mp_short_,
                thg_data = thg_,
                vigilyze = FALSE)
 }

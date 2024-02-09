@@ -1,32 +1,46 @@
 test_that("find proper counts on a known dataset", {
+
+  luda_ <-
+    luda_ %>%
+    add_drug(
+      d_code = ex_$d_groups_drecno,
+      drug_data = drug_,
+      data_type = "link"
+    ) %>%
+    add_adr(
+      a_code = ex_$a_llt,
+      adr_data = adr_,
+      data_type = "link"
+    )
+
   rch_test <-
     desc_rch(luda_data = luda_,
-             demo_data = demo_rch_,
+             demo_data = demo_,
              adr_s = "a_colitis",
              drug_s = "pd1")
 
-  true_n_overall <- 8
+  true_n_overall <- 81
 
   expect_equal(
     rch_test$n_overall,
     true_n_overall
   )
 
-  true_n_rch <- 6
+  true_n_rch <- 54
 
   expect_equal(
     rch_test$n_rch,
     true_n_rch
   )
 
-  true_n_inf <- 5
+  true_n_inf <- 44
 
   expect_equal(
     rch_test$n_inf,
     true_n_inf
   )
 
-  true_n_rec <- 5
+  true_n_rec <- 16
 
   expect_equal(
     rch_test$n_rec,
@@ -37,9 +51,23 @@ test_that("find proper counts on a known dataset", {
     })
 
 test_that("can be vectorized", {
+
+  luda_ <-
+    luda_ %>%
+    add_drug(
+      d_code = ex_$d_groups_drecno,
+      drug_data = drug_,
+      data_type = "link"
+    ) %>%
+    add_adr(
+      a_code = ex_$a_llt,
+      adr_data = adr_,
+      data_type = "link"
+    )
+
   rch_test <-
     desc_rch(luda_data = luda_,
-             demo_data = demo_rch_,
+             demo_data = demo_,
              adr_s = c("a_colitis", "a_pneumonitis"),
              drug_s = "pd1")
 
@@ -47,10 +75,10 @@ test_that("can be vectorized", {
     data.table(
       drug = c("pd1", "pd1"),
       adr = c("a_colitis", "a_pneumonitis"),
-      n_overall = c(8, 5),
-      n_rch     = c(6, 3),
-      n_inf     = c(5, 3),
-      n_rec     = c(5, 2)
+      n_overall = c(81, 96),
+      n_rch     = c(54, 66),
+      n_inf     = c(44, 55),
+      n_rec     = c(16, 12)
     )
 
 
@@ -62,7 +90,7 @@ test_that("can be vectorized", {
 
   rch_test2 <-
     desc_rch(luda_data = luda_,
-             demo_data = demo_rch_,
+             demo_data = demo_,
              adr_s = c("a_colitis"),
              drug_s = c("pd1", "pdl1")
     )
@@ -71,10 +99,10 @@ test_that("can be vectorized", {
     data.table(
       drug = c("pd1", "pdl1"),
       adr = c("a_colitis", "a_colitis"),
-      n_overall = c(8, 2),
-      n_rch     = c(6, 1),
-      n_inf     = c(5, 0),
-      n_rec     = c(5, 0)
+      n_overall = c(81, 16),
+      n_rch     = c(54, 7),
+      n_inf     = c(44, 0),
+      n_rec     = c(16, 0)
     )
 
 

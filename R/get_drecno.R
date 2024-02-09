@@ -21,6 +21,8 @@
 #' @keywords atc
 #' @export
 #' @importFrom dplyr %>%
+#' @importFrom rlang .data
+#' @importFrom rlang .env
 #' @examples
 #'
 #' # ## Get drecnos for a list a drugs
@@ -36,7 +38,7 @@
 #' # First, you shall **always** inspect mp_short reading before getting the codes
 #'
 #' get_drecno(d_sel_names,
-#'            mp_short = ex_$mp_short,
+#'            mp_short = mp_short_,
 #'            allow_combination = FALSE,
 #'            method = "drug_name",
 #'            inspect = TRUE)
@@ -44,14 +46,14 @@
 #' # If this matches your needs, then extract (inspect = FALSE, by default)
 #'
 #' get_drecno(d_sel_names,
-#'              mp_short = ex_$mp_short,
+#'              mp_short = mp_short_,
 #'              allow_combination = FALSE,
 #'              method = "drug_name")
 #'
 #' # And DrecNos of drugs allowing for combinations
 #'
 #' get_drecno(d_sel = d_sel_names,
-#'             mp_short = ex_$mp_short,
+#'             mp_short = mp_short_,
 #'             allow_combination = TRUE,
 #'             method = "drug_name"
 #'
