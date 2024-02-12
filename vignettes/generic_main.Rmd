@@ -251,6 +251,45 @@ demo %>%
 
 ```
 
+## LUDA 
+
+```{r}
+
+luda <-
+  link %>% 
+  left_join(
+    drug %>% 
+      select(UMCReportId, Drug_Id, DrecNo),
+    by = "Drug_Id"
+  ) %>%
+  left_join(
+    adr %>% 
+      select(Adr_Id, MedDRA_Id),
+    by = "Adr_Id"
+  ) %>% 
+  add_drug(
+    d_code = d_drecno,
+    drug_data = drug,
+    data_type = "link"
+  ) %>% 
+  add_adr(
+    a_code = a_llt,
+    adr_data = adr,
+    data_type = "link"
+  )
+
+luda <-
+  luda %>% 
+  mutate(
+    tto_mean = (TimeToOnsetMax + TimeToOnsetMin) / 2,
+    range = (TimeToOnsetMax + TimeToOnsetMin) / 2 - TimeToOnsetMin
+  )
+
+
+?desc_dch
+```
+
+
 ### Basic models
 
 ```{r}
