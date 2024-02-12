@@ -3,31 +3,25 @@
 \docType{data}
 \name{luda_}
 \alias{luda_}
-\alias{demo_rch_}
 \title{Data for the rechallenge}
 \format{
-Two objects of class data.table and data.frame.
-
-An object of class \code{data.table} (inherits from \code{data.frame}) with 133 rows and 3 columns.
+An object of class data.table and data.frame.
 }
 \source{
 VigiBase Extract Case Level
 }
 \usage{
 luda_
-
-demo_rch_
 }
 \description{
-These are a set of data to provide examples on how my library works.
-\itemize{
-\item \code{luda_} Is a Link table, augmented with Umcreportid, Drug and Adr identifiers. These identifiers are DrecNo and MedDRA_Id, respectively.
-\item \code{demo_rch_} is a subsetted demo that encompass luda_ UMCReportIds.
-}
+Luda is a very special table used to compute time to onset, dechallenge,
+and rechallenge. \code{luda_} is a Link table, augmented with Umcreportid,
+Drug and Adr identifiers.
+These identifiers are DrecNo and MedDRA_Id, respectively. See \strong{coming soon} create_luda().
+Several examples in \code{\link{desc_dch}}, \code{\link{desc_rch}}, \code{\link{desc_tto}},
+\code{\link{extract_tto}}
 }
 \examples{
 data(luda_)
-data(demo_rch_)
-desc_rch(luda_, demo_rch_)
 }
 \keyword{datasets}

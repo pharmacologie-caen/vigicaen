@@ -4,7 +4,7 @@ test_that("there is no duplicate in extracted llts", {
     get_llt_soc(
       rlang::list2(colitis = "Colitis"),
       term_level = "pt",
-      meddra = ex_$meddra)
+      meddra = meddra_)
 
   expect_equal(purrr::map(llt_extraction_soc, length),
                purrr::map(llt_extraction_soc, ~ length(unique(.x)))
@@ -16,7 +16,7 @@ test_that("throws warning when nothing is found", {
     get_llt_soc(
       rlang::list2(rate = "youps"),
       term_level = "pt",
-      meddra = ex_$meddra
+      meddra = meddra_
     ),
     "the following terms were not found at pt level: youps"
   )
@@ -27,7 +27,7 @@ test_that("warning even if one term good and one term bad", {
     get_llt_soc(
       rlang::list2(rate = c("Hepatitis", "youps")),
       term_level = "pt",
-      meddra = ex_$meddra
+      meddra = meddra_
     ),
     "the following terms were not found at pt level: youps"
   )
@@ -48,7 +48,7 @@ test_that("works with unique and multiple terms", {
     get_llt_soc(
       pt_sel,
       term_level = "pt",
-      meddra = ex_$meddra
+      meddra = meddra_
     )
 
   purrr::iwalk(

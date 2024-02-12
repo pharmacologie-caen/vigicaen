@@ -25,7 +25,7 @@
 #' get_llt_soc(
 #'   term_sel = pt_sel,
 #'   term_level = "pt",
-#'   meddra = ex_$meddra
+#'   meddra = meddra_
 #'   )
 
 get_llt_soc <-

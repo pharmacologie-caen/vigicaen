@@ -43,7 +43,7 @@ demo <-
 
 demo \%>\%
   compute_or_abcd(
-    y = "colitis",
+    y = "a_colitis",
     x = "nivolumab"
   )
 
@@ -58,7 +58,7 @@ many_drugs <-
 lapply(many_drugs, function(a_drug)
   demo \%>\%
     compute_or_abcd(
-      y = "colitis",
+      y = "a_colitis",
       x = a_drug
     )
   ) \%>\%
@@ -71,7 +71,7 @@ many_drugs \%>\%
     function(a_drug)
       demo \%>\%
       compute_or_abcd(
-        y = "colitis",
+        y = "a_colitis",
         x = a_drug
       )
   ) \%>\%

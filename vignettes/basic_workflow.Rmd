@@ -74,7 +74,7 @@ L'étape 6 est réalisée à l'aide de la fonction `check_dm`
 demo <- demo_
 drug <- drug_
 
-mp_short <- ex_$mp_short
+mp_short <- mp_short_
 ```
 
 ### Etape 2 : Choisir un/des médicaments d'intérêt
@@ -305,7 +305,7 @@ Nous avons déjà chargé demo, restent adr et meddra.
 
 ```{r load_adr_table}
 adr <- adr_
-meddra <- ex_$meddra
+meddra <- meddra_
 ```
 
 ### Etape 2 : Choisir les évènements d'intérêt
@@ -313,7 +313,7 @@ meddra <- ex_$meddra
 ```{r a_sel_pt}
 a_sel_pt <-
   list2(
-    colitis = c(
+    a_colitis = c(
       "Colitis",
       "Autoimmune colitis",
       "Colitis microscopic",
@@ -366,7 +366,7 @@ La fonction check_dm peut être utilisée, comme pour les médicaments
 
 ```{r check_dm_adr}
 demo %>% 
-  check_dm("colitis")
+  check_dm("a_colitis")
 ```
 ## Autres variables
 
@@ -495,28 +495,28 @@ A l'aide de conditions dans demo, trouver a, b, c, et d et assigner les résulta
 a <- 
   demo %>% 
   filter(nivolumab == 1 & 
-           colitis == 1) %>% 
+           a_colitis == 1) %>% 
   summarise(n()) %>% 
   pull()
 
 b <- 
   demo %>% 
   filter(nivolumab == 1 & 
-           colitis == 0) %>% 
+           a_colitis == 0) %>% 
   summarise(n()) %>% 
   pull()
 
 c <- 
   demo %>% 
   filter(nivolumab == 0 & 
-           colitis == 1) %>% 
+           a_colitis == 1) %>% 
   summarise(n()) %>% 
   pull()
 
 d <- 
   demo %>% 
   filter(nivolumab == 0 & 
-           colitis == 0) %>% 
+           a_colitis == 0) %>% 
   summarise(n()) %>% 
   pull()
 ```
@@ -584,7 +584,7 @@ Vérifiez la concordance de vos résultats avec ceux de la fonction `compute_or_
 ```{r compute_or_abcd}
 demo %>% 
   compute_or_abcd(
-    y = "colitis",
+    y = "a_colitis",
     x = "nivolumab"
     )
 ```
@@ -598,7 +598,7 @@ C'est beaucoup plus coûteux en temps de calcul, cela génère un modèle dont o
 Le premier argument d'une fonction de modélisation est une formule de type `y ~ x`, où `y` est la variable d'intérêt et `x` la variable explicative.
 
 ```{r}
-mod <- glm(colitis ~ nivolumab, 
+mod <- glm(a_colitis ~ nivolumab, 
            data = demo, family = "binomial")
 
 summary(mod)
@@ -627,7 +627,7 @@ Faites une analyse de disproportionalité de colites sous nivolumab ajustée sur
 Faites une analyse de disproportionalité de colites sous nivolumab ajustée sur le sexe.
 
 ```{r}
-mod2 <- glm(colitis ~ nivolumab + sex,
+mod2 <- glm(a_colitis ~ nivolumab + sex,
             data = demo,
             family = "binomial")
 
@@ -702,7 +702,7 @@ Ce type d'interaction médicamenteuse additive peut être exploré de plusieurs 
 Reprenons notre modèle de colites ajusté sur le sexe, mais regardons l'effet de l'ipilimumab plutôt que celui du nivolumab
 
 ```{r}
-mod3 <- glm(colitis ~ ipilimumab + sex,
+mod3 <- glm(a_colitis ~ ipilimumab + sex,
             data = demo,
             family = "binomial")
 
@@ -720,12 +720,14 @@ De fait, l'odds-Ratio de colite, exponentiel de ces coefficients pour l'ipililum
 Alors, le "risque" de colite pour une femme sous ipilimumab est de
 
 ```{r}
+# valeurs fausses
 exp(1.40) * exp(0.07)
 ```
 
 On parle d'effets additifs car mathématiquement, l'opération est en fait
 
 ```{r}
+# valeurs fausses
 exp(1.40 + 0.07)
 ```
 
@@ -743,7 +745,7 @@ La fonction compute_ror_abcd permet de répondre à cette question, il suffit de
 demo %>% 
   filter(nivolumab == 1) %>% 
   compute_or_abcd(
-    y = "colitis",
+    y = "a_colitis",
     x = "ipilimumab"
     )
 ```
@@ -766,7 +768,7 @@ En reprenant le modèle logistique, l'interaction statistique peut être testée
 Ainsi, si on cherche l'effet de x1, x2 et de l'interaction x1/x2 sur y, la formule est `y ~ x1 + x2 + x1 * x2`
 
 ```{r}
-mod4 <- glm(colitis ~ ipilimumab + sex + ipilimumab * sex,
+mod4 <- glm(a_colitis ~ ipilimumab + sex + ipilimumab * sex,
             data = demo,
             family = "binomial")
 
