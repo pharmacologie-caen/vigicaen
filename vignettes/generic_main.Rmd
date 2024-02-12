@@ -10,7 +10,7 @@ vignette: >
 
 ---
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -28,7 +28,7 @@ Please follow the steps in this script.
 
 ## Libraries
 
-```{r}
+```{r libraries}
 library(pharmacocaen) # requires data.table, dplyr, fst, rlang, tidyverse
 library(rlang)
 library(here) # if you like the here syntax for file paths
@@ -46,7 +46,7 @@ and to your meddra files.
 
 ### From sample
 
-```{r, eval = FALSE}
+```{r path_classic, eval = FALSE}
 # #### IMPORT #### ####
 
 # ---- Paths sample ---- ####
@@ -67,7 +67,7 @@ path_meddra <- "~/Database/meddra_25_1/meddra_25_1/english/MedAscii/"
 
 If you're using the Caen CHU server, you paths might look like this
 
-```{r, eval = FALSE}
+```{r path_server, eval = FALSE}
 path_base   <- "/work/pharma/vigibase_2021_sep/main/"
 path_who    <- "/work/pharma/vigibase_2021_sep/who/"
 path_dic    <- "/home/dolladille-c/sclerodermia/03_dictionnaire.R"
@@ -78,8 +78,7 @@ path_meddra <- "/home/dolladille-c/meddra_24_0/english/medascii/"
 
 ### Load datasets
 
-```{r, eval = FALSE}
-
+```{r classic_datasets, eval = FALSE}
 demo     <- dt_fst(path_base, "demo")
 adr      <- dt_fst(path_base, "adr")
 drug     <- dt_fst(path_base, "drug")
@@ -92,7 +91,6 @@ suspdup  <- dt_fst(path_base, "suspectedduplicates")
 
 thg <- dt_fst(path_who, "THG")
 mp_short <- dt_fst(path_who, "mp_short")
-
 ```
 
 ### Work with preloaded test tables
@@ -100,7 +98,7 @@ mp_short <- dt_fst(path_who, "mp_short")
 Si vous n'avez pas de base pre-construite, servez vous des tables prechargees. 
 (cf infra) Dans cette vignette, c'est ce que nous allons faire.
 
-```{r}
+```{r test_datasets}
 demo     <- demo_
 adr      <- adr_
 drug     <- drug_
@@ -139,16 +137,13 @@ dictionary, and you may get lost if you haven't seen them before.
 
 Once you're done in generic_dictionnaire.R, move back here.
 
-```{r, eval=FALSE}
-
+```{r dict, eval=FALSE}
 source(path_dic)
-
 ```
 
 ### Don't have a dictionary yet or working with test sets?
 
-```{r, eval=TRUE}
-
+```{r codes, eval=TRUE}
 d_drecno <- ex_$d_drecno
 
 atc_drecno <-
@@ -158,12 +153,11 @@ atc_drecno <-
                vigilyze = TRUE)
 
 a_llt <- ex_$a_llt
-
 ```
 
 ## DEMO data management
 
-```{r}
+```{r demo_dm}
 # ---- Deduplicating ---- ####
 
 demo <- demo[!(UMCReportId %in% suspdup[, SuspectedduplicateReportId]),]
@@ -241,15 +235,13 @@ demo[, `:=` (year = as.numeric(substr(FirstDateDatabase, start = 1, stop = 4)))]
 
 # type of reporter
 demo %<>% left_join(srce[, .(UMCReportId, type_reporter = Type)], by = "UMCReportId") %>% data.table
-
 ```
 
 ### Check your data management in demo
 
-```{r, eval = FALSE}
+```{r demo_check, eval = FALSE}
 demo %>%
   check_dm(cols = c(names(d_drecno), names(a_llt), "fup"))
-
 ```
 
 ## LUDA 
@@ -258,8 +250,7 @@ demo %>%
 
 Create the LUDA table (a link table joined with UMCReportId). For convenience, it is also best practice to create tto_mean and range variables at this stage (at least in my opinion).
 
-```{r}
-
+```{r luda_create}
 luda <-
   link %>% 
   left_join(
@@ -271,17 +262,15 @@ luda <-
     tto_mean = (TimeToOnsetMax + TimeToOnsetMin) / 2,
     range = (TimeToOnsetMax + TimeToOnsetMin) / 2 - TimeToOnsetMin
   ) 
-
 ```
 
 ### Data managed LUDA
 
-```{r}
-
+```{r luda_drug_adr}
 luda <-
   luda %>% 
     add_drug(
-    d_code = atc_drecno,
+    d_code = d_drecno,
     drug_data = drug,
     data_type = "link"
     ) %>% 
@@ -290,12 +279,11 @@ luda <-
     adr_data = adr,
     data_type = "link"
     )
-
 ```
 
-### Basic models
+## Basic models
 
-```{r}
+```{r mods}
 # ---- Bivariate ---- ####
 
 rb <-
@@ -330,6 +318,49 @@ rm <-
 
 # remove the hashes to save your results
 ## write.csv2(rm, paste0(path_res, "rm.csv"), row.names = FALSE)
-
 ```
 
+## Basic descriptive
+
+```{r desc_demo}
+r_desc <- 
+  demo %>% 
+  desc_facvar(
+    vf = c("age", "sex",
+           "type_reporter",
+           "Type",
+           "year",
+           names(d_drecno),
+           names(a_llt),
+           "serious", "death"),
+    ncat_max = 20
+  )
+```
+
+```{r desc_tto}
+r_tto <-
+  desc_tto(
+    luda,
+    adr_s = names(a_llt),
+    drug_s = names(d_drecno)
+    ) 
+```
+
+```{r desc_dch}
+r_dch <-
+  desc_dch(
+    luda,
+    adr_s = names(a_llt),
+    drug_s = names(d_drecno)
+    )
+```
+
+```{r desc_rch}
+r_rch <-
+  desc_rch(
+    luda,
+    demo_data = demo,
+    adr_s = names(a_llt),
+    drug_s = names(d_drecno)
+  )
+```

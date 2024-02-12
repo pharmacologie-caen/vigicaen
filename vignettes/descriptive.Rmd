@@ -33,19 +33,276 @@ knitr::opts_chunk$set(
 ## Etape 0 : Charger les packages
 
 ```{r library, warning=FALSE, message=FALSE}
-
 # library(tidyverse)
 library(rlang)
 library(pharmacocaen)
-
 ```
 
 ## Etape 1 : Creer les colonnes medicament et evenement indesirable
 
-On reprend des éléments de la vignette basic_workflow.
+On utilise les jeux de donnees tests du package.
 
+```{r test_datasets}
+demo     <- demo_
+adr      <- adr_
+drug     <- drug_
+link     <- link_
+out      <- out_
+followup <- followup_
+
+srce     <- srce_
+
+thg      <- thg_
+mp_short <- mp_short_
+meddra   <- meddra_
+smq_list_content <- smq_list_content_
+
+suspdup <- 
+  data.table(
+    UMCReportId = 1,
+    SuspectedduplicateReportId = NA
+  )
+```
+
+Et on cree les colonnes medicaments et evenements indesirables comme dans
+\code{vignette("basic_workflow", package = "pharmacocaen")}
+
+```{r codes, eval=TRUE}
+d_drecno <- ex_$d_drecno
+
+a_llt <- ex_$a_llt
+```
+
+
+```{r demo_dm}
+demo <-
+  demo %>%
+  add_drug(
+    d_code = d_drecno,
+    drug_data = drug
+  )
+
+demo <-
+  demo %>%
+  add_adr(
+    a_code = a_llt,
+    adr_data = adr
+  )
+
+```
+
+L'interet etant de decrire des variables associees, comme l'age et le sexe,
+le type de rapport, le type de rapporteur, nous allons egalement ajouter ces
+variables, toujours comme dans \code{vignette("basic_workflow", package = "pharmacocaen")}
+
+```{r demo_dm_other_cols}
+# ---- Demographics ---- ####
+
+# Age, sex
+
+demo <-
+  demo %>%
+  mutate(
+    age = cut(as.integer(AgeGroup),
+              breaks = c(0,4,5,6,7,8),
+              include.lowest = TRUE, right = TRUE,
+              labels = c("<18", "18-45","45-64", "65-74", "75+")),
+
+    sex = case_when(Gender == "1" ~ 1,
+                    Gender == "2" ~ 2,
+                    Gender %in% c("-","0","9") ~ NA_real_,
+                    TRUE ~ NA_real_)
+  )
+
+# Death + disponibilite de l'outcome
+
+demo <-
+  demo %>%
+  mutate(death =
+           if_else(UMCReportId %in% out[, UMCReportId],
+                   UMCReportId %in% out[Seriousness == "1", UMCReportId],
+                   NA)
+  )
+
+# follow-up, seriousness
+
+demo <-
+  demo %>%
+  mutate(
+    fup = if_else(UMCReportId %in% followup[,UMCReportId], 1, 0),
+    serious = if_else(UMCReportId %in% out[, UMCReportId],
+                     UMCReportId %in% out[Serious == "Y", UMCReportId],
+                     NA)
+  )
+
+# year
+demo[, `:=` (year = as.numeric(substr(FirstDateDatabase, start = 1, stop = 4)))]
+
+# type of reporter
+demo %<>% left_join(srce[, .(UMCReportId, type_reporter = Type)], by = "UMCReportId") %>% data.table
+```
 
 ## Fonction desc_facvar()
+
+La fonction desc_facvar permet de générer une synthèse de variables catégorielles
+à 2 ou plusieurs niveaux.
+
+Elle prend comme argument un jeu de donnees a decrire, et une ou plusieurs
+variables d'interet, sous la forme d'une chaine de caracteres.
+
+Prenons par exemple la variable age dans le dataset demo.
+
+```{r desc_fv_age}
+desc_facvar(
+  .data = demo,
+  vf = "age"
+)
+```
+Le format de sortie est un data.frame, egalement de class tibble.
+
+Il y a une ligne pour chaque niveau de la variable d'interet. Ainsi, a la premiere
+ligne, on peut voir le nombre de patient dont la variable (`var`) age
+possede le niveau (`level`) "<18", c'est a dire les patients ages de moins de
+18 ans.
+
+Le pourcentage apparait dans la colonne `value`, apres le decompte du nombre de cas
+et du nombre total de rapports pour lesquels l'information est disponible.
+
+Ce nombre de rapport avec une information disponible est rappele dans la colonne
+`n_avail`
+
+Qu'advient-il lorsque la variable ne possede que deux niveaux, par exemple 1 et 0,
+comme c'est souvent le cas pour les variables medicament et evenement indesirable ?
+
+```{r desc_fv_drug}
+desc_facvar(
+  .data = demo,
+  vf = "nivolumab"
+)
+```
+Le format de sortie est globalement inchange, on a toujours un data.frame en sortie.
+
+La lecture est inchangee : on obtient le decompte du nombre de cas de la variable
+nivolumab, par ses deux niveaux. Il y a ainsi 225 patients exposes au nivolumab, 
+sur 750 rapports au total, ce qui represent 30% des patients. 
+
+A l'inverse, 525 rapports ne mentionnent pas le nivolumab.
+
+D'une facon generale lors de la presentation des resultats, le niveau 0 des variables
+binaires apporte peu d'information et peut etre omis.
+
+Continuons avec un autre exemple sur le statut "seriousness"
+
+```{r desc_fv_serious}
+desc_facvar(
+  .data = demo,
+  vf = "serious"
+)
+```
+
+La subtilite ici reside dans les valeurs prises par la variable serious.
+Il s'agit de TRUE/FALSE, et non pas de 1/0, mais cela sinterprete de la meme facon
+(ce n'est qu'un artefact de construction). Ainsi, 566 cas sont consideres 
+serieux, sur 747 ou l'information est disponible.
+
+## Regrouper plusieurs niveaux d'une variable
+
+Que faire si les categories disponibles ne correspondent pas a nos besoins finaux?
+
+Dans l'exemple sur l'age, il n'y a qu'un patient age de moins de 18ans, et peu
+de patients ages de moins de 45 ans. On aimerait pouvoir regrouper toutes ses
+donnees dans une seule ligne pour avoir une synthese.
+
+La solution consiste a creer la variable avec les niveaux souhaites en amont,
+dans une etape de data management.
+
+Par exemple
+
+
+```{r demo_re_dm_age}
+demo <-
+  demo %>%
+  mutate(
+    age2 = cut(as.integer(AgeGroup),
+              breaks = c(0,6,7,8),
+              include.lowest = TRUE, right = TRUE,
+              labels = c("<64", "65-74", "75+"))
+  )
+
+
+desc_facvar(
+  demo,
+  vf = "age2"
+)
+```
+On peut appliquer la meme logique pour des colonnes comme l'annee.
+
+En etudiant la colonne annee, il est frequent d'obtenir un message d'erreur
+
+```{r desc_fv_year, error=TRUE}
+desc_facvar(
+  .data = demo,
+  vf = "year"
+)
+```
+
+La fonction vous dit "too many levels detected in year, see details." Il s'agit 
+d'un comportement intentionnel de la fonction, pour eviter de passer des variables
+continues dans l'argument vf. Le nombre maximum de categories que peut prendre
+une variable traitee par `desc_facvar` est controle par l'argument `ncat_max`.
+
+Si une variable possede plus de `ncat_max` niveaux differents, la fonction s'arrete.
+
+On peut donc regler ce probleme en ajustant la valeur de ce parametre.
+
+```{r desc_fv_year_ncat}
+desc_facvar(
+  .data = demo,
+  vf = "year",
+  ncat_max = 20
+)
+```
+
+Cela permet de passer en revue les principales annees, mais sera peu transposable
+dans une table finale de manuscrit. Une categorisation des annees de reporting
+est donc souhaitable.
+
+### Autres arguments de desc_facvar()
+
+Trois autres arguments permettent de controler le format de sortie des resultats.
+
+1.   `format` est une chaine de caractere devant necessairement contenir les
+valeurs `n`, `N` et `pc`.
+
+Cet argument permet de personnaliser la facon dont le resultat s'affiche. Ainsi,
+si vous souhaitez mettre le pourcentage entre crochets par exemple, au lieu
+des parentheses
+
+```{r desc_fv_format}
+desc_facvar(
+  .data = demo,
+  vf = "nivolumab",
+  format = "n/N [pc%]"
+)
+```
+Vous pouvez egalement changer tous les autres elements de cet argument.
+
+2.    `pad_width` permet de centrer les resultats au milieu d'une chaine de caractere.
+Si vous avez des nombres particulierement eleves, vous pouvez augmenter la valeur
+de ce parametre, pour que vos resultats restent bien centres.
+
+3.    `digits` controle le nombre de chiffres apres la virgule qui doivent apparaitre
+pour le calcul du pourcentage. **Attention**, il n'est pas garanti que la somme
+fasse exactement 100%.
+
+```{r desc_fv_digits}
+desc_facvar(
+  .data = demo,
+  vf = "nivolumab",
+  digits = 1
+)
+```
+
 
 # Table LUDA
 
