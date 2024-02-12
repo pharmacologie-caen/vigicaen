@@ -10,16 +10,7 @@ vignette: >
 
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  include = TRUE,
-  echo = TRUE,
-  warning = FALSE, 
-  message = FALSE
-)
-```
+
 
 WELCOME to the generic process to perform a disproportionality analysis
 using VigiBase ECL!
@@ -30,7 +21,8 @@ Please follow the steps in this script.
 
 ## Libraries
 
-```{r}
+
+```r
 library(pharmacocaen) # requires data.table, dplyr, fst, rlang, tidyverse
 library(rlang)
 library(here) # if you like the here syntax for file paths
@@ -48,7 +40,8 @@ and to your meddra files.
 
 ### From sample
 
-```{r, eval = FALSE}
+
+```r
 # #### IMPORT #### ####
 
 # ---- Paths sample ---- ####
@@ -69,7 +62,8 @@ path_meddra <- "~/Database/meddra_25_1/meddra_25_1/english/MedAscii/"
 
 If you're using the Caen CHU server, you paths might look like this
 
-```{r, eval = FALSE}
+
+```r
 path_base   <- "/work/pharma/vigibase_2021_sep/main/"
 path_who    <- "/work/pharma/vigibase_2021_sep/who/"
 path_dic    <- "/home/dolladille-c/sclerodermia/03_dictionnaire.R"
@@ -80,7 +74,8 @@ path_meddra <- "/home/dolladille-c/meddra_24_0/english/medascii/"
 
 ### Load datasets
 
-```{r, eval = FALSE}
+
+```r
 
 demo <- dt_fst(path_base, "demo")
 adr  <- dt_fst(path_base, "adr")
@@ -100,7 +95,8 @@ mp_short <- dt_fst(path_who, "mp_short")
 Si vous n'avez pas de base pre-construite, servez vous des tables prechargees. 
 (cf infra) Dans cette vignette, c'est ce que nous allons faire.
 
-```{r}
+
+```r
 demo     <- demo_
 adr      <- adr_
 drug     <- drug_
@@ -138,7 +134,8 @@ dictionary, and you may get lost if you haven't seen them before.
 
 Once you're done in generic_dictionnaire.R, move back here.
 
-```{r, eval=FALSE}
+
+```r
 
 source(path_dic)
 
@@ -146,7 +143,8 @@ source(path_dic)
 
 ### Don't have a dictionary yet or working with test sets?
 
-```{r, eval=TRUE}
+
+```r
 
 d_drecno <- ex_$d_drecno
 
@@ -157,12 +155,12 @@ atc_drecno <-
                vigilyze = TRUE)
 
 a_llt <- ex_$a_llt
-
 ```
 
 ## Data management in demo
 
-```{r}
+
+```r
 # ---- Deduplicating ---- ####
 
 demo <- demo[!(UMCReportId %in% suspdup[, SuspectedduplicateReportId]),]
@@ -240,12 +238,13 @@ demo[, `:=` (year = as.numeric(substr(FirstDateDatabase, start = 1, stop = 4)))]
 
 # type of reporter
 demo %<>% left_join(srce[, .(UMCReportId, type_reporter = Type)], by = "UMCReportId") %>% data.table
-
 ```
 
 ### Check your data management in demo
 
-```{r, eval = FALSE}
+
+```r
+
 demo %>%
   check_dm(cols = c(names(d_drecno), names(a_llt), "fup"))
 
@@ -253,7 +252,8 @@ demo %>%
 
 ### Basic models
 
-```{r}
+
+```r
 # ---- Bivariate ---- ####
 
 rb <-
@@ -288,6 +288,5 @@ rm <-
 
 # remove the hashes to save your results
 ## write.csv2(rm, paste0(path_res, "rm.csv"), row.names = FALSE)
-
 ```
 
