@@ -26,8 +26,6 @@ using VigiBase ECL!
 
 Please follow the steps in this script.
 
-# Generic main script
-
 ## Libraries
 
 ```{r}
@@ -82,13 +80,15 @@ path_meddra <- "/home/dolladille-c/meddra_24_0/english/medascii/"
 
 ```{r, eval = FALSE}
 
-demo <- dt_fst(path_base, "demo")
-adr  <- dt_fst(path_base, "adr")
-drug <- dt_fst(path_base, "drug")
-out  <- dt_fst(path_base, "out")
-srce <- dt_fst(path_base, "srce")
+demo     <- dt_fst(path_base, "demo")
+adr      <- dt_fst(path_base, "adr")
+drug     <- dt_fst(path_base, "drug")
+link     <- dt_fst(path_base, "link")
+out      <- dt_fst(path_base, "out")
+srce     <- dt_fst(path_base, "srce")
+followup <- dt_fst(path_base, "srce")
 
-suspdup <- dt_fst(path_base, "suspectedduplicates")
+suspdup  <- dt_fst(path_base, "suspectedduplicates")
 
 thg <- dt_fst(path_who, "THG")
 mp_short <- dt_fst(path_who, "mp_short")
@@ -104,6 +104,7 @@ Si vous n'avez pas de base pre-construite, servez vous des tables prechargees.
 demo     <- demo_
 adr      <- adr_
 drug     <- drug_
+link     <- link_
 out      <- out_
 followup <- followup_
 
@@ -160,7 +161,7 @@ a_llt <- ex_$a_llt
 
 ```
 
-## Data management in demo
+## DEMO data management
 
 ```{r}
 # ---- Deduplicating ---- ####
