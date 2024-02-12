@@ -254,42 +254,44 @@ demo %>%
 
 ## LUDA 
 
+### Create LUDA
+
+Create the LUDA table (a link table joined with UMCReportId). For convenience, it is also best practice to create tto_mean and range variables at this stage (at least in my opinion).
+
 ```{r}
 
 luda <-
   link %>% 
   left_join(
     drug %>% 
-      select(UMCReportId, Drug_Id, DrecNo),
+      select(UMCReportId, Drug_Id),
     by = "Drug_Id"
   ) %>%
-  left_join(
-    adr %>% 
-      select(Adr_Id, MedDRA_Id),
-    by = "Adr_Id"
-  ) %>% 
-  add_drug(
-    d_code = d_drecno,
-    drug_data = drug,
-    data_type = "link"
-  ) %>% 
-  add_adr(
-    a_code = a_llt,
-    adr_data = adr,
-    data_type = "link"
-  )
+    mutate(
+    tto_mean = (TimeToOnsetMax + TimeToOnsetMin) / 2,
+    range = (TimeToOnsetMax + TimeToOnsetMin) / 2 - TimeToOnsetMin
+  ) 
+
+```
+
+### Data managed LUDA
+
+```{r}
 
 luda <-
   luda %>% 
-  mutate(
-    tto_mean = (TimeToOnsetMax + TimeToOnsetMin) / 2,
-    range = (TimeToOnsetMax + TimeToOnsetMin) / 2 - TimeToOnsetMin
-  )
+    add_drug(
+    d_code = atc_drecno,
+    drug_data = drug,
+    data_type = "link"
+    ) %>% 
+    add_adr(
+    a_code = a_llt,
+    adr_data = adr,
+    data_type = "link"
+    )
 
-
-?desc_dch
 ```
-
 
 ### Basic models
 
