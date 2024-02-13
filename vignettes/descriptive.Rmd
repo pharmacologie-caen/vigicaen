@@ -5,9 +5,11 @@ output:
     keep_md: true
 vignette: >
   %\VignetteIndexEntry{descriptive}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r, include = FALSE}
@@ -26,7 +28,8 @@ knitr::opts_chunk$set(
 
 ## Pre-requis
 
--   Savoir creer des colonnes medicament et evenement indesirable dans une table `demo`.
+-   Savoir creer des colonnes medicament et evenement indesirable dans
+    une table `demo`.
 
 # Data management
 
@@ -64,15 +67,14 @@ suspdup <-
   )
 ```
 
-Et on cree les colonnes medicaments et evenements indesirables comme dans
-\code{vignette("basic_workflow", package = "pharmacocaen")}
+Et on cree les colonnes medicaments et evenements indesirables comme
+dans \code{vignette("basic_workflow", package = "pharmacocaen")}
 
 ```{r codes, eval=TRUE}
 d_drecno <- ex_$d_drecno
 
 a_llt <- ex_$a_llt
 ```
-
 
 ```{r demo_dm}
 demo <-
@@ -91,9 +93,10 @@ demo <-
 
 ```
 
-L'interet etant de decrire des variables associees, comme l'age et le sexe,
-le type de rapport, le type de rapporteur, nous allons egalement ajouter ces
-variables, toujours comme dans \code{vignette("basic_workflow", package = "pharmacocaen")}
+L'interet etant de decrire des variables associees, comme l'age et le
+sexe, le type de rapport, le type de rapporteur, nous allons egalement
+ajouter ces variables, toujours comme dans
+\code{vignette("basic_workflow", package = "pharmacocaen")}
 
 ```{r demo_dm_other_cols}
 # ---- Demographics ---- ####
@@ -144,11 +147,11 @@ demo %<>% left_join(srce[, .(UMCReportId, type_reporter = Type)], by = "UMCRepor
 
 ## Fonction desc_facvar()
 
-La fonction desc_facvar permet de générer une synthèse de variables catégorielles
-à 2 ou plusieurs niveaux.
+La fonction desc_facvar permet de générer une synthèse de variables
+catégorielles à 2 ou plusieurs niveaux.
 
-Elle prend comme argument un jeu de donnees a decrire, et une ou plusieurs
-variables d'interet, sous la forme d'une chaine de caracteres.
+Elle prend comme argument un jeu de donnees a decrire, et une ou
+plusieurs variables d'interet, sous la forme d'une chaine de caracteres.
 
 Prenons par exemple la variable age dans le dataset demo.
 
@@ -158,21 +161,24 @@ desc_facvar(
   vf = "age"
 )
 ```
+
 Le format de sortie est un data.frame, egalement de class tibble.
 
-Il y a une ligne pour chaque niveau de la variable d'interet. Ainsi, a la premiere
-ligne, on peut voir le nombre de patient dont la variable (`var`) age
-possede le niveau (`level`) "<18", c'est a dire les patients ages de moins de
-18 ans.
+Il y a une ligne pour chaque niveau de la variable d'interet. Ainsi, a
+la premiere ligne, on peut voir le nombre de patient dont la variable
+(`var`) age possede le niveau (`level`) "\<18", c'est a dire les
+patients ages de moins de 18 ans.
 
-Le pourcentage apparait dans la colonne `value`, apres le decompte du nombre de cas
-et du nombre total de rapports pour lesquels l'information est disponible.
+Le pourcentage apparait dans la colonne `value`, apres le decompte du
+nombre de cas et du nombre total de rapports pour lesquels l'information
+est disponible.
 
-Ce nombre de rapport avec une information disponible est rappele dans la colonne
-`n_avail`
+Ce nombre de rapport avec une information disponible est rappele dans la
+colonne `n_avail`
 
-Qu'advient-il lorsque la variable ne possede que deux niveaux, par exemple 1 et 0,
-comme c'est souvent le cas pour les variables medicament et evenement indesirable ?
+Qu'advient-il lorsque la variable ne possede que deux niveaux, par
+exemple 1 et 0, comme c'est souvent le cas pour les variables medicament
+et evenement indesirable ?
 
 ```{r desc_fv_drug}
 desc_facvar(
@@ -180,16 +186,19 @@ desc_facvar(
   vf = "nivolumab"
 )
 ```
-Le format de sortie est globalement inchange, on a toujours un data.frame en sortie.
 
-La lecture est inchangee : on obtient le decompte du nombre de cas de la variable
-nivolumab, par ses deux niveaux. Il y a ainsi 225 patients exposes au nivolumab, 
-sur 750 rapports au total, ce qui represent 30% des patients. 
+Le format de sortie est globalement inchange, on a toujours un
+data.frame en sortie.
+
+La lecture est inchangee : on obtient le decompte du nombre de cas de la
+variable nivolumab, par ses deux niveaux. Il y a ainsi 225 patients
+exposes au nivolumab, sur 750 rapports au total, ce qui represent 30%
+des patients.
 
 A l'inverse, 525 rapports ne mentionnent pas le nivolumab.
 
-D'une facon generale lors de la presentation des resultats, le niveau 0 des variables
-binaires apporte peu d'information et peut etre omis.
+D'une facon generale lors de la presentation des resultats, le niveau 0
+des variables binaires apporte peu d'information et peut etre omis.
 
 Continuons avec un autre exemple sur le statut "seriousness"
 
@@ -201,23 +210,24 @@ desc_facvar(
 ```
 
 La subtilite ici reside dans les valeurs prises par la variable serious.
-Il s'agit de TRUE/FALSE, et non pas de 1/0, mais cela sinterprete de la meme facon
-(ce n'est qu'un artefact de construction). Ainsi, 566 cas sont consideres 
-serieux, sur 747 ou l'information est disponible.
+Il s'agit de TRUE/FALSE, et non pas de 1/0, mais cela sinterprete de la
+meme facon (ce n'est qu'un artefact de construction). Ainsi, 566 cas
+sont consideres serieux, sur 747 ou l'information est disponible.
 
 ## Regrouper plusieurs niveaux d'une variable
 
-Que faire si les categories disponibles ne correspondent pas a nos besoins finaux?
+Que faire si les categories disponibles ne correspondent pas a nos
+besoins finaux?
 
-Dans l'exemple sur l'age, il n'y a qu'un patient age de moins de 18ans, et peu
-de patients ages de moins de 45 ans. On aimerait pouvoir regrouper toutes ses
-donnees dans une seule ligne pour avoir une synthese.
+Dans l'exemple sur l'age, il n'y a qu'un patient age de moins de 18ans,
+et peu de patients ages de moins de 45 ans. On aimerait pouvoir
+regrouper toutes ses donnees dans une seule ligne pour avoir une
+synthese.
 
-La solution consiste a creer la variable avec les niveaux souhaites en amont,
-dans une etape de data management.
+La solution consiste a creer la variable avec les niveaux souhaites en
+amont, dans une etape de data management.
 
 Par exemple
-
 
 ```{r demo_re_dm_age}
 demo <-
@@ -235,9 +245,11 @@ desc_facvar(
   vf = "age2"
 )
 ```
+
 On peut appliquer la meme logique pour des colonnes comme l'annee.
 
-En etudiant la colonne annee, il est frequent d'obtenir un message d'erreur
+En etudiant la colonne annee, il est frequent d'obtenir un message
+d'erreur
 
 ```{r desc_fv_year, error=TRUE}
 desc_facvar(
@@ -246,12 +258,14 @@ desc_facvar(
 )
 ```
 
-La fonction vous dit "too many levels detected in year, see details." Il s'agit 
-d'un comportement intentionnel de la fonction, pour eviter de passer des variables
-continues dans l'argument vf. Le nombre maximum de categories que peut prendre
-une variable traitee par `desc_facvar` est controle par l'argument `ncat_max`.
+La fonction vous dit "too many levels detected in year, see details." Il
+s'agit d'un comportement intentionnel de la fonction, pour eviter de
+passer des variables continues dans l'argument vf. Le nombre maximum de
+categories que peut prendre une variable traitee par `desc_facvar` est
+controle par l'argument `ncat_max`.
 
-Si une variable possede plus de `ncat_max` niveaux differents, la fonction s'arrete.
+Si une variable possede plus de `ncat_max` niveaux differents, la
+fonction s'arrete.
 
 On peut donc regler ce probleme en ajustant la valeur de ce parametre.
 
@@ -263,20 +277,84 @@ desc_facvar(
 )
 ```
 
-Cela permet de passer en revue les principales annees, mais sera peu transposable
-dans une table finale de manuscrit. Une categorisation des annees de reporting
-est donc souhaitable.
+Cela permet de passer en revue les principales annees, mais sera peu
+transposable dans une table finale de manuscrit. Une categorisation des
+annees de reporting est donc souhaitable.
+
+## Expliciter les variables categorielles
+
+Il arrive que les niveaux de certaines variables soient indiques par des
+chiffres.
+
+```{r desc_fv_region}
+desc_facvar(
+  .data = demo,
+  vf = "Region"
+)
+```
+
+On sait ainsi que 389 cas proviennent de la Region "2", sans pouvoir
+dire a quelle aire geographique appartient cette region.
+
+Pour obtenir la correspondance, il existe des tables externes, 
+comme celle ci pour la Region:
+
+| Code | Libelle                      |
+|------|------------------------------|
+| 1    | African Region               |
+| 2    | Region of the Americas       |
+| 3    | South-East Asia Region       |
+| 4    | European Region              |
+| 5    | Eastern Mediterranean Region |
+| 6    | Western Pacific Region       |
+
+Plusieurs options sont possibles pour faire remonter l'information 
+directement dans demo, la plus simple consiste a utiliser des facteurs
+
+```{r factor_region}
+demo <-
+  demo %>% 
+  mutate(
+    Region = factor(Region, levels = c("1", "2", "3", "4", "5", "6"))
+  )
+
+levels(demo$Region) <-
+  c("African Region",                                    
+    "Region of the Americas",                            
+    "South-East Asia Region",                            
+    "European Region",                                   
+    "Eastern Mediterranean Region",                      
+    "Western Pacific Region"  
+  )
+```
+
+Notez la transformation en deux etapes. La premiere pour ranger les niveaux de la variable,
+la deuxieme pour affecter les libelles a ses niveaux, dans cet ordre.
+
+Cette transformation a pour effet de modifier le resultat de desc_facvar()
+
+```{r desc_fv_region_factor}
+desc_facvar(
+  .data = demo,
+  vf = "Region"
+)
+```
+
+Les deux autres variables principalement affectees par ce phenomene sont
+`Type`et `type_reporter`. Le code de transformation se trouve dans
+\code{vignette("generic_main.R", package = "pharmacocaen")}.
 
 ### Autres arguments de desc_facvar()
 
-Trois autres arguments permettent de controler le format de sortie des resultats.
+Trois autres arguments permettent de controler le format de sortie des
+resultats.
 
-1.   `format` est une chaine de caractere devant necessairement contenir les
-valeurs `n`, `N` et `pc`.
+1.  `format` est une chaine de caractere devant necessairement contenir
+    les valeurs `n`, `N` et `pc`.
 
-Cet argument permet de personnaliser la facon dont le resultat s'affiche. Ainsi,
-si vous souhaitez mettre le pourcentage entre crochets par exemple, au lieu
-des parentheses
+Cet argument permet de personnaliser la facon dont le resultat
+s'affiche. Ainsi, si vous souhaitez mettre le pourcentage entre crochets
+par exemple, au lieu des parentheses
 
 ```{r desc_fv_format}
 desc_facvar(
@@ -285,15 +363,17 @@ desc_facvar(
   format = "n/N [pc%]"
 )
 ```
+
 Vous pouvez egalement changer tous les autres elements de cet argument.
 
-2.    `pad_width` permet de centrer les resultats au milieu d'une chaine de caractere.
-Si vous avez des nombres particulierement eleves, vous pouvez augmenter la valeur
-de ce parametre, pour que vos resultats restent bien centres.
+2.  `pad_width` permet de centrer les resultats au milieu d'une chaine
+    de caractere. Si vous avez des nombres particulierement eleves, vous
+    pouvez augmenter la valeur de ce parametre, pour que vos resultats
+    restent bien centres.
 
-3.    `digits` controle le nombre de chiffres apres la virgule qui doivent apparaitre
-pour le calcul du pourcentage. **Attention**, il n'est pas garanti que la somme
-fasse exactement 100%.
+3.  `digits` controle le nombre de chiffres apres la virgule qui doivent
+    apparaitre pour le calcul du pourcentage. **Attention**, il n'est
+    pas garanti que la somme fasse exactement 100%.
 
 ```{r desc_fv_digits}
 desc_facvar(
@@ -303,17 +383,321 @@ desc_facvar(
 )
 ```
 
-
-# Table LUDA
+# Table LUDA (time to onset, dechallenge, rechallenge)
 
 La table Luda est dérivée de la table link. Le nom signifie
 
 > **L**ink table, with **U**mcreportid, **D**rug_id and **A**dr_id
 
+En vérité, il s'agit simplement d'une table Link a laquelle on joint la variable
+`UMCReportId` (les variables `Drug_Id` et `Adr_Id` étant nativement présentes dans
+link).
+
+Pour se faire, on réalise une jointure gauche à partir soit de la table drug,
+soit de la table adr. Par habitude, j'utilise la table drug.
+
 ## Créer la table LUDA
+
+```{r create_luda}
+drug_to_join <-
+  drug %>% 
+  select(UMCReportId, Drug_Id)
+
+luda <- 
+  link %>% 
+  left_join(
+    drug_to_join,
+    by = "Drug_Id"
+  )
+
+rm(drug_to_join)
+```
+
+Et voila! L'ajout de cette variable est interessante pour pouvoir extraire des 
+donnees a l'echelle d'un cas par la suite, notamment pour ce qui concerne le 
+rechallenge.
+
+## Data management de LUDA
+
+La table luda, comme la table link, etudie la relation de chaque paire
+medicament - evenement indesirable au sein des rapports. Il y a donc plusieurs
+lignes dans luda pour chaque ligne dans demo.
+
+Exemple de table demo
+
+| UMCReportId | Autres donnees (age, sexe...)   |
+|------|------------------------------|
+| 1    | 65-74, Homme               |
+| 2    | 65-74, Femme      |
+| 3    | 45-64, Femme       |
+
+La table luda correspondante serait
+
+| UMCReportId | Drug_Id    | Adr_Id     |Time to onset|
+|-------------|------------|------------|------------|
+| 1           |   1_1      |   1_a      |   60       |
+| 1           |   1_2      |   1_a      |   30       |
+| 1           |   1_1      |   1_b      |   45       |
+| 1           |   1_2      |   1_b      |   15       |
+| 2           |            |            |            |
+| 2           |            |            |            |
+| 3           |            |            |            |
+| 3           |            |            |            |
+| 3           |            |            |            |
+
+## Apprehender le contenu de LUDA
+
+Prenons un instant pour lire le contenu lie au cas no 1.
+
+-   Il comporte deux Drug_Id differents `1_1` et `1_2` : cela veut dire
+que ce cas a deux entrees 
+medicament differentes. La plupart du temps, il s'agit de deux medicaments 
+distincts (admettons, paracetamol et ibuprofene pour cet exemple). Il peut aussi 
+s'agir du meme medicament, avec des modalites d'administration differente 
+(paracetamol avec deux dosages, ou a deux moments differents).
+-   Il comporte deux Adr_Id differents `1_a` et `1_b`. Le meme raisonnement 
+s'applique, meme si pour les evenements indesirables, il s'agit le plus souvent
+de deux evenements distincts (admettons, une hepatite et une hemorragie).
+-   Des informations sont presentes pour chaque combinaison. Ici est represente 
+le time to onset, c'est a dire le delai entre l'initiation du medicament et la
+survenue de l'evenement.
+
+La lecture est la suivante:
+-    L'hepatite (`1_a`) est survenue 60 jours apres l'introduction du 
+paracetamol (`1_1`), et 30 jours apres l'introduction de l'ibuprofene (`1_2`).
+-    L'hemorragie (`1_b`) est survenue 45 jours apres l'introduction du
+paracetamol (`1_1`), et 15 jours apres l'introduction de l'ibuprofene (`1_2`).
+
+Dans cet exemple relativement simple, tout est coherent: on observe bien
+que le paracetamol et l'ibuprofene ont ete introduits a 30 jours d'intervalle
+l'un de l'autre.
+
+La realite est souvent plus complexe: comme annonce precedemment, il peut y 
+avoir plusieurs lignes pour un meme medicament, avec des time to onset different.
+
+Dans ce cas, il est important de decider comment traiter ces informations
+multiples.
+
+Par exemple: on pourrait avoir un time to onset a 30 jours pour du paracetamol
+pris a 500mg, et un time to onset a 15 jours pour du paracetamol pris a 1000mg.
+
+## Identifier les medicaments et les evenements indesirables
+
+Pour pouvoir travailler dans luda, il est plus facile de recreer des colonnes
+medicaments et evenements indesirables a l'instar de ce qui est fait dans demo.
+
+Cela est possible a l'aide des fonctions `add_drug` et `add_adr`. Il faut
+penser a specifier l'argument `data_type` sur la valeur "link".
+
+```{r luda_dm}
+luda <-
+  luda %>% 
+   add_drug(
+    d_code = d_drecno,
+    drug_data = drug,
+    data_type = "link"
+  )
+
+luda <-
+  luda %>%
+  add_adr(
+    a_code = a_llt,
+    adr_data = adr,
+        data_type = "link"
+  )
+```
+
+Verifions les decomptes
+
+```{r luda_check_dm}
+luda %>% 
+   check_dm(
+     cols = c(names(d_drecno), names(a_llt))
+     )
+```
+
+**!!! Attention**, les decomptes correspondent au nombre de ligne pour chaque medicament
+et chaque effet. Il ne s'agit pas du nombre de rapport comportant chaque medicament
+ou chaque effet. Si vous souhaitez obtenir cette derniere information, il faut
+interroger la table `demo`.
 
 ## Time to onset
 
+L'information time to onset est contenue dans deux variables dans la table
+luda/link: `TimeToOnsetMin` et `TimeToOnsetMax`. Ces deux variables refletent
+le delai minimum et maximum de survenue de l'evenement indesirable par rapport
+a la prise du medicament, en tenant compte de l'incertitude de la donne en entree.
+
+| UMCReportId | Drug_Id    | Adr_Id     |TimeToOnsetMin|TimeToOnsetMax|
+|-------------|------------|------------|--------------|------------|
+| 1           |   1_1      |   1_a      |   45         |   75       |
+
+Ici, l'hepatite est survenue entre 45 et 75 jours apres la prise du paracetamol.
+
+Pourquoi cette terminologie ? C'est lie a la facon de rapporter un delai de survenue
+pour les rapporteurs. Dans cet exemple, le rapporteur a notifie l'information
+suivante: "L'hepatite est survenue 2 mois apres la mise sous paracetamol".
+
+Cette facon de presenter le resultat comporte une imprecision sur le delai exact
+de survenue: quel etait le jour exact du mois ? Etait ce 1 mois et 15 jours? 
+Ou 2 mois et 15 jours ? Plus ?
+Impossible de trancher. Par convention, on estime que le vrai time to onset
+se trouve a +/- 15 jours de la date indiquee (ici, entre 60 - 15 = 45 jours,
+et 60 + 15 = 75 jours).
+
+Deux parametres sont derives de cette information : le time to onset moyen 
+`tto_mean` et le `range`. Le calcul est le suivant:
+
+```{r tto_mean_range}
+luda <- 
+  luda %>% 
+  mutate(
+    tto_mean = (TimeToOnsetMax + TimeToOnsetMin) / 2,
+    range = (TimeToOnsetMax + TimeToOnsetMin) / 2 - TimeToOnsetMin
+  ) 
+```
+
+| UMCReportId | Drug_Id    | Adr_Id     |TimeToOnsetMin|TimeToOnsetMax| tto_mean    | range     |
+|-------------|------------|------------|--------------|------------|------------|------------|
+| 1           |   1_1      |   1_a      |   45         |   75       |   60      |   30      |
+
+Le `tto_mean` est intuitif: il s'agit du delai moyen entre les deux valeurs disponibles.
+Dans notre exemple, on retrouve bien 60 jours, qui est le delai indique
+par le rapporteur.
+
+Le `range` donne l'incertitude: 30 jours dans notre exemple, voulant dire qu'on
+ne peut pas etre plus precis que a 30 jours pres.
+
+> La recommandation Uppsala est d'utiliser uniquement les time to onset
+dont le range est <= 1, c'est a dire les cas ou la date est connue au jour pres.
+
+Nb: l'information des heures et des minutes est egalement presente dans les
+time to onset, si elle est connue.
+
+
+Poursuivons l'exemple cite precedemment:
+
+Par exemple: on pourrait avoir un time to onset a 30 jours pour du paracetamol
+pris a 500mg, et un time to onset a 15 jours pour du paracetamol pris a 1000mg.
+
+Dans cet exemple, nous allons aboutir a deux tto_mean pour le couple
+"paracetamol" + "hepatite" dans un meme cas.
+
+Il faut donc decider d'une regle arbitraire pour synthetiser cette information.
+Notre habitude jusqu'ici est de **prendre le delai le plus long** entre l'introduction
+du medicament et la survenue de l'evenement (c'est a dire, le delai entre
+la premiere prise du medicament et l'evenement). Cela peut ne pas repondre a toutes
+les necessites cependant.
+
+Ces informations sont extraites par la fonction `extract_tto`.
+
+```{r extract_tto_example}
+extract_tto(
+  luda_data = luda,
+  drug_s = "nivolumab",
+  adr_s  = "a_colitis"
+)
+```
+On obtient dans ce resultat une ligne par couple medicament - evenement,
+avec le delai maximal `tto_max` entre l'introduction et la survenue de l'evenement.
+
+Cette information peut etre utilisee pour une representation graphique, ou pour 
+deriver une moyenne, un range... La deuxieme option est possible de nombreuses 
+facon, notamment par la fonction `desc_tto`.
+
+```{r desc_tto_example}
+desc_tto(
+  luda_data = luda,
+  drug_s = "nivolumab",
+  adr_s  = "a_colitis"
+)
+```
+Il est possible de requeter plusieurs medicaments et/ou plusieurs evenements
+dans ces deux fonctions.
+
+```{r desc_tto_many_to_many}
+desc_tto(
+  luda_data = luda,
+  drug_s = c("nivolumab", "pembrolizumab"),
+  adr_s  = c("a_colitis", "a_pneumonitis")
+)
+```
+
 ## Dechallenge
 
+La fonction desc_dch synthetise le nombre de dechallenge positif:
+
+> Un dechallenge positif survient lorsque le medicament a ete arrete ou que
+sa posologie a ete reduite, et que la reaction s'est amendee.
+
+```{r desc_dch_example}
+desc_dch(
+  luda,
+  drug_s = "nivolumab",
+  adr_s  = "a_colitis"
+)
+```
+
+```{r desc_dch_many_to_many}
+desc_dch(
+  luda,
+  drug_s = c("nivolumab", "pembrolizumab"),
+  adr_s  = c("a_colitis", "a_pneumonitis")
+)
+```
+
 ## Rechallenge
+
+Desole, c'est en anglais...
+
+Description span from rechallenge cases to informative rechallenge cases (those cases where the outcome is known). Drug and Adr identifiers refer to DrecNo and MedDRA_Id, respectively. Terminology
+
+-   Overall as opposed to rch for rechallenged (rch + no_rch = overall).
+
+-   Among rch, inf (informative) as opposed to non_inf (inf + non_inf = rch)
+
+-   Among inf, rec (recurring) as opposed to non_rec (rec + non_rec = inf)
+
+```{r desc_rch_example}
+desc_rch(
+  luda,
+  demo_data = demo,
+  drug_s = "nivolumab",
+  adr_s  = "a_colitis"
+)
+```
+
+**Le nombre de cas est bien decompte a l'echelle des cas dans demo +++.**
+
+C'est la raison pour laquelle un argument `demo_data` est requis ici.
+
+De la meme facon que desc_tto et desc_dch, vous pouvez requeter plusieurs paires
+differentes.
+
+> Les colonnes drug_s et adr_s peuvent correspondre a des ensembles de medicaments
+ou d'evenements, voir meme identifier l'ensemble des cas presents dans votre
+jeu de donnees, si vous souhaitez des informations a plus grande echelle
+
+Admettons qu'on souhaite connaitre, pour notre jeu de donnees entier, le nombre
+de rechallenge positif.
+
+Il faut simplement une variable qui prenne la valeur 1 pour toutes les lignes.
+
+```{r desc_rch_dm_hack}
+luda <-
+  luda %>% 
+  mutate(
+    all_cases = 1
+  )
+```
+
+On peut utiliser la fonction de facon detournee sur cette colonne.
+
+```{r desc_rch_hack}
+desc_rch(
+  luda,
+  demo_data = demo,
+  drug_s = "all_cases",
+  adr_s  = "all_cases"
+)
+```

@@ -234,7 +234,45 @@ demo <-
 demo[, `:=` (year = as.numeric(substr(FirstDateDatabase, start = 1, stop = 4)))]
 
 # type of reporter
-demo %<>% left_join(srce[, .(UMCReportId, type_reporter = Type)], by = "UMCReportId") %>% data.table
+demo <-
+  demo %>%
+  left_join(srce[, .(UMCReportId, type_reporter = Type)], 
+            by = "UMCReportId") %>% data.table
+
+# explicit multi-level vars
+
+demo <-
+  demo %>% 
+  mutate(
+    Type = factor(Type, levels = c("1", "2", "3", "4", "5")),
+    type_reporter = factor(type_reporter,
+                           levels = c("1", "2", "3", "4", "5")),
+    Region = factor(Region, levels = c("1", "2", "3", "4", "5", "6"))
+  )
+
+levels(demo$Type) <-
+  c("Spontaneous",                     
+     "Report from study",                        
+     "Other",   
+     "Not available to sender (unknown)",   
+     "PMS/Special monitoring")
+
+levels(demo$type_reporter) <-
+  c("Physician",
+    "Pharmacist",
+    "Other Health Professional",
+    "Lawyer",
+    "Consumer or other non health professional")
+
+levels(demo$Region) <-
+  c("African Region",                                    
+    "Region of the Americas",                            
+    "South-East Asia Region",                            
+    "European Region",                                   
+    "Eastern Mediterranean Region",                      
+    "Western Pacific Region"  
+  )
+
 ```
 
 ### Check your data management in demo
