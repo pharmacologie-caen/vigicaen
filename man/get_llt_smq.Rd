@@ -7,7 +7,7 @@
 get_llt_smq(smq, smq_scope = c("narrow", "broad"), smq_list_content)
 }
 \arguments{
-\item{smq}{A character vector, length 1.}
+\item{smq}{A named list of character vector of length 1.}
 
 \item{smq_scope}{A character vector. One of "narrow" or "broad".}
 
@@ -17,7 +17,7 @@ get_llt_smq(smq, smq_scope = c("narrow", "broad"), smq_list_content)
 Extracts from a smq_list_content a list of llts given an SMQ.
 }
 \details{
-!! You must use this function only for NON-algorithmic SMQs (this status is given in the smq_list table). There are 2 non-blocking checkers in the function. Be sure to add \code{ (SMQ)} at the end of the SMQ name. The other checker is when nothing is found.
+!! You must use this function only for NON-algorithmic SMQs (this status is given in the smq_list table). There are 2 non-blocking checkers in the function. Be sure to add \code{ (SMQ)} at the end of the SMQ name. The other checker is when nothing is found. The function doesn't work with character vectors of length > 1.
 }
 \examples{
 ## Finding llt codes for Embolism (SMQ)

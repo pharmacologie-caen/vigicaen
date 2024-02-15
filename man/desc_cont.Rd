@@ -21,7 +21,9 @@ Shorthand to apply a subjectively outstanding format
 \details{
 That's very close to what tableone would do, except I have hand on the output.
 This makes it much easier to map to nice labelling thereafter.
-The format argument shows the output of the function. You can change square and round brackets, spaces, separators... YOu can choose to display median, and interquartile range and/or range. The format argument should contain at least the word "median", and optionally the words "q1" and "q3", or "min" and "max". Words should be in that order, not mixed.
+The format argument shows the output of the function. You can change square
+and round brackets, spaces, separators...
+You can choose to display median, and interquartile range and/or range.
 The analogous for categorical variables is \code{count_facvar}.
 }
 \examples{

@@ -360,7 +360,7 @@ par exemple, au lieu des parentheses
 desc_facvar(
   .data = demo,
   vf = "nivolumab",
-  format = "n/N [pc%]"
+  format = "n_/N_ [pc_%]"
 )
 ```
 

@@ -14,7 +14,7 @@ get_drecno(
 )
 }
 \arguments{
-\item{d_sel}{A named list of character vectors. Selection of drug names or medicinalprod_id.}
+\item{d_sel}{A named list of character vectors. Selection of drug names or medicinalprod_id. See details}
 
 \item{mp_short}{A modified MP data.table. See \code{\link{ex_}}}
 
@@ -39,6 +39,7 @@ Negative lookarounds are used to ensure that a string does not match to composit
 Fixed associations of drugs refers to specialty containing more than one active ingredient (for example, acetylsalicylic acid and clopidogrel). In VigiLyze, the default is NOT to account for these fixed associations. For example, when you call "acetylsalicylic acid" in VigiLyze, you don't have the cases reported with the fixed-association "acetylsalicylic acid; clopidogrel" \strong{unless the substances were distinctly coded by the reporter.} Here, the default is to find a drug even if it is prescribed in a fixed association.
 Importantly, when retrieving fixed-association drugs, the non-of-interest drug alone drecno is not found, hence the cases related to this drug will not be added to those of the drug of interest.
 Drug names are automatically \code{tolower(trimws())}-ed in the function.
+d_sel must be a named list of character vectors. Character vectors do not work. The goal is to be able to group drugs in a list if needed and to add them in demo as a single class in a single column.
 }
 \examples{
 
@@ -60,20 +61,24 @@ get_drecno(d_sel_names,
            method = "drug_name",
            inspect = TRUE)
 
+
 # If this matches your needs, then extract (inspect = FALSE, by default)
 
-get_drecno(d_sel_names,
+d_drecno <-
+  get_drecno(d_sel_names,
              mp_short = mp_short_,
              allow_combination = FALSE,
              method = "drug_name")
+d_drecno
 
 # And DrecNos of drugs allowing for combinations
 
+d_drecno <-
 get_drecno(d_sel = d_sel_names,
             mp_short = mp_short_,
             allow_combination = TRUE,
             method = "drug_name"
-
             )
+d_drecno
 }
 \keyword{atc}

@@ -7,7 +7,7 @@
 desc_facvar(
   .data,
   vf,
-  format = "n/N (pc\%)",
+  format = "n_/N_ (pc_\%)",
   digits = 0,
   pad_width = 12,
   ncat_max = 10
@@ -30,8 +30,15 @@ desc_facvar(
 Shorthand to apply a subjectively outstanding format
 }
 \details{
-Twin function of count_cont, but for categorical variables. Valid format options should include \code{n} (number of patients with the categorical variable at said level), \code{N} (number of patients with an available value for this variable), and \code{pc}, percentage between n and N. The format argument should contain at least the words "n", and "N", and optionally the word "pc". Words should be in that order, not mixed.
-\code{ncat_max} ensures that you didn't accidentaly provided a continuous variable to \code{desc_facvar}. If you have many levels for one of your variables, set to \code{Inf} or high value.
+Twin function of count_cont, but for categorical variables.
+Valid format options should include \code{n_} (number of patients with the
+categorical variable at said level), \code{N_} (number of patients with an
+available value for this variable), and \code{pc_}, percentage between n and N.
+The format argument should contain at least the words "n", and "N",
+and optionally the word "pc". Words should be in that order, not mixed.
+\code{ncat_max} ensures that you didn't accidentaly provided a continuous
+variable to \code{desc_facvar}. If you have many levels for one of your variables,
+set to \code{Inf} or high value.
 }
 \examples{
 df1 <-

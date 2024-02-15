@@ -47,8 +47,8 @@
 #'
 #' # If this matches your needs, then extract (inspect = FALSE, by default)
 #'
-
-#' get_drecno(d_sel_names,
+#' d_drecno <-
+#'   get_drecno(d_sel_names,
 #'              mp_short = mp_short_,
 #'              allow_combination = FALSE,
 #'              method = "drug_name")
@@ -62,7 +62,7 @@
 #'             allow_combination = TRUE,
 #'             method = "drug_name"
 #'             )
-#'  d_drecno
+#' d_drecno
 
 get_drecno <- function(
     d_sel,

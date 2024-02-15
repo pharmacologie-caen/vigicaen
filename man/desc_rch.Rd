@@ -4,13 +4,7 @@
 \alias{desc_rch}
 \title{Rechallenge and TTO description}
 \usage{
-desc_rch(
-  luda_data,
-  demo_data,
-  drug_s = "pd1",
-  adr_s = "a_colitis",
-  tto_time_range = 1
-)
+desc_rch(luda_data, demo_data, drug_s = "pd1", adr_s = "a_colitis")
 }
 \arguments{
 \item{luda_data}{A data.table. luda stands for Link with UmcreportId, Drug and Adr identifiers (see details).}
@@ -20,8 +14,6 @@ desc_rch(
 \item{drug_s}{A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a luda table.}
 
 \item{adr_s}{A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a luda table.}
-
-\item{tto_time_range}{Incertitude range of Time to onset, in days. Defaults to 1 as recommended by umc}
 }
 \value{
 A one-row data.table with
