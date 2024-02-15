@@ -39,14 +39,14 @@ get_llt_smq <-
 
     smq_scope_code <-
       dplyr::case_when(
-        smq_scope == "narrow" ~ "2",
-        smq_scope == "broad" ~ "1",
+        smq_scope == "narrow" ~ c("2"),
+        smq_scope == "broad" ~ c("1", "2"),
         TRUE ~ "this is an error"
       )
 
     get_one_smq_llt <- function(one_smq){
       smq_list_content[smq_name == one_smq &
-                         term_scope == smq_scope_code &
+                         term_scope %in% smq_scope_code &
                          term_status == "A" &
                          # A pour terme actif
                          smq_algorithm == "N",

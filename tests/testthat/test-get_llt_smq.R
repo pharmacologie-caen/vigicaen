@@ -28,6 +28,52 @@ test_that("find the appropriate number of codes", {
                  expect_equal(length(p), smq_res_length[[p_n]]))
 })
 
+
+test_that("works with broad definitions", {
+
+  # an smq with no broad terms (only narrow ones)
+   smq_sel <- rlang::list2(
+    embolism = "Embolic and thrombotic events, venous (SMQ)"
+  )
+  # an smq with broad terms
+   smq_sel_2 <- rlang::list2(
+     hepato = "Hepatitis, non-infectious (SMQ)"
+   )
+
+  smq_res_length <- rlang::list2(embolism = 348)
+
+  smq_res2_length <- rlang::list2(hepato_narrow = 61,
+                                  hepato_broad = 69)
+
+  adr_llt <-
+    get_llt_smq(smq_sel,
+                smq_scope = "broad",
+                smq_list_content = smq_list_content_)
+
+  purrr::iwalk(adr_llt,
+               function(p, p_n)
+                 expect_equal(length(p), smq_res_length[[p_n]]))
+
+  adr_llt2_b <-
+    get_llt_smq(smq_sel_2,
+                smq_scope = "broad",
+                smq_list_content = smq_list_content_)
+
+  adr_llt2_n <-
+    get_llt_smq(smq_sel_2,
+                smq_scope = "narrow",
+                smq_list_content = smq_list_content_)
+
+  purrr::iwalk(adr_llt2_b,
+               function(p, p_n)
+                 expect_equal(length(p), smq_res2_length[["hepato_broad"]]))
+
+  purrr::iwalk(adr_llt2_n,
+               function(p, p_n)
+                 expect_equal(length(p), smq_res2_length[["hepato_narrow"]]))
+})
+
+
 test_that("omitting ' (SMQ)' is corrected", {
   smq_sel <- rlang::list2(
     embolism = "Embolic and thrombotic events, venous (SMQ)",
