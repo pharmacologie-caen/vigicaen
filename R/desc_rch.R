@@ -14,7 +14,6 @@
 #' @param demo_data A data.table. demo should have a serious and death columns.
 #' @param drug_s A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a luda table.
 #' @param adr_s A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a luda table.
-#' @param tto_time_range Incertitude range of Time to onset, in days. Defaults to 1 as recommended by umc
 #'
 #' @return A one-row data.table with
 #' \itemize{
@@ -57,8 +56,7 @@
 desc_rch <- function(luda_data,
                      demo_data,
                      drug_s = "pd1",
-                     adr_s = "a_colitis",
-                     tto_time_range = 1
+                     adr_s = "a_colitis"
 ){
 
 
