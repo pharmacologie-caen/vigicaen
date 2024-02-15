@@ -1,0 +1,404 @@
+---
+title: "generic_main"
+output: 
+  rmarkdown::html_vignette:
+    keep_md: true
+vignette: >
+  %\VignetteIndexEntry{generic_main}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  include = TRUE,
+  echo = TRUE,
+  warning = FALSE, 
+  message = FALSE
+)
+```
+
+WELCOME to the generic process to perform a disproportionality analysis
+using VigiBase ECL!
+
+Please follow the steps in this script.
+
+## Libraries
+
+```{r libraries}
+library(pharmacocaen) # requires data.table, dplyr, fst, rlang, tidyverse
+library(rlang)
+library(here) # if you like the here syntax for file paths
+```
+
+## Imports
+
+You may create a separate script with paths, that you would call at the beginning
+of your main script.
+
+Set paths to your Vigibase ECL folder,
+to your dictionnaire if you have one,
+to where you want the results to be saved
+and to your meddra files.
+
+### From sample
+
+```{r path_classic, eval = FALSE}
+# #### IMPORT #### ####
+
+# ---- Paths sample ---- ####
+path_base   <- "~/Database/sample/"
+path_who    <- "~/Database/who/"
+
+path_dic    <- "~/my_project/generic_dictionnaire.R"
+# alternative with the here syntax
+path_dic    <- here("generic_dicitionnaire.R")
+
+path_res    <- "~/my_project/my_res/"
+# alternative
+path_res    <- here("my_res")
+
+path_meddra <- "~/Database/meddra_25_1/meddra_25_1/english/MedAscii/"
+```
+### From serveur files
+
+If you're using the Caen CHU server, you paths might look like this
+
+```{r path_server, eval = FALSE}
+path_base   <- "/work/pharma/vigibase_2021_sep/main/"
+path_who    <- "/work/pharma/vigibase_2021_sep/who/"
+path_dic    <- "/home/dolladille-c/sclerodermia/03_dictionnaire.R"
+path_res    <- "/home/dolladille-c/sclerodermia/"
+path_meddra <- "/home/dolladille-c/meddra_24_0/english/medascii/"
+
+```
+
+### Load datasets
+
+```{r classic_datasets, eval = FALSE}
+demo     <- dt_fst(path_base, "demo")
+adr      <- dt_fst(path_base, "adr")
+drug     <- dt_fst(path_base, "drug")
+link     <- dt_fst(path_base, "link")
+out      <- dt_fst(path_base, "out")
+srce     <- dt_fst(path_base, "srce")
+followup <- dt_fst(path_base, "srce")
+
+suspdup  <- dt_fst(path_base, "suspectedduplicates")
+
+thg <- dt_fst(path_who, "THG")
+mp_short <- dt_fst(path_who, "mp_short")
+```
+
+### Work with preloaded test tables
+
+Si vous n'avez pas de base pre-construite, servez vous des tables prechargees. 
+(cf infra) Dans cette vignette, c'est ce que nous allons faire.
+
+```{r test_datasets}
+demo     <- demo_
+adr      <- adr_
+drug     <- drug_
+link     <- link_
+out      <- out_
+followup <- followup_
+
+srce     <- srce_
+
+thg      <- thg_
+mp_short <- mp_short_
+meddra   <- meddra_
+smq_list_content <- smq_list_content_
+
+suspdup <- 
+  data.table(
+    UMCReportId = 1,
+    SuspectedduplicateReportId = NA
+  )
+```
+
+## Dictionary
+
+> !! Wait a minute!
+
+Now you will "source" your dictionnaire...
+
+Do you have one? There's a dedicated vignette here 
+\code{vignette("generic_dictionary", package = "pharmacocaen")}.
+
+If its the first time you write this script, you may want
+to **STOP** here and create one.
+
+That's even most interesting as this vignette will use items created from the
+dictionary, and you may get lost if you haven't seen them before.
+
+Once you're done in generic_dictionnaire.R, move back here.
+
+```{r dict, eval=FALSE}
+source(path_dic)
+```
+
+### Don't have a dictionary yet or working with test sets?
+
+```{r codes, eval=TRUE}
+d_drecno <- ex_$d_drecno
+
+atc_drecno <-
+  get_atc_code(atc_sel =  rlang::list2(l03_j01 = c("L03AA", "J01CA")),
+               mp_short = mp_short_,
+               thg_data = thg_,
+               vigilyze = TRUE)
+
+a_llt <- ex_$a_llt
+```
+
+## DEMO data management
+
+```{r demo_dm}
+# ---- Deduplicating ---- ####
+
+demo <- demo[!(UMCReportId %in% suspdup[, SuspectedduplicateReportId]),]
+
+# ---- Drugs ---- ####
+
+# From a list of drugs
+
+demo <-
+  demo %>%
+  add_drug(
+    d_code = d_drecno,
+    drug_data = drug
+  )
+
+# From ATC
+
+demo <-
+  demo %>%
+  add_drug(
+    d_code = atc_drecno,
+    drug_data = drug
+  )
+
+# ---- Reactions ---- ####
+
+demo <-
+  demo %>%
+  add_adr(
+    a_code = a_llt,
+    adr_data = adr
+  )
+
+# ---- Demographics ---- ####
+
+# Age, sex
+
+demo <-
+  demo %>%
+  mutate(
+    age = cut(as.integer(AgeGroup),
+              breaks = c(0,4,5,6,7,8),
+              include.lowest = TRUE, right = TRUE,
+              labels = c("<18", "18-45","45-64", "65-74", "75+")),
+
+    sex = case_when(Gender == "1" ~ 1,
+                    Gender == "2" ~ 2,
+                    Gender %in% c("-","0","9") ~ NA_real_,
+                    TRUE ~ NA_real_)
+  )
+
+# Death + disponibilite de l'outcome
+
+demo <-
+  demo %>%
+  mutate(death =
+           if_else(UMCReportId %in% out[, UMCReportId],
+                   UMCReportId %in% out[Seriousness == "1", UMCReportId],
+                   NA)
+  )
+
+# follow-up, seriousness
+
+demo <-
+  demo %>%
+  mutate(
+    fup = if_else(UMCReportId %in% followup[,UMCReportId], 1, 0),
+    serious = if_else(UMCReportId %in% out[, UMCReportId],
+                     UMCReportId %in% out[Serious == "Y", UMCReportId],
+                     NA)
+  )
+
+# year
+demo[, `:=` (year = as.numeric(substr(FirstDateDatabase, start = 1, stop = 4)))]
+
+# type of reporter
+demo <-
+  demo %>%
+  left_join(srce[, .(UMCReportId, type_reporter = Type)], 
+            by = "UMCReportId") %>% data.table
+
+# explicit multi-level vars
+
+demo <-
+  demo %>% 
+  mutate(
+    Type = factor(Type, levels = c("1", "2", "3", "4", "5")),
+    type_reporter = factor(type_reporter,
+                           levels = c("1", "2", "3", "4", "5")),
+    Region = factor(Region, levels = c("1", "2", "3", "4", "5", "6"))
+  )
+
+levels(demo$Type) <-
+  c("Spontaneous",                     
+     "Report from study",                        
+     "Other",   
+     "Not available to sender (unknown)",   
+     "PMS/Special monitoring")
+
+levels(demo$type_reporter) <-
+  c("Physician",
+    "Pharmacist",
+    "Other Health Professional",
+    "Lawyer",
+    "Consumer or other non health professional")
+
+levels(demo$Region) <-
+  c("African Region",                                    
+    "Region of the Americas",                            
+    "South-East Asia Region",                            
+    "European Region",                                   
+    "Eastern Mediterranean Region",                      
+    "Western Pacific Region"  
+  )
+
+```
+
+### Check your data management in demo
+
+```{r demo_check, eval = FALSE}
+demo %>%
+  check_dm(cols = c(names(d_drecno), names(a_llt), "fup"))
+```
+
+## LUDA 
+
+### Create LUDA
+
+Create the LUDA table (a link table joined with UMCReportId). For convenience, it is also best practice to create tto_mean and range variables at this stage (at least in my opinion).
+
+```{r luda_create}
+luda <-
+  link %>% 
+  left_join(
+    drug %>% 
+      select(UMCReportId, Drug_Id),
+    by = "Drug_Id"
+  ) %>%
+    mutate(
+    tto_mean = (TimeToOnsetMax + TimeToOnsetMin) / 2,
+    range = (TimeToOnsetMax + TimeToOnsetMin) / 2 - TimeToOnsetMin
+  ) 
+```
+
+### Data managed LUDA
+
+```{r luda_drug_adr}
+luda <-
+  luda %>% 
+    add_drug(
+    d_code = d_drecno,
+    drug_data = drug,
+    data_type = "link"
+    ) %>% 
+    add_adr(
+    a_code = a_llt,
+    adr_data = adr,
+    data_type = "link"
+    )
+```
+
+## Basic models
+
+```{r mods}
+# ---- Bivariate ---- ####
+
+rb <-
+  purrr::map_dfr(
+    names(d_drecno),
+    function(x)
+      purrr::map_dfr(
+        names(a_llt),
+        function(y)
+          demo %>%
+          compute_or_abcd(x = x,
+                          y = y)
+        )
+  )
+
+# remove the hashes to save your results
+## write.csv2(rb, paste0(path_res, "rb.csv"), row.names = FALSE)
+
+# ---- Multivariate ---- ####
+
+mod <-
+  glm(a_colitis ~ nivolumab + age + sex,
+      family = "binomial",
+      data = demo)
+
+rm <-
+  summary(mod)$coefficients %>%
+  compute_or_mod(
+    estimate = Estimate,
+    std_er = Std..Error
+    )
+
+# remove the hashes to save your results
+## write.csv2(rm, paste0(path_res, "rm.csv"), row.names = FALSE)
+```
+
+## Basic descriptive
+
+```{r desc_demo}
+r_desc <- 
+  demo %>% 
+  desc_facvar(
+    vf = c("age", "sex",
+           "type_reporter",
+           "Type",
+           "year",
+           names(d_drecno),
+           names(a_llt),
+           "serious", "death"),
+    ncat_max = 20
+  )
+```
+
+```{r desc_tto}
+r_tto <-
+  desc_tto(
+    luda,
+    adr_s = names(a_llt),
+    drug_s = names(d_drecno)
+    ) 
+```
+
+```{r desc_dch}
+r_dch <-
+  desc_dch(
+    luda,
+    adr_s = names(a_llt),
+    drug_s = names(d_drecno)
+    )
+```
+
+```{r desc_rch}
+r_rch <-
+  desc_rch(
+    luda,
+    demo_data = demo,
+    adr_s = names(a_llt),
+    drug_s = names(d_drecno)
+  )
+```
