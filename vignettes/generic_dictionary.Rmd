@@ -18,3 +18,130 @@ knitr::opts_chunk$set(
 ```
 
 # Code d'un dictionnaire generique reutilisable
+
+```{r libraries, include = FALSE}
+library(pharmacocaen)
+library(rlang)
+```
+
+```{r real_data, eval = FALSE}
+# WELCOME to the generic process to perform a disproportionality analysis
+# you should start in generic_main.R and come here only when you are invited to
+
+# Oh, you're done already? Well, be welcomed here, then!
+
+# You should fill this dictionary with whatever drug/adr you want to study.
+
+# Run dictionary FROM main
+
+# #### IMPORT #### ####
+
+# ---- Datasets ---- ####
+
+# remember to define paths
+
+meddra <- dt_fst(path_meddra, "meddra_hierarchy")
+
+mp_short <- dt_fst(path_who, "mp_short")
+
+smq_list <- dt_fst(path_meddra, "meddra_smq_list")
+
+smq_content <- dt_fst(path_meddra, "meddra_smq_content.fst")
+
+smq_list_content <-
+  smq_list %>%
+  # SMQ sont toutes NON-algorithmiques dans la selection ci-dessous
+  left_join(smq_content, by = "smq_code") %>%
+  data.table
+
+```
+
+```{r test_data}
+meddra <- meddra_
+
+mp_short <- mp_short_
+
+smq_list_content <- smq_list_content_
+```
+
+
+```{r drugs_adrs, include = FALSE}
+# #### Drug definitions #### ####
+
+# Noms de drug en minuscule si possible
+
+d_sel <- # drug selection
+  list2(
+    nivolumab = "nivolumab"
+  )
+
+# INSPECT drecno first
+
+d_sel %>%
+  get_drecno(
+    mp_short = mp_short,
+    inspect = TRUE
+  )
+
+# then get drecnos
+
+d_drecno <-
+  d_sel %>%
+  get_drecno(
+    mp_short = mp_short,
+    inspect = FALSE
+  )
+
+# #### ATC definitions #### ####
+
+atc_sel <-
+  list2(l03 = "N06AB") # Selective serotonin reuptake inhibitors
+
+atc_drecno <-
+  atc_sel %>%
+  get_atc_code(
+    mp_short = mp_short,
+    thg_data = thg_
+  )
+
+# #### ADR definitions #### ####
+
+# Noms d'adr en respectant la casse Meddra
+
+# ---- SOC definition
+
+pt_sel <-
+  list2(
+    hepatitis = c("Hepatitis", "Hepatitis fulminant"),
+    hyponatremia = c("Hyponatraemia")
+  )
+
+hlt_sel <-
+  list2(
+    conduction = "Cardiac conduction disorders"
+  )
+
+# ---- SMQ definition
+
+smq_sel <-
+  list2(
+    hta = "Hypertension (SMQ)"
+  )
+
+# ---- Extraction
+
+a_llt <-
+  c(
+    get_llt_soc(pt_sel,
+                term_level = "pt",
+                meddra = meddra),
+    get_llt_soc(hlt_sel,
+                term_level = "hlt",
+                meddra),
+    get_llt_smq(smq_sel,
+                smq_scope =  "narrow",
+                smq_list_content)
+  )
+
+```
+
