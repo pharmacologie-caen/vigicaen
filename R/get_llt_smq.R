@@ -2,9 +2,9 @@
 #'
 #' Extracts from a smq_list_content a list of llts given an SMQ.
 #'
-#' !! You must use this function only for NON-algorithmic SMQs (this status is given in the smq_list table). There are 2 non-blocking checkers in the function. Be sure to add ` (SMQ)` at the end of the SMQ name. The other checker is when nothing is found.
+#' !! You must use this function only for NON-algorithmic SMQs (this status is given in the smq_list table). There are 2 non-blocking checkers in the function. Be sure to add ` (SMQ)` at the end of the SMQ name. The other checker is when nothing is found. The function doesn't work with character vectors of length > 1.
 #'
-#' @param smq A character vector, length 1.
+#' @param smq A named list of character vector of length 1.
 #' @param smq_scope A character vector. One of "narrow" or "broad".
 #' @param smq_list_content A data.table. A joint of smq_list and smq_content
 #' @keywords meddra smq llt
@@ -26,18 +26,6 @@ get_llt_smq <-
     smq_scope = c("narrow", "broad"),
     smq_list_content
   ){
-    # if(!grepl(" (SMQ)$", smq)) {
-    #   stop("smq name not ending by ` (SMQ)`")
-    # }
-    # smq <-
-    #   smq %>%
-    #   rlang::set_names(function(.x)
-    #     if_else(
-    #       stringr::str_detect(.x, "\\s(SMQ)$"),
-    #       .x,
-    #       paste0(.x, " (SMQ)")
-    #     ))
-
     smq <-
       purrr::map(smq, function(s_)
       if_else(
@@ -129,19 +117,6 @@ get_llt_smq <-
 
                     paste0(names(smq_algorithm_not_n), collapse = ", "),
                     "' is/are algorithmic, they are not handled by get_llt_smq."))
-
-      # in all other cases, check for unmatched
-
-      # non_hls_non_algo_still_zero <-
-      #   non_hls_zerollt_element[!non_hls_zerollt_element %in%
-      #                             names(smq_algorithm_not_n)]
-      #
-      #
-      # if(length(non_hls_non_algo_still_zero) > 0)
-      #   warning(paste0("no llt code found for '",
-      #                  paste0(non_hls_non_algo_still_zero, collapse = ", "),
-      #                  "'. Check spelling?"
-      #                  ))
     }
 
     # check for unmatched terms (its smarter than the previous, since is does
