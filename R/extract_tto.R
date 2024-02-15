@@ -83,7 +83,7 @@ extract_tto <-
           luda_sel %>%
           summarise(
             tto_max = max(.data$tto_mean, na.rm = TRUE),
-            .by = .data$UMCReportId
+            .by = UMCReportId
             # its a bit ambiguous to use UMCReportId
             # but works since there is filtering on adr and drug of interest
             # at the previous step
