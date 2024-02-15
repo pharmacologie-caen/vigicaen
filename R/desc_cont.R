@@ -4,7 +4,9 @@
 #'
 #' That's very close to what tableone would do, except I have hand on the output.
 #' This makes it much easier to map to nice labelling thereafter.
-#' The format argument shows the output of the function. You can change square and round brackets, spaces, separators... YOu can choose to display median, and interquartile range and/or range. The format argument should contain at least the word "median", and optionally the words "q1" and "q3", or "min" and "max". Words should be in that order, not mixed.
+#' The format argument shows the output of the function. You can change square
+#' and round brackets, spaces, separators...
+#' You can choose to display median, and interquartile range and/or range.
 #' The analogous for categorical variables is `count_facvar`.
 #'
 #' @param .data A data.frame, where vc are column names of continuous variables
@@ -68,57 +70,28 @@ desc_cont <-
     display_max <-
       stringr::str_detect(format, "max")
 
-    # ---- establish valid schemes ----
 
-    sch_full <-
-      all(display_median, display_q1, display_q3,
-          display_min, display_max)
+    many_params <-
+      c("median", "q1", "q3", "min", "max") %>%
+      rlang::set_names() %>%
+      purrr::map(
+        ~ stringr::str_count(format, .x)
+      )
 
-    sch_median_iqr <-
-      all(display_median, display_q1, display_q3)
-
-    sch_median_range <-
-      all(display_median, display_min, display_max)
-
-    if(!any(sch_full, sch_median_iqr, sch_median_range)){
-      stop("format argument does not reproduce a valid formatting, see details.")
+    if(!any(display_median,
+            display_q1,
+            display_q3,
+            display_min,
+            display_max)
+       ){
+      stop("format arg does not contain any of median, q1, q3, min or max. Please provide at least one.")
     }
 
-    # ---- extracting format ----
-
-    interq_format <-
-      if(sch_full || sch_median_iqr){
-        stringr::str_extract(format, "(?<=q1).*(?=q3)")
-      }
-
-    interr_format <-
-      if(sch_full || sch_median_range){
-        stringr::str_extract(format, "(?<=min).*(?=max)")
-      }
-
-
-    if(sch_full){
-      post_median_format <-
-        stringr::str_extract(format, "(?<=median).*(?=q1)")
-      post_iqr_format <-
-        stringr::str_extract(format, "(?<=q3).*(?=min)")
-      post_r_format <-
-        stringr::str_extract(format, "(?<=max).*$")
-    }
-
-    if(!sch_full && sch_median_iqr){
-      post_median_format <-
-        stringr::str_extract(format, "(?<=median).*(?=q1)")
-      post_iqr_format <-
-        stringr::str_extract(format, "(?<=q3).*$")
-    }
-
-    if(!sch_full && !sch_median_iqr && sch_median_range){
-      post_median_format <-
-        stringr::str_extract(format, "(?<=median).*(?=min)")
-      post_r_format <-
-        stringr::str_extract(format, "(?<=max).*$")
-    }
+    many_params %>%
+      purrr::imap(function(counts, param_name)
+        if(counts > 1)
+          stop(paste0("format code `", param_name, "` is present more than once in `format`."))
+      )
 
     # ---- core ----
 
@@ -152,38 +125,28 @@ desc_cont <-
                      ~ pharmacocaen::cff(.x, dig = .env$digits)),
 
               value =
-                if(sch_full){
-                  paste0(
-                    .data$median,
-                    .env$post_median_format,
-                    .data$q1,
-                    .env$interq_format,
-                    .data$q3,
-                    .env$post_iqr_format,
-                    .data$min,
-                    .env$interr_format,
-                    .data$max,
-                    .env$post_r_format
-                  )
-                } else if(sch_median_iqr){
-                  paste0(
-                    .data$median,
-                    .env$post_median_format,
-                    .data$q1,
-                    .env$interq_format,
-                    .data$q3,
-                    .env$post_iqr_format
-                  )
-                } else if(sch_median_range){
-                  paste0(
-                    .data$median,
-                    .env$post_median_format,
-                    .data$min,
-                    .env$interr_format,
-                    .data$max,
-                    .env$post_r_format
-                  )
-                },
+                .env$format %>%
+                stringr::str_replace(
+                  "median",
+                  paste0(.data$median)
+                ) %>%
+                stringr::str_replace(
+                  "q1",
+                  paste0(.data$q1)
+                ) %>%
+                stringr::str_replace(
+                  "q3",
+                  .data$q3
+                ) %>%
+                stringr::str_replace(
+                  "min",
+                  .data$min
+                ) %>%
+                stringr::str_replace(
+                  "max",
+                  .data$max
+                )
+              ,
               n_missing =
                 sum(is.na({{ vc_s }})),
               n_avail =

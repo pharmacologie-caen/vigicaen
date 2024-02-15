@@ -188,3 +188,24 @@ test_that(
 )
 
 
+test_that(
+  "doesnt work if format as two time min", {
+    df <-
+      data.frame(
+        age = c(60, 50, 56, 49, 75, 69, 85)
+      )
+
+    expect_error(
+      desc_cont(vc = c("age"),
+                .data = df,
+                format = "median admin (q1-q3) min",
+                dig = 0)
+      ,
+      "format code `min` is present more than once in `format`."
+    )
+
+
+  }
+)
+
+

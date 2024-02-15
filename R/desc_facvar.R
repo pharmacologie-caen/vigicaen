@@ -2,8 +2,15 @@
 #'
 #' Shorthand to apply a subjectively outstanding format
 #'
-#' Twin function of count_cont, but for categorical variables. Valid format options should include `n` (number of patients with the categorical variable at said level), `N` (number of patients with an available value for this variable), and `pc`, percentage between n and N. The format argument should contain at least the words "n", and "N", and optionally the word "pc". Words should be in that order, not mixed.
-#' `ncat_max` ensures that you didn't accidentaly provided a continuous variable to `desc_facvar`. If you have many levels for one of your variables, set to `Inf` or high value.
+#' Twin function of count_cont, but for categorical variables.
+#' Valid format options should include `n_` (number of patients with the
+#' categorical variable at said level), `N_` (number of patients with an
+#' available value for this variable), and `pc_`, percentage between n and N.
+#' The format argument should contain at least the words "n", and "N",
+#' and optionally the word "pc". Words should be in that order, not mixed.
+#' `ncat_max` ensures that you didn't accidentaly provided a continuous
+#' variable to `desc_facvar`. If you have many levels for one of your variables,
+#' set to `Inf` or high value.
 #'
 #' @param .data A data.frame, where vf are column names of categorical variables
 #' @param vf A character vector
@@ -32,7 +39,7 @@
 desc_facvar <-
   function( .data,
             vf,
-            format = "n/N (pc%)",
+            format = "n_/N_ (pc_%)",
             digits = 0,
             pad_width = 12,
             ncat_max = 10){
@@ -53,44 +60,30 @@ desc_facvar <-
     # ---- formatting arguments ----
 
     display_n <-
-      stringr::str_detect(format, "n")
+      stringr::str_detect(format, "n_")
 
     display_N <-
-      stringr::str_detect(format, "N")
+      stringr::str_detect(format, "N_")
 
     display_pc <-
-      stringr::str_detect(format, "pc")
+      stringr::str_detect(format, "pc_")
 
+    many_params <-
+      c("n_", "N_", "pc_") %>%
+      rlang::set_names() %>%
+      purrr::map(
+        ~ stringr::str_count(format, .x)
+      )
 
-    # ---- establish valid schemes ----
-
-    sch_full <-
-      all(display_n, display_N, display_pc)
-
-    sch_nN <-
-      all(display_n, display_N)
-
-    if(!any(sch_full, sch_nN)){
-      stop("format argument does not reproduce a valid formatting, see details.")
+    if(!any(display_n, display_N, display_pc)){
+      stop("format arg does not contain any of n_, N_, or pc_. Please provide at least one.")
     }
 
-    # ---- extract format ----
-
-
-      post_n_format <-
-        stringr::str_extract(format, "(?<=n).*(?=N)")
-
-      if(sch_full){
-        post_N_format <-
-          stringr::str_extract(format, "(?<=N).*(?=pc)")
-        post_pc_format <-
-          stringr::str_extract(format, "(?<=pc).*$")
-      }
-
-    if(!sch_full && sch_nN) {
-        post_N_format <-
-          stringr::str_extract(format, "(?<=N).*$")
-      }
+    many_params %>%
+      purrr::imap(function(counts, param_name)
+        if(counts > 1)
+          stop(paste0("format code `", param_name, "` is present more than once in `format`."))
+        )
 
     # ---- core ----
 
@@ -130,21 +123,19 @@ desc_facvar <-
           pc = pharmacocaen::cff(.data$n / .data$n_avail * 100,
                             dig = .env$digits),
           value =
-            if (sch_full) {
-              paste0(
-                .data$n,
-                .env$post_n_format,
-                .data$n_avail,
-                .env$post_N_format,
-                .data$pc,
-                .env$post_pc_format
-              )
-            } else if (sch_nN) {
-              paste0(.data$n,
-                     .env$post_n_format,
-                     .data$n_avail,
-                     .env$post_N_format)
-            },
+            .env$format %>%
+            stringr::str_replace(
+              "n_",
+              paste0(.data$n)
+            ) %>%
+            stringr::str_replace(
+              "N_",
+              paste0(.data$n_avail)
+            ) %>%
+            stringr::str_replace(
+              "pc_",
+              .data$pc
+            ),
 
           value =
             stringr::str_pad(value,

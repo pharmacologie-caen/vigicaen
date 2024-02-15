@@ -15,7 +15,7 @@ test_that(
 
     res_smoke <- desc_facvar(vf = c("smoke_status"),
                .data = df,
-               format = "n/N (pc%)",
+               format = "n_/N_ (pc_%)",
                dig = 0,
                pad_width = 0)
 
@@ -26,7 +26,7 @@ test_that(
 
     res_hta <- desc_facvar(vf = c("hta"),
                             .data = df,
-                            format = "n/N (pc%)",
+                            format = "n_/N_ (pc_%)",
                             dig = 0,
                             pad_width = 0)
 
@@ -46,7 +46,7 @@ test_that(
 
     res_hta_d0 <- desc_facvar(vf = c("hta"),
                                .data = df,
-                               format = "n/N (pc%)",
+                               format = "n_/N_ (pc_%)",
                                dig = 0,
                                pad_width = 0)
 
@@ -57,7 +57,7 @@ test_that(
 
     res_hta_d1 <- desc_facvar(vf = c("hta"),
                                .data = df,
-                               format = "n/N (pc%)",
+                               format = "n_/N_ (pc_%)",
                                dig = 1,
                                pad_width = 0)
 
@@ -77,7 +77,7 @@ test_that(
 
     res_hta_f1 <- desc_facvar(vf = c("hta"),
                                .data = df,
-                               format = "n/N",
+                               format = "n_/N_",
                                dig = 0,
                                pad_width = 0)
 
@@ -88,7 +88,7 @@ test_that(
 
     res_hta_f2 <- desc_facvar(vf = c("hta"),
                              .data = df,
-                             format = "n yolooo (N; pc%)",
+                             format = "n_ yolooo (N_; pc_%)",
                              dig = 0,
                              pad_width = 0)
 
@@ -100,7 +100,7 @@ test_that(
 
     res_hta_f3 <- desc_facvar(vf = c("hta"),
                              .data = df,
-                             format = "n; N with percentage equal to pc",
+                             format = "n_; N_ with percentage equal to pc_",
                              dig = 0,
                              pad_width = 0)
 
@@ -109,6 +109,64 @@ test_that(
       c("4; 7 with percentage equal to 57",
         "3; 7 with percentage equal to 43")
     )
+
+    # change order of params
+
+    res_hta_f4 <- desc_facvar(vf = c("hta"),
+                              .data = df,
+                              format = "pc_ N_ n_",
+                              dig = 0,
+                              pad_width = 0)
+
+    expect_equal(
+      res_hta_f4$value,
+      c("57 7 4", "43 7 3")
+    )
+  }
+)
+
+test_that(
+  "you can extract only one param", {
+    df <-
+      data.frame(
+        hta = c(1, 1, 0, 1, 0, 0, 0)
+      )
+
+    res_hta_f1 <- desc_facvar(vf = c("hta"),
+                              .data = df,
+                              format = "n_",
+                              dig = 0,
+                              pad_width = 0)
+
+    expect_equal(
+      res_hta_f1$value,
+      c("4", "3")
+    )
+
+    res_hta_f2 <- desc_facvar(vf = c("hta"),
+                              .data = df,
+                              format = "N_",
+                              dig = 0,
+                              pad_width = 0)
+
+    expect_equal(
+      res_hta_f2$value,
+      c("7",
+        "7")
+    )
+
+    res_hta_f3 <- desc_facvar(vf = c("hta"),
+                              .data = df,
+                              format = "pc_",
+                              dig = 0,
+                              pad_width = 0)
+
+    expect_equal(
+      res_hta_f3$value,
+      c("57",
+        "43")
+    )
+
   }
 )
 
@@ -126,7 +184,7 @@ test_that(
 
     res <- desc_facvar(vf = c("hta", "smoke_status"),
                         .data = df,
-                        format = "n/N (pc%)",
+                        format = "n_/N_ (pc_%)",
                         dig = 0,
                         pad_width = 0)
 
@@ -165,7 +223,7 @@ test_that(
 
     res <- desc_facvar(vf = c("hta"),
                       .data = df,
-                      format = "n/N (pc%)",
+                      format = "n_/N_ (pc_%)",
                       dig = 0,
                       pad_width = 0)
 
@@ -199,12 +257,65 @@ test_that(
     expect_error(
       desc_facvar(vf = c("age"),
                  .data = df,
-                 format = "n/N (pc%)",
+                 format = "n_/N_ (pc_%)",
                  dig = 0,
                  pad_width = 0,
                  ncat_max = 3)
       ,
       "too many levels detected"
+    )
+
+
+  }
+)
+
+
+test_that(
+  "doesnt work if format does not have n_, N_ or pc_", {
+    df <-
+      data.frame(
+        smoke_status = c("smoker", "non-smoker",
+                         "smoker", "smoker",
+                         "smoker", "smoker",
+                         "non-smoker"
+        )
+      )
+
+    expect_error(
+      desc_facvar(vf = c("smoke_status"),
+                  .data = df,
+                  format = "n/N (pc%)",
+                  dig = 0,
+                  pad_width = 0,
+                  ncat_max = 3)
+      ,
+      "format arg does not contain any of n_, N_, or pc_"
+    )
+
+
+  }
+)
+
+test_that(
+  "doesnt work if format as two time n_", {
+    df <-
+      data.frame(
+        smoke_status = c("smoker", "non-smoker",
+                         "smoker", "smoker",
+                         "smoker", "smoker",
+                         "non-smoker"
+        )
+      )
+
+    expect_error(
+      desc_facvar(vf = c("smoke_status"),
+                  .data = df,
+                  format = "n_/n_ (pc%)",
+                  dig = 0,
+                  pad_width = 0,
+                  ncat_max = 3)
+      ,
+      "format code `n_` is present more than once in `format`."
     )
 
 
