@@ -107,8 +107,8 @@ desc_rch <- function(luda_data,
 
       # Output of results
       data.table::data.table(
-        drug = one_drug,
-        adr = one_adr,
+        drug_s = one_drug,
+        adr_s = one_adr,
 
         n_overall,
 

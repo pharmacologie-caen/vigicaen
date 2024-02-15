@@ -73,8 +73,8 @@ test_that("can be vectorized", {
 
   true_rch <-
     data.table(
-      drug = c("pd1", "pd1"),
-      adr = c("a_colitis", "a_pneumonitis"),
+      drug_s = c("pd1", "pd1"),
+      adr_s = c("a_colitis", "a_pneumonitis"),
       n_overall = c(81, 96),
       n_rch     = c(54, 66),
       n_inf     = c(44, 55),
@@ -97,8 +97,8 @@ test_that("can be vectorized", {
 
   true_rch2 <-
     data.table(
-      drug = c("pd1", "pdl1"),
-      adr = c("a_colitis", "a_colitis"),
+      drug_s = c("pd1", "pdl1"),
+      adr_s = c("a_colitis", "a_colitis"),
       n_overall = c(81, 16),
       n_rch     = c(54, 7),
       n_inf     = c(44, 0),
