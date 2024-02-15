@@ -204,7 +204,7 @@ test_that("selecting only s, c, i works and provide less cases than sci altogeth
 
 })
 
-test_that("a dataset with duplicate UMCReportIds (like link) breaks the function if data_type is set to demo", {
+test_that("a dataset with no Drug_Id and Adr_Id columns (like link) breaks the function if data_type is set to demo", {
   d_drecno_test <-
     rlang::list2(
       ici1 = "ici1",
@@ -235,12 +235,12 @@ test_that("a dataset with duplicate UMCReportIds (like link) breaks the function
         drug_data = drug_test,
         data_type = "demo"
       ),
-    "The dataset contains duplicate UMCReportIds"
+    "The dataset has Drug_Id and Adr_Id columns"
     )
   }
   )
 
-test_that("a dataset with no duplicate UMCReportIds (like demo) breaks the function if data_type is set to link", {
+test_that("a dataset with no Drug_Id and Adr_Id columns (like demo) breaks the function if data_type is set to link", {
   d_drecno_test <-
     rlang::list2(
       ici1 = "ici1",
@@ -257,8 +257,6 @@ test_that("a dataset with no duplicate UMCReportIds (like demo) breaks the funct
 
   demo_test <-
     data.table(
-      Drug_Id =  c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
-      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
       UMCReportId = c(1, 2, 3, 4, 5)
     )
 
@@ -271,7 +269,7 @@ test_that("a dataset with no duplicate UMCReportIds (like demo) breaks the funct
         drug_data = drug_test,
         data_type = "link"
       ),
-    "The dataset does not contain duplicate UMCReportIds"
+    "The dataset does not have Drug_Id and Adr_Id columns"
   )
 }
 )

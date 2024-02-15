@@ -58,7 +58,7 @@ test_that("works with irregular names for demo and adr", {
 
 })
 
-test_that("a dataset with duplicate UMCReportIds (like link) breaks the function if data_type is set to demo", {
+test_that("a dataset with no Drug_Id and Adr_Id columns (like link) breaks the function if data_type is set to demo", {
   adr_list_test <-
     rlang::list2(
       adr1 = "adr1",
@@ -86,13 +86,13 @@ test_that("a dataset with duplicate UMCReportIds (like link) breaks the function
       add_adr(a_code = adr_list_test,
               adr_data = adr_test,
               data_type = "demo"),
-    "The dataset contains duplicate UMCReportIds"
+    "The dataset has Drug_Id and Adr_Id columns"
   )
 }
 )
 
 
-test_that("a dataset with no duplicate UMCReportIds (like demo) breaks the function if data_type is set to link", {
+test_that("a dataset with no Drug_Id and Adr_Id columns (like demo) breaks the function if data_type is set to link", {
   adr_list_test <-
     rlang::list2(
       adr1 = "adr1",
@@ -120,7 +120,7 @@ test_that("a dataset with no duplicate UMCReportIds (like demo) breaks the funct
       add_adr(a_code = adr_list_test,
               adr_data = adr_test,
               data_type = "link"),
-    "The dataset does not contain duplicate UMCReportIds"
+    "The dataset does not have Drug_Id and Adr_Id columns"
   )
 }
 )

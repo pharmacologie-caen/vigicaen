@@ -58,10 +58,12 @@ add_drug <-
 
     # use duplicates in UMCReportId to identify a link dataset versus a demo dataset.
     # and check that data_type is set correctly
-    if(data_type == "demo" && any(duplicated(.data$UMCReportId))){
-      stop("The dataset contains duplicate UMCReportIds (like a `link` dataset). Yet data_type is set to `demo`. Please set data_type to `link` or use a `demo` dataset")
-    } else if(data_type == "link" && !any(duplicated(.data$UMCReportId))){
-      stop("The dataset does not contain duplicate UMCReportIds (like a `demo` dataset). Yet data_type is set to `link`. Please set data_type to `demo` or use a `link` dataset")
+    if(data_type == "demo" &&
+       all(c("Drug_Id", "Adr_Id") %in% names(.data))){
+      stop("The dataset has Drug_Id and Adr_Id columns (like a `link` dataset). Yet data_type is set to `demo`. Please set data_type to `link` or use a `demo` dataset")
+    } else if(data_type == "link" &&
+              !all(c("Drug_Id", "Adr_Id") %in% names(.data))){
+      stop("The dataset does not have Drug_Id and Adr_Id columns, (as a `link` dataset would). Yet data_type is set to `link`. Please set data_type to `demo` or use a `link` dataset")
     }
 
     basis_sel <-
