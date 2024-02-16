@@ -157,4 +157,24 @@ test_that("works for mpi_list as well", {
 
 })
 
+test_that("names of de_sel were tolower-ed and trimed warning", {
+  d_sel_names <- rlang::list2(
+    Nivolumab = "nivolumab",
+    Ipilimumab = "ipilimumab",
+    Nivo_ipi = c("nivolumab", "ipilimumab")
+  )
+
+  expect_warning(
+    get_drecno(
+      d_sel = d_sel_names,
+      mp_short = mp_short_,
+      allow_combination = TRUE,
+      method = "drug_name",
+      inspect = TRUE
+    ),
+    "names of d_sel were tolower-ed and trimed"
+  )
+})
+
+
 

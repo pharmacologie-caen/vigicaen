@@ -26,7 +26,7 @@
 #' @importFrom rlang .env
 #' @examples
 #'
-#' # ## Get drecnos for a list a drugs
+#' # ## Get drecnos for a list a drugs. Check spelling and/or use WHO name. Usually in lowercase
 #'
 #' d_sel_names <- rlang::list2(
 #'   nivolumab = "nivolumab",
@@ -86,7 +86,7 @@ get_drecno <- function(
         stringr::str_to_lower()
     )
 
-  if(!all.equal(d_sel_renamed, d_sel)){
+  if(!all(names(d_sel) == names(d_sel_renamed))){
     warning("names of d_sel were tolower-ed and trimed")
   }
 
