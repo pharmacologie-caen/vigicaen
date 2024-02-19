@@ -16,6 +16,9 @@ screen_adr(adr_data, meddra, term_level = "pt", freq_threshold = 0.01)
 \item{freq_threshold}{A numeric, lowest frequency percentage of term to be
 screened.}
 }
+\value{
+A data.frame with counts of each term in adr_data.
+}
 \description{
 According to a desired term level, sort top seen terms.
 }
