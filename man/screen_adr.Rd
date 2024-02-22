@@ -4,7 +4,12 @@
 \alias{screen_adr}
 \title{Screening of adverse drug reactions}
 \usage{
-screen_adr(adr_data, meddra, term_level = "pt", freq_threshold = 0.01)
+screen_adr(
+  adr_data,
+  meddra,
+  term_level = c("soc", "hlgt", "hlt", "pt", "llt"),
+  freq_threshold = 0.01
+)
 }
 \arguments{
 \item{adr_data}{A data.table, an adr data}
@@ -25,11 +30,18 @@ According to a desired term level, sort top seen terms.
 \details{
 If \code{freq_threshold} is set to 0.05, all adverse drug reactions found at least in
 5\% of adrs in adr_data will be shown. That is not exactly the same as 5\% of
-cases (that would be found in demo).
+cases. Counts are provided at \emph{case} level (not adr level).
 }
 \examples{
 screen_adr(
   adr_data = adr_,
-  meddra = meddra_
+  meddra = meddra_,
+  term_level = "pt"
+)
+
+screen_adr(
+  adr_data = adr_,
+  meddra = meddra_,
+  term_level = "hlt"
 )
 }
