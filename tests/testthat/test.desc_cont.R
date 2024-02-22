@@ -38,6 +38,25 @@ test_that(
 )
 
 test_that(
+  "big counts have big marks", {
+    df <-
+      data.frame(
+        tto = c(6000, 5000, 5600, 4900, 7500, 6900, 8500)
+      )
+
+    res_tto <- desc_cont(vc = c("tto"),
+                         .data = df,
+                         format = "median (q1;q3) [min-max]",
+                         dig = 0)
+
+    expect_equal(
+      res_tto$value,
+      "6,000 (5,300;7,200) [4,900-8,500]"
+    )
+  }
+)
+
+test_that(
   "digit selection works", {
     df <-
       data.frame(
@@ -208,4 +227,34 @@ test_that(
   }
 )
 
+test_that(
+  "doesnt work with names out of .data names", {
+    df <-
+      data.frame(
+        age = c(60, 50, 56, 49, 75, 69, 85)
+      )
+
+    expect_error(
+      desc_cont(vc = c("bmi"),
+                .data = df,
+                format = "median (q1-q3)",
+                dig = 0)
+      ,
+      "Column(s) bmi is(are) absent of .data",
+      fixed = TRUE
+    )
+
+    expect_error(
+      desc_cont(vc = c("bmi", "sex"),
+                .data = df,
+                format = "median (q1-q3)",
+                dig = 0)
+      ,
+      "Column(s) bmi, sex is(are) absent of .data",
+      fixed = TRUE
+    )
+
+
+  }
+)
 

@@ -44,6 +44,17 @@ desc_facvar <-
             pad_width = 12,
             ncat_max = 10){
 
+    # only columns present in the dataset
+    if(!all(vf %in% names(.data))){
+      err_msg <-
+        paste0(vf[!vf %in% names(.data)], collapse = ", ")
+      stop(
+        paste0(
+          "Column(s) ",
+          err_msg, " is(are) absent of .data")
+      )
+    }
+
     # ---- number of levels checker ----
 
     lev_check <- function(one_var){

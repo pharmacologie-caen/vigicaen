@@ -344,4 +344,33 @@ test_that(
   }
 )
 
+test_that(
+  "doesnt work with vf outside of .data names", {
+
+    df <-
+      data.frame(
+        smoke_status = c("smoker", "non-smoker",
+                         "smoker", "smoker",
+                         "smoker", "smoker",
+                         "non-smoker"
+        )
+      )
+
+    expect_error(
+      desc_facvar(vf = c("bmi"),
+                .data = df)
+      ,
+      "Column(s) bmi is(are) absent of .data",
+      fixed = TRUE
+    )
+
+    expect_error(
+      desc_facvar(vf = c("bmi", "sex"),
+                .data = df)
+      ,
+      "Column(s) bmi, sex is(are) absent of .data",
+      fixed = TRUE
+    )
+  }
+)
 

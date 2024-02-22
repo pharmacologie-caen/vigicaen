@@ -43,6 +43,17 @@ desc_cont <-
 
     # checkers ----
 
+    # only columns present in the dataset
+    if(!all(vc %in% names(.data))){
+      err_msg <-
+        paste0(vc[!vc %in% names(.data)], collapse = ", ")
+      stop(
+        paste0(
+          "Column(s) ",
+          err_msg, " is(are) absent of .data")
+      )
+    }
+
     # only numeric or integer vars ----
     col_classes <-
       purrr::map(.data, class) %>%
@@ -52,6 +63,8 @@ desc_cont <-
     if(!all(col_classes %in% c("numeric", "integer"))){
       stop("Non numeric or integer columns selected")
     }
+
+
 
     # ---- formatting arguments ----
 
