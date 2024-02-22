@@ -49,14 +49,9 @@ extract_tto <-
            tto_time_range = 1
   ){
 
-    if(is.null(luda_data$tto_mean) || is.null(luda_data$range)){
+    if(!all(c("tto_mean", "range") %in% names(luda_data))){
 
-      luda_data <-
-        luda_data %>%
-        mutate(
-          tto_mean = (.data$TimeToOnsetMax + .data$TimeToOnsetMin) / 2,
-          range = (.data$TimeToOnsetMax + .data$TimeToOnsetMin) / 2 - .data$TimeToOnsetMin
-        )
+      stop("Either tto_mean or range columns are missing. See ?luda_")
 
     }
 

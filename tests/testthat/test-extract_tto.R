@@ -172,3 +172,49 @@ test_that("output type is consistent in presence or absence of tto data", {
     all_classes_a2
   )
 })
+
+test_that("breaks if tto_mean or range are missing", {
+  wrong_luda <-
+    luda_ |>
+    select(-tto_mean) |>
+    add_drug(
+      d_code = ex_$d_groups_drecno,
+      drug_data = drug_,
+      data_type = "link"
+    )  |>
+    add_adr(
+      a_code = ex_$a_llt,
+      adr_data = adr_,
+      data_type = "link"
+    )
+
+  expect_error(
+    extract_tto(luda_data = wrong_luda,
+                adr_s = "a_colitis",
+                drug_s = "pd1"),
+    "Either tto_mean or range columns are missing. See ?luda_",
+    fixed = TRUE
+  )
+
+  wrong_luda2 <-
+    luda_ |>
+    select(-range) |>
+    add_drug(
+      d_code = ex_$d_groups_drecno,
+      drug_data = drug_,
+      data_type = "link"
+    )  |>
+    add_adr(
+      a_code = ex_$a_llt,
+      adr_data = adr_,
+      data_type = "link"
+    )
+
+  expect_error(
+    extract_tto(luda_data = wrong_luda2,
+                adr_s = "a_colitis",
+                drug_s = "pd1"),
+    "Either tto_mean or range columns are missing. See ?luda_",
+    fixed = TRUE
+  )
+})
