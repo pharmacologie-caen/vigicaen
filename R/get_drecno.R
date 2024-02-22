@@ -212,8 +212,12 @@ get_drecno <- function(
 
     if(inspect == TRUE) {
       purrr::map(res_list, function(r_l)
-        unique(r_l[Sequence.number.1 == "01" &
-                     Sequence.number.2 == "001",], by = c("drug", "DrecNo"))
+       r_l |>
+         filter(
+           .data$Sequence.number.1 == "01" &
+             .data$Sequence.number.2 == "001"
+         ) |>
+         distinct(drug, DrecNo, .keep_all = TRUE)
       )
     } else {
       purrr::map(res_list, function(r_l)

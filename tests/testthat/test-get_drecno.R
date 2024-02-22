@@ -157,4 +157,66 @@ test_that("works for mpi_list as well", {
 
 })
 
+test_that("inspection works", {
+  d_one <-
+    list(
+      thrombophilia = c("tramadol")
+    )
+
+  r_inspect <-
+    get_drecno(d_one,
+             mp_short = mp_short_,
+             method = "drug_name",
+             inspect = TRUE,
+             allow_combination = TRUE)
+
+  r_expected_dim <- c(17, 9)
+
+  expect_equal(
+    dim(r_inspect[[1]]),
+    r_expected_dim
+  )
+
+  expect_equal(
+    all(stringr::str_detect(
+      r_inspect[[1]]$drug_name_t,
+      "tramadol"
+    )),
+    TRUE
+  )
+
+  expect_equal(
+    names(r_inspect),
+    names(d_one)
+  )
+
+  d_min <-
+    list(
+      thrombophilia = c("tramadol",
+                        "nivolumab")
+    )
+
+  r_insp2 <-
+    get_drecno(
+    d_sel = d_min,
+             mp_short = mp_short_,
+             method = "drug_name",
+             inspect = TRUE,
+             allow_combination = TRUE)
+
+  r_expected2_dim <- c(19, 9)
+
+  expect_equal(
+    dim(r_insp2[[1]]),
+    r_expected2_dim
+  )
+
+  expect_equal(
+    all(stringr::str_detect(
+      r_insp2[[1]]$drug_name_t,
+      "(tramadol|nivolumab)"
+    )),
+    TRUE
+  )
+})
 
