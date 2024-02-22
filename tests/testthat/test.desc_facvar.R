@@ -38,6 +38,28 @@ test_that(
 )
 
 test_that(
+  "big counts have big marks from cff", {
+    df <-
+      data.frame(
+        hta = c(rep(1, 1200), rep(0, 2000))
+      )
+
+    res_hta <- desc_facvar(vf = c("hta"),
+                           .data = df,
+                           format = "n_/N_ (pc_%)",
+                           dig = 0,
+                           pad_width = 0)
+
+    expect_equal(
+      res_hta$value,
+      c("2,000/3,200 (62%)",
+        "1,200/3,200 (38%)")
+    )
+  }
+)
+
+
+test_that(
   "digit selection works", {
     df <-
       data.frame(

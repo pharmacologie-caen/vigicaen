@@ -126,11 +126,11 @@ desc_facvar <-
             .env$format %>%
             stringr::str_replace(
               "n_",
-              paste0(.data$n)
+              pharmacocaen::cff(.data$n)
             ) %>%
             stringr::str_replace(
               "N_",
-              paste0(.data$n_avail)
+              pharmacocaen::cff(.data$n_avail)
             ) %>%
             stringr::str_replace(
               "pc_",
