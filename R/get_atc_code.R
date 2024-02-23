@@ -49,7 +49,9 @@ get_atc_code <-
 
     # core function ----
     core_get_atc_code <-
-      function(atc_) {
+      function(atc_,
+               ATC.code = {{ ATC.code }},
+               MedicinalProd_Id = {{ MedicinalProd_Id }}) {
         length_code <- stringr::str_count(atc_)
 
         atc_mpi <-

@@ -4,13 +4,7 @@
 \alias{compute_or_mod}
 \title{Compute (r)OR from a model summary}
 \usage{
-compute_or_mod(
-  .coef_table,
-  estimate = Estimate,
-  std_er = Std..Error,
-  p_val = NULL,
-  alpha = 0.05
-)
+compute_or_mod(.coef_table, estimate, std_er, p_val = NULL, alpha = 0.05)
 }
 \arguments{
 \item{.coef_table}{A coefficient table, see details.}

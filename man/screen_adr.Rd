@@ -25,12 +25,13 @@ screened.}
 A data.frame with counts of each term in adr_data.
 }
 \description{
-According to a desired term level, sort top seen terms.
-}
-\details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 If \code{freq_threshold} is set to 0.05, all adverse drug reactions found at least in
 5\% of adrs in adr_data will be shown. That is not exactly the same as 5\% of
 cases. Counts are provided at \emph{case} level (not adr level).
+}
+\details{
+According to a desired term level, sort top seen terms.
 }
 \examples{
 screen_adr(

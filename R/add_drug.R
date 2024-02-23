@@ -48,11 +48,8 @@ add_drug <-
   )
   {
     method <- match.arg(method)
-    method_col <- rlang::sym(method)
 
     col_names <- names(d_code)
-
-    # drug_data <- rlang::enquo(drug_data)
 
     data_type <- match.arg(data_type)
 
@@ -83,7 +80,8 @@ add_drug <-
 
     # core function
 
-    add_single_drug_demo <- function(drug_code) {
+    add_single_drug_demo <- function(drug_code,
+                                     UMCReportId = {{ UMCReportId }}) {
 
       # find matching UMCReportId in drug for this method values and this repbasis
 
@@ -111,7 +109,8 @@ add_drug <-
 
     # core function link
 
-    add_single_drug_link <- function(drug_code) {
+    add_single_drug_link <- function(drug_code,
+                                     Drug_Id = {{ Drug_Id }}) {
 
       # find matching Drug_Id in `drug_data` for this method values and this repbasis
       drug_id <-

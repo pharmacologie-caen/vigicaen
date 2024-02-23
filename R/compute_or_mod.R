@@ -56,8 +56,8 @@
 
 compute_or_mod <-
   function(.coef_table,
-           estimate = Estimate,
-           std_er = Std..Error,
+           estimate,
+           std_er,
            p_val = NULL,
            alpha = .05) {
 

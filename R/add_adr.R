@@ -64,7 +64,9 @@ add_adr <-
 
     # Step 1: core function for demo data_type, ifelse on UMCReportId
 
-    add_single_adr_demo <- function(adr_code) {
+    add_single_adr_demo <- function(adr_code,
+                                    MedDRA_Id = {{ MedDRA_Id }},
+                                    UMCReportId = {{ UMCReportId }}) {
       # promise in adr_data
 
       umc_ic <-
@@ -80,7 +82,9 @@ add_adr <-
       # evaluated in .data
     }
 
-    add_single_adr_link <- function(adr_code) {
+    add_single_adr_link <- function(adr_code,
+                                    MedDRA_Id = {{MedDRA_Id }},
+                                    Adr_Id = {{ Adr_Id }}) {
 
       adr_id <-
         dplyr::filter(adr_data, MedDRA_Id %in% adr_code)[["Adr_Id"]]

@@ -129,7 +129,7 @@ desc_facvar <-
                           0L
                         },
                       n_avail = sum(.data$n) - .data$n_missing) %>%
-        dplyr::filter(!is.na(level)) %>%
+        dplyr::filter(!is.na(.data$level)) %>%
         dplyr::mutate(
           pc = pharmacocaen::cff(.data$n / .data$n_avail * 100,
                             dig = .env$digits),
@@ -149,12 +149,12 @@ desc_facvar <-
             ),
 
           value =
-            stringr::str_pad(value,
+            stringr::str_pad(.data$value,
                              width = .env$pad_width,
                              side = "both")
 
         ) %>%
-        dplyr::select(var, level, value, n_avail)
+        dplyr::select(all_of(c("var", "level", "value", "n_avail")))
     }
 
     # ---- apply core ----

@@ -108,22 +108,22 @@ desc_dch <-
           mutate(
             pos_dch =
               ifelse(
-                Dechallenge1 %in% c("1", "2") &
-                  Dechallenge2 %in% c("1"),
+                .data$Dechallenge1 %in% c("1", "2") &
+                  .data$Dechallenge2 %in% c("1"),
                 1,
                 # be careful with the 0, only use instead of
                 # NA to shut warning in max, below
                 0
               )
           ) %>%
-          summarise(max_pos_dch = max(pos_dch),
+          summarise(max_pos_dch = max(.data$pos_dch),
                     .by = all_of(grouping_variables))
 
         dch %>%
           summarise(
             drug_s = .env$one_drug,
             adr_s = .env$one_adr,
-            pos_dch = sum(max_pos_dch)
+            pos_dch = sum(.data$max_pos_dch)
           ) %>%
           relocate(drug_s, adr_s)
       }

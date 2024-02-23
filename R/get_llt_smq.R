@@ -44,7 +44,12 @@ get_llt_smq <-
         TRUE ~ "this is an error"
       )
 
-    get_one_smq_llt <- function(one_smq){
+    get_one_smq_llt <- function(one_smq,
+                                smq_name = {{ smq_name }},
+                                term_scope = {{ term_scope }},
+                                term_status = {{ term_status }},
+                                smq_algorithm = {{ smq_algorithm }},
+                                term_code = {{ term_code }}){
       smq_list_content[smq_name == one_smq &
                          term_scope %in% smq_scope_code &
                          term_status == "A" &
@@ -78,7 +83,9 @@ get_llt_smq <-
 
       high_level_smq <-
         smq[zero_llt_element_names] %>%
-        purrr::map(function(zero_s){
+        purrr::map(function(zero_s,
+                            smq_name = {{ smq_name }},
+                            smq_algorithm = {{ smq_algorithm }}){
           # if you find zero_s in the list of smqs
           zero_s %in% unique(smq_list_content$smq_name) &&
             # and those smqs are not algorithmic
@@ -102,7 +109,10 @@ get_llt_smq <-
 
       smq_algorithm_not_n <-
         smq[non_hls_zerollt_element] %>%
-        purrr::map(function(s_)
+        purrr::map(function(s_,
+                            smq_name = {{ smq_name }},
+                            term_status = {{ term_status }},
+                            smq_algorithm = {{ smq_algorithm }})
           s_ %in% unique(smq_list_content$smq_name) &&
           smq_list_content[smq_name == s_ &
                              term_status == "A",
@@ -122,7 +132,8 @@ get_llt_smq <-
     # check for unmatched terms (its smarter than the previous, since is does
     # capture an unmatched term in the middle of good ones)
 
-    get_unmatched_terms <- function(one_smq){
+    get_unmatched_terms <- function(one_smq,
+                                    smq_name = {{ smq_name }}){
       unmatch_request <-
         rlang::expr(one_smq[!(!!one_smq %in% smq_list_content[, unique(smq_name)]
         )])

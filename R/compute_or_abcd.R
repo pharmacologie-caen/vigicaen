@@ -117,7 +117,7 @@ compute_or_abcd <-
 
   var <- c(y, x)
 
-  eff_table <- .data[, .(eff = as.numeric(.N)), by = var]
+  eff_table <- .data[, list(eff = as.numeric(.N)), by = var]
 
   lc <- function(x){
     if(length(x) == 0) {
@@ -128,13 +128,13 @@ compute_or_abcd <-
   }
 
   a <-
-    lc(eff_table[eff_table[[y]] == 1 & eff_table[[x]] == 1, eff])
+    lc(eff_table[eff_table[[y]] == 1 & eff_table[[x]] == 1, ][["eff"]])
   b <-
-    lc(eff_table[eff_table[[y]] == 1 & eff_table[[x]] == 0, eff])
+    lc(eff_table[eff_table[[y]] == 1 & eff_table[[x]] == 0, ][["eff"]])
   c <-
-    lc(eff_table[eff_table[[y]] == 0 & eff_table[[x]] == 1, eff])
+    lc(eff_table[eff_table[[y]] == 0 & eff_table[[x]] == 1, ][["eff"]])
   d <-
-    lc(eff_table[eff_table[[y]] == 0 & eff_table[[x]] == 0, eff])
+    lc(eff_table[eff_table[[y]] == 0 & eff_table[[x]] == 0, ][["eff"]])
 
   n_exp <-
     (a + b) * # n drug

@@ -2,6 +2,8 @@
 #'
 #' According to a desired term level, sort top seen terms.
 #'
+#' @description
+#' `r lifecycle::badge('experimental')`
 #' If `freq_threshold` is set to 0.05, all adverse drug reactions found at least in
 #'  5% of adrs in adr_data will be shown. That is not exactly the same as 5% of
 #'  cases. Counts are provided at *case* level (not adr level).
@@ -44,32 +46,46 @@ screen_adr <-
 
     # check unique MedDRA_Ids from adr_data
     # and apply the frequency threshold.
+    create_mid_unique_table <-
+      function(
+    adr_data,
+    MedDRA_Id = {{ MedDRA_Id }},
+    N = {{ N }}){
 
-    m_id_unique <-
       adr_data[, .N, by = MedDRA_Id][
         N > freq_threshold * nrow(adr_data)
       ]
+      }
 
-    umc_mid <-
-      adr_data[, ]
+    m_id_unique <-
+      create_mid_unique_table(adr_data)
 
     # summarise, create a term to meddra_id table
 
-    t_to_mid <-
+    create_term_to_mid_table <-
+      function(
+    meddra,
+    m_id_unique,
+    llt_code = {{ llt_code }}
+    ){
+
       rlang::eval_tidy(rlang::expr(
         meddra[llt_code %in% m_id_unique$MedDRA_Id,
-             .(!!term_sym, llt_code)]
+             list(!!term_sym, llt_code)]
       ))
+      }
+
+    t_to_mid <- create_term_to_mid_table(meddra, m_id_unique)
 
     # join that pt_names table to adr_data and count cases
 
     n_case_counts <-
       adr_data |>
       left_join(t_to_mid, by = c("MedDRA_Id" = "llt_code")) |>
-      select(UMCReportId, all_of(term_level_name)) |>
+      select(all_of(c("UMCReportId", term_level_name))) |>
       distinct() |>
       summarise(n_cas = n(), .by = .env$term_level_name) |>
-      arrange(desc(n_cas))
+      arrange(desc(.data$n_cas))
 
     n_case_counts
   }

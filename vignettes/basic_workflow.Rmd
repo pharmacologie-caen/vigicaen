@@ -710,8 +710,12 @@ summary(mod3)
 ```
 
 ```{r echo=FALSE}
-ror_ipi <- compute_or_mod(summary(mod3)$coefficients)[rn == "ipilimumab", orl]
-ror_sex <- compute_or_mod(summary(mod3)$coefficients)[rn == "sex", orl]
+ror_ipi <- compute_or_mod(summary(mod3)$coefficients,
+                          estimate = Estimate,
+                          std_er = Std..Error)[rn == "ipilimumab", orl]
+ror_sex <- compute_or_mod(summary(mod3)$coefficients,
+                          estimate = Estimate,
+                          std_er = Std..Error)[rn == "sex", orl]
 ```
 
 On trouve les coefficients 1.40 et 0.07 pour ipilimumab et sexe, respectivement.\
@@ -815,7 +819,10 @@ coef_table <-
   summary(mod2)$coefficients
 
 coef_table %>% 
-compute_or_mod()
+compute_or_mod(
+  estimate = Estimate,
+  std_er = Std..Error
+)
 ```
 
 # Ecrire un script R

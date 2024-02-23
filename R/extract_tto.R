@@ -59,7 +59,8 @@ extract_tto <-
 
     core_extract_tto <-
       function(one_adr,
-               one_drug
+               one_drug,
+               UMCReportId = {{ UMCReportId }}
       ){
         # selection
 

@@ -62,7 +62,8 @@ desc_rch <- function(luda_data,
 
   core_desc_rch <-
     function(one_drug,
-             one_adr
+             one_adr,
+             UMCReportId = {{ UMCReportId }}
     ){
       luda_sel <- # selection
         luda_data %>%
@@ -74,19 +75,19 @@ desc_rch <- function(luda_data,
 
       luda_sel_rch <-
         luda_sel %>%
-        dplyr::filter(Rechallenge1 == "1")
+        dplyr::filter(.data$Rechallenge1 == "1")
 
       demo_sel_rch <- demo_sel[UMCReportId %in% luda_sel_rch[, UMCReportId]]
 
       luda_sel_inf <-
         luda_sel %>%
-        dplyr::filter(Rechallenge2 %in% c("1", "2"))
+        dplyr::filter(.data$Rechallenge2 %in% c("1", "2"))
 
       demo_sel_inf <- demo_sel[UMCReportId %in% luda_sel_inf[, UMCReportId]]
 
       luda_sel_rec <-
         luda_sel %>%
-        dplyr::filter(Rechallenge2 %in% c("1"))
+        dplyr::filter(.data$Rechallenge2 %in% c("1"))
 
       demo_sel_rec <- demo_sel[UMCReportId %in% luda_sel_rec[, UMCReportId]]
 

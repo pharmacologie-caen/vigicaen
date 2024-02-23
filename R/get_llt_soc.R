@@ -38,7 +38,8 @@ get_llt_soc <-
 
     term_sym <- rlang::sym(paste0(term_level, "_name"))
 
-    get_one_term_llt <- function(one_term){
+    get_one_term_llt <- function(one_term,
+                                 llt_code = {{ llt_code }}){
       term_request <- rlang::expr(!!term_sym %in% !!one_term)
 
       llt <- meddra[eval(term_request), unique(llt_code)]

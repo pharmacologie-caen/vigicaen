@@ -134,7 +134,7 @@ desc_cont <-
               max =
                 max({{ vc_s }}, na.rm = TRUE),
 
-              across(c(median, q1, q3, min, max),
+              across(all_of(c("median", "q1", "q3", "min", "max")),
                      ~ pharmacocaen::cff(.x, dig = .env$digits)),
 
               value =
@@ -165,7 +165,7 @@ desc_cont <-
               n_avail =
                 sum(!is.na({{ vc_s }}))
             ) %>%
-            select(var, level, value, n_avail)
+            select(all_of(c("var", "level", "value", "n_avail")))
         } else {
           .data %>%
             summarise(

@@ -90,10 +90,14 @@ get_drecno <- function(
     warning("names of d_sel were tolower-ed and trimed")
   }
 
-  find_combination <- function(x_drug_name, env = mp_short){
+  find_combination <- function(x_drug_name, env = mp_short,
+                               drug_name_t = {{ drug_name_t }}){
     x_drug_name <-
-      gsub("\\(", "\\\\(", x_drug_name) %>% # so that parenthesis are appropriately escaped
-      gsub("\\)", "\\\\)", .)
+      gsub("\\(", "\\\\(", x_drug_name)
+
+    x_drug_name <- # so that parenthesis are appropriately escaped
+      gsub("\\)", "\\\\)", x_drug_name)
+
     eval(rlang::expr(grepl(paste0("(?<![[:alpha:]])", x_drug_name, "(?![\\s[:alpha:]])"),
                            drug_name_t,
                            perl = TRUE)),
@@ -102,10 +106,12 @@ get_drecno <- function(
     # negative lookahead: x is not followed by a space or an alphabetic character.
   }
 
-  find_isolated <- function(x_drug_name, env = mp_short)
+  find_isolated <- function(x_drug_name, env = mp_short,
+                            drug_name_t = {{ drug_name_t }})
     eval(rlang::expr(drug_name_t == x_drug_name), envir = env) # exact match
 
-  find_mpi <- function(x_mpi_list, env = mp_short)
+  find_mpi <- function(x_mpi_list, env = mp_short,
+                       MedicinalProd_Id = {{ MedicinalProd_Id }})
     eval(rlang::expr(MedicinalProd_Id %in% x_mpi_list), envir = env)
 
 
@@ -113,7 +119,12 @@ get_drecno <- function(
 
   # drug finder and exist checker (works for a single drug at a time, then it is vectorized)
 
-  find_drug_and_check_exist <- function(x) {
+  find_drug_and_check_exist <-
+    function(x,
+             Sequence.number.1 = {{ Sequence.number.1 }},
+             Sequence.number.2 = {{ Sequence.number.2 }},
+             DrecNo = {{ DrecNo }},
+             drug_name_t = {{ drug_name_t }}) {
     # single drug checking
     if (length(x) > 1)
       stop(
@@ -217,10 +228,11 @@ get_drecno <- function(
            .data$Sequence.number.1 == "01" &
              .data$Sequence.number.2 == "001"
          ) |>
-         distinct(drug, DrecNo, .keep_all = TRUE)
+         distinct(.data$drug, .data$DrecNo, .keep_all = TRUE)
       )
     } else {
-      purrr::map(res_list, function(r_l)
+      purrr::map(res_list, function(r_l,
+                                    DrecNo = {{ DrecNo }})
         r_l[, unique(DrecNo)]
         )
     }
