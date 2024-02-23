@@ -13,7 +13,7 @@
 #' Drug names are automatically `tolower(trimws())`-ed in the function.
 #'
 #' @param d_sel A named list of character vectors. Selection of drug names or medicinalprod_id.
-#' @param mp_short A modified MP data.table (dataframe do not work). See \code{\link{ex_}}
+#' @param mp_short A modified MP data.table. See \code{\link{ex_}}
 #' @param allow_combination A logical. Should fixed associations including the drug of interest be retrieved? See details.
 #' @param method Should DrecNo be found from drug names or from MedicinalProd_Id?
 #' @param inspect Instead of providing a list of drecnos, do you wish to see a larger data.frame with additional data? See details.
