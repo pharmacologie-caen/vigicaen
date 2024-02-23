@@ -17,11 +17,27 @@ luda_
 Luda is a very special table used to compute time to onset, dechallenge,
 and rechallenge. \code{luda_} is a Link table, augmented with Umcreportid,
 Drug and Adr identifiers.
-These identifiers are DrecNo and MedDRA_Id, respectively. See \strong{coming soon} create_luda().
+These identifiers are DrecNo and MedDRA_Id, respectively. If you wish to
+create a luda table from a link one, see the example below.
 Several examples in \code{\link{desc_dch}}, \code{\link{desc_rch}}, \code{\link{desc_tto}},
 \code{\link{extract_tto}}
 }
 \examples{
+# luda is preloaded in the package as luda_
 data(luda_)
+
+# if you want to create it from a link table
+
+link_
+
+luda <-link_ |>
+  left_join(
+    drug_[, .(UMCReportId, Drug_Id)],
+    by = "Drug_Id"
+  ) |>
+  mutate(
+    tto_mean = (.data$TimeToOnsetMax + .data$TimeToOnsetMin) / 2,
+    range = (.data$TimeToOnsetMax + .data$TimeToOnsetMin) / 2 - .data$TimeToOnsetMin
+  )
 }
 \keyword{datasets}
