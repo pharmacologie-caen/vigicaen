@@ -10,7 +10,7 @@
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
 #' @param d_code A named list of drug codes (DrecNos or MPI). See Details.
 #' @param method A character string. The type of drug code (DrecNo or MedicinalProd_Id). See details.
-#' @param repbasis Suspect, interacting and/or concomitant. Type initial of those you wish to select (default to all)
+#' @param repbasis Suspect, interacting and/or concomitant. Type initial of those you wish to select (s for suspect, c for concomitant and i for interacting ; default to all)
 #' @param drug_data A data.frame containing the drug data (usually, it is `drug`)
 #' @param data_type A character string. The type of data to add columns to. Either `demo` or `link` (default to `demo`)
 #' @keywords drug
