@@ -157,7 +157,7 @@ test_that("works for mpi_list as well", {
 
 })
 
-test_that("names of de_sel were tolower-ed and trimed warning", {
+test_that("names of d_sel were tolower-ed and trimed warning", {
   d_sel_names <- rlang::list2(
     Nivolumab = "nivolumab",
     Ipilimumab = "ipilimumab",
