@@ -18,7 +18,7 @@ add_drug(
 
 \item{d_code}{A named list of drug codes (DrecNos or MPI). See Details.}
 
-\item{repbasis}{Suspect, interacting and/or concomitant. Type initial of those you wish to select (default to all)}
+\item{repbasis}{Suspect, interacting and/or concomitant. Type initial of those you wish to select (s for suspect, c for concomitant and i for interacting ; default to all)}
 
 \item{method}{A character string. The type of drug code (DrecNo or MedicinalProd_Id). See details.}
 

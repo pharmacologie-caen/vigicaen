@@ -43,7 +43,7 @@ d_sel must be a named list of character vectors. Character vectors do not work. 
 }
 \examples{
 
-# ## Get drecnos for a list a drugs
+# ## Get drecnos for a list a drugs. Check spelling and/or use WHO name. Usually in lowercase
 
 d_sel_names <- rlang::list2(
   nivolumab = "nivolumab",
