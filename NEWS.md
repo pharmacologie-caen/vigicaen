@@ -1,3 +1,11 @@
+# pharmacocaen 0.9.1
+
+Patches:
+
+#47 `get_drecno` now handles correctly non lower-case names in `d_sel`.
+
+#43 improved documentation of `add_drug`
+
 # pharmacocaen 0.9.0
 
 ## New features
