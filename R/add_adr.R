@@ -83,7 +83,7 @@ add_adr <-
     }
 
     add_single_adr_link <- function(adr_code,
-                                    MedDRA_Id = {{MedDRA_Id }},
+                                    MedDRA_Id = {{ MedDRA_Id }},
                                     Adr_Id = {{ Adr_Id }}) {
 
       adr_id <-
