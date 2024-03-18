@@ -178,6 +178,52 @@ test_that("works with link data, adr identification is Adr_Id wise, not UMCRepor
 }
 )
 
+test_that("works with adr data as the .data argument", {
+  adr_list_test <-
+    rlang::list2(
+      adr1 = "adr1",
+      adr2 = "adr2",
+      adr3 = "adr3",
+      adr4 = "adr4"
+    )
+
+  adr_test <-
+    data.table(
+      UMCReportId = c(1, 1, 2, 2, 3),
+      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
+      MedDRA_Id = c("adr1", "adr4", "adr2", "adr4", "adr2"),
+      Outcome = c(1, 2, 3, 2, 2)
+    )
+
+  adr_try <-
+    adr_test |>
+    add_adr(
+      a_code = adr_list_test,
+      adr_data = adr_test,
+      data_type = "adr"
+    )
+
+  adr_correct <-
+    data.table(
+      UMCReportId = c(1, 1, 2, 2, 3),
+      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
+      MedDRA_Id = c("adr1", "adr4", "adr2", "adr4", "adr2"),
+      Outcome = c(1, 2, 3, 2, 2),
+      adr1 = c(1, 0, 0, 0, 0),
+      adr2 = c(0, 0 ,1, 0, 1),
+      adr3 = c(0, 0, 0, 0, 0),
+      adr4 = c(0, 1, 0, 1, 0)
+
+    )
+
+  expect_equal(
+    adr_try,
+    adr_correct
+  )
+
+})
+
+
 test_that("handle ambiguous names in .data", {
   adr_list_test <-
     rlang::list2(
