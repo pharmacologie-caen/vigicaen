@@ -9,7 +9,7 @@ add_adr(
   a_code,
   a_names = names(a_code),
   adr_data,
-  data_type = c("demo", "link")
+  data_type = c("demo", "link", "adr")
 )
 }
 \arguments{

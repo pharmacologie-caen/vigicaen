@@ -10,7 +10,7 @@ add_drug(
   repbasis = "sci",
   method = c("DrecNo", "MedicinalProd_Id"),
   drug_data,
-  data_type = c("demo", "link")
+  data_type = c("demo", "link", "adr")
 )
 }
 \arguments{
