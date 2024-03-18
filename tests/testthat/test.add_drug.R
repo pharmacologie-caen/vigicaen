@@ -316,6 +316,49 @@ test_that("works with link data, drug identification is Drug_Id wise, not UMCRep
 }
 )
 
+test_that("works with adr data, drug identification is UMCReportId wise", {
+  d_drecno_test <-
+    rlang::list2(
+      ici1 = "ici1",
+      ici2 = "ici2",
+      ici3 = "ici3"
+    )
+
+  drug_test <-
+    data.table(
+      Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
+      DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
+      UMCReportId = c(1, 1, 2, 2, 3)
+    )
+
+  adr_test <-
+    data.table(
+      UMCReportId = c(1, 1, 2, 2, 3),
+      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
+      MedDRA_Id = c(100000, 20000, 30000, 40000, 50000),
+      Outcome = c(1, 2, 3, 2, 2)
+    ) %>%
+    add_drug(d_code = d_drecno_test,
+             drug_data = drug_test,
+             data_type = "adr")
+
+  adr_correct <-
+    data.table(
+      UMCReportId = c(1, 1, 2, 2, 3),
+      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
+      MedDRA_Id = c(100000, 20000, 30000, 40000, 50000),
+      Outcome = c(1, 2, 3, 2, 2),
+      ici1 = c(1, 1, 1, 1, 1),
+      ici2 = c(1, 1, 0, 0, 0),
+      ici3 = c(0, 0, 1, 1, 0)
+    )
+
+  expect_equal(
+    adr_test,
+    adr_correct
+  )
+}
+)
 
 test_that("handle ambiguous names in .data", {
   d_drecno_test <-
