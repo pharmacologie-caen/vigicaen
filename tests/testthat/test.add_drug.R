@@ -204,7 +204,7 @@ test_that("selecting only s, c, i works and provide less cases than sci altogeth
 
 })
 
-test_that("a dataset with no Drug_Id and Adr_Id columns (like link) breaks the function if data_type is set to demo", {
+test_that("a dataset with either Drug_Id or Adr_Id columns (like link, adr) breaks the function if data_type is set to demo", {
   d_drecno_test <-
     rlang::list2(
       ici1 = "ici1",
@@ -235,8 +235,28 @@ test_that("a dataset with no Drug_Id and Adr_Id columns (like link) breaks the f
         drug_data = drug_test,
         data_type = "demo"
       ),
-    "The dataset has Drug_Id and Adr_Id columns"
+    "The dataset has Drug_Id or Adr_Id columns"
     )
+
+  adr_test <-
+    data.table(
+      UMCReportId = c(1, 1, 2, 2, 3),
+      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
+      MedDRA_Id = c(100000, 20000, 30000, 40000, 50000),
+      Outcome = c(1, 2, 3, 2, 2)
+    )
+
+  expect_error(
+    adr_test  |>
+      add_drug(
+        d_code = d_drecno_test,
+        method = "DrecNo",
+        repbasis = "sci",
+        drug_data = drug_test,
+        data_type = "demo"
+      ),
+    "The dataset has Drug_Id or Adr_Id columns"
+  )
   }
   )
 
@@ -313,6 +333,62 @@ test_that("works with link data, drug identification is Drug_Id wise, not UMCRep
     luda_test,
     luda_correct
   )
+}
+)
+
+
+test_that("a dataset with no Adr_Id, MedDRA_Id, and Outcome brekas the function if data_type is set to adr", {
+  d_drecno_test <-
+    rlang::list2(
+      ici1 = "ici1",
+      ici2 = "ici2",
+      ici3 = "ici3"
+    )
+
+  drug_test <-
+    data.table(
+      Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
+      DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
+      UMCReportId = c(1, 1, 2, 2, 3)
+    )
+
+
+  demo_test <-
+    data.table(
+      UMCReportId = c(1, 2, 3, 4, 5)
+    )
+
+  expect_error(
+    demo_test  |>
+      add_drug(
+        d_code = d_drecno_test,
+        method = "DrecNo",
+        repbasis = "sci",
+        drug_data = drug_test,
+        data_type = "adr"
+      ),
+    "The dataset does not have Adr_Id, MedDRA_Id, and/or Outcome columns"
+  )
+
+  luda_test <-
+    data.table(
+      Drug_Id =  c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
+      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
+      UMCReportId = c(1, 1, 2, 2, 3)
+    )
+
+  expect_error(
+    luda_test  |>
+      add_drug(
+        d_code = d_drecno_test,
+        method = "DrecNo",
+        repbasis = "sci",
+        drug_data = drug_test,
+        data_type = "adr"
+      ),
+    "The dataset does not have Adr_Id, MedDRA_Id, and/or Outcome columns"
+  )
+
 }
 )
 
