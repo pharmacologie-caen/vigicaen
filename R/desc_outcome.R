@@ -1,0 +1,122 @@
+#' Outcome descriptive
+#'
+#' Compute outcome description over a set of adr and drugs.
+#' You would need an adr data.table. Be careful that you cannot directly filter `adr` data.table on drugs! That is, if you want to extract outcomes for cases exposed to a drug of interest, you need to filter it out. Maybe add_drug could work. See \code{\link{adr_}}.
+#'
+#' @param adr_data An adr data.table.
+#' @param drug_s A character vector, the drug column(s)
+#' @param adr_s A character vector, the adverse drug reaction column(s).
+#' @return A data.table with one row per drug-adr pair.
+#' @importFrom rlang .data
+#' @importFrom rlang .env
+#' @export
+#' @examples
+#'
+#' adr_ <-
+#'   adr_ %>%
+#'   add_drug(
+#'     d_code = ex_$d_groups_drecno,
+#'     drug_data = drug_,
+#'     data_type = "demo"
+#'   ) %>%
+#'   add_adr(
+#'     a_code = ex_$a_llt,
+#'     adr_data = adr_,
+#'     data_type = "demo"
+#'   )
+#'
+#'
+#' desc_outcome(adr_,
+#'          drug_s = "pd1",
+#'          adr_s = "a_colitis")
+#'
+#'
+#' # you can vectorize over multiple adrs and drugs
+#'
+#' desc_outcome(adr_,
+#'          drug_s = c("pd1", "pdl1"),
+#'          adr_s = c("a_colitis", "a_pneumonitis"))
+
+
+desc_outcome <-
+  function(adr_data,
+           drug_s = "drug1",
+           adr_s = "adr1"
+           ) {
+
+    # 1Recovered/resolved
+    # 2Recovering/resolving
+    # 3Not recovered/not resolved
+    # 4Recovered/resolved with sequelae
+    # 5Fatal
+    # 6Unknown
+    # 7Died- reaction may be contributory
+    # 8Died- unrelated to reaction
+
+
+    out_core <-
+      function(one_drug,
+               one_adr) {
+
+        grouping_variables <- c(one_drug, one_adr, "UMCReportId")
+
+        names(grouping_variables) <- NULL
+
+        data_subset <-
+          .data[.data[[one_drug]] == 1 &
+                  .data[[one_adr]] == 1
+          ]
+
+
+        out <-
+          data_subset %>%
+          mutate(
+            out_rank =
+              case_when(
+                # rank outcomes from best to worst, numerically
+                Outcome == 1 # Recovered/resolved
+                ~ 1,
+                Outcome == 2 # Recovering/resolving
+                ~ 2,
+                Outcome == 4 # Recovered/resolved with sequelae
+                ~ 3,
+                Outcome == 3 # Not recovered/not resolved
+                ~ 4,
+                Outcome == 5 # Fatal,
+                ~ 5,
+                Outcome == 8 # Died- unrelated to reaction
+                ~ 6,
+                Outcome == 7 # Died- reaction may be contributory
+                ~ 7,
+                TRUE # ignoring 6, Unknown
+                ~ NA_real_
+              )
+          ) %>%
+          summarise(out_worst = max(.data$out_rank),
+                    .by = all_of(grouping_variables))
+
+        out %>%
+          summarise(
+            drug_s = .env$one_drug,
+            adr_s = .env$one_adr,
+            pos_dch = sum(.data$out_worst)
+          ) %>%
+          relocate(drug_s, adr_s)
+      }
+
+    purrr::map(
+      adr_s,
+      function(one_adr_)
+        purrr::map(
+          drug_s,
+          function(one_drug_)
+            dch_core(
+              one_drug = one_drug_,
+              one_adr = one_adr_
+            )
+        ) %>%
+        purrr::list_rbind()
+    ) %>%
+      purrr::list_rbind()
+
+  }
