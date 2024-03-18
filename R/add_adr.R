@@ -49,18 +49,24 @@ add_adr <-
 
            adr_data,
 
-           data_type = c("demo", "link")
+           data_type = c("demo", "link", "adr")
            ){
 
     data_type <- match.arg(data_type)
 
     # use duplicates in UMCReportId to identify a link dataset versus a demo dataset.
     # and check that data_type is set correctly
-    if(data_type == "demo" && any(duplicated(.data$UMCReportId))){
-      stop("The dataset has Drug_Id and Adr_Id columns (like a `link` dataset). Yet data_type is set to `demo`. Please set data_type to `link` or use a `demo` dataset")
-    } else if(data_type == "link" && !any(duplicated(.data$UMCReportId))){
+    if(data_type == "demo" &&
+       any(c("Drug_Id", "Adr_Id") %in% names(.data))){
+      stop("The dataset has Drug_Id or Adr_Id columns (like a `link` dataset). Yet data_type is set to `demo`. Please set data_type to `link` or use a `demo` dataset")
+    } else if(data_type == "link" &&
+              !all(c("Drug_Id", "Adr_Id") %in% names(.data))){
       stop("The dataset does not have Drug_Id and Adr_Id columns, (as a `link` dataset would). Yet data_type is set to `link`. Please set data_type to `demo` or use a `link` dataset")
+    } else if(data_type == "adr" &&
+              !all(c("Adr_Id", "MedDRA_Id", "Outcome") %in% names(.data))){
+      stop("The dataset does not have Adr_Id, MedDRA_Id, and/or Outcome columns, (as an `adr` dataset would). Yet data_type is set to `adr`. Please set data_type accordingly.")
     }
+
 
     # Step 1: core function for demo data_type, ifelse on UMCReportId
 
@@ -104,6 +110,7 @@ add_adr <-
     add_single_adr <-
       switch (data_type,
               demo = add_single_adr_demo,
+              adr  = add_single_adr_link,
               link = add_single_adr_link
       )
 
