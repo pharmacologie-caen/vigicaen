@@ -5,8 +5,8 @@
 #' The function extracts llt codes. It throws a warning when nothing was found, indicating that there is probably a mistake in the spelling of the term you were looking for. In meddra, terms are case sensitive and they are not tolower-ed by default (e.g. you may find "Colitis" but not "colitis" or "COLITIS").
 #' In term_sel, all terms should come from the same hierarchical level, e.g. all preferred terms, all high level terms, etc.
 #'
-#' @param term_sel A named list of character vector. The terms to extract llts codes from. See details.
-#' @param term_level A character vector. One of "hlgt", "hlt", "pt", or "llt"
+#' @param term_sel A named list of character vector(s). The terms to extract llts codes from. See details.
+#' @param term_level A character string. One of "soc", "hlgt", "hlt", "pt", or "llt"
 #' @param meddra A data.table. Built from meddra_builders functions
 #' @keywords meddra soc llt
 #' @export
@@ -31,7 +31,7 @@
 get_llt_soc <-
   function(
     term_sel,
-    term_level = c("hlgt", "hlt", "pt", "llt"),
+    term_level = c("soc", "hlgt", "hlt", "pt", "llt"),
     meddra
   ) {
     term_level <- match.arg(term_level)

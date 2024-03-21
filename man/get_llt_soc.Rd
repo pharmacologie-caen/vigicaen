@@ -4,12 +4,16 @@
 \alias{get_llt_soc}
 \title{Extract llts from soc classification}
 \usage{
-get_llt_soc(term_sel, term_level = c("hlgt", "hlt", "pt", "llt"), meddra)
+get_llt_soc(
+  term_sel,
+  term_level = c("soc", "hlgt", "hlt", "pt", "llt"),
+  meddra
+)
 }
 \arguments{
-\item{term_sel}{A named list of character vector. The terms to extract llts codes from. See details.}
+\item{term_sel}{A named list of character vector(s). The terms to extract llts codes from. See details.}
 
-\item{term_level}{A character vector. One of "hlgt", "hlt", "pt", or "llt"}
+\item{term_level}{A character string. One of "soc", "hlgt", "hlt", "pt", or "llt"}
 
 \item{meddra}{A data.table. Built from meddra_builders functions}
 }

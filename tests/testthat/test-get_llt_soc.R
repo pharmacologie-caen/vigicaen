@@ -58,3 +58,43 @@ test_that("works with unique and multiple terms", {
   )
 })
 
+test_that("works at different term levels (soc, hlgt, hlt, pt, llt)", {
+
+  term_level_set <-
+    rlang::list2(
+      soc  = rlang::list2(gi = "Gastrointestinal disorders"),
+      hlgt = rlang::list2(gi = "Gastrointestinal inflammatory conditions"),
+      hlt  = rlang::list2(gi = "Colitis (excl infective)"),
+      pt   = rlang::list2(gi = "Colitis"),
+      llt  = rlang::list2(gi = "Caecal inflammation")
+    )
+
+  tl_res <- purrr::imap(
+    term_level_set,
+    function(term_list, t_level)
+      get_llt_soc(
+        term_list,
+        term_level = t_level,
+        meddra = meddra_
+      )
+  )
+
+  tl_res_length <-
+    purrr::map(
+      tl_res,
+      ~ length(.x[["gi"]])
+    )
+
+
+  tl_res_correct_length <- rlang::list2(
+    soc  = 134,
+    hlgt = 56,
+    hlt  = 39,
+    pt   = 25,
+    llt  = 1
+  )
+
+    expect_equal(tl_res_length, tl_res_correct_length)
+})
+
+
