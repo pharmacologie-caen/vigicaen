@@ -1,3 +1,14 @@
+# pharmacocaen 0.10.0
+
+## New features
+
+#54 introduce the `desc_outcome` function to collect adr outcome. Help in the
+descriptive vignette.
+
+## Minor
+
+# Fix add_adr data_type checker.
+
 # pharmacocaen 0.9.1
 
 Patches:
