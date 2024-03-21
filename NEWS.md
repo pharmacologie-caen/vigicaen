@@ -7,7 +7,7 @@ descriptive vignette.
 
 ## Minor
 
-# Fix add_adr data_type checker.
+Fix add_adr data_type checker.
 
 # pharmacocaen 0.9.1
 
