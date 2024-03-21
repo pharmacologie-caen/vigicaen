@@ -31,7 +31,7 @@ knitr::opts_chunk$set(
 -   Savoir creer des colonnes medicament et evenement indesirable dans
     une table `demo`.
 
-# Data management
+# Demo data management
 
 ## Etape 0 : Charger les packages
 
@@ -296,8 +296,8 @@ desc_facvar(
 On sait ainsi que 389 cas proviennent de la Region "2", sans pouvoir
 dire a quelle aire geographique appartient cette region.
 
-Pour obtenir la correspondance, il existe des tables externes, 
-comme celle ci pour la Region:
+Pour obtenir la correspondance, il existe des tables externes, comme
+celle ci pour la Region:
 
 | Code | Libelle                      |
 |------|------------------------------|
@@ -308,7 +308,7 @@ comme celle ci pour la Region:
 | 5    | Eastern Mediterranean Region |
 | 6    | Western Pacific Region       |
 
-Plusieurs options sont possibles pour faire remonter l'information 
+Plusieurs options sont possibles pour faire remonter l'information
 directement dans demo, la plus simple consiste a utiliser des facteurs
 
 ```{r factor_region}
@@ -328,10 +328,12 @@ levels(demo$Region) <-
   )
 ```
 
-Notez la transformation en deux etapes. La premiere pour ranger les niveaux de la variable,
-la deuxieme pour affecter les libelles a ses niveaux, dans cet ordre.
+Notez la transformation en deux etapes. La premiere pour ranger les
+niveaux de la variable, la deuxieme pour affecter les libelles a ses
+niveaux, dans cet ordre.
 
-Cette transformation a pour effet de modifier le resultat de desc_facvar()
+Cette transformation a pour effet de modifier le resultat de
+desc_facvar()
 
 ```{r desc_fv_region_factor}
 desc_facvar(
@@ -383,18 +385,101 @@ desc_facvar(
 )
 ```
 
+# Adr data : evolution des evenements indesirables
+
+La table adr contient l'information sur l'évolution des évènements
+indésirables.
+
+Les évolutions (ou `Outcome`) possibles sont
+
+-   Recovered/resolved
+-   Recovering/resolving
+-   Recovered/resolved with sequelae
+-   Not recovered/not resolved
+-   Fatal
+-   Died- unrelated to reaction
+-   Died- reaction may be contributory
+
+La structure est la suivante
+
+| UMCReportId | Adr_Id | Outcome |
+|-------------|--------|---------|
+| 1           | a_1    | 1       |
+| 1           | a_2    | 2       |
+| 2           | a_3    | 3       |
+| 2           | a_4    | 1       |
+
+Un même UMCReportId peut avoir plusieurs Outcome, s'ils rapportent
+plusieurs réactions différentes. Une même réaction est susceptible
+d'avoir plusieurs Outcome différents, qu'il faut donc prioriser.
+
+La logique est la suivante : prendre la "pire évolution" possible pour
+chaque évènement de chaque cas, afin de ne compter qu'une fois chaque
+évènement pour chaque cas.
+
+Pour pouvoir trier les cas exposés à un médicament d'intérêt, il faut
+par ailleurs joindre les données de drug à la table adr.
+
+## Etape 1 : Data management de adr avec add_drug et add_adr
+
+On peut utiliser les fonctions `add_drug` et `add_adr` en spécifiant
+l'argument data_type à `adr`.
+
+```{r adr_dm}
+
+adr <-
+  adr %>%
+  add_drug(
+    d_code = d_drecno,
+    drug_data = drug,
+    data_type = "adr"
+  )
+
+adr <-
+  adr %>%
+  add_adr(
+    a_code = a_llt,
+    adr_data = adr,
+    data_type = "adr"
+  )
+```
+
+Cela permet d'identifier les médicaments et les évènements d'intérêts
+(médicaments sont identifiés à l'échelle du cas dans cette table).
+
+## Etape 2 : Fonction desc_outcome
+
+La fonction `desc_outcome` réalise la priorisation des données selon la
+règle:
+
+> Prendre la "pire évolution" possible pour chaque évènement de chaque
+> cas, afin de ne compter qu'une fois chaque évènement pour chaque cas.
+
+```{r desc_outcome}
+
+adr |> 
+  desc_outcome(
+    drug_s = "nivolumab",
+    adr_s = "a_colitis"
+  )
+```
+
+Si la table adr a déjà été filtrée préalablement sur des médicaments
+d'intérêts, il est préférable de récréer cette colonne médicament tout
+de même avec `add_drug` (elle prendra la valeur 1 pour tous les cas).
+
 # Table LUDA (time to onset, dechallenge, rechallenge)
 
 La table Luda est dérivée de la table link. Le nom signifie
 
 > **L**ink table, with **U**mcreportid, **D**rug_id and **A**dr_id
 
-En vérité, il s'agit simplement d'une table Link a laquelle on joint la variable
-`UMCReportId` (les variables `Drug_Id` et `Adr_Id` étant nativement présentes dans
-link).
+En vérité, il s'agit simplement d'une table Link a laquelle on joint la
+variable `UMCReportId` (les variables `Drug_Id` et `Adr_Id` étant
+nativement présentes dans link).
 
-Pour se faire, on réalise une jointure gauche à partir soit de la table drug,
-soit de la table adr. Par habitude, j'utilise la table drug.
+Pour se faire, on réalise une jointure gauche à partir soit de la table
+drug, soit de la table adr. Par habitude, j'utilise la table drug.
 
 ## Créer la table LUDA
 
@@ -413,81 +498,85 @@ luda <-
 rm(drug_to_join)
 ```
 
-Et voila! L'ajout de cette variable est interessante pour pouvoir extraire des 
-donnees a l'echelle d'un cas par la suite, notamment pour ce qui concerne le 
-rechallenge.
+Et voila! L'ajout de cette variable est interessante pour pouvoir
+extraire des donnees a l'echelle d'un cas par la suite, notamment pour
+ce qui concerne le rechallenge.
 
 ## Data management de LUDA
 
 La table luda, comme la table link, etudie la relation de chaque paire
-medicament - evenement indesirable au sein des rapports. Il y a donc plusieurs
-lignes dans luda pour chaque ligne dans demo.
+medicament - evenement indesirable au sein des rapports. Il y a donc
+plusieurs lignes dans luda pour chaque ligne dans demo.
 
 Exemple de table demo
 
-| UMCReportId | Autres donnees (age, sexe...)   |
-|------|------------------------------|
-| 1    | 65-74, Homme               |
-| 2    | 65-74, Femme      |
-| 3    | 45-64, Femme       |
+| UMCReportId | Autres donnees (age, sexe...) |
+|-------------|-------------------------------|
+| 1           | 65-74, Homme                  |
+| 2           | 65-74, Femme                  |
+| 3           | 45-64, Femme                  |
 
 La table luda correspondante serait
 
-| UMCReportId | Drug_Id    | Adr_Id     |Time to onset|
-|-------------|------------|------------|------------|
-| 1           |   1_1      |   1_a      |   60       |
-| 1           |   1_2      |   1_a      |   30       |
-| 1           |   1_1      |   1_b      |   45       |
-| 1           |   1_2      |   1_b      |   15       |
-| 2           |            |            |            |
-| 2           |            |            |            |
-| 3           |            |            |            |
-| 3           |            |            |            |
-| 3           |            |            |            |
+| UMCReportId | Drug_Id | Adr_Id | Time to onset |
+|-------------|---------|--------|---------------|
+| 1           | 1_1     | 1_a    | 60            |
+| 1           | 1_2     | 1_a    | 30            |
+| 1           | 1_1     | 1_b    | 45            |
+| 1           | 1_2     | 1_b    | 15            |
+| 2           |         |        |               |
+| 2           |         |        |               |
+| 3           |         |        |               |
+| 3           |         |        |               |
+| 3           |         |        |               |
 
 ## Apprehender le contenu de LUDA
 
 Prenons un instant pour lire le contenu lie au cas no 1.
 
 -   Il comporte deux Drug_Id differents `1_1` et `1_2` : cela veut dire
-que ce cas a deux entrees 
-medicament differentes. La plupart du temps, il s'agit de deux medicaments 
-distincts (admettons, paracetamol et ibuprofene pour cet exemple). Il peut aussi 
-s'agir du meme medicament, avec des modalites d'administration differente 
-(paracetamol avec deux dosages, ou a deux moments differents).
--   Il comporte deux Adr_Id differents `1_a` et `1_b`. Le meme raisonnement 
-s'applique, meme si pour les evenements indesirables, il s'agit le plus souvent
-de deux evenements distincts (admettons, une hepatite et une hemorragie).
--   Des informations sont presentes pour chaque combinaison. Ici est represente 
-le time to onset, c'est a dire le delai entre l'initiation du medicament et la
-survenue de l'evenement.
+    que ce cas a deux entrees medicament differentes. La plupart du
+    temps, il s'agit de deux medicaments distincts (admettons,
+    paracetamol et ibuprofene pour cet exemple). Il peut aussi s'agir du
+    meme medicament, avec des modalites d'administration differente
+    (paracetamol avec deux dosages, ou a deux moments differents).
+-   Il comporte deux Adr_Id differents `1_a` et `1_b`. Le meme
+    raisonnement s'applique, meme si pour les evenements indesirables,
+    il s'agit le plus souvent de deux evenements distincts (admettons,
+    une hepatite et une hemorragie).
+-   Des informations sont presentes pour chaque combinaison. Ici est
+    represente le time to onset, c'est a dire le delai entre
+    l'initiation du medicament et la survenue de l'evenement.
 
-La lecture est la suivante:
--    L'hepatite (`1_a`) est survenue 60 jours apres l'introduction du 
-paracetamol (`1_1`), et 30 jours apres l'introduction de l'ibuprofene (`1_2`).
--    L'hemorragie (`1_b`) est survenue 45 jours apres l'introduction du
-paracetamol (`1_1`), et 15 jours apres l'introduction de l'ibuprofene (`1_2`).
+La lecture est la suivante: - L'hepatite (`1_a`) est survenue 60 jours
+apres l'introduction du paracetamol (`1_1`), et 30 jours apres
+l'introduction de l'ibuprofene (`1_2`). - L'hemorragie (`1_b`) est
+survenue 45 jours apres l'introduction du paracetamol (`1_1`), et 15
+jours apres l'introduction de l'ibuprofene (`1_2`).
 
 Dans cet exemple relativement simple, tout est coherent: on observe bien
-que le paracetamol et l'ibuprofene ont ete introduits a 30 jours d'intervalle
-l'un de l'autre.
+que le paracetamol et l'ibuprofene ont ete introduits a 30 jours
+d'intervalle l'un de l'autre.
 
-La realite est souvent plus complexe: comme annonce precedemment, il peut y 
-avoir plusieurs lignes pour un meme medicament, avec des time to onset different.
+La realite est souvent plus complexe: comme annonce precedemment, il
+peut y avoir plusieurs lignes pour un meme medicament, avec des time to
+onset different.
 
-Dans ce cas, il est important de decider comment traiter ces informations
-multiples.
+Dans ce cas, il est important de decider comment traiter ces
+informations multiples.
 
-Par exemple: on pourrait avoir un time to onset a 30 jours pour du paracetamol
-pris a 500mg, et un time to onset a 15 jours pour du paracetamol pris a 1000mg.
+Par exemple: on pourrait avoir un time to onset a 30 jours pour du
+paracetamol pris a 500mg, et un time to onset a 15 jours pour du
+paracetamol pris a 1000mg.
 
 ## Identifier les medicaments et les evenements indesirables
 
-Pour pouvoir travailler dans luda, il est plus facile de recreer des colonnes
-medicaments et evenements indesirables a l'instar de ce qui est fait dans demo.
+Pour pouvoir travailler dans luda, il est plus facile de recreer des
+colonnes medicaments et evenements indesirables a l'instar de ce qui est
+fait dans demo.
 
-Cela est possible a l'aide des fonctions `add_drug` et `add_adr`. Il faut
-penser a specifier l'argument `data_type` sur la valeur "link".
+Cela est possible a l'aide des fonctions `add_drug` et `add_adr`. Il
+faut penser a specifier l'argument `data_type` sur la valeur "link".
 
 ```{r luda_dm}
 luda <-
@@ -516,37 +605,40 @@ luda %>%
      )
 ```
 
-**!!! Attention**, les decomptes correspondent au nombre de ligne pour chaque medicament
-et chaque effet. Il ne s'agit pas du nombre de rapport comportant chaque medicament
-ou chaque effet. Si vous souhaitez obtenir cette derniere information, il faut
-interroger la table `demo`.
+**!!! Attention**, les decomptes correspondent au nombre de ligne pour
+chaque medicament et chaque effet. Il ne s'agit pas du nombre de rapport
+comportant chaque medicament ou chaque effet. Si vous souhaitez obtenir
+cette derniere information, il faut interroger la table `demo`.
 
 ## Time to onset
 
-L'information time to onset est contenue dans deux variables dans la table
-luda/link: `TimeToOnsetMin` et `TimeToOnsetMax`. Ces deux variables refletent
-le delai minimum et maximum de survenue de l'evenement indesirable par rapport
-a la prise du medicament, en tenant compte de l'incertitude de la donne en entree.
+L'information time to onset est contenue dans deux variables dans la
+table luda/link: `TimeToOnsetMin` et `TimeToOnsetMax`. Ces deux
+variables refletent le delai minimum et maximum de survenue de
+l'evenement indesirable par rapport a la prise du medicament, en tenant
+compte de l'incertitude de la donne en entree.
 
-| UMCReportId | Drug_Id    | Adr_Id     |TimeToOnsetMin|TimeToOnsetMax|
-|-------------|------------|------------|--------------|------------|
-| 1           |   1_1      |   1_a      |   45         |   75       |
+| UMCReportId | Drug_Id | Adr_Id | TimeToOnsetMin | TimeToOnsetMax |
+|-------------|---------|--------|----------------|----------------|
+| 1           | 1_1     | 1_a    | 45             | 75             |
 
-Ici, l'hepatite est survenue entre 45 et 75 jours apres la prise du paracetamol.
+Ici, l'hepatite est survenue entre 45 et 75 jours apres la prise du
+paracetamol.
 
-Pourquoi cette terminologie ? C'est lie a la facon de rapporter un delai de survenue
-pour les rapporteurs. Dans cet exemple, le rapporteur a notifie l'information
-suivante: "L'hepatite est survenue 2 mois apres la mise sous paracetamol".
+Pourquoi cette terminologie ? C'est lie a la facon de rapporter un delai
+de survenue pour les rapporteurs. Dans cet exemple, le rapporteur a
+notifie l'information suivante: "L'hepatite est survenue 2 mois apres la
+mise sous paracetamol".
 
-Cette facon de presenter le resultat comporte une imprecision sur le delai exact
-de survenue: quel etait le jour exact du mois ? Etait ce 1 mois et 15 jours? 
-Ou 2 mois et 15 jours ? Plus ?
-Impossible de trancher. Par convention, on estime que le vrai time to onset
-se trouve a +/- 15 jours de la date indiquee (ici, entre 60 - 15 = 45 jours,
-et 60 + 15 = 75 jours).
+Cette facon de presenter le resultat comporte une imprecision sur le
+delai exact de survenue: quel etait le jour exact du mois ? Etait ce 1
+mois et 15 jours? Ou 2 mois et 15 jours ? Plus ? Impossible de trancher.
+Par convention, on estime que le vrai time to onset se trouve a +/- 15
+jours de la date indiquee (ici, entre 60 - 15 = 45 jours, et 60 + 15 =
+75 jours).
 
-Deux parametres sont derives de cette information : le time to onset moyen 
-`tto_mean` et le `range`. Le calcul est le suivant:
+Deux parametres sont derives de cette information : le time to onset
+moyen `tto_mean` et le `range`. Le calcul est le suivant:
 
 ```{r tto_mean_range}
 luda <- 
@@ -557,37 +649,39 @@ luda <-
   ) 
 ```
 
-| UMCReportId | Drug_Id    | Adr_Id     |TimeToOnsetMin|TimeToOnsetMax| tto_mean    | range     |
-|-------------|------------|------------|--------------|------------|------------|------------|
-| 1           |   1_1      |   1_a      |   45         |   75       |   60      |   30      |
+| UMCReportId | Drug_Id | Adr_Id | TimeToOnsetMin | TimeToOnsetMax | tto_mean | range |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| 1           | 1_1     | 1_a    | 45             | 75             | 60       | 30    |
 
-Le `tto_mean` est intuitif: il s'agit du delai moyen entre les deux valeurs disponibles.
-Dans notre exemple, on retrouve bien 60 jours, qui est le delai indique
-par le rapporteur.
+Le `tto_mean` est intuitif: il s'agit du delai moyen entre les deux
+valeurs disponibles. Dans notre exemple, on retrouve bien 60 jours, qui
+est le delai indique par le rapporteur.
 
-Le `range` donne l'incertitude: 30 jours dans notre exemple, voulant dire qu'on
-ne peut pas etre plus precis que a 30 jours pres.
+Le `range` donne l'incertitude: 30 jours dans notre exemple, voulant
+dire qu'on ne peut pas etre plus precis que a 30 jours pres.
 
 > La recommandation Uppsala est d'utiliser uniquement les time to onset
-dont le range est <= 1, c'est a dire les cas ou la date est connue au jour pres.
+> dont le range est \<= 1, c'est a dire les cas ou la date est connue au
+> jour pres.
 
-Nb: l'information des heures et des minutes est egalement presente dans les
-time to onset, si elle est connue.
-
+Nb: l'information des heures et des minutes est egalement presente dans
+les time to onset, si elle est connue.
 
 Poursuivons l'exemple cite precedemment:
 
-Par exemple: on pourrait avoir un time to onset a 30 jours pour du paracetamol
-pris a 500mg, et un time to onset a 15 jours pour du paracetamol pris a 1000mg.
+Par exemple: on pourrait avoir un time to onset a 30 jours pour du
+paracetamol pris a 500mg, et un time to onset a 15 jours pour du
+paracetamol pris a 1000mg.
 
 Dans cet exemple, nous allons aboutir a deux tto_mean pour le couple
 "paracetamol" + "hepatite" dans un meme cas.
 
-Il faut donc decider d'une regle arbitraire pour synthetiser cette information.
-Notre habitude jusqu'ici est de **prendre le delai le plus long** entre l'introduction
-du medicament et la survenue de l'evenement (c'est a dire, le delai entre
-la premiere prise du medicament et l'evenement). Cela peut ne pas repondre a toutes
-les necessites cependant.
+Il faut donc decider d'une regle arbitraire pour synthetiser cette
+information. Notre habitude jusqu'ici est de **prendre le delai le plus
+long** entre l'introduction du medicament et la survenue de l'evenement
+(c'est a dire, le delai entre la premiere prise du medicament et
+l'evenement). Cela peut ne pas repondre a toutes les necessites
+cependant.
 
 Ces informations sont extraites par la fonction `extract_tto`.
 
@@ -598,12 +692,14 @@ extract_tto(
   adr_s  = "a_colitis"
 )
 ```
-On obtient dans ce resultat une ligne par couple medicament - evenement,
-avec le delai maximal `tto_max` entre l'introduction et la survenue de l'evenement.
 
-Cette information peut etre utilisee pour une representation graphique, ou pour 
-deriver une moyenne, un range... La deuxieme option est possible de nombreuses 
-facon, notamment par la fonction `desc_tto`.
+On obtient dans ce resultat une ligne par couple medicament - evenement,
+avec le delai maximal `tto_max` entre l'introduction et la survenue de
+l'evenement.
+
+Cette information peut etre utilisee pour une representation graphique,
+ou pour deriver une moyenne, un range... La deuxieme option est possible
+de nombreuses facon, notamment par la fonction `desc_tto`.
 
 ```{r desc_tto_example}
 desc_tto(
@@ -612,8 +708,9 @@ desc_tto(
   adr_s  = "a_colitis"
 )
 ```
-Il est possible de requeter plusieurs medicaments et/ou plusieurs evenements
-dans ces deux fonctions.
+
+Il est possible de requeter plusieurs medicaments et/ou plusieurs
+evenements dans ces deux fonctions.
 
 ```{r desc_tto_many_to_many}
 desc_tto(
@@ -627,8 +724,8 @@ desc_tto(
 
 La fonction desc_dch synthetise le nombre de dechallenge positif:
 
-> Un dechallenge positif survient lorsque le medicament a ete arrete ou que
-sa posologie a ete reduite, et que la reaction s'est amendee.
+> Un dechallenge positif survient lorsque le medicament a ete arrete ou
+> que sa posologie a ete reduite, et que la reaction s'est amendee.
 
 ```{r desc_dch_example}
 desc_dch(
@@ -650,13 +747,17 @@ desc_dch(
 
 Desole, c'est en anglais...
 
-Description span from rechallenge cases to informative rechallenge cases (those cases where the outcome is known). Drug and Adr identifiers refer to DrecNo and MedDRA_Id, respectively. Terminology
+Description span from rechallenge cases to informative rechallenge cases
+(those cases where the outcome is known). Drug and Adr identifiers refer
+to DrecNo and MedDRA_Id, respectively. Terminology
 
 -   Overall as opposed to rch for rechallenged (rch + no_rch = overall).
 
--   Among rch, inf (informative) as opposed to non_inf (inf + non_inf = rch)
+-   Among rch, inf (informative) as opposed to non_inf (inf + non_inf =
+    rch)
 
--   Among inf, rec (recurring) as opposed to non_rec (rec + non_rec = inf)
+-   Among inf, rec (recurring) as opposed to non_rec (rec + non_rec =
+    inf)
 
 ```{r desc_rch_example}
 desc_rch(
@@ -667,21 +768,24 @@ desc_rch(
 )
 ```
 
-**Le nombre de cas est bien decompte a l'echelle des cas dans demo +++.**
+**Le nombre de cas est bien decompte a l'echelle des cas dans demo
++++.**
 
 C'est la raison pour laquelle un argument `demo_data` est requis ici.
 
-De la meme facon que desc_tto et desc_dch, vous pouvez requeter plusieurs paires
-differentes.
+De la meme facon que desc_tto et desc_dch, vous pouvez requeter
+plusieurs paires differentes.
 
-> Les colonnes drug_s et adr_s peuvent correspondre a des ensembles de medicaments
-ou d'evenements, voir meme identifier l'ensemble des cas presents dans votre
-jeu de donnees, si vous souhaitez des informations a plus grande echelle
+> Les colonnes drug_s et adr_s peuvent correspondre a des ensembles de
+> medicaments ou d'evenements, voir meme identifier l'ensemble des cas
+> presents dans votre jeu de donnees, si vous souhaitez des informations
+> a plus grande echelle
 
-Admettons qu'on souhaite connaitre, pour notre jeu de donnees entier, le nombre
-de rechallenge positif.
+Admettons qu'on souhaite connaitre, pour notre jeu de donnees entier, le
+nombre de rechallenge positif.
 
-Il faut simplement une variable qui prenne la valeur 1 pour toutes les lignes.
+Il faut simplement une variable qui prenne la valeur 1 pour toutes les
+lignes.
 
 ```{r desc_rch_dm_hack}
 luda <-

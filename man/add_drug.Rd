@@ -10,7 +10,7 @@ add_drug(
   repbasis = "sci",
   method = c("DrecNo", "MedicinalProd_Id"),
   drug_data,
-  data_type = c("demo", "link")
+  data_type = c("demo", "link", "adr")
 )
 }
 \arguments{
@@ -49,7 +49,7 @@ demo_ <-
     method = "DrecNo",
     repbasis = "sci",
     drug_data = drug_,
-    data_type = c("demo", "link")
+    data_type = c("demo")
   )
 
 # remember to assign the result to your actual demo dataset
