@@ -1,3 +1,7 @@
+## New features
+
+#55 add `soc` option to argument `term_level` of `get_llt_soc`.
+
 # pharmacocaen 0.10.0
 
 ## New features
