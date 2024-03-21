@@ -26,7 +26,7 @@ Outcomes, from best to worst are:
 \item Recovering/resolving
 \item Recovered/resolved with sequelae
 \item Not recovered/not resolved
-\item Fatal,
+\item Fatal
 \item Died- unrelated to reaction
 \item Died- reaction may be contributory
 }
