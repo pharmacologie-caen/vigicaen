@@ -24,10 +24,11 @@ add_adr(
 \item{data_type}{A character string. The type of data to add columns to. Either \code{demo} or \code{link} (default to \code{demo})}
 }
 \description{
-This function creates adr columns using dplyr::mutate.
+This function creates adr columns using \code{dplyr::mutate}.
 }
 \details{
-The function was initially written to fight against the horrible double free or corruption error occurring on the CHU server (with the french accent, please). See details on a word document on my CHU pc. Low-level term codes are the preferred level of requesting in the Vigibase extract case level since it captures all possible codes for a given Preferred Term. Standardized names for demo and adr cols are assumed (e.g. \code{UMCReportId})
+Low-level term codes are the preferred level of requesting in the Vigibase extract case level since it captures all possible codes for a given Preferred Term. Standardized names for demo and adr cols are assumed (e.g. \code{UMCReportId}).
+You can add adr identification to a \code{demo}, a \code{link}, or and \code{adr} dataset. Remember to set to the \code{data_type} argument to the appropriate value.
 }
 \examples{
 # create adr_colitis, adr_embolism and adr_pneumonitis columns in demo

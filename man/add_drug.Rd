@@ -35,7 +35,7 @@ This function creates drug columns using \code{dplyr::mutate}.
 \details{
 d_code is a named list containing drug codes. Either medicinalprod_ids (e.g., from \code{tb_custom}), or drug record numbers (e.g., from \code{get_drecno}). Default method is to DrecNos.
 Drugs can be reported according to one of three reputation bases: suspect, concomitant or interacting in the occurrence of the adverse drug reaction. You may want to study only reports with a specific reputation basis.
-You can add drug identification to a \code{demo} or a \code{link} dataset. Remember to set to the \code{data_type} argument to the appropriate value.
+You can add drug identification to a \code{demo}, a \code{link}, or and \code{adr} dataset. Remember to set to the \code{data_type} argument to the appropriate value.
 }
 \examples{
 # create a nivolumab column in demo_
@@ -56,5 +56,21 @@ demo_ <-
   )
 
 # remember to assign the result to your actual demo dataset
+
+# do you want to work only with cases where nivolumab was a "suspected" drug?
+# change argument repbasis to "s"
+
+demo_ <-
+  add_drug(
+    .data = demo_,
+    d_code = d_drecno,
+    d_names = "nivolumab_suspected",
+    method = "DrecNo",
+    repbasis = "s",
+    drug_data = drug_,
+    data_type = c("demo")
+  )
+
+check_dm(demo_, cols = c("nivolumab", "nivolumab_suspected"))
 }
 \keyword{drug}
