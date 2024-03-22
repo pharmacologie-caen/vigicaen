@@ -65,3 +65,57 @@ test_that("extracts mpi if vigilyze is FALSE", {
   )
 
 })
+
+test_that("names are tolower-ed and trimed", {
+  atc_sel <-
+    rlang::list2(L03_J01 = c("L03AA", "J01CA"),
+                 C09aA = c("C09AA")
+    )
+
+  tolower_names <-
+    names(atc_sel) |>
+    stringr::str_to_lower() |>
+    stringr::str_trim()
+
+  # with vigilyze to TRUE
+
+  expect_warning({
+    expect_message({
+    atc_drecno <<-
+      get_atc_code(atc_sel = atc_sel,
+                   mp_short = mp_short_,
+                   thg_data = thg_,
+                   vigilyze = TRUE)
+  },
+  "DrecNo"
+  )
+  }, "tolower-ed"
+  )
+
+  expect_equal(
+    names(atc_drecno),
+    tolower_names
+  )
+
+  # with vigilyze to FALSE
+
+  expect_warning({
+    expect_message({
+      atc_drecno_vigifalse <<-
+        get_atc_code(
+          atc_sel = atc_sel,
+          mp_short = mp_short_,
+          thg_data = thg_,
+          vigilyze = FALSE
+        )
+    },
+    "Medicinal")
+  },
+  "tolower-ed")
+
+  expect_equal(
+    names(atc_drecno_vigifalse),
+    tolower_names
+  )
+
+})

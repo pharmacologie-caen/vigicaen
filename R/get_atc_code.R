@@ -47,6 +47,20 @@ get_atc_code <-
            thg_data,
            vigilyze = TRUE) {
 
+
+
+    atc_sel_renamed <-
+      atc_sel %>%
+      rlang::set_names(
+        ~ .x %>%
+          stringr::str_trim() %>%
+          stringr::str_to_lower()
+      )
+
+    if(!all(names(atc_sel) == names(atc_sel_renamed))){
+      warning("names of atc_sel were tolower-ed and trimed")
+    }
+
     # core function ----
     core_get_atc_code <-
       function(atc_,
@@ -67,7 +81,7 @@ get_atc_code <-
     # extract mpi (requested even if you want drecnos) ----
 
     atc_sel_mpi <-
-      purrr::map(atc_sel, function(one_sel)
+      purrr::map(atc_sel_renamed, function(one_sel)
         purrr::map(one_sel,
                    core_get_atc_code) %>%
           purrr::flatten_dbl()
