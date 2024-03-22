@@ -136,3 +136,46 @@ test_that("errors and warnings pop as needed", {
   )
 
 })
+
+
+test_that("works with multiple smqs in a single item", {
+  smq_sel <-
+    rlang::list2(
+      sepsis = c("Sepsis (SMQ)","Toxic-septic shock conditions (SMQ)"),
+      ischemic_heart_disease = c("Myocardial infarction (SMQ)", "Other ischaemic heart disease (SMQ)"),
+    )
+
+  smq_sel2 <-
+    rlang::list2(
+      sepsis = c("Sepsis (SMQ)","Toxic-septic shock conditions (SMQ)"),
+      ischemic_heart_disease = c("Myocardial infarction (SMQ)"),
+    )
+
+  adr_llt <-
+    c(get_llt_smq(smq_sel,
+                  smq_scope =  "narrow",
+                  smq_list_content_)
+    )
+
+  adr_llt2 <-
+    c(get_llt_smq(smq_sel2,
+                  smq_scope =  "narrow",
+                  smq_list_content_)
+    )
+
+  true_ihd_length <-
+    c(205, # for both Myocardial infarction (SMQ) and Other ischaemic heart disease (SMQ)
+      188) # only for Myocardial infarction (SMQ)
+
+  expect_gt(
+    length(adr_llt$ischemic_heart_disease),
+    length(adr_llt2$ischemic_heart_disease)
+  )
+
+  expect_equal(
+    c(length(adr_llt$ischemic_heart_disease),
+      length(adr_llt2$ischemic_heart_disease)),
+    true_ihd_length
+  )
+
+})
