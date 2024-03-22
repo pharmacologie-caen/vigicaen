@@ -4,6 +4,8 @@
 #15 `compute_or_abcd` is now internally vectorized on drugs and adrs.
 #53 `get_atc_code` now appropriately tolowers and trims names as it states,
 even when argument `vigilyze` is set to `FALSE`.
+#39 added a `d_names` argument to `add_drug`.
+
 
 # pharmacocaen 0.10.0
 
