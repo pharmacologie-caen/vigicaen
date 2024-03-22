@@ -17,7 +17,7 @@ add_adr(
 
 \item{a_code}{A named list of low level terms codes (llt_codes).}
 
-\item{a_names}{Names for adr columns (must be the same length as adr_list), default to \code{names(adr_list)}}
+\item{a_names}{A character vector. Names for adr columns (must be the same length as adr_list), default to \code{names(adr_list)}}
 
 \item{adr_data}{A data.frame containing the adr data (usually, it is \code{adr})}
 

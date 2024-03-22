@@ -6,6 +6,9 @@
 even when argument `vigilyze` is set to `FALSE`.
 #39 added a `d_names` argument to `add_drug`.
 
+## Minor
+
+Improved description of `add_drug` and `add_adr`.
 
 # pharmacocaen 0.10.0
 

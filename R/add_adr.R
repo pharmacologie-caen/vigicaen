@@ -1,12 +1,13 @@
 #' Add ADR column(s) to a dataset (tidyverse syntax)
 #'
-#' This function creates adr columns using dplyr::mutate.
+#' This function creates adr columns using `dplyr::mutate`.
 #'
-#' The function was initially written to fight against the horrible double free or corruption error occurring on the CHU server (with the french accent, please). See details on a word document on my CHU pc. Low-level term codes are the preferred level of requesting in the Vigibase extract case level since it captures all possible codes for a given Preferred Term. Standardized names for demo and adr cols are assumed (e.g. `UMCReportId`)
-
+#' Low-level term codes are the preferred level of requesting in the Vigibase extract case level since it captures all possible codes for a given Preferred Term. Standardized names for demo and adr cols are assumed (e.g. `UMCReportId`).
+#' You can add adr identification to a `demo`, a `link`, or and `adr` dataset. Remember to set to the `data_type` argument to the appropriate value.
+#'
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
 #' @param a_code A named list of low level terms codes (llt_codes).
-#' @param a_names Names for adr columns (must be the same length as adr_list), default to `names(adr_list)`
+#' @param a_names A character vector. Names for adr columns (must be the same length as adr_list), default to `names(adr_list)`
 #' @param adr_data A data.frame containing the adr data (usually, it is `adr`)
 #' @param data_type A character string. The type of data to add columns to. Either `demo` or `link` (default to `demo`)
 #' @export

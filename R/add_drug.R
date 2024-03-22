@@ -5,7 +5,7 @@
 #'
 #' d_code is a named list containing drug codes. Either medicinalprod_ids (e.g., from `tb_custom`), or drug record numbers (e.g., from `get_drecno`). Default method is to DrecNos.
 #' Drugs can be reported according to one of three reputation bases: suspect, concomitant or interacting in the occurrence of the adverse drug reaction. You may want to study only reports with a specific reputation basis.
-#' You can add drug identification to a `demo` or a `link` dataset. Remember to set to the `data_type` argument to the appropriate value.
+#' You can add drug identification to a `demo`, a `link`, or and `adr` dataset. Remember to set to the `data_type` argument to the appropriate value.
 #'
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
 #' @param d_code A named list of drug codes (DrecNos or MPI). See Details.
