@@ -5,6 +5,7 @@
 #53 `get_atc_code` now appropriately tolowers and trims names as it states,
 even when argument `vigilyze` is set to `FALSE`.
 #39 added a `d_names` argument to `add_drug`.
+Introducing `tb_custom` to pharmacocaen.
 
 ## Minor
 
