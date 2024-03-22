@@ -7,6 +7,7 @@
 add_drug(
   .data,
   d_code,
+  d_names = names(d_code),
   repbasis = "sci",
   method = c("DrecNo", "MedicinalProd_Id"),
   drug_data,
@@ -17,6 +18,8 @@ add_drug(
 \item{.data}{The dataset used to identify individual reports (usually, it is \code{demo})}
 
 \item{d_code}{A named list of drug codes (DrecNos or MPI). See Details.}
+
+\item{d_names}{A character vector. Names for drug columns (must be the same length as d_code), default to \code{names(d_code)}}
 
 \item{repbasis}{Suspect, interacting and/or concomitant. Type initial of those you wish to select (s for suspect, c for concomitant and i for interacting ; default to all)}
 

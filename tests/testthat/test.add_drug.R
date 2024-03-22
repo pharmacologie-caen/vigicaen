@@ -479,3 +479,47 @@ test_that("handle ambiguous names in .data", {
     c(0, 1, 0, 0, 0)
   )
 })
+
+test_that("you can choose output column names with d_names", {
+  d_drecno_test <-
+    rlang::list2(
+      ici1 = "ici1",
+      ici2 = "ici2",
+      ici3 = "ici3"
+    )
+
+  drug_test <-
+    data.table(
+      Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
+      DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
+      UMCReportId = c(1, 1, 2, 2, 3)
+    )
+
+  demo_test <-
+    data.table(
+      UMCReportId = c(1, 2, 3, 4, 5),
+
+      # ambiguous column name
+      drug_test = c(0, 0, 0, 0, 1)
+    )
+
+  changed_names <-
+    c("t1", "t2", "t3")
+
+  res <-
+    demo_test %>%
+    add_drug(
+      d_code = d_drecno_test,
+      d_names = changed_names,
+      method = "DrecNo",
+      repbasis = "sci",
+      drug_data = drug_test,
+      data_type = "demo"
+    )
+
+  expect_equal(
+    all(changed_names %in% names(res)),
+    TRUE
+  )
+
+})

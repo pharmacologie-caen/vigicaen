@@ -9,6 +9,7 @@
 #'
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
 #' @param d_code A named list of drug codes (DrecNos or MPI). See Details.
+#' @param d_names A character vector. Names for drug columns (must be the same length as d_code), default to `names(d_code)`
 #' @param method A character string. The type of drug code (DrecNo or MedicinalProd_Id). See details.
 #' @param repbasis Suspect, interacting and/or concomitant. Type initial of those you wish to select (s for suspect, c for concomitant and i for interacting ; default to all)
 #' @param drug_data A data.frame containing the drug data (usually, it is `drug`)
@@ -37,10 +38,27 @@
 #'   )
 #'
 #' # remember to assign the result to your actual demo dataset
+#'
+#' # do you want to work only with cases where nivolumab was a "suspected" drug?
+#' # change argument repbasis to "s"
+#'
+#' demo_ <-
+#'   add_drug(
+#'     .data = demo_,
+#'     d_code = d_drecno,
+#'     d_names = "nivolumab_suspected",
+#'     method = "DrecNo",
+#'     repbasis = "s",
+#'     drug_data = drug_,
+#'     data_type = c("demo")
+#'   )
+#'
+#' check_dm(demo_, cols = c("nivolumab", "nivolumab_suspected"))
 
 add_drug <-
   function(.data,
            d_code,
+           d_names = names(d_code),
            repbasis = "sci",
            method = c("DrecNo", "MedicinalProd_Id"),
            drug_data,
@@ -48,8 +66,6 @@ add_drug <-
   )
   {
     method <- match.arg(method)
-
-    col_names <- names(d_code)
 
     data_type <- match.arg(data_type)
 
@@ -159,7 +175,7 @@ add_drug <-
                          }
      )
 
-    names(e_l) <- col_names
+    names(e_l) <- d_names
 
     # Step 3: apply the functions in .data
 
