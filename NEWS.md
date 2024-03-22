@@ -9,6 +9,7 @@ even when argument `vigilyze` is set to `FALSE`.
 ## Minor
 
 Improved description of `add_drug` and `add_adr`.
+#7 was fixed a long time ago. Internal improvement to `get_llt_smq`
 
 # pharmacocaen 0.10.0
 
