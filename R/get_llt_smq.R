@@ -44,7 +44,7 @@ get_llt_smq <-
         TRUE ~ "this is an error"
       )
 
-    get_one_smq_llt <- function(one_smq,
+    get_one_smq_batch_llt <- function(one_smq,
                                 smq_name = {{ smq_name }},
                                 term_scope = {{ term_scope }},
                                 term_status = {{ term_status }},
@@ -61,7 +61,7 @@ get_llt_smq <-
                        ]
     }
 
-    llt_list <- purrr::map(smq, get_one_smq_llt)
+    llt_list <- purrr::map(smq, get_one_smq_batch_llt)
 
     length_llt_list_element <-
       purrr::map(llt_list, length)
