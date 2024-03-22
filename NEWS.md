@@ -2,6 +2,8 @@
 
 #55 add `soc` option to argument `term_level` of `get_llt_soc`.
 #15 `compute_or_abcd` is now internally vectorized on drugs and adrs.
+#53 `get_atc_code` now appropriately tolowers and trims names as it states,
+even when argument `vigilyze` is set to `FALSE`.
 
 # pharmacocaen 0.10.0
 
