@@ -1,6 +1,7 @@
 ## New features
 
 #55 add `soc` option to argument `term_level` of `get_llt_soc`.
+#15 `compute_or_abcd` is now internally vectorized on drugs and adrs.
 
 # pharmacocaen 0.10.0
 

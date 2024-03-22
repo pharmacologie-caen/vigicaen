@@ -324,17 +324,11 @@ luda <-
 ```{r mods}
 # ---- Bivariate ---- ####
 
-rb <-
-  purrr::map_dfr(
-    names(d_drecno),
-    function(x)
-      purrr::map_dfr(
-        names(a_llt),
-        function(y)
-          demo %>%
-          compute_or_abcd(x = x,
-                          y = y)
-        )
+rb <- 
+  demo |> 
+  compute_or_abcd(
+    y = names(a_llt),
+    x = names(d_drecno)
   )
 
 # remove the hashes to save your results
