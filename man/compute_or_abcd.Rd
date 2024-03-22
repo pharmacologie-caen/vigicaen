@@ -9,9 +9,9 @@ compute_or_abcd(.data, y, x, alpha = 0.05, na_format = "-", dig = 2)
 \arguments{
 \item{.data}{The data.table to compute from.}
 
-\item{y}{A character string, the variable to explain.}
+\item{y}{A character vector, one or more variable to explain.}
 
-\item{x}{A character string, the explaining variable.}
+\item{x}{A character vector, one or more explaining variable.}
 
 \item{alpha}{Alpha risk.}
 
@@ -23,7 +23,7 @@ compute_or_abcd(.data, y, x, alpha = 0.05, na_format = "-", dig = 2)
 Compute bivariate OR and IC from contingency table extracted from a data.table.
 }
 \details{
-Output is a data.table, containing the ror, the boundaries of the \code{1 - alpha} confidence interval, the ic, a simple formatting, and whether the result is significant (i.e. \code{low_ci > 1}).
+Output is a data.table, containing the ror, the boundaries of the \code{1 - alpha} confidence interval, the ic, a simple formatting, and whether the ror result is significant (i.e. \code{low_ci > 1}), and the ic is signifiant (\code{ic_tail > 0}).
 Actually, the function computes an Odds-Ratio, which is not necessarily a reporting Odds-Ratio.
 }
 \examples{
@@ -31,18 +31,26 @@ Actually, the function computes an Odds-Ratio, which is not necessarily a report
 # nivolumab among ICI cases
 
 demo <-
-  demo_ \%>\%
+  demo_ |>
   add_drug(
     d_code = ex_$d_drecno,
     drug_data = drug_
-  ) \%>\%
+  ) |>
   add_adr(
     a_code = ex_$a_llt,
     adr_data = adr_
   )
 
-demo \%>\%
+demo |>
   compute_or_abcd(
+    y = "a_colitis",
+    x = "nivolumab"
+  )
+
+# You don't have to use the pipe syntax, if you're not familiar
+
+  compute_or_abcd(
+    .data = demo,
     y = "a_colitis",
     x = "nivolumab"
   )
@@ -53,63 +61,23 @@ demo \%>\%
 many_drugs <-
   names(ex_$d_drecno)
 
-# use vectorization functions
+demo |>
+  compute_or_abcd(
+    y = "a_colitis",
+    x = many_drugs
+  )
 
-lapply(many_drugs, function(a_drug)
-  demo \%>\%
-    compute_or_abcd(
-      y = "a_colitis",
-      x = a_drug
-    )
-  ) \%>\%
-  rbindlist()
-
-# or purrr syntax (strictly identical)
-
-many_drugs \%>\%
-  purrr::map(
-    function(a_drug)
-      demo \%>\%
-      compute_or_abcd(
-        y = "a_colitis",
-        x = a_drug
-      )
-  ) \%>\%
-  purrr::list_rbind()
 
 # could do the same with adrs
 
 many_adrs <-
   names(ex_$a_llt)
 
-many_adrs \%>\%
-  purrr::map(
-    function(an_adr)
-      demo \%>\%
-      compute_or_abcd(
-        y = an_adr,
-        x = "nivolumab"
-      )
-  ) \%>\%
-  purrr::list_rbind()
-
-# even with many adrs and many drugs!
-
-many_drugs \%>\%
-  purrr::map(
-    function(a_drug) {
-      many_adrs \%>\%
-        purrr::map(
-          function(an_adr)
-            demo \%>\%
-            compute_or_abcd(
-              y = an_adr,
-              x = a_drug
-              )
-          ) \%>\%
-        purrr::list_rbind()
-    }
-  ) \%>\%
-  purrr::list_rbind()
+demo |>
+compute_or_abcd(
+  y = many_adrs,
+  x = many_drugs
+)
 }
+\keyword{ic}
 \keyword{ror}
