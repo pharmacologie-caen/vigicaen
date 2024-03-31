@@ -3,6 +3,7 @@ title: "descriptive"
 output: 
   rmarkdown::html_vignette:
     keep_md: true
+    toc: true
 vignette: >
   %\VignetteIndexEntry{descriptive}
   %\VignetteEncoding{UTF-8}

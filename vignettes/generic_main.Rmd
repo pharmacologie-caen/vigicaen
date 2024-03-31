@@ -2,6 +2,7 @@
 title: "generic_main"
 output: 
   rmarkdown::html_vignette:
+    toc: true
     keep_md: true
 vignette: >
   %\VignetteIndexEntry{generic_main}

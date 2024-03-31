@@ -3,6 +3,7 @@ title: "basic_workflow"
 output: 
   rmarkdown::html_vignette:
     keep_md: true
+    toc: true
 vignette: >
   %\VignetteIndexEntry{basic_workflow}
   %\VignetteEngine{knitr::rmarkdown}

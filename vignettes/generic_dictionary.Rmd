@@ -3,6 +3,7 @@ title: "generic_dictionary"
 output: 
   rmarkdown::html_vignette:
     keep_md: true
+    toc: true
 vignette: >
   %\VignetteIndexEntry{generic_dictionary}
   %\VignetteEngine{knitr::rmarkdown}
