@@ -133,6 +133,45 @@ test_that("a dataset with no Drug_Id and Adr_Id columns (like demo, adr) breaks 
 }
 )
 
+test_that("a dataset with no Adr_Id, MedDRA_Id, and Outcome (like demo, link) breaks the function if data_type is set to adr", {
+  adr_list_test <-
+    rlang::list2(
+      adr1 = "adr1",
+      adr2 = "adr2",
+      adr3 = "adr3",
+      adr4 = "adr4"
+    )
+
+  demo_test <-
+    data.table(
+      UMCReportId = c(1, 2, 3, 4, 5)
+    )
+
+  link_test <-
+    data.table(
+      Drug_Id = 1,
+      Adr_Id = 2
+    )
+
+  adr_test <-
+    data.table(
+      UMCReportId = c(1, 1, 2, 2, 3),
+      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
+      MedDRA_Id = c(100000, 20000, 30000, 40000, 50000),
+      Outcome = c(1, 2, 3, 2, 2)
+    )
+
+  purrr::walk(c(demo_test, link_test), function(wrong_data)
+    expect_error(
+      wrong_data %>%
+        add_adr(a_code = adr_list_test,
+                adr_data = adr_test,
+                data_type = "adr"),
+      "The dataset does not have Adr_Id, MedDRA_Id, and/or Outcome columns"
+    )
+  )
+}
+)
 
 test_that("works with link data, adr identification is Adr_Id wise, not UMCReportId wise", {
   adr_list_test <-

@@ -33,6 +33,82 @@ test_that("computation is accurate", {
   )
 })
 
+test_that("handles 0 cases in y/x combination", {
+  demo <-
+    data.table::data.table(
+      a_colitis = c(1, 1, 0, 0, 0),
+      nivolumab = c(1, 1, 0, 1, 0)
+    )
+
+  res_misb <-
+    demo %>%
+    compute_or_abcd(
+      y = "a_colitis",
+      x = "nivolumab"
+    )
+
+  expect_equal(
+    res_misb[["b"]],
+    0
+  )
+
+  demo_misc <-
+    data.table::data.table(
+      a_colitis = c(1, 1, 0, 0, 0),
+      nivolumab = c(1, 0, 0, 0, 0)
+    )
+
+  res_misc <-
+    demo_misc %>%
+    compute_or_abcd(
+      y = "a_colitis",
+      x = "nivolumab"
+    )
+
+  expect_equal(
+    res_misc[["c"]],
+    0
+  )
+
+  demo_misa <-
+    data.table::data.table(
+      a_colitis = c(1, 1, 0, 0, 0),
+      nivolumab = c(0, 0, 1, 0, 0)
+    )
+
+  res_misa <-
+    demo_misa %>%
+    compute_or_abcd(
+      y = "a_colitis",
+      x = "nivolumab"
+    )
+
+  expect_equal(
+    res_misa[["a"]],
+    0
+  )
+
+
+  demo_misd <-
+    data.table::data.table(
+      a_colitis = c(1, 1, 1, 1, 1),
+      nivolumab = c(0, 1, 0, 1, 1)
+    )
+
+  res_misd <-
+    demo_misd %>%
+    compute_or_abcd(
+      y = "a_colitis",
+      x = "nivolumab"
+    )
+
+  expect_equal(
+    res_misd[["d"]],
+    0
+  )
+
+})
+
 test_that("vectorization works inside and outside the function", {
   demo <-
     demo_ %>%

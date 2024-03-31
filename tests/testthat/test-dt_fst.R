@@ -49,5 +49,11 @@ test_that("works without name arg", {
 
   expect_equal(df, df2)
   expect_equal(class(df2), c("data.table", "data.frame"))
+
+  # You don't need to specify .fst
+  df3 <- dt_fst(path_base = paste0(path, "\\", "df"))
+
+  expect_equal(df, df3)
+  expect_equal(class(df3), c("data.table", "data.frame"))
 })
 
