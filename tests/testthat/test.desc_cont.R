@@ -182,6 +182,53 @@ test_that(
 )
 
 test_that(
+  "fully missing data", {
+    df <-
+      data.frame(
+        age = c(NA_real_, NA_real_, NA_real_)
+      )
+
+    expect_message({
+      res <<- desc_cont(vc = c("age"),
+                       .data = df,
+                       format = "median (q1-q3)",
+                       dig = 0)
+      },
+      "var age is empty"
+    )
+
+    res_true <-
+      data.frame(var = "age", level = NA_character_, value = "-", n_avail = 0)
+
+
+    expect_equal(
+      res,
+      res_true
+    )
+
+    df <-
+      data.frame(
+        age = as.numeric(c(NA, NA, NA))
+      )
+
+    expect_message({
+      res2 <<- desc_cont(vc = c("age"),
+                        .data = df,
+                        format = "median (q1-q3)",
+                        dig = 0)
+    },
+    "var age is empty"
+    )
+
+    expect_equal(
+      res2,
+      res_true
+    )
+
+  }
+)
+
+test_that(
   "doesnt work with categorial columns", {
     df <-
       data.frame(
@@ -252,6 +299,26 @@ test_that(
       ,
       "Column(s) bmi, sex is(are) absent of .data",
       fixed = TRUE
+    )
+
+
+  }
+)
+
+test_that(
+  "doesnt work if format as none of min max, q1, q3 and median", {
+    df <-
+      data.frame(
+        age = c(60, 50, 56, 49, 75, 69, 85)
+      )
+
+    expect_error(
+      desc_cont(vc = c("age"),
+                .data = df,
+                format = "no formal arg",
+                dig = 0)
+      ,
+      "format arg does not contain any of median, q1, q3, min or max. Please provide at least one."
     )
 
 

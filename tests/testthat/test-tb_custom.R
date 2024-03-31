@@ -4,8 +4,8 @@ test_that("you can subset on drecno, age, meddra_id", {
 
   suspdup <-
     data.table(
-      UMCReportId = c(17658707, 17658774, 17658793, 17658806),
-      SuspectedduplicateReportId = c(17658708, 17658775, 17658794, 17658807)
+      UMCReportId = c(39383397, 14509750, 26946607),
+      SuspectedduplicateReportId = c(47675459, 8291301, 47674785)
     )
 
    datasets <- rlang::list2(
@@ -135,6 +135,97 @@ test_that("you can subset on drecno, age, meddra_id", {
   expect_equal(
     all(colitis_test$has_colitis == 1),
     TRUE
+  )
+
+})
+
+test_that("wd_in exists", {
+  expect_error(
+    tb_custom(
+      wd_in = "that_dir_doesnt_exists"
+      ),
+    "that_dir_doesnt_exists was not found, check spelling and availability."
+  )
+})
+
+test_that("you can keep suspdup", {
+
+  wd_in <- tempdir()
+
+  suspdup <-
+    data.table(
+      UMCReportId = c(39383397, 14509750, 26946607),
+      SuspectedduplicateReportId = c(47675459, 8291301, 47674785)
+    )
+
+  datasets <- rlang::list2(
+    demo = demo_,
+    drug = drug_,
+    adr  = adr_,
+    link = link_,
+    srce = srce_,
+    ind  = ind_,
+    out  = out_,
+    followup = followup_,
+    suspectedduplicates = suspdup
+  )
+
+  purrr::iwalk(
+    datasets,
+    function(dataset, name)
+      fst::write_fst(
+        dataset,
+        path = paste0(wd_in, "\\", name, ".fst")
+      )
+
+  )
+
+  # age
+
+  tb_custom(
+    wd_in = paste0(wd_in, "\\"),
+    wd_out = paste0(wd_in, "\\subset_age_suspdup\\"),
+    subset_var = "age",
+    sv_selection = c(7, 8),
+    rm_suspdup = FALSE
+  )
+
+  tb_custom(
+    wd_in = paste0(wd_in, "\\"),
+    wd_out = paste0(wd_in, "\\subset_age\\"),
+    subset_var = "age",
+    sv_selection = c(7, 8),
+    rm_suspdup = TRUE
+  )
+
+  drug_sub <-
+    pharmacocaen::dt_fst(paste0(wd_in, "\\subset_age_suspdup\\"), "drug")
+
+  demo_sub <-
+    pharmacocaen::dt_fst(paste0(wd_in, "\\subset_age_suspdup\\"), "demo")
+
+  demo_nosuspdup <-
+    pharmacocaen::dt_fst(paste0(wd_in, "\\subset_age\\"), "demo")
+
+  expect_equal(
+    sort(unique(demo_sub$UMCReportId)),
+    sort(unique(drug_sub$UMCReportId))
+  )
+
+  age_test <-
+    demo_sub %>%
+    mutate(
+      good_age = AgeGroup %in% c(7, 8)
+    )
+
+  expect_equal(
+    all(age_test$good_age == 1),
+    TRUE
+  )
+
+  expect_equal(
+    nrow(demo_sub),
+    nrow(demo_nosuspdup) + 1
   )
 
 })

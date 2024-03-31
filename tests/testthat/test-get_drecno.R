@@ -61,6 +61,48 @@ test_that("get drecno of a single drug, no combination allowed", {
 
 })
 
+test_that("d_sel has inappropriate structure", {
+
+  # list in list
+
+  drug1 <- rlang::list2(atra = rlang::list2(
+    nivo_ipi = c("nivolumab", "ipilimumab")
+    )
+  )
+
+  expect_error(
+    get_drecno(drug1, mp_short_),
+    "Function is meant to be used for a single drug at a time. Check `d_sel` structure.")
+
+})
+
+test_that("show_all works", {
+
+  # list in list
+
+  drug1 <- rlang::list2(
+    nivo = "nivolumab")
+
+r1 <-
+  get_drecno(drug1, mp_short_,
+             show_all = TRUE)
+
+  expect_equal(
+    class(r1),
+    "list")
+
+  expect_equal(
+    class(r1$nivo),
+    c("data.table", "data.frame")
+  )
+
+  expect_equal(
+    r1$nivo$drug_name_t,
+    c("nivolumab", "ipilimumab;nivolumab")
+  )
+
+})
+
 test_that("non WHO names raise appropriate warnings", {
   # Intended for the special case a DrecNo has multiple nonproprietary names, but can be extended to commercial names
 

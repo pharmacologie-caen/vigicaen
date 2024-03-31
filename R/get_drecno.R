@@ -128,7 +128,7 @@ get_drecno <- function(
     # single drug checking
     if (length(x) > 1)
       stop(
-        "function is meant to be used for a single drug at a time. This is likely an internal error message"
+        "Function is meant to be used for a single drug at a time. Check `d_sel` structure."
       )
 
     # drug finder

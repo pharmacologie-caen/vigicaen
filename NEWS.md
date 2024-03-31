@@ -1,3 +1,7 @@
+## Minor
+
+Sounds like minor but... Added tests to hit 100% test coverage for the package!
+
 # pharmacocaen 0.11.0
 
 ## New features
