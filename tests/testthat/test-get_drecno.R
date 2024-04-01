@@ -1,10 +1,10 @@
 test_that("get drecno of a single drug, no combination allowed", {
 
-  nivo_drecno <- "078729"
+  nivo_drecno <- "740035"
 
-  ipi_drecno <- "057456"
+  ipi_drecno <- "719880"
 
-  ipi_nivo_drecno <- "139470"
+  ipi_nivo_drecno <- "679204"
 
   d_sel_names <- rlang::list2(
    nivolumab = "nivolumab",
@@ -136,11 +136,11 @@ test_that("works for drugs, which is the default setting", {
 
   drug1 <- rlang::list2(atra = "tretinoin")
 
-  atra_drecno <- "002796"
+  atra_drecno <- "710743"
 
   drug2 <- rlang::list2(pc = "protein c (coagulation inhibitor)") # name with parenthesis
 
-  pc_drecno <- "012493"
+  pc_drecno <- "729643"
 
   res_drug1 <- get_drecno(drug1,
                            mp_short_,
@@ -176,19 +176,20 @@ test_that("works for drugs, which is the default setting", {
 test_that("works for mpi_list as well", {
 
   mpi <- rlang::list2(
-    para = mp_short_[DrecNo == "000200", MedicinalProd_Id]
+    para = mp_short_[DrecNo == "773777", MedicinalProd_Id]
   )
 
   res_mpi <- get_drecno(mpi,
                          mp_short_,
                          method = "mpi_list",
                          show_all = FALSE,
+                         inspect = FALSE,
                          allow_combination = FALSE)
 
   expect_equal(length(res_mpi[["para"]]),
                1)
 
-  expect_equal(res_mpi[["para"]], "000200")
+  expect_equal(res_mpi[["para"]], "773777")
 
   expect_warning(get_drecno(mpi,
                              mp_short_,
