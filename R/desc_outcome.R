@@ -131,7 +131,7 @@ desc_outcome <-
             drug_s = .env$one_drug,
             adr_s = .env$one_adr,
             n_cas =
-              n()
+              dplyr::n()
           ) |>
           dplyr::left_join(out_worst_mask,
                     by = "out_worst") |>

@@ -63,7 +63,7 @@ wd_in <- tempdir()
 
 # --- technical steps ---- #
 suspdup <-
-  data.table(
+  data.table::data.table(
     UMCReportId = c(17658707, 17658774, 17658793, 17658806),
     SuspectedduplicateReportId = c(17658708, 17658775, 17658794, 17658807)
   )

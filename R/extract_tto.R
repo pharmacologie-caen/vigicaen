@@ -97,7 +97,7 @@ extract_tto <-
           #
           # } else {
             ttos |>
-              mutate(
+              dplyr::mutate(
                 .data$tto_max,
                 adr_s = .env$one_adr,
                 drug_s = .env$one_drug

@@ -33,10 +33,12 @@
 #' mod <- glm(a_colitis ~ nivolumab, data = demo, family = "binomial")
 #'
 #' # Extract coefficients
-#' coef_table <-
+#' mod_summary <-
 #'  mod |>
-#'  summary() |>
-#'  .$coefficients
+#'  summary()
+#'
+#' coef_table <-
+#'  mod_summary$coefficients
 #'
 #' # Transform coefficients into ORs with their CI
 #'

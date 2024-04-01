@@ -16,7 +16,7 @@
 #' @export
 #' @importFrom rlang .data
 #' @importFrom rlang .env
-#' @importFrom data.table data.table
+#' @importFrom data.table data.table .N
 #' @examples
 #' # Say you want to perform a disproportionality analysis between colitis and
 #' # nivolumab among ICI cases

@@ -1,12 +1,12 @@
 test_that("find proper ttos on a known dataset", {
 
   luda_ <-
-    luda_ %>%
+    luda_ |>
     add_drug(
       d_code = ex_$d_groups_drecno,
       drug_data = drug_,
       data_type = "link"
-    ) %>%
+    ) |>
     add_adr(
       a_code = ex_$a_llt,
       adr_data = adr_,
@@ -36,12 +36,12 @@ test_that("find proper ttos on a known dataset", {
 
 test_that("works with vectorized adrs and drugs", {
   luda_ <-
-    luda_ %>%
+    luda_ |>
     add_drug(
       d_code = ex_$d_groups_drecno,
       drug_data = drug_,
       data_type = "link"
-    ) %>%
+    ) |>
     add_adr(
       a_code = ex_$a_llt,
       adr_data = adr_,
@@ -54,13 +54,13 @@ test_that("works with vectorized adrs and drugs", {
              drug_s = c("pd1"))
 
   tto_many_adr2 <-
-    bind_rows(
-      tto_many_adr %>%
-        filter(adr_s == "a_colitis") %>%
-        slice_head(n = 3),
-      tto_many_adr %>%
-        filter(adr_s == "a_pneumonitis") %>%
-        slice_head(n = 3)
+    dplyr::bind_rows(
+      tto_many_adr |>
+        dplyr::filter(adr_s == "a_colitis") |>
+        dplyr::slice_head(n = 3),
+      tto_many_adr |>
+        dplyr::filter(adr_s == "a_pneumonitis") |>
+        dplyr::slice_head(n = 3)
     )
 
   correct_many_adr <-
@@ -70,8 +70,8 @@ test_that("works with vectorized adrs and drugs", {
     )
 
   expect_equal(
-    tto_many_adr2 %>%
-      select(tto_max, adr_s),
+    tto_many_adr2 |>
+      dplyr::select(tto_max, adr_s),
     correct_many_adr
   )
 
@@ -81,13 +81,13 @@ test_that("works with vectorized adrs and drugs", {
                 drug_s = c("pd1", "pdl1"))
 
   tto_many_drug2 <-
-    bind_rows(
-      tto_many_drug %>%
-        filter(drug_s == "pd1") %>%
-        slice_tail(n = 3),
-      tto_many_drug %>%
-        filter(drug_s == "pdl1") %>%
-        slice_head(n = 3)
+    dplyr::bind_rows(
+      tto_many_drug |>
+        dplyr::filter(drug_s == "pd1") |>
+        dplyr::slice_tail(n = 3),
+      tto_many_drug |>
+        dplyr::filter(drug_s == "pdl1") |>
+        dplyr::slice_head(n = 3)
     )
 
   correct_many_drug <-
@@ -97,8 +97,8 @@ test_that("works with vectorized adrs and drugs", {
     )
 
   expect_equal(
-    tto_many_drug2 %>%
-      select(tto_max, drug_s),
+    tto_many_drug2 |>
+      dplyr::select(tto_max, drug_s),
     correct_many_drug
   )
 
@@ -119,12 +119,12 @@ test_that("works with vectorized adrs and drugs", {
 
 test_that("output type is consistent in presence or absence of tto data", {
   luda_ <-
-    luda_ %>%
+    luda_ |>
     add_drug(
       d_code = ex_$d_groups_drecno,
       drug_data = drug_,
       data_type = "link"
-    ) %>%
+    ) |>
     add_adr(
       a_code = ex_$a_llt,
       adr_data = adr_,
@@ -142,8 +142,8 @@ test_that("output type is consistent in presence or absence of tto data", {
   expect_warning(
     # https://stackoverflow.com/questions/60417969/r-how-to-omit-tested-warning-message-from-test-report-when-testing-for-result-a
     tto_a2 <<-
-      extract_tto(luda_data = luda_ %>%
-                  filter(a_pneumonitis == 0),
+      extract_tto(luda_data = luda_ |>
+                  dplyr::filter(a_pneumonitis == 0),
 
                 adr_s = "a_pneumonitis",
                 drug_s = "pd1")
@@ -176,7 +176,7 @@ test_that("output type is consistent in presence or absence of tto data", {
 test_that("breaks if tto_mean or range are missing", {
   wrong_luda <-
     luda_ |>
-    select(-tto_mean) |>
+    dplyr::select(-tto_mean) |>
     add_drug(
       d_code = ex_$d_groups_drecno,
       drug_data = drug_,
@@ -198,7 +198,7 @@ test_that("breaks if tto_mean or range are missing", {
 
   wrong_luda2 <-
     luda_ |>
-    select(-range) |>
+    dplyr::select(-range) |>
     add_drug(
       d_code = ex_$d_groups_drecno,
       drug_data = drug_,

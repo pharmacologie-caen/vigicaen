@@ -3,7 +3,7 @@ test_that("you can subset on drecno, age, meddra_id", {
   wd_in <- tempdir()
 
   suspdup <-
-    data.table(
+    data.table::data.table(
       UMCReportId = c(39383397, 14509750, 26946607),
       SuspectedduplicateReportId = c(47675459, 8291301, 47674785)
     )
@@ -59,8 +59,8 @@ test_that("you can subset on drecno, age, meddra_id", {
 
   para_test <-
     drug_sub %>%
-    group_by(UMCReportId) %>%
-    summarise(
+    dplyr::group_by(UMCReportId) %>%
+    dplyr::summarise(
       has_para = max(DrecNo %in% d_drecno$para)
     )
 
@@ -91,7 +91,7 @@ test_that("you can subset on drecno, age, meddra_id", {
 
   age_test <-
     demo_sub %>%
-    mutate(
+    dplyr::mutate(
       good_age = AgeGroup %in% c(7, 8)
     )
 
@@ -127,8 +127,8 @@ test_that("you can subset on drecno, age, meddra_id", {
 
   colitis_test <-
     adr_sub %>%
-    group_by(UMCReportId) %>%
-    summarise(
+    dplyr::group_by(UMCReportId) %>%
+    dplyr::summarise(
       has_colitis = max(MedDRA_Id %in% ex_$a_llt$a_colitis)
     )
 
@@ -214,7 +214,7 @@ test_that("you can keep suspdup", {
 
   age_test <-
     demo_sub %>%
-    mutate(
+    dplyr::mutate(
       good_age = AgeGroup %in% c(7, 8)
     )
 

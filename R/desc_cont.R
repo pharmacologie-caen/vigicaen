@@ -120,7 +120,7 @@ desc_cont <-
       r1 <-
         if (!check_all_na) {
           .data |>
-            summarise(
+            dplyr::summarise(
               var = one_var,
               level = NA_character_,
               median    =
@@ -134,7 +134,7 @@ desc_cont <-
               max =
                 max({{ vc_s }}, na.rm = TRUE),
 
-              across(all_of(c("median", "q1", "q3", "min", "max")),
+              dplyr::across(dplyr::all_of(c("median", "q1", "q3", "min", "max")),
                      ~ pharmacocaen::cff(.x, dig = .env$digits)),
 
               value =
@@ -165,10 +165,10 @@ desc_cont <-
               n_avail =
                 sum(!is.na({{ vc_s }}))
             ) |>
-            select(all_of(c("var", "level", "value", "n_avail")))
+            dplyr::select(dplyr::all_of(c("var", "level", "value", "n_avail")))
         } else {
           .data |>
-            summarise(
+            dplyr::summarise(
               var = one_var,
               level = NA_character_,
               value = "-",

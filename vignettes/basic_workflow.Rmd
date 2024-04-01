@@ -48,6 +48,7 @@ Chaque table possède une clé identifiante unique, et d'autres variables permet
 # library(tidyverse)
 library(rlang)
 library(pharmacocaen)
+library(dplyr)
 
 ```
 
@@ -100,7 +101,7 @@ Il faut TOUJOURS procéder en deux étapes.
 1.  D'abord, on utilise `get_drecno` avec l'argument `inspect = TRUE`
 
 ```{r inspect_with_get_drecno}
-d_sel %>% 
+d_sel |> 
   get_drecno(
     mp_short = mp_short,
     inspect = TRUE
@@ -119,7 +120,7 @@ Cette deuxième ligne a été identifiée car l'argument `allow_combination` est
 
 ```{r d_drecno}
 d_drecno <-
-  d_sel %>% 
+  d_sel |> 
   get_drecno(
     mp_short = mp_short,
     inspect = FALSE
@@ -152,7 +153,7 @@ Ou, en syntaxe tidyverse
 
 ```{r, results='hide'}
 demo <- 
-  demo %>% 
+  demo |> 
   add_drug(
     d_code = d_drecno,
     drug_data = drug
@@ -166,7 +167,7 @@ Cela peut paraitre trivial, mais c'est un temps **essentiel** de la construction
 Il y a de nombreuses façons de vérifier que le code a fonctionné. Ici, la fonction check_dm va compter le nombre de lignes du jeu de données où la colonne souhaitée vaut 1.
 
 ```{r}
-demo %>% 
+demo |> 
   check_dm("nivolumab")
 ```
 
@@ -184,21 +185,21 @@ L'information est stockée dans la colonne `Basis` de la table `drug`.
 En utilisant la fonction add_drug, on peut spécifier quel type de statut nous intéresse, dans l'argument `repbasis`. Par défaut, la valeur `"sci"` indique qu'on considère le médicament qu'il soit suspect, concomitant ou interacting. On peut changer la sélection.
 
 ```{r add_drug_repbasis}
-demo %>% 
+demo |> 
   add_drug(
     d_code = d_drecno,
     drug_data = drug,
     repbasis = "sci"
-  ) %>% 
+  ) |> 
   check_dm("nivolumab")
 
 # suspected only
-demo %>% 
+demo |> 
   add_drug(
     d_code = d_drecno,
     drug_data = drug,
     repbasis = "s"
-  ) %>% 
+  ) |> 
   check_dm("nivolumab")
 ```
 
@@ -213,7 +214,7 @@ atc_sel <-
   list2(l03 = "L03")
 
 atc_drecno <- 
-  atc_sel %>% 
+  atc_sel |> 
     get_atc_code(
       mp_short = mp_short,
       thg_data = thg_
@@ -231,7 +232,7 @@ Par défaut, cette fonction permet de récupérer des DrecNos associés à une c
 On se sert ensuite de add_drug pour créer la variable dans demo.
 
 ```{r}
-demo %>% 
+demo |> 
   add_drug(
     d_code = atc_drecno,
     drug_data = drug
@@ -250,14 +251,14 @@ d_sel <-
   )
 
 d_drecno <-
-  d_sel %>% 
+  d_sel |> 
   get_drecno(mp_short = mp_short)
 
-demo %>% 
+demo |> 
   add_drug(
     d_drecno,
     drug_data = drug
-  ) %>% 
+  ) |> 
   check_dm(c("nivolumab", "pembrolizumab"))
 ```
 
@@ -273,14 +274,14 @@ d_sel <-
   )
 
 d_drecno <-
-  d_sel %>% 
+  d_sel |> 
   get_drecno(mp_short = mp_short)
 
-demo %>% 
+demo |> 
   add_drug(
     d_drecno,
     drug_data = drug
-  ) %>% 
+  ) |> 
   check_dm(names(d_sel))
 ```
 
@@ -354,7 +355,7 @@ L'identification des cas par la table `adr` et la création d'une ou plusieurs c
 
 ```{r add_adr}
 demo <- 
-  demo %>% 
+  demo |> 
   add_adr(
     a_code = a_llt,
     adr_data = adr
@@ -366,7 +367,7 @@ demo <-
 La fonction check_dm peut être utilisée, comme pour les médicaments
 
 ```{r check_dm_adr}
-demo %>% 
+demo |> 
   check_dm("a_colitis")
 ```
 ## Autres variables
@@ -386,7 +387,7 @@ Créer la colonne sex dans demo avec la fonction `ifelse` en série.
 Créer la colonne sex dans demo avec la fonction `ifelse` en série.
 
 ```{r}
-demo %>% 
+demo |> 
   mutate(
     sex = ifelse(Gender == "1", 1,
                  ifelse(Gender == "2", 2, NA_real_)
@@ -400,7 +401,7 @@ La fonction `case_when` du package `dplyr`, permet de gérer plusieurs options e
 
 ```{r}
 demo <- 
-  demo %>% 
+  demo |> 
   mutate(
     sex = case_when(Gender == "1" ~ 1,
                     Gender == "2" ~ 2,
@@ -422,7 +423,7 @@ La syntaxe est de la forme
 
 ```{r eval=FALSE}
 fusion <-
-  demo %>% 
+  demo |> 
   left_join(table_vigilyze,
             by = c("UMCReportId" = "UMC.report.ID"))
 ```
@@ -444,7 +445,7 @@ Le caractère serious et la mort sont renseignés dans une table tierce nommée 
 out <- out_
 
 demo <- 
-  demo %>% 
+  demo |> 
   mutate(
     serious = ifelse(UMCReportId %in% out[, UMCReportId],
                       UMCReportId %in% out[Serious == "Y", UMCReportId],
@@ -454,9 +455,9 @@ demo <-
 # ---- Death + disponibilite de l'outcome ---- ####
 
 demo <- 
-  demo %>% 
+  demo |> 
   mutate(death = 
-           fifelse(UMCReportId %in% out[, UMCReportId],
+           data.table::fifelse(UMCReportId %in% out[, UMCReportId],
                    UMCReportId %in% out[Seriousness == "1", UMCReportId],
                    NA)
          )
@@ -486,39 +487,39 @@ Le ROR se calcule à l'aide d'une table de contingence. Il suffit de trouver a, 
 
 #### Exercice
 
-A l'aide de conditions dans demo, trouver a, b, c, et d et assigner les résultats à des objets de même nom. La fonction `demo %>% nrow()` permet de compter le nombre de lignes dans demo. La fonction `filter()` permet de sélectionner des lignes selon certaines conditions.
+A l'aide de conditions dans demo, trouver a, b, c, et d et assigner les résultats à des objets de même nom. La fonction `demo |> nrow()` permet de compter le nombre de lignes dans demo. La fonction `filter()` permet de sélectionner des lignes selon certaines conditions.
 
 #### Réponse
 
-A l'aide de conditions dans demo, trouver a, b, c, et d et assigner les résultats à des objets de même nom. La fonction `demo %>% nrow()` permet de compter le nombre de lignes dans demo. La fonction `filter` permet de sélectionner des lignes selon certaines conditions.
+A l'aide de conditions dans demo, trouver a, b, c, et d et assigner les résultats à des objets de même nom. La fonction `demo |> nrow()` permet de compter le nombre de lignes dans demo. La fonction `filter` permet de sélectionner des lignes selon certaines conditions.
 
 ```{r abcd}
 a <- 
-  demo %>% 
+  demo |> 
   filter(nivolumab == 1 & 
-           a_colitis == 1) %>% 
-  summarise(n()) %>% 
+           a_colitis == 1) |> 
+  summarise(n()) |> 
   pull()
 
 b <- 
-  demo %>% 
+  demo |> 
   filter(nivolumab == 1 & 
-           a_colitis == 0) %>% 
-  summarise(n()) %>% 
+           a_colitis == 0) |> 
+  summarise(n()) |> 
   pull()
 
 c <- 
-  demo %>% 
+  demo |> 
   filter(nivolumab == 0 & 
-           a_colitis == 1) %>% 
-  summarise(n()) %>% 
+           a_colitis == 1) |> 
+  summarise(n()) |> 
   pull()
 
 d <- 
-  demo %>% 
+  demo |> 
   filter(nivolumab == 0 & 
-           a_colitis == 0) %>% 
-  summarise(n()) %>% 
+           a_colitis == 0) |> 
+  summarise(n()) |> 
   pull()
 ```
 
@@ -583,7 +584,7 @@ Permet de réaliser directement le calcul du (R)OR et de l'IC, en donnant en ent
 Vérifiez la concordance de vos résultats avec ceux de la fonction `compute_or_abcd`.
 
 ```{r compute_or_abcd}
-demo %>% 
+demo |> 
   compute_or_abcd(
     y = "a_colitis",
     x = "nivolumab"
@@ -666,7 +667,7 @@ a_llt <- ex_$a_llt
 # ---- Drugs ---- ####
 
 demo <-
-    demo %>%
+    demo |>
     add_drug(
       d_code = d_drecno,
       drug_data = drug_
@@ -675,7 +676,7 @@ demo <-
 # ---- Adrs ---- ####
 
 demo <- 
-  demo %>%
+  demo |>
     add_adr(
       a_code = a_llt,
       adr_data = adr_
@@ -684,7 +685,7 @@ demo <-
 # ---- Sex ---- ####
 
 demo <- 
-  demo %>% 
+  demo |> 
   mutate(
     sex = case_when(Gender == "1" ~ 1,
                     Gender == "2" ~ 2,
@@ -747,8 +748,8 @@ On peut regarder parmi les cas d'un médicament, si l'évènement est plus rappo
 La fonction compute_ror_abcd permet de répondre à cette question, il suffit de filtrer le dataset
 
 ```{r}
-demo %>% 
-  filter(nivolumab == 1) %>% 
+demo |> 
+  filter(nivolumab == 1) |> 
   compute_or_abcd(
     y = "a_colitis",
     x = "ipilimumab"
@@ -819,7 +820,7 @@ Il s'agit d'un raccourci pour exporter sous forme de tableau les résultats d'un
 coef_table <-
   summary(mod2)$coefficients
 
-coef_table %>% 
+coef_table |> 
 compute_or_mod(
   estimate = Estimate,
   std_er = Std..Error

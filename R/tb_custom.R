@@ -45,7 +45,7 @@
 #'
 #' # --- technical steps ---- #
 #' suspdup <-
-#'   data.table(
+#'   data.table::data.table(
 #'     UMCReportId = c(17658707, 17658774, 17658793, 17658806),
 #'     SuspectedduplicateReportId = c(17658708, 17658775, 17658794, 17658807)
 #'   )
@@ -209,7 +209,7 @@ tb_custom <-
         paste0(fst_file, " subset has ", nr, " rows.")
       )
 
-      write_fst(df, path = paste0(wd_out, fst_file))
+      fst::write_fst(df, path = paste0(wd_out, fst_file))
     }
 
 
@@ -244,7 +244,7 @@ tb_custom <-
         paste0(fst_file, " subset has ", nr, " rows.")
       )
 
-      write_fst(df, path = paste0(wd_out, fst_file))
+      fst::write_fst(df, path = paste0(wd_out, fst_file))
     }
 
     drd_list <-
