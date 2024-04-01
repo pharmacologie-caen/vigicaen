@@ -200,6 +200,7 @@ test_that("works for mpi_list as well", {
 })
 
 test_that("inspection works", {
+  # with method = drug_name
   d_one <-
     list(
       thrombophilia = c("tramadol")
@@ -262,6 +263,35 @@ test_that("inspection works", {
     )),
     TRUE
   )
+
+  # with method = mpi_list
+
+  mpi <- rlang::list2(
+    para = mp_short_[DrecNo == "773777", MedicinalProd_Id]
+  )
+
+  r_insp3 <- get_drecno(mpi,
+                        mp_short_,
+                        method = "mpi_list",
+                        show_all = FALSE,
+                        inspect = TRUE,
+                        allow_combination = FALSE)
+
+  r_expected3_dim <- c(1, 9)
+
+  expect_equal(
+    dim(r_insp3[[1]]),
+    r_expected3_dim
+  )
+
+  expect_equal(
+    all(stringr::str_detect(
+      r_insp3[[1]]$drug_name_t,
+      "paracetamol"
+    )),
+    TRUE
+  )
+
 })
 
 test_that("names of d_sel were tolower-ed and trimed warning", {
