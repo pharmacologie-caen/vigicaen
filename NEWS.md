@@ -1,6 +1,12 @@
+# pharmacocaen 0.11.1
+
 ## Minor
 
 Sounds like minor but... Added tests to hit 100% test coverage for the package!
+#56 Had R CMD CHECK pass on 3 different OS! Test coverage also works.
+#58 Further anonymized datasets.
+get_drecno now correctly inspects DrecNos identified from an mpi_list.
+Fix a bug, get_drecno wasn't correctly returning DrecNos from mpi_list.
 
 # pharmacocaen 0.11.0
 

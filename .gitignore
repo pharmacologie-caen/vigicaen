@@ -7,3 +7,5 @@ inst/doc
 /doc/
 /Meta/
 docs
+
+data-raw/my_pkg_data_anonymized.R

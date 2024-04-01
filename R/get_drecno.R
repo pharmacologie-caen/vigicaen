@@ -206,7 +206,8 @@ get_drecno <- function(
 
     res_list <-
       purrr::map(d_sel_renamed, function(d_n)
-        mp_short[find_mpi(d_n), ]
+        mp_short[find_mpi(d_n), ] |>
+          dplyr::mutate(drug = 1) # for compatibility with inspect instructions
       )
 
   }
@@ -232,7 +233,13 @@ get_drecno <- function(
     } else {
       purrr::map(res_list, function(r_l,
                                     DrecNo = {{ DrecNo }})
-        r_l[, unique(DrecNo)]
+        r_l |>
+          dplyr::filter(
+            .data$Sequence.number.1 == "01" &
+              .data$Sequence.number.2 == "001"
+          ) |>
+          dplyr::pull(.data$DrecNo) |>
+          unique()
         )
     }
 
