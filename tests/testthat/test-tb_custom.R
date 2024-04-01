@@ -2,55 +2,81 @@ test_that("you can subset on drecno, age, meddra_id", {
 
   wd_in <- tempdir()
 
-  suspdup <-
-    data.table::data.table(
-      UMCReportId = c(39383397, 14509750, 26946607),
-      SuspectedduplicateReportId = c(47675459, 8291301, 47674785)
-    )
-
-   datasets <- rlang::list2(
-     demo = demo_,
-     drug = drug_,
-     adr  = adr_,
-     link = link_,
-     srce = srce_,
-     ind  = ind_,
-     out  = out_,
-     followup = followup_,
-     suspectedduplicates = suspdup
+  mini_data <- rlang::list2(
+    demo =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4),
+        AgeGroup = c(1, 2, 7, 9)
+      ),
+    drug =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4),
+        Drug_Id = c("d1", "d2", "d3", "d4"),
+        DrecNo = c("dr1", "dr2", "dr3", "dr4"),
+        MedicinalProd_Id = c("mp1", "mp2", "mp3", "mp4")
+      ),
+    adr  =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4),
+        Adr_Id = c("a1", "a2", "a3", "a4"),
+        MedDRA_Id = c("m1", "m2", "m3", "m4")
+      ),
+    link =
+      data.table(
+        Drug_Id = c("d1", "d2", "d3", "d4"),
+        Adr_Id = c("a1", "a2", "a3", "a4")
+      ),
+    srce =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4)
+      ),
+    ind  =
+      data.table(
+        Drug_Id = c("d1", "d2", "d3", "d4")
+      ),
+    out  =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4)
+      ),
+    followup =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4)
+      ),
+    suspectedduplicates =
+      data.table(
+        UMCReportId = c(3),
+        SuspectedduplicateReportId = c(4)
+      )
   )
 
      purrr::iwalk(
-       datasets,
+       mini_data,
        function(dataset, name)
          fst::write_fst(
            dataset,
-           path = paste0(wd_in, "\\", name, ".fst")
+           path = paste0(wd_in, "/", name, ".fst")
          )
 
      )
 
-     # drecno
+  # ---- drecno
 
-  d_drecno <-
-    pharmacocaen::get_drecno(
-      d_sel = list(para = "paracetamol"),
-      mp_short = pharmacocaen::mp_short_
-    )
+  sv_selection_drecno <- # spurious paracetamol drecnos
+    c("dr3", "dr4")
 
   tb_custom(
-    wd_in = paste0(wd_in, "\\"),
-    wd_out = paste0(wd_in, "\\subset\\"),
+    wd_in = paste0(wd_in, "/"),
+    wd_out = paste0(wd_in, "/", "subset_drecno", "/"),
     subset_var = "drecno",
-    sv_selection = d_drecno$para
+    sv_selection = sv_selection_drecno
     )
 
 
   drug_sub <-
-    pharmacocaen::dt_fst(paste0(wd_in, "\\subset\\"), "drug")
+    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_drecno", "/"), "drug")
 
   demo_sub <-
-    pharmacocaen::dt_fst(paste0(wd_in, "\\subset\\"), "demo")
+    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_drecno", "/"), "demo")
 
   expect_equal(
     sort(unique(demo_sub$UMCReportId)),
@@ -61,7 +87,7 @@ test_that("you can subset on drecno, age, meddra_id", {
     drug_sub %>%
     dplyr::group_by(UMCReportId) %>%
     dplyr::summarise(
-      has_para = max(DrecNo %in% d_drecno$para)
+      has_para = max(DrecNo %in% sv_selection_drecno)
     )
 
   expect_equal(
@@ -69,20 +95,20 @@ test_that("you can subset on drecno, age, meddra_id", {
     TRUE
   )
 
-  # age
+  # ---- age
 
   tb_custom(
-    wd_in = paste0(wd_in, "\\"),
-    wd_out = paste0(wd_in, "\\subset_age\\"),
+    wd_in = paste0(wd_in, "/"),
+    wd_out = paste0(wd_in, "/", "subset_age", "/"),
     subset_var = "age",
     sv_selection = c(7, 8)
   )
 
   drug_sub <-
-    pharmacocaen::dt_fst(paste0(wd_in, "\\subset_age\\"), "drug")
+    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_age", "/"), "drug")
 
   demo_sub <-
-    pharmacocaen::dt_fst(paste0(wd_in, "\\subset_age\\"), "demo")
+    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_age", "/"), "demo")
 
   expect_equal(
     sort(unique(demo_sub$UMCReportId)),
@@ -100,25 +126,25 @@ test_that("you can subset on drecno, age, meddra_id", {
     TRUE
   )
 
-  # adr
+  # ---- adr
 
-  sv_selection <-
-   ex_$a_llt$a_colitis
+  sv_selection_mid <- # spurious colitis codes
+    c("m1", "m2")
 
-  wd_out <- paste0(wd_in, "\\", "subset_colitis", "\\")
+  wd_out <- paste0(wd_in, "/", "subset_meddraid", "/")
 
   tb_custom(
-    wd_in = paste0(wd_in, "\\"),
-    wd_out = paste0(wd_in, "\\subset_colitis\\"),
+    wd_in = paste0(wd_in, "/"),
+    wd_out = paste0(wd_in, "/", "subset_meddraid", "/"),
     subset_var = "meddra_id",
-    sv_selection = sv_selection
+    sv_selection = sv_selection_mid
   )
 
   adr_sub <-
-    pharmacocaen::dt_fst(paste0(wd_in, "\\subset_colitis\\"), "adr")
+    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_meddraid", "/"), "adr")
 
   demo_sub <-
-    pharmacocaen::dt_fst(paste0(wd_in, "\\subset_colitis\\"), "demo")
+    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_meddraid", "/"), "demo")
 
   expect_equal(
     sort(unique(demo_sub$UMCReportId)),
@@ -129,7 +155,7 @@ test_that("you can subset on drecno, age, meddra_id", {
     adr_sub %>%
     dplyr::group_by(UMCReportId) %>%
     dplyr::summarise(
-      has_colitis = max(MedDRA_Id %in% ex_$a_llt$a_colitis)
+      has_colitis = max(MedDRA_Id %in% sv_selection_mid)
     )
 
   expect_equal(
@@ -152,60 +178,89 @@ test_that("you can keep suspdup", {
 
   wd_in <- tempdir()
 
-  suspdup <-
-    data.table(
-      UMCReportId = c(39383397, 14509750, 26946607),
-      SuspectedduplicateReportId = c(47675459, 8291301, 47674785)
-    )
-
-  datasets <- rlang::list2(
-    demo = demo_,
-    drug = drug_,
-    adr  = adr_,
-    link = link_,
-    srce = srce_,
-    ind  = ind_,
-    out  = out_,
-    followup = followup_,
-    suspectedduplicates = suspdup
+  mini_data <- rlang::list2(
+    demo =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4),
+        AgeGroup = c(1, 7, 7, 8)
+      ),
+    drug =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4),
+        Drug_Id = c("d1", "d2", "d3", "d4"),
+        DrecNo = c("dr1", "dr2", "dr3", "dr4"),
+        MedicinalProd_Id = c("mp1", "mp2", "mp3", "mp4")
+      ),
+    adr  =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4),
+        Adr_Id = c("a1", "a2", "a3", "a4"),
+        MedDRA_Id = c("m1", "m2", "m3", "m4")
+      ),
+    link =
+      data.table(
+        Drug_Id = c("d1", "d2", "d3", "d4"),
+        Adr_Id = c("a1", "a2", "a3", "a4")
+      ),
+    srce =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4)
+      ),
+    ind  =
+      data.table(
+        Drug_Id = c("d1", "d2", "d3", "d4")
+      ),
+    out  =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4)
+      ),
+    followup =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4)
+      ),
+    suspectedduplicates =
+      data.table(
+        UMCReportId = c(3),
+        SuspectedduplicateReportId = c(4)
+      )
   )
 
   purrr::iwalk(
-    datasets,
+    mini_data,
     function(dataset, name)
       fst::write_fst(
         dataset,
-        path = paste0(wd_in, "\\", name, ".fst")
+        path = paste0(wd_in, "/", name, ".fst")
       )
 
   )
 
-  # age
+  # ---- age
 
   tb_custom(
-    wd_in = paste0(wd_in, "\\"),
-    wd_out = paste0(wd_in, "\\subset_age_suspdup\\"),
+    wd_in = paste0(wd_in, "/"),
+    wd_out = paste0(wd_in, "/", "subset_age_suspdup", "/"),
     subset_var = "age",
     sv_selection = c(7, 8),
     rm_suspdup = FALSE
   )
 
   tb_custom(
-    wd_in = paste0(wd_in, "\\"),
-    wd_out = paste0(wd_in, "\\subset_age\\"),
+    wd_in = paste0(wd_in, "/"),
+    wd_out = paste0(wd_in, "/", "subset_age", "/"),
     subset_var = "age",
     sv_selection = c(7, 8),
     rm_suspdup = TRUE
   )
 
   drug_sub <-
-    pharmacocaen::dt_fst(paste0(wd_in, "\\subset_age_suspdup\\"), "drug")
+    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_age_suspdup", "/"), "drug")
 
   demo_sub <-
-    pharmacocaen::dt_fst(paste0(wd_in, "\\subset_age_suspdup\\"), "demo")
+    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_age_suspdup", "/"), "demo")
 
   demo_nosuspdup <-
-    pharmacocaen::dt_fst(paste0(wd_in, "\\subset_age\\"), "demo")
+    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_age", "/"), "demo")
 
   expect_equal(
     sort(unique(demo_sub$UMCReportId)),
