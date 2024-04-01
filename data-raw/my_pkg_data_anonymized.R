@@ -1,27 +1,87 @@
+library(tidyverse)
+
 anonymizer <-
   function(value){
 
     value_to_replace <-
         as.character(value)
 
-    set.seed(123)  # Set seed for reproducibility
     pattern <-
-      sample(10:99, 100, replace = TRUE) |>
+      sample(0:9, 10, replace = FALSE) |>
       as.character()
 
-    set.seed(321)
-    replace <-
-      sample(10:99, 100, replace = TRUE) |>
-      as.character()
+    intermediate <- letters[1:10]
+
+        replace <- rev(pattern)
+
+    # replace <- pattern
 
     for(i in seq_along(pattern)){
       value_to_replace <-
         value_to_replace |>
-        stringr::str_replace(
+        stringr::str_replace_all(
           pattern[i],
+          intermediate[i]
+        )
+    }
+
+    for(i in seq_along(pattern)){
+      value_to_replace <-
+        value_to_replace |>
+        stringr::str_replace_all(
+          intermediate[i],
           replace[i]
         )
     }
+
+    vtr_1 <-
+      value_to_replace |>
+      stringr::str_sub(start = 1L, end = 1L)
+
+    vtr_3 <-
+      value_to_replace |>
+      stringr::str_sub(start = 3L, end = 3L)
+
+    vtr_5 <-
+      value_to_replace |>
+      stringr::str_sub(start = 5L, end = 5L)
+
+    vtr_7 <-
+      value_to_replace |>
+      stringr::str_sub(start = 7L, end = 7L)
+
+    vtr_2 <-
+      value_to_replace |>
+      stringr::str_sub(start = 2L, end = 2L)
+
+    vtr_4 <-
+      value_to_replace |>
+      stringr::str_sub(start = 4L, end = 4L)
+
+    vtr_6 <-
+      value_to_replace |>
+      stringr::str_sub(start = 6L, end = 6L)
+
+    vtr_8 <-
+      value_to_replace |>
+      stringr::str_sub(start = 8L, end = 8L)
+
+    vtr_end <-
+      value_to_replace |>
+      stringr::str_sub(start = 9L)
+
+
+    vtr_end <-
+      value_to_replace |>
+      stringr::str_sub(start = 9L)
+
+    value_to_replace <-
+      paste0(vtr_7, vtr_end,
+             vtr_1, vtr_8,
+             vtr_6, vtr_4,
+             vtr_2, vtr_5,
+             vtr_3
+             )
 
     # output according to initial type
 
@@ -33,6 +93,9 @@ anonymizer <-
       as.character(value_to_replace)
     }
   }
+
+
+
 
 testthat::test_that("the same number always produces the same replacement", {
   n <- rep(6508068, 1000)
@@ -223,3 +286,42 @@ check_dm(demo_2, names(ex_$d_drecno))
 
 check_dm(demo, names(ex_$a_llt))
 check_dm(demo_2, names(ex_$a_llt))
+
+# Ok, now lets try to replace existing data by the ano one and run tests...
+
+
+
+# exporting to .rda files
+
+demo_             <- demo_ano
+drug_             <- drug_ano
+adr_              <- adr_ano
+out_              <- out_ano
+srce_             <- srce_ano
+link_             <- link_ano
+ind_              <- ind_ano
+followup_         <- followup_ano
+thg_              <- thg_ano
+meddra_           <- meddra_ano
+mp_short_         <- mp_short_ano
+smq_list_content_ <- smq_list_content_ano
+luda_             <- luda_ano
+
+ex_               <- ex_ano
+
+
+usethis::use_data(demo_            , compress = "xz", overwrite = TRUE)
+usethis::use_data(drug_            , compress = "xz", overwrite = TRUE)
+usethis::use_data(adr_             , compress = "xz", overwrite = TRUE)
+usethis::use_data(out_             , compress = "xz", overwrite = TRUE)
+usethis::use_data(srce_            , compress = "xz", overwrite = TRUE)
+usethis::use_data(link_            , compress = "xz", overwrite = TRUE)
+usethis::use_data(ind_             , compress = "xz", overwrite = TRUE)
+usethis::use_data(followup_        , compress = "xz", overwrite = TRUE)
+usethis::use_data(thg_             , compress = "xz", overwrite = TRUE)
+usethis::use_data(meddra_          , compress = "xz", overwrite = TRUE)
+usethis::use_data(mp_short_        , compress = "xz", overwrite = TRUE)
+usethis::use_data(smq_list_content_, compress = "xz", overwrite = TRUE)
+usethis::use_data(ex_              , compress = "xz", overwrite = TRUE)
+usethis::use_data(luda_            , compress = "xz", overwrite = TRUE)
+
