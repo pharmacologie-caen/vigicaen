@@ -17,12 +17,12 @@
 #' @examples
 #'
 #' luda_ <-
-#'   luda_ %>%
+#'   luda_ |>
 #'   add_drug(
 #'     d_code = ex_$d_groups_drecno,
 #'     drug_data = drug_,
 #'     data_type = "link"
-#'   ) %>%
+#'   ) |>
 #'   add_adr(
 #'     a_code = ex_$a_llt,
 #'     adr_data = adr_,
@@ -104,8 +104,8 @@ desc_dch <-
 
 
         dch <-
-          data_subset %>%
-          mutate(
+          data_subset |>
+          dplyr::mutate(
             pos_dch =
               ifelse(
                 .data$Dechallenge1 %in% c("1", "2") &
@@ -115,17 +115,17 @@ desc_dch <-
                 # NA to shut warning in max, below
                 0
               )
-          ) %>%
-          summarise(max_pos_dch = max(.data$pos_dch),
-                    .by = all_of(grouping_variables))
+          ) |>
+          dplyr::summarise(max_pos_dch = max(.data$pos_dch),
+                    .by = dplyr::all_of(grouping_variables))
 
-        dch %>%
-          summarise(
+        dch |>
+          dplyr::summarise(
             drug_s = .env$one_drug,
             adr_s = .env$one_adr,
             pos_dch = sum(.data$max_pos_dch)
-          ) %>%
-          relocate(drug_s, adr_s)
+          ) |>
+          dplyr::relocate(drug_s, adr_s)
       }
 
     purrr::map(
@@ -138,9 +138,9 @@ desc_dch <-
               one_drug = one_drug_,
               one_adr = one_adr_
             )
-        ) %>%
+        ) |>
         purrr::list_rbind()
-    ) %>%
+    ) |>
       purrr::list_rbind()
 
   }

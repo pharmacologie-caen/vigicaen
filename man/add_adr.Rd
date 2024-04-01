@@ -49,13 +49,13 @@ a_llt <-
   )
 
 demo <-
-  demo \%>\%
+  demo |>
     add_adr(
       a_code = a_llt,
       adr_data = adr
     )
 
-demo \%>\%
+demo |>
   check_dm(names(a_pt_sel))
 }
 \keyword{adr}

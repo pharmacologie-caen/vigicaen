@@ -9,7 +9,6 @@
 #' @param name A character string, the file name.
 #' @param ext A character string, optional, specifying the file extension.
 #' @keywords import
-#' @import fst
 #' @export
 #' @examples
 #' # Say you have a data.frame stored in an fst format, such as this one

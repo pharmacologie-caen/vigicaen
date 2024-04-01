@@ -6,15 +6,12 @@ Authors@R:
            comment = c(ORCID = "0000-0003-0449-6261"))
 Description: Tools to perform pharmacovigilance database analysis.
 Depends: R (>= 4.1.0),
-	dplyr,
-	data.table,
-	fst,
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 URL: https://github.com/cdolladille/pharmacocaen
 BugReports: https://github.com/cdolladille/pharmacocaen/issues
 Suggests: 
@@ -24,6 +21,9 @@ Suggests:
     here
 Config/testthat/edition: 3
 Imports: 
+    dplyr,
+    data.table,
+    fst,
     lifecycle,
     purrr,
     rlang,

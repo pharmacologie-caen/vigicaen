@@ -16,7 +16,6 @@
 #' @param data_type A character string. The type of data to add columns to. Either `demo` or `link` (default to `demo`)
 #' @keywords drug
 #' @export
-#' @importFrom dplyr %>%
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #' @examples
@@ -107,11 +106,11 @@ add_drug <-
       umc_id <-
         rlang::eval_tidy(
           rlang::quo({
-            drug_data %>%
+            drug_data |>
               dplyr::filter(
                 .data[[!!method]] %in% drug_code &
                   !!basis_expr
-              ) %>%
+              ) |>
               dplyr::pull(UMCReportId)
           })
         )
@@ -135,11 +134,11 @@ add_drug <-
       drug_id <-
         rlang::eval_tidy(
           rlang::quo({
-            drug_data %>%
+            drug_data |>
               dplyr::filter(
                 .data[[!!method]] %in% drug_code &
                   !!basis_expr
-              ) %>%
+              ) |>
               dplyr::pull(Drug_Id)
           })
         )
@@ -179,7 +178,7 @@ add_drug <-
 
     # Step 3: apply the functions in .data
 
-    .data %>%
+    .data |>
       dplyr::mutate(!!!e_l)
 
   }

@@ -21,7 +21,6 @@
 #' @param show_all Do you wish to see all MP_Ids entries from `mp_short` when working with drug names, or just one entry per DrecNo? Default to FALSE
 #' @keywords atc
 #' @export
-#' @importFrom dplyr %>%
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #' @examples
@@ -79,10 +78,10 @@ get_drecno <- function(
     warning("allow_combination set to TRUE but mpi requested")
 
   d_sel_renamed <-
-    d_sel %>%
+    d_sel |>
     rlang::set_names(
-      ~ .x %>%
-        stringr::str_trim() %>%
+      ~ .x |>
+        stringr::str_trim() |>
         stringr::str_to_lower()
     )
 
@@ -191,7 +190,7 @@ get_drecno <- function(
     #   .id = "drug")
 
     res_list <-
-      d_sel_renamed %>%
+      d_sel_renamed |>
       purrr::map(function(d_n) # 2 level map, because find_drug_and_check_exist is working with an atomic character vector
         purrr::map_dfr(d_n,
                        find_drug_and_check_exist,
@@ -224,11 +223,11 @@ get_drecno <- function(
     if(inspect == TRUE) {
       purrr::map(res_list, function(r_l)
        r_l |>
-         filter(
+         dplyr::filter(
            .data$Sequence.number.1 == "01" &
              .data$Sequence.number.2 == "001"
          ) |>
-         distinct(.data$drug, .data$DrecNo, .keep_all = TRUE)
+         dplyr::distinct(.data$drug, .data$DrecNo, .keep_all = TRUE)
       )
     } else {
       purrr::map(res_list, function(r_l,

@@ -81,11 +81,11 @@ screen_adr <-
 
     n_case_counts <-
       adr_data |>
-      left_join(t_to_mid, by = c("MedDRA_Id" = "llt_code")) |>
-      select(all_of(c("UMCReportId", term_level_name))) |>
-      distinct() |>
-      summarise(n_cas = n(), .by = .env$term_level_name) |>
-      arrange(desc(.data$n_cas))
+      dplyr::left_join(t_to_mid, by = c("MedDRA_Id" = "llt_code")) |>
+      dplyr::select(all_of(c("UMCReportId", term_level_name))) |>
+      dplyr::distinct() |>
+      dplyr::summarise(n_cas = n(), .by = .env$term_level_name) |>
+      dplyr::arrange(desc(.data$n_cas))
 
     n_case_counts
   }

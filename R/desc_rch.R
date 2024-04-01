@@ -22,7 +22,6 @@
 #'   \item Median (interquartile range) time to onset in all settings.
 #' }
 #' @export
-#' @import dplyr data.table
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #'

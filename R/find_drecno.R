@@ -18,8 +18,6 @@
 #' For \code{find_drecno}, use \code{\link{get_drecno}}.
 #'
 #' @export
-#' @import data.table
-
 
 # Matching from mp_short
 

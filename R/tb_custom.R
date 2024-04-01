@@ -164,7 +164,7 @@ tb_custom <-
     # First step import
 
     drug <- dt_fst(wd_in, "drug")
-    adr <- dt_fst(wd_in, "adr")
+    adr  <- dt_fst(wd_in, "adr")
     demo <- dt_fst(wd_in, "demo")
 
     # Creer le subset a partir de drug ou adr (ou demo pour age) et obtenir UMCreportID et DrugId

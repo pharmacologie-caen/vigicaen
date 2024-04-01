@@ -18,18 +18,17 @@
 #'   \item A descriptive of time to onsets for this combination (column `tto_max`).
 #' }
 #' @export
-#' @import dplyr data.table
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #'
 #' @examples
 #' luda_ <-
-#'   luda_ %>%
+#'   luda_ |>
 #'   add_drug(
 #'     d_code = ex_$d_groups_drecno,
 #'     drug_data = drug_,
 #'     data_type = "link"
-#'   ) %>%
+#'   ) |>
 #'   add_adr(
 #'     a_code = ex_$a_llt,
 #'     adr_data = adr_,
@@ -69,19 +68,19 @@ desc_tto <-
       function(one_adr,
                one_drug){
         res <-
-          ttos %>%
+          ttos |>
           dplyr::filter(
             adr_s == .env$one_adr,
             drug_s == .env$one_drug
-          ) %>%
+          ) |>
           pharmacocaen::desc_cont(
             vc = "tto_max",
             ...
-          ) %>%
+          ) |>
           dplyr::mutate(
             adr_s = .env$one_adr,
             drug_s = .env$one_drug
-          ) %>%
+          ) |>
           dplyr::relocate(
             drug_s,
             adr_s
@@ -96,9 +95,9 @@ desc_tto <-
               one_adr = one_adr_,
               one_drug = one_drug_
             )
-        ) %>%
+        ) |>
         purrr::list_rbind()
-    ) %>%
+    ) |>
       purrr::list_rbind()
 
 }

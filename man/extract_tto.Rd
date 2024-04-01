@@ -32,12 +32,12 @@ time to onset.
 }
 \examples{
 luda_ <-
-  luda_ \%>\%
+  luda_ |>
   add_drug(
     d_code = ex_$d_groups_drecno,
     drug_data = drug_,
     data_type = "link"
-  ) \%>\%
+  ) |>
   add_adr(
     a_code = ex_$a_llt,
     adr_data = adr_,
