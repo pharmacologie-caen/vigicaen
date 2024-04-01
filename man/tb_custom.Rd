@@ -62,30 +62,62 @@ Age groups are as follows:
 wd_in <- tempdir()
 
 # --- technical steps ---- #
-suspdup <-
-  data.table(
-    UMCReportId = c(17658707, 17658774, 17658793, 17658806),
-    SuspectedduplicateReportId = c(17658708, 17658775, 17658794, 17658807)
-  )
 
- datasets <- rlang::list2(
-   demo = demo_,
-   drug = drug_,
-   adr  = adr_,
-   link = link_,
-   srce = srce_,
-   ind  = ind_,
-   out  = out_,
-   followup = followup_,
-   suspectedduplicates = suspdup
+library(data.table)
+
+mini_data <- rlang::list2(
+  demo =
+    data.table(
+      UMCReportId = c(1, 2, 3, 4),
+      AgeGroup = c(1, 2, 7, 9)
+    ),
+  drug =
+    data.table(
+      UMCReportId = c(1, 2, 3, 4),
+      Drug_Id = c("d1", "d2", "d3", "d4"),
+      DrecNo = c("dr1", "dr2", "dr3", "dr4"),
+      MedicinalProd_Id = c("mp1", "mp2", "mp3", "mp4")
+    ),
+  adr  =
+    data.table(
+      UMCReportId = c(1, 2, 3, 4),
+      Adr_Id = c("a1", "a2", "a3", "a4"),
+      MedDRA_Id = c("m1", "m2", "m3", "m4")
+    ),
+  link =
+    data.table(
+      Drug_Id = c("d1", "d2", "d3", "d4"),
+      Adr_Id = c("a1", "a2", "a3", "a4")
+    ),
+  srce =
+    data.table(
+      UMCReportId = c(1, 2, 3, 4)
+    ),
+  ind  =
+    data.table(
+      Drug_Id = c("d1", "d2", "d3", "d4")
+    ),
+  out  =
+    data.table(
+      UMCReportId = c(1, 2, 3, 4)
+    ),
+  followup =
+    data.table(
+      UMCReportId = c(1, 2, 3, 4)
+    ),
+  suspectedduplicates =
+    data.table(
+      UMCReportId = c(3),
+      SuspectedduplicateReportId = c(4)
+    )
 )
 
    purrr::iwalk(
-     datasets,
+     mini_data,
      function(dataset, name)
        fst::write_fst(
          dataset,
-         path = paste0(wd_in, "\\\\", name, ".fst")
+         path = paste0(wd_in, "/", name, ".fst")
        )
 
    )
@@ -93,20 +125,25 @@ suspdup <-
 
 # Subset on adr colitis codes
 sv_selection <-
-  ex_$a_llt$a_colitis
+  c("m1", "m2")
 
-wd_out <- paste0(wd_in, "\\\\", "colitis_subset", "\\\\")
+# You can imagine "m1", and "m2" are colitis IDs,
+# obtained from get_llt_soc().
+
+wd_out <- paste0(wd_in, "/", "colitis_subset", "/")
 
 tb_custom(wd_in, wd_out,
           subset_var = "meddra_id",
           sv_selection = sv_selection)
 
- # Subset on drug codes
+# Subset on drug codes
 
  sv_selection <-
-    ex_$d_drecno$nivolumab
+    c("dr3", "dr4")
 
-wd_out <- paste0(wd_in, "\\\\", "nivolumab_subset", "\\\\")
+# Same here, obtained from get_drecno()
+
+wd_out <- paste0(wd_in, "/", "nivolumab_subset", "/")
 
 tb_custom(wd_in, wd_out,
           subset_var = "drecno",
@@ -117,7 +154,7 @@ tb_custom(wd_in, wd_out,
  sv_selection <-
     c(7, 8)
 
-wd_out <- paste0(wd_in, "\\\\", "more_than_65_subset", "\\\\")
+wd_out <- paste0(wd_in, "/", "more_than_65_subset", "/")
 
 tb_custom(wd_in, wd_out,
           subset_var = "age",

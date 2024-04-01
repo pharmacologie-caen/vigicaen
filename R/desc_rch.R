@@ -22,18 +22,18 @@
 #'   \item Median (interquartile range) time to onset in all settings.
 #' }
 #' @export
-#' @import dplyr data.table
 #' @importFrom rlang .data
 #' @importFrom rlang .env
+#' @importFrom data.table .N
 #'
 #' @examples
 #' luda_ <-
-#'   luda_ %>%
+#'   luda_ |>
 #'   add_drug(
 #'     d_code = ex_$d_groups_drecno,
 #'     drug_data = drug_,
 #'     data_type = "link"
-#'   ) %>%
+#'   ) |>
 #'   add_adr(
 #'     a_code = ex_$a_llt,
 #'     adr_data = adr_,
@@ -66,7 +66,7 @@ desc_rch <- function(luda_data,
              UMCReportId = {{ UMCReportId }}
     ){
       luda_sel <- # selection
-        luda_data %>%
+        luda_data |>
         dplyr::filter(.data[[one_drug]] == 1 &
                  .data[[one_adr]] == 1
                )
@@ -74,19 +74,19 @@ desc_rch <- function(luda_data,
       demo_sel <- demo_data[UMCReportId %in% luda_sel[, UMCReportId]]
 
       luda_sel_rch <-
-        luda_sel %>%
+        luda_sel |>
         dplyr::filter(.data$Rechallenge1 == "1")
 
       demo_sel_rch <- demo_sel[UMCReportId %in% luda_sel_rch[, UMCReportId]]
 
       luda_sel_inf <-
-        luda_sel %>%
+        luda_sel |>
         dplyr::filter(.data$Rechallenge2 %in% c("1", "2"))
 
       demo_sel_inf <- demo_sel[UMCReportId %in% luda_sel_inf[, UMCReportId]]
 
       luda_sel_rec <-
-        luda_sel %>%
+        luda_sel |>
         dplyr::filter(.data$Rechallenge2 %in% c("1"))
 
       demo_sel_rec <- demo_sel[UMCReportId %in% luda_sel_rec[, UMCReportId]]
@@ -125,9 +125,9 @@ desc_rch <- function(luda_data,
             one_drug = one_drug_,
             one_adr = one_adr_
           )
-      ) %>%
+      ) |>
       purrr::list_rbind()
-  ) %>%
+  ) |>
     purrr::list_rbind()
 
 }

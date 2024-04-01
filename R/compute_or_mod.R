@@ -14,18 +14,16 @@
 #' @param alpha alpha risk.
 #' @keywords ror
 #' @export
-#' @importFrom dplyr %>%
-#' @importFrom dplyr mutate
 #' @examples
 #'
 #' # Reporting Odds-Ratio of colitis with nivolumab among ICI cases.
 #'
 #' demo <-
-#'   demo_ %>%
+#'   demo_ |>
 #'   add_drug(
 #'     d_code = ex_$d_drecno,
 #'     drug_data = drug_
-#'   ) %>%
+#'   ) |>
 #'   add_adr(
 #'     a_code = ex_$a_llt,
 #'     adr_data = adr_
@@ -35,21 +33,23 @@
 #' mod <- glm(a_colitis ~ nivolumab, data = demo, family = "binomial")
 #'
 #' # Extract coefficients
+#' mod_summary <-
+#'  mod |>
+#'  summary()
+#'
 #' coef_table <-
-#'  mod %>%
-#'  summary() %>%
-#'  .$coefficients
+#'  mod_summary$coefficients
 #'
 #' # Transform coefficients into ORs with their CI
 #'
-#' coef_table %>%
+#' coef_table |>
 #'   compute_or_mod(
 #'   estimate = Estimate,
 #'   std_er = Std..Error,
 #'   p_val = Pr...z..)
 #'
 #' # Also works if you don't have a p_val column
-#'  coef_table %>%
+#'  coef_table |>
 #'   compute_or_mod(
 #'   estimate = Estimate,
 #'   std_er = Std..Error)
@@ -66,11 +66,11 @@ compute_or_mod <-
       .coef_table <- data.frame(rn = row.names(.coef_table), .coef_table)
     }
 
-    zval <- qnorm(1 - alpha / 2)
+    zval <- stats::qnorm(1 - alpha / 2)
 
     calcs <-
-      .coef_table %>%
-      mutate(or = exp({{ estimate }}),
+      .coef_table |>
+      dplyr::mutate(or = exp({{ estimate }}),
              low_ci = exp({{ estimate }} - .env$zval * {{ std_er }}),
              up_ci  = exp({{ estimate }} + .env$zval * {{ std_er }}),
              orl = cff(.data$or, dig = 2),
@@ -79,10 +79,10 @@ compute_or_mod <-
                        dig = 2,
                        method = "ci"),
              ci_level = paste0((1 - .env$alpha) * 100, "%"),
-             signif_ror = if_else(.data$low_ci > 1, 1, 0),
+             signif_ror = ifelse(.data$low_ci > 1, 1, 0),
              p_val = nice_p({{ p_val }})
-             ) %>%
-      data.table()
+             ) |>
+      data.table::data.table()
 
     # Drop p_val column if there was no p_val provided
     if(all(unique(calcs$p_val) == "p_val was NULL") # this is the output of nice_p

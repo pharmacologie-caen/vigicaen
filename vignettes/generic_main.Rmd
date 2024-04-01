@@ -30,9 +30,10 @@ Please follow the steps in this script.
 ## Libraries
 
 ```{r libraries}
-library(pharmacocaen) # requires data.table, dplyr, fst, rlang, tidyverse
+library(pharmacocaen)
 library(rlang)
 library(here) # if you like the here syntax for file paths
+library(dplyr)
 ```
 
 ## Imports
@@ -115,7 +116,7 @@ meddra   <- meddra_
 smq_list_content <- smq_list_content_
 
 suspdup <- 
-  data.table(
+  data.table::data.table(
     UMCReportId = 1,
     SuspectedduplicateReportId = NA
   )
@@ -168,7 +169,7 @@ demo <- demo[!(UMCReportId %in% suspdup[, SuspectedduplicateReportId]),]
 # From a list of drugs
 
 demo <-
-  demo %>%
+  demo |>
   add_drug(
     d_code = d_drecno,
     drug_data = drug
@@ -177,7 +178,7 @@ demo <-
 # From ATC
 
 demo <-
-  demo %>%
+  demo |>
   add_drug(
     d_code = atc_drecno,
     drug_data = drug
@@ -186,7 +187,7 @@ demo <-
 # ---- Reactions ---- ####
 
 demo <-
-  demo %>%
+  demo |>
   add_adr(
     a_code = a_llt,
     adr_data = adr
@@ -197,7 +198,7 @@ demo <-
 # Age, sex
 
 demo <-
-  demo %>%
+  demo |>
   mutate(
     age = cut(as.integer(AgeGroup),
               breaks = c(0,4,5,6,7,8),
@@ -213,7 +214,7 @@ demo <-
 # Death + disponibilite de l'outcome
 
 demo <-
-  demo %>%
+  demo |>
   mutate(death =
            if_else(UMCReportId %in% out[, UMCReportId],
                    UMCReportId %in% out[Seriousness == "1", UMCReportId],
@@ -223,7 +224,7 @@ demo <-
 # follow-up, seriousness
 
 demo <-
-  demo %>%
+  demo |>
   mutate(
     fup = if_else(UMCReportId %in% followup[,UMCReportId], 1, 0),
     serious = if_else(UMCReportId %in% out[, UMCReportId],
@@ -236,14 +237,15 @@ demo[, `:=` (year = as.numeric(substr(FirstDateDatabase, start = 1, stop = 4)))]
 
 # type of reporter
 demo <-
-  demo %>%
+  demo |>
   left_join(srce[, .(UMCReportId, type_reporter = Type)], 
-            by = "UMCReportId") %>% data.table
+            by = "UMCReportId") |> 
+  data.table::data.table()
 
 # explicit multi-level vars
 
 demo <-
-  demo %>% 
+  demo |> 
   mutate(
     Type = factor(Type, levels = c("1", "2", "3", "4", "5")),
     type_reporter = factor(type_reporter,
@@ -279,7 +281,7 @@ levels(demo$Region) <-
 ### Check your data management in demo
 
 ```{r demo_check, eval = FALSE}
-demo %>%
+demo |>
   check_dm(cols = c(names(d_drecno), names(a_llt), "fup"))
 ```
 
@@ -291,12 +293,12 @@ Create the LUDA table (a link table joined with UMCReportId). For convenience, i
 
 ```{r luda_create}
 luda <-
-  link %>% 
+  link |> 
   left_join(
-    drug %>% 
+    drug |> 
       select(UMCReportId, Drug_Id),
     by = "Drug_Id"
-  ) %>%
+  ) |>
     mutate(
     tto_mean = (TimeToOnsetMax + TimeToOnsetMin) / 2,
     range = (TimeToOnsetMax + TimeToOnsetMin) / 2 - TimeToOnsetMin
@@ -307,12 +309,12 @@ luda <-
 
 ```{r luda_drug_adr}
 luda <-
-  luda %>% 
+  luda |> 
     add_drug(
     d_code = d_drecno,
     drug_data = drug,
     data_type = "link"
-    ) %>% 
+    ) |> 
     add_adr(
     a_code = a_llt,
     adr_data = adr,
@@ -343,7 +345,7 @@ mod <-
       data = demo)
 
 rm <-
-  summary(mod)$coefficients %>%
+  summary(mod)$coefficients |>
   compute_or_mod(
     estimate = Estimate,
     std_er = Std..Error
@@ -357,7 +359,7 @@ rm <-
 
 ```{r desc_demo}
 r_desc <- 
-  demo %>% 
+  demo |> 
   desc_facvar(
     vf = c("age", "sex",
            "type_reporter",

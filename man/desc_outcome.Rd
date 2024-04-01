@@ -34,12 +34,12 @@ Outcomes, from best to worst are:
 \examples{
 
 adr_ <-
-  adr_ \%>\%
+  adr_ |>
   add_drug(
     d_code = ex_$d_groups_drecno,
     drug_data = drug_,
     data_type = "adr"
-  ) \%>\%
+  ) |>
   add_adr(
     a_code = ex_$a_llt,
     adr_data = adr_,

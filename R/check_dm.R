@@ -8,14 +8,13 @@
 #' @param cols A character vector, name of columns to look at (usually will be `d_names`, `a_names`)
 #' @keywords check_dm
 #' @export
-#' @importFrom dplyr %>%
 #' @examples
 #' # first create some new variables
 #'
 #' demo <- demo_
 #'
 #' demo <-
-#'   demo %>%
+#'   demo |>
 #'     add_adr(
 #'       a_code = ex_$a_llt,
 #'       adr_data = adr_
@@ -23,18 +22,18 @@
 #'
 #'  # then check the number of reports with each feature
 #'
-#' demo %>%
+#' demo |>
 #'   check_dm(names(ex_$a_llt))
 
 check_dm <-
   function(.data,
            cols){
 
-    .data %>%
+    .data  |>
       dplyr::summarise(
         dplyr::across(dplyr::all_of(cols),
                       ~ sum(.x)
         )
-      ) %>%
+      )  |>
       t()
   }

@@ -14,10 +14,9 @@
 #' @param dig Number of digits for rounding (this argument is passed to `cff`)
 #' @keywords ror ic
 #' @export
-#' @importFrom dplyr %>%
 #' @importFrom rlang .data
 #' @importFrom rlang .env
-#' @import data.table
+#' @importFrom data.table data.table .N
 #' @examples
 #' # Say you want to perform a disproportionality analysis between colitis and
 #' # nivolumab among ICI cases

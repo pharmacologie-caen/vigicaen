@@ -28,9 +28,11 @@ data(luda_)
 
 # if you want to create it from a link table
 
+library(dplyr)
+
 link_
 
-luda <-link_ |>
+luda <- link_ |>
   left_join(
     drug_[, .(UMCReportId, Drug_Id)],
     by = "Drug_Id"

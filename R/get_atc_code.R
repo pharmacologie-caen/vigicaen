@@ -11,7 +11,6 @@
 #' @param thg_data A data.table. Correspondence between ATC codes and MedicinalProd_Id (usually, it is `thg`)
 #' @keywords atc
 #' @export
-#' @importFrom dplyr %>%
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #' @examples
@@ -50,10 +49,10 @@ get_atc_code <-
 
 
     atc_sel_renamed <-
-      atc_sel %>%
+      atc_sel |>
       rlang::set_names(
-        ~ .x %>%
-          stringr::str_trim() %>%
+        ~ .x |>
+          stringr::str_trim() |>
           stringr::str_to_lower()
       )
 
@@ -83,7 +82,7 @@ get_atc_code <-
     atc_sel_mpi <-
       purrr::map(atc_sel_renamed, function(one_sel)
         purrr::map(one_sel,
-                   core_get_atc_code) %>%
+                   core_get_atc_code) |>
           purrr::flatten_dbl()
       )
 

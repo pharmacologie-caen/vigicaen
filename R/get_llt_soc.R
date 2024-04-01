@@ -61,7 +61,7 @@ get_llt_soc <-
       unmatch
     }
 
-    um_term <- purrr::map(term_sel, get_unmatched_terms) %>%
+    um_term <- purrr::map(term_sel, get_unmatched_terms) |>
       purrr::compact()
 
     if(length(um_term) > 0)

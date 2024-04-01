@@ -24,12 +24,12 @@
 #' @examples
 #'
 #' adr_ <-
-#'   adr_ %>%
+#'   adr_ |>
 #'   add_drug(
 #'     d_code = ex_$d_groups_drecno,
 #'     drug_data = drug_,
 #'     data_type = "adr"
-#'   ) %>%
+#'   ) |>
 #'   add_adr(
 #'     a_code = ex_$a_llt,
 #'     adr_data = adr_,
@@ -64,23 +64,24 @@ desc_outcome <-
     # 7Died- reaction may be contributory
     # 8Died- unrelated to reaction
 
-out_worst_mask <-
-  data.frame(
-   out_worst =
-     c(1:7,
-       0 # 0 is for NA, see below
-       ),
-   out_label =
-     c("Recovered/resolved",
-     "Recovering/resolving",
-     "Recovered/resolved with sequelae",
-     "Not recovered/not resolved",
-     "Fatal",
-     "Died- unrelated to reaction",
-     "Died- reaction may be contributory",
-     "Unknown")
-   )
-
+    out_worst_mask <-
+      data.frame(
+        out_worst =
+          c(1:7,
+            0 # 0 is for NA, see below
+            ),
+            out_label =
+              c(
+                "Recovered/resolved",
+                "Recovering/resolving",
+                "Recovered/resolved with sequelae",
+                "Not recovered/not resolved",
+                "Fatal",
+                "Died- unrelated to reaction",
+                "Died- reaction may be contributory",
+                "Unknown"
+              )
+          )
 
     out_core <-
       function(one_drug,
@@ -97,10 +98,10 @@ out_worst_mask <-
 
 
         out <-
-          data_subset %>%
-          mutate(
+          data_subset |>
+          dplyr::mutate(
             out_rank =
-              case_when(
+              dplyr::case_when(
                 # rank outcomes from best to worst, numerically
                 Outcome == 1 # Recovered/resolved
                 ~ 1,
@@ -120,23 +121,23 @@ out_worst_mask <-
                 ~ 0 # that's a bit dangerous, coding NA to 0, to
                 # silent warnings
               )
-          ) %>%
-          summarise(out_worst = max(.data$out_rank),
-                    .by = all_of(grouping_variables))
+          ) |>
+          dplyr::summarise(out_worst = max(.data$out_rank),
+                    .by = dplyr::all_of(grouping_variables))
 
-        out %>%
-          group_by(.data$out_worst) |>
-          summarise(
+        out |>
+          dplyr::group_by(.data$out_worst) |>
+          dplyr::summarise(
             drug_s = .env$one_drug,
             adr_s = .env$one_adr,
             n_cas =
-              n()
-          ) %>%
-          left_join(out_worst_mask,
+              dplyr::n()
+          ) |>
+          dplyr::left_join(out_worst_mask,
                     by = "out_worst") |>
-          arrange(.data$drug_s, .data$adr_s, .data$out_worst) |>
-          select(-all_of("out_worst")) |>
-          relocate(drug_s, adr_s)
+          dplyr::arrange(.data$drug_s, .data$adr_s, .data$out_worst) |>
+          dplyr::select(-dplyr::all_of("out_worst")) |>
+          dplyr::relocate(drug_s, adr_s)
       }
 
     purrr::map(
@@ -149,9 +150,9 @@ out_worst_mask <-
               one_drug = one_drug_,
               one_adr = one_adr_
             )
-        ) %>%
+        ) |>
         purrr::list_rbind()
-    ) %>%
+    ) |>
       purrr::list_rbind()
 
   }

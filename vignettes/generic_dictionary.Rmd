@@ -23,6 +23,7 @@ knitr::opts_chunk$set(
 ```{r libraries, include = FALSE}
 library(pharmacocaen)
 library(rlang)
+library(dplyr)
 ```
 
 ```{r real_data, eval = FALSE}
@@ -50,9 +51,9 @@ smq_list <- dt_fst(path_meddra, "meddra_smq_list")
 smq_content <- dt_fst(path_meddra, "meddra_smq_content.fst")
 
 smq_list_content <-
-  smq_list %>%
+  smq_list |>
   # SMQ sont toutes NON-algorithmiques dans la selection ci-dessous
-  left_join(smq_content, by = "smq_code") %>%
+  left_join(smq_content, by = "smq_code") |>
   data.table
 
 ```
@@ -78,7 +79,7 @@ d_sel <- # drug selection
 
 # INSPECT drecno first
 
-d_sel %>%
+d_sel |>
   get_drecno(
     mp_short = mp_short,
     inspect = TRUE
@@ -87,7 +88,7 @@ d_sel %>%
 # then get drecnos
 
 d_drecno <-
-  d_sel %>%
+  d_sel |>
   get_drecno(
     mp_short = mp_short,
     inspect = FALSE
@@ -99,7 +100,7 @@ atc_sel <-
   list2(l03 = "N06AB") # Selective serotonin reuptake inhibitors
 
 atc_drecno <-
-  atc_sel %>%
+  atc_sel |>
   get_atc_code(
     mp_short = mp_short,
     thg_data = thg_

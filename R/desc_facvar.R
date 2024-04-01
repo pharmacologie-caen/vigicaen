@@ -80,8 +80,8 @@ desc_facvar <-
       stringr::str_detect(format, "pc_")
 
     many_params <-
-      c("n_", "N_", "pc_") %>%
-      rlang::set_names() %>%
+      c("n_", "N_", "pc_") |>
+      rlang::set_names() |>
       purrr::map(
         ~ stringr::str_count(format, .x)
       )
@@ -90,7 +90,7 @@ desc_facvar <-
       stop("format arg does not contain any of n_, N_, or pc_. Please provide at least one.")
     }
 
-    many_params %>%
+    many_params |>
       purrr::imap(function(counts, param_name)
         if(counts > 1)
           stop(paste0("format code `", param_name, "` is present more than once in `format`."))
@@ -101,48 +101,48 @@ desc_facvar <-
     cf_core <- function(one_var) {
       vf_s <- rlang::ensym(one_var)
       r1 <-
-        .data %>%
+        .data |>
         dplyr::group_by({
           {
             vf_s
           }
-        }, .drop = FALSE) %>%
-        dplyr::summarise(n = dplyr::n()) %>%
+        }, .drop = FALSE) |>
+        dplyr::summarise(n = dplyr::n()) |>
         dplyr::rename(level = {
           {
             vf_s
           }
-        }) %>%
+        }) |>
         dplyr::mutate(level = as.character(.data$level),
                       var = .env$one_var)
 
       n_isna <-
-        r1 %>%
-        dplyr::filter(is.na(.data$level)) %>%
+        r1 |>
+        dplyr::filter(is.na(.data$level)) |>
         dplyr::pull(.data$n)
 
-      r1 %>%
+      r1 |>
         dplyr::mutate(n_missing =
                         if (length(.env$n_isna) > 0) {
                           .env$n_isna
                         } else {
                           0L
                         },
-                      n_avail = sum(.data$n) - .data$n_missing) %>%
-        dplyr::filter(!is.na(.data$level)) %>%
+                      n_avail = sum(.data$n) - .data$n_missing) |>
+        dplyr::filter(!is.na(.data$level)) |>
         dplyr::mutate(
           pc = pharmacocaen::cff(.data$n / .data$n_avail * 100,
                             dig = .env$digits),
           value =
-            .env$format %>%
+            .env$format |>
             stringr::str_replace(
               "n_",
               pharmacocaen::cff(.data$n)
-            ) %>%
+            ) |>
             stringr::str_replace(
               "N_",
               pharmacocaen::cff(.data$n_avail)
-            ) %>%
+            ) |>
             stringr::str_replace(
               "pc_",
               .data$pc
@@ -153,12 +153,12 @@ desc_facvar <-
                              width = .env$pad_width,
                              side = "both")
 
-        ) %>%
-        dplyr::select(all_of(c("var", "level", "value", "n_avail")))
+        ) |>
+        dplyr::select(dplyr::all_of(c("var", "level", "value", "n_avail")))
     }
 
     # ---- apply core ----
 
-    purrr::map(vf, cf_core) %>%
+    purrr::map(vf, cf_core) |>
       purrr::list_rbind()
   }

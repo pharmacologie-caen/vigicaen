@@ -12,7 +12,6 @@
 #' @param p End of chosen credibility interval
 #' @keywords ic
 #' @export
-#' @importFrom stats qgamma
 #' @examples
 #'
 #' ic_tail(n_obs = 12,
@@ -25,5 +24,5 @@ ic_tail <- function(n_obs = NULL,
   if (is.null(n_obs) || is.null(n_exp)) {
     stop("you must supply n_obs AND n_exp (do not add + .5)")
   }
-  log(qgamma(p, shape = n_obs + .5, rate = n_exp + .5), 2)
+  log(stats::qgamma(p, shape = n_obs + .5, rate = n_exp + .5), 2)
 }

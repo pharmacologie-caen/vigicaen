@@ -17,18 +17,17 @@
 #'   \item All available time to onsets for this combination (column `tto_max`).
 #' }
 #' @export
-#' @import dplyr data.table
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #'
 #' @examples
 #' luda_ <-
-#'   luda_ %>%
+#'   luda_ |>
 #'   add_drug(
 #'     d_code = ex_$d_groups_drecno,
 #'     drug_data = drug_,
 #'     data_type = "link"
-#'   ) %>%
+#'   ) |>
 #'   add_adr(
 #'     a_code = ex_$a_llt,
 #'     adr_data = adr_,
@@ -65,9 +64,10 @@ extract_tto <-
         # selection
 
         luda_sel <-
-          luda_data %>%
-          filter(if_any(all_of(.env$one_adr), ~ .x == 1) &
-                   if_any(all_of(.env$one_drug), ~ .x == 1) &
+          luda_data |>
+          dplyr::filter(
+            dplyr::if_any(dplyr::all_of(.env$one_adr), ~ .x == 1) &
+              dplyr::if_any(dplyr::all_of(.env$one_drug), ~ .x == 1) &
                    .data$range <= .env$tto_time_range &
                    .data$tto_mean >= 0
           )
@@ -76,8 +76,8 @@ extract_tto <-
         # and adr occurrence
 
         ttos <-
-          luda_sel %>%
-          summarise(
+          luda_sel |>
+          dplyr::summarise(
             tto_max = max(.data$tto_mean, na.rm = TRUE),
             .by = UMCReportId
             # its a bit ambiguous to use UMCReportId
@@ -96,8 +96,8 @@ extract_tto <-
           #   NULL
           #
           # } else {
-            ttos %>%
-              mutate(
+            ttos |>
+              dplyr::mutate(
                 .data$tto_max,
                 adr_s = .env$one_adr,
                 drug_s = .env$one_drug
@@ -117,9 +117,9 @@ extract_tto <-
               one_adr = one_adr_,
               one_drug = one_drug_
               )
-        ) %>%
+        ) |>
         purrr::list_rbind()
-    ) %>%
+    ) |>
       purrr::list_rbind()
 
   }

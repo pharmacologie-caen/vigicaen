@@ -11,7 +11,6 @@
 #' @param adr_data A data.frame containing the adr data (usually, it is `adr`)
 #' @param data_type A character string. The type of data to add columns to. Either `demo` or `link` (default to `demo`)
 #' @export
-#' @importFrom dplyr %>%
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #' @keywords adr
@@ -34,13 +33,13 @@
 #'   )
 #'
 #' demo <-
-#'   demo %>%
+#'   demo |>
 #'     add_adr(
 #'       a_code = a_llt,
 #'       adr_data = adr
 #'     )
 #'
-#' demo %>%
+#' demo |>
 #'   check_dm(names(a_pt_sel))
 
 add_adr <-
@@ -130,6 +129,6 @@ add_adr <-
 
     # Step 3: apply the functions in .data
 
-    .data %>%
+    .data |>
       dplyr::mutate(!!!e_l)
   }

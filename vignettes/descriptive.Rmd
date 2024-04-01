@@ -40,6 +40,7 @@ knitr::opts_chunk$set(
 # library(tidyverse)
 library(rlang)
 library(pharmacocaen)
+library(dplyr)
 ```
 
 ## Etape 1 : Creer les colonnes medicament et evenement indesirable
@@ -62,7 +63,7 @@ meddra   <- meddra_
 smq_list_content <- smq_list_content_
 
 suspdup <- 
-  data.table(
+  data.table::data.table(
     UMCReportId = 1,
     SuspectedduplicateReportId = NA
   )
@@ -79,14 +80,14 @@ a_llt <- ex_$a_llt
 
 ```{r demo_dm}
 demo <-
-  demo %>%
+  demo |>
   add_drug(
     d_code = d_drecno,
     drug_data = drug
   )
 
 demo <-
-  demo %>%
+  demo |>
   add_adr(
     a_code = a_llt,
     adr_data = adr
@@ -105,7 +106,7 @@ ajouter ces variables, toujours comme dans
 # Age, sex
 
 demo <-
-  demo %>%
+  demo |>
   mutate(
     age = cut(as.integer(AgeGroup),
               breaks = c(0,4,5,6,7,8),
@@ -121,7 +122,7 @@ demo <-
 # Death + disponibilite de l'outcome
 
 demo <-
-  demo %>%
+  demo |>
   mutate(death =
            if_else(UMCReportId %in% out[, UMCReportId],
                    UMCReportId %in% out[Seriousness == "1", UMCReportId],
@@ -131,7 +132,7 @@ demo <-
 # follow-up, seriousness
 
 demo <-
-  demo %>%
+  demo |>
   mutate(
     fup = if_else(UMCReportId %in% followup[,UMCReportId], 1, 0),
     serious = if_else(UMCReportId %in% out[, UMCReportId],
@@ -143,7 +144,11 @@ demo <-
 demo[, `:=` (year = as.numeric(substr(FirstDateDatabase, start = 1, stop = 4)))]
 
 # type of reporter
-demo %<>% left_join(srce[, .(UMCReportId, type_reporter = Type)], by = "UMCReportId") %>% data.table
+demo <-
+  demo |> 
+  left_join(srce[, .(UMCReportId, type_reporter = Type)], 
+            by = "UMCReportId") |> 
+  data.table::data.table()
 ```
 
 ## Fonction desc_facvar()
@@ -232,7 +237,7 @@ Par exemple
 
 ```{r demo_re_dm_age}
 demo <-
-  demo %>%
+  demo |>
   mutate(
     age2 = cut(as.integer(AgeGroup),
               breaks = c(0,6,7,8),
@@ -314,7 +319,7 @@ directement dans demo, la plus simple consiste a utiliser des facteurs
 
 ```{r factor_region}
 demo <-
-  demo %>% 
+  demo |> 
   mutate(
     Region = factor(Region, levels = c("1", "2", "3", "4", "5", "6"))
   )
@@ -429,7 +434,7 @@ l'argument data_type à `adr`.
 ```{r adr_dm}
 
 adr <-
-  adr %>%
+  adr |>
   add_drug(
     d_code = d_drecno,
     drug_data = drug,
@@ -437,7 +442,7 @@ adr <-
   )
 
 adr <-
-  adr %>%
+  adr |>
   add_adr(
     a_code = a_llt,
     adr_data = adr,
@@ -486,11 +491,11 @@ drug, soit de la table adr. Par habitude, j'utilise la table drug.
 
 ```{r create_luda}
 drug_to_join <-
-  drug %>% 
+  drug |> 
   select(UMCReportId, Drug_Id)
 
 luda <- 
-  link %>% 
+  link |> 
   left_join(
     drug_to_join,
     by = "Drug_Id"
@@ -581,7 +586,7 @@ faut penser a specifier l'argument `data_type` sur la valeur "link".
 
 ```{r luda_dm}
 luda <-
-  luda %>% 
+  luda |> 
    add_drug(
     d_code = d_drecno,
     drug_data = drug,
@@ -589,7 +594,7 @@ luda <-
   )
 
 luda <-
-  luda %>%
+  luda |>
   add_adr(
     a_code = a_llt,
     adr_data = adr,
@@ -600,7 +605,7 @@ luda <-
 Verifions les decomptes
 
 ```{r luda_check_dm}
-luda %>% 
+luda |> 
    check_dm(
      cols = c(names(d_drecno), names(a_llt))
      )
@@ -643,7 +648,7 @@ moyen `tto_mean` et le `range`. Le calcul est le suivant:
 
 ```{r tto_mean_range}
 luda <- 
-  luda %>% 
+  luda |> 
   mutate(
     tto_mean = (TimeToOnsetMax + TimeToOnsetMin) / 2,
     range = (TimeToOnsetMax + TimeToOnsetMin) / 2 - TimeToOnsetMin
@@ -790,7 +795,7 @@ lignes.
 
 ```{r desc_rch_dm_hack}
 luda <-
-  luda %>% 
+  luda |> 
   mutate(
     all_cases = 1
   )

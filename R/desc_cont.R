@@ -56,8 +56,8 @@ desc_cont <-
 
     # only numeric or integer vars ----
     col_classes <-
-      purrr::map(.data, class) %>%
-      purrr::keep_at(vc) %>%
+      purrr::map(.data, class) |>
+      purrr::keep_at(vc) |>
       purrr::list_simplify()
 
     if(!all(col_classes %in% c("numeric", "integer"))){
@@ -85,8 +85,8 @@ desc_cont <-
 
 
     many_params <-
-      c("median", "q1", "q3", "min", "max") %>%
-      rlang::set_names() %>%
+      c("median", "q1", "q3", "min", "max") |>
+      rlang::set_names() |>
       purrr::map(
         ~ stringr::str_count(format, .x)
       )
@@ -100,7 +100,7 @@ desc_cont <-
       stop("format arg does not contain any of median, q1, q3, min or max. Please provide at least one.")
     }
 
-    many_params %>%
+    many_params |>
       purrr::imap(function(counts, param_name)
         if(counts > 1)
           stop(paste0("format code `", param_name, "` is present more than once in `format`."))
@@ -119,8 +119,8 @@ desc_cont <-
 
       r1 <-
         if (!check_all_na) {
-          .data %>%
-            summarise(
+          .data |>
+            dplyr::summarise(
               var = one_var,
               level = NA_character_,
               median    =
@@ -134,27 +134,27 @@ desc_cont <-
               max =
                 max({{ vc_s }}, na.rm = TRUE),
 
-              across(all_of(c("median", "q1", "q3", "min", "max")),
+              dplyr::across(dplyr::all_of(c("median", "q1", "q3", "min", "max")),
                      ~ pharmacocaen::cff(.x, dig = .env$digits)),
 
               value =
-                .env$format %>%
+                .env$format |>
                 stringr::str_replace(
                   "median",
                   paste0(.data$median)
-                ) %>%
+                ) |>
                 stringr::str_replace(
                   "q1",
                   paste0(.data$q1)
-                ) %>%
+                ) |>
                 stringr::str_replace(
                   "q3",
                   .data$q3
-                ) %>%
+                ) |>
                 stringr::str_replace(
                   "min",
                   .data$min
-                ) %>%
+                ) |>
                 stringr::str_replace(
                   "max",
                   .data$max
@@ -164,11 +164,11 @@ desc_cont <-
                 sum(is.na({{ vc_s }})),
               n_avail =
                 sum(!is.na({{ vc_s }}))
-            ) %>%
-            select(all_of(c("var", "level", "value", "n_avail")))
+            ) |>
+            dplyr::select(dplyr::all_of(c("var", "level", "value", "n_avail")))
         } else {
-          .data %>%
-            summarise(
+          .data |>
+            dplyr::summarise(
               var = one_var,
               level = NA_character_,
               value = "-",
@@ -188,6 +188,6 @@ desc_cont <-
     purrr::map(
       vc,
       cc_core
-    ) %>%
+    ) |>
       purrr::list_rbind()
   }

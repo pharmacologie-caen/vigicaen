@@ -23,7 +23,7 @@ It is a simple wrapper around \code{dplyr::summarise}. Be careful not to supply 
 demo <- demo_
 
 demo <-
-  demo \%>\%
+  demo |>
     add_adr(
       a_code = ex_$a_llt,
       adr_data = adr_
@@ -31,7 +31,7 @@ demo <-
 
  # then check the number of reports with each feature
 
-demo \%>\%
+demo |>
   check_dm(names(ex_$a_llt))
 }
 \keyword{check_dm}

@@ -28,7 +28,7 @@ get_llt_smq <-
   ){
     smq <-
       purrr::map(smq, function(s_)
-      if_else(
+      ifelse(
         stringr::str_detect(s_, "\\s\\(SMQ\\)$"),
         s_,
         paste0(s_, " (SMQ)")
@@ -73,7 +73,7 @@ get_llt_smq <-
       # debugging steps
 
       zero_llt_element <-
-        length_llt_list_element %>%
+        length_llt_list_element |>
         purrr::keep(~ .x == 0)
 
       zero_llt_element_names <-
@@ -82,7 +82,7 @@ get_llt_smq <-
       # step 1 : are there high level SMQs ?
 
       high_level_smq <-
-        smq[zero_llt_element_names] %>%
+        smq[zero_llt_element_names] |>
         purrr::map(function(zero_s,
                             smq_name = {{ smq_name }},
                             smq_algorithm = {{ smq_algorithm }}){
@@ -90,7 +90,7 @@ get_llt_smq <-
           zero_s %in% unique(smq_list_content$smq_name) &&
             # and those smqs are not algorithmic
             smq_list_content[smq_name == zero_s, all(smq_algorithm == "N")]
-        }) %>%
+        }) |>
         purrr::keep(isTRUE)
 
        if(length(high_level_smq) > 0)
@@ -108,7 +108,7 @@ get_llt_smq <-
 
 
       smq_algorithm_not_n <-
-        smq[non_hls_zerollt_element] %>%
+        smq[non_hls_zerollt_element] |>
         purrr::map(function(s_,
                             smq_name = {{ smq_name }},
                             term_status = {{ term_status }},
@@ -118,7 +118,7 @@ get_llt_smq <-
                              term_status == "A",
                            all(!(smq_algorithm == "N"))
           ]
-        ) %>%
+        ) |>
         purrr::keep(isTRUE)
 
       if(length(smq_algorithm_not_n) > 0)
@@ -143,7 +143,7 @@ get_llt_smq <-
       unmatch
     }
 
-    um_term <- purrr::map(smq, get_unmatched_terms) %>%
+    um_term <- purrr::map(smq, get_unmatched_terms) |>
       purrr::compact()
 
     if(length(um_term) > 0)

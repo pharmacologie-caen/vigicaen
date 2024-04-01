@@ -30,11 +30,11 @@ Actually, the function computes an Odds-Ratio, which is not necessarily a \emph{
 # Reporting Odds-Ratio of colitis with nivolumab among ICI cases.
 
 demo <-
-  demo_ \%>\%
+  demo_ |>
   add_drug(
     d_code = ex_$d_drecno,
     drug_data = drug_
-  ) \%>\%
+  ) |>
   add_adr(
     a_code = ex_$a_llt,
     adr_data = adr_
@@ -44,21 +44,23 @@ demo <-
 mod <- glm(a_colitis ~ nivolumab, data = demo, family = "binomial")
 
 # Extract coefficients
+mod_summary <-
+ mod |>
+ summary()
+
 coef_table <-
- mod \%>\%
- summary() \%>\%
- .$coefficients
+ mod_summary$coefficients
 
 # Transform coefficients into ORs with their CI
 
-coef_table \%>\%
+coef_table |>
   compute_or_mod(
   estimate = Estimate,
   std_er = Std..Error,
   p_val = Pr...z..)
 
 # Also works if you don't have a p_val column
- coef_table \%>\%
+ coef_table |>
   compute_or_mod(
   estimate = Estimate,
   std_er = Std..Error)
