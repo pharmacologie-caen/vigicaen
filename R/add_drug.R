@@ -89,96 +89,93 @@ add_drug <-
         if(grepl("i", repbasis)){ 3 }
       )
 
-    basis_expr <-
-      if(repbasis == "sci"){
-        TRUE
-      } else {
-        rlang::expr(.data$Basis %in% !!basis_sel)
-      }
+    dd_rb <-
+      drug_data |>
+      dplyr::filter(.data$Basis %in% basis_sel)
 
-    # core function
+    # match id_col to method
 
-    add_single_drug_demo <- function(drug_code,
-                                     UMCReportId = {{ UMCReportId }}) {
+    renamer_did <- c("did_col" = method)
 
-      # find matching UMCReportId in drug for this method values and this repbasis
+    dd_rb <-
+      dd_rb |>
+      dplyr::rename(dplyr::all_of(renamer_did))
 
-      umc_id <-
-        rlang::eval_tidy(
-          rlang::quo({
-            drug_data |>
-              dplyr::filter(
-                .data[[!!method]] %in% drug_code &
-                  !!basis_expr
-              ) |>
-              dplyr::pull(UMCReportId)
-          })
-        )
+    # identify table_ids to collect
 
-      rlang::eval_tidy(
-        rlang::quo({
-          # create a vector length nrow(.data) based on whether UMCReportId match with above list
-          ifelse(
-            UMCReportId %in% umc_id,
-            1, 0)
-        }),
-        data = .data)
-    }
-
-    # core function link
-
-    add_single_drug_link <- function(drug_code,
-                                     Drug_Id = {{ Drug_Id }}) {
-
-      # find matching Drug_Id in `drug_data` for this method values and this repbasis
-      drug_id <-
-        rlang::eval_tidy(
-          rlang::quo({
-            drug_data |>
-              dplyr::filter(
-                .data[[!!method]] %in% drug_code &
-                  !!basis_expr
-              ) |>
-              dplyr::pull(Drug_Id)
-          })
-        )
-      rlang::eval_tidy(
-        rlang::quo({
-
-
-          # create a vector length nrow(.data) based on whether Drug_Id match with above list
-          ifelse(
-            Drug_Id %in% .env$drug_id,
-            1, 0)
-        }),
-        data = .data)
-    }
-
-    # select appropriate core function according to data type
-
-    add_single_drug <-
-      switch (data_type,
-        demo = add_single_drug_demo,
-        adr  = add_single_drug_demo,
-        link = add_single_drug_link
+    t_id <-
+      switch(data_type,
+             demo = "UMCReportId",
+             adr  = "UMCReportId",
+             link = "Drug_Id"
       )
 
-    # Step 2: vectorize over drug_names and prepare call
+    renamer_tid <-
+      c("t_id" = t_id)
 
-     e_l <- purrr::map(d_code,
-                       function(x) {
-                         rlang::call2(
-                           rlang::quo(add_single_drug),
-                           rlang::quo(x)
-                         )
-                         }
-     )
+    dd_rb <-
+      dd_rb |>
+      dplyr::rename(dplyr::all_of(renamer_tid))
 
-    names(e_l) <- d_names
+    # collect table_ids
 
-    # Step 3: apply the functions in .data
+    t_ids <-
+      purrr::map(d_code, function(d_code_batch){
+        if(any(c("Table", "Dataset") %in% class(.data))){
+          dd_rb |>
+            dplyr::filter(did_col %in% d_code_batch) |>
+            dplyr::pull(t_id, as_vector = FALSE)
+          } else {
+            dd_rb |>
+              dplyr::filter(did_col %in% d_code_batch) |>
+              dplyr::pull(t_id)
+          }
+      })
 
-    .data |>
-      dplyr::mutate(!!!e_l)
+    e_l <-
+      t_ids |>
+      purrr::map(function(t_id_subset){
+
+        rlang::quo(ifelse(
+          t_id %in% t_id_subset,
+          1, 0
+        ))
+      }
+      ) |>
+      rlang::set_names(d_names)
+
+    # prepare destination table
+
+    dest_data <-
+      .data |>
+      dplyr::rename(dplyr::all_of(renamer_tid))
+
+    # add_cols
+
+    dest_data_withcols <-
+      dest_data |>
+      dplyr::mutate(
+        !!!e_l
+      )
+
+    # back rename table id to original name
+
+    back_renamer <-
+      c("t_id") |>
+      rlang::set_names(t_id)
+
+    final_data <-
+      dest_data_withcols |>
+      dplyr::rename(dplyr::all_of(back_renamer))
+
+    # compute everything (this is strictly required only for arrow objects)
+
+    if(any(c("Table", "Dataset") %in% class(.data))){
+      final_data |>
+        dplyr::compute()
+    } else {
+      final_data
+    }
+
 
   }
