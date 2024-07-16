@@ -97,3 +97,31 @@ smq_list_content <-
   left_join(smq_content, by = "smq_code") |>
   data.table
 ```
+
+# Subsetting tables
+
+If you want to work on a specific subset of VigiBase (e.g. older adults, some specific drugs, or adverse drug reaction), you can create a dedicated subset with the `tb_custom` function.
+
+Currently, you can subset on
+
+-   Age groups
+
+-   Drug record numbers (DrecNo) and Medicinal product IDs (MedicinalProd_Id)
+
+-   MedDRA codes of adverse drug reactions (MedDRA_Id)
+
+Type `?pharmacocaen::tb_custom` for more help
+
+```{r tb_custom, eval = FALSE}
+
+sv_selection <-
+    c(7, 8)
+
+wd_in <- "some/place/on/your/computer/containing/vigibase/data"
+
+wd_out <- paste0(wd_in, "/", "more_than_65_subset", "/")
+
+tb_custom(wd_in, wd_out,
+          subset_var = "age",
+          sv_selection = sv_selection)
+```
