@@ -5,6 +5,7 @@
 #60 add table builders to arrow format (`tb_*` functions). This is supposed to overwrite the
 current fst and dt_fst process, which is being deprecated as of this release.
 New `build_tables` vignette shows the process.
+`dt_parquet` function is to replace `dt_fst` in the workflow.
 
 
 # pharmacocaen 0.11.1
