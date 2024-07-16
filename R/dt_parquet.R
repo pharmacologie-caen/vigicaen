@@ -19,7 +19,7 @@
 #'
 #' # Say you have a data.frame stored in a parquet format, such as this one
 #' demo <-
-#'   data.table(
+#'   data.table::data.table(
 #'     UMCReportId = c(1, 2, 3, 4),
 #'     AgeGroup = c(1, 7, 7, 8)
 #'   ) |>

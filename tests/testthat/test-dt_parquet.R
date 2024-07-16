@@ -1,6 +1,6 @@
 test_that("basic load of dt_parquet", {
   demo <-
-    data.table(
+    data.table::data.table(
       UMCReportId = c(1, 2, 3, 4),
       AgeGroup = c(1, 7, 7, 8)
     ) |>
