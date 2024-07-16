@@ -1,0 +1,99 @@
+---
+title: "build_tables"
+output: 
+  rmarkdown::html_vignette:
+    keep_md: true
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{build_tables}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(pharmacocaen)
+```
+
+# Purpose
+
+Have you subscribed to VigiBase Extract Case Level, WHODrug and MedDRA?
+
+Congratulations! You've made it half way to explore VigiBase.
+
+Now, you need to process those large text/ascii files into R readable files. This is the purpose of the `tb_*` functions (Table Builders).
+
+## Overview
+
+| tb\_\* function | Usage                                             |
+|-----------------|---------------------------------------------------|
+| tb_main         | Main tables (demo, drugs, adverse drug reactions) |
+| tb_who          | WHODrug tables                                    |
+| tb_sub          | VigiBase subsidiary tables                        |
+| tb_meddra       | MedDRA tables                                     |
+
+## Basic usage
+
+You just need to provide a path to these files on your computer.
+
+```{r basic, eval = FALSE}
+
+tb_main(path_main, path_sub)
+tb_who(path_who)
+tb_sub(path_sub)
+tb_meddra(path_meddra)
+
+```
+
+And this is a step you only have to perform ONCE per database version.
+
+New parquet files will be created in the same directories as provided with `path_*`.
+
+> The suspectedduplicates table is delivered with subsidiary files, but the `tb_main` function will output it in the main directory, under a slightly modified name.
+
+## Outputs
+
+The `tb_*` functions create [parquet](https://arrow.apache.org/docs/r/index.html) files. Parquet is an open-source format, supported by Arrow.
+
+Not all tables from each source are created during the process.
+
+-   Main: All tables + suspdup (from sub).
+
+-   WHODrug: All tables - mp + mp_short.
+
+-   Subsdiary files: All tables.
+
+-   Meddra: meddra_hierarchy, smq_list, and smq_content.
+
+mp_short is a short version of mp table, which has been tolower-ed and trim-ed on drug name, to be more handy. A few columns also have been removed.
+
+# Loading tables into R
+
+You should use the arrow package built-in readers to load the tables.
+
+```{r load_tables, eval = FALSE}
+library(arrow)
+
+demo <- read_parquet(path_main, "demo.parquet")
+```
+
+> Parquet files will be loaded OUT of memory, by default. To change this behavior, remember to `dplyr::collect()` the tables
+
+You can `left_join` smq_content to smq_list if you work only with NON-algorithmic SMQs.
+
+```{r joining_smq_tables, eval = FALSE}
+smq_list    <- read_parquet(path_meddra, "smq_list.parquet")
+smq_content <- read_parquet(path_meddra, "smq_content.parquet")
+
+smq_list_content <-
+  smq_list |>
+  # Only works for NON-algorithmic SMQs
+  left_join(smq_content, by = "smq_code") |>
+  data.table
+```

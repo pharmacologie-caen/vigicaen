@@ -2,9 +2,10 @@
 #'
 #' Short hand to `as.data.table(read_fst())`. File extension can be omitted.
 #'
-#' Output is a data.table.
-
-
+#' @description `r lifecycle::badge('deprecated')` Output is a data.table.
+#' The function is deprecated, with the use of parquet tables. Tables can now
+#' be loaded with the arrow::read_parquet() function.
+#'
 #' @param path_base A character string, providing the path to read from.
 #' @param name A character string, the file name.
 #' @param ext A character string, optional, specifying the file extension.
@@ -28,6 +29,9 @@
 dt_fst <- function(path_base,
                    name = NULL,
                    ext = ".fst"){
+
+  lifecycle::deprecate_warn("0.12.0", "dt_fst()", "arrow::read_parquet()")
+
   ext <-
     if(!is.null(name) && !grepl(".fst$", name, perl = TRUE)) {
       ext
