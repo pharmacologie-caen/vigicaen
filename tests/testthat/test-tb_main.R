@@ -44,8 +44,10 @@ test_that("basic use and here package works", {
    tb_main(path_base = path_base,
            path_sub  = path_sub)
 
-   demo_res <- arrow::read_parquet(paste0(path_base, "demo.parquet"))
-   ind_res  <- arrow::read_parquet(paste0(path_base, "ind.parquet"))
+   demo_res <- arrow::read_parquet(paste0(path_base, "demo.parquet"),
+                                   mmap = FALSE)
+   ind_res  <- arrow::read_parquet(paste0(path_base, "ind.parquet"),
+                                   mmap = FALSE)
 
    demo_true <-
      dplyr::tibble(
@@ -75,7 +77,8 @@ test_that("basic use and here package works", {
    tb_main(path_base = here_path_base,
            path_sub  = here_path_sub)
 
-   demo_res_here <- arrow::read_parquet(here::here(here_path_base, "demo.parquet"))
+   demo_res_here <- arrow::read_parquet(here::here(here_path_base, "demo.parquet"),
+                                        mmap = FALSE)
 
    expect_equal(demo_res_here, demo_true)
 })
