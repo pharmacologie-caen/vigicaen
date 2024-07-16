@@ -78,18 +78,17 @@ mp_short is a short version of mp table, which has been tolower-ed and trim-ed o
 You should use the arrow package built-in readers to load the tables.
 
 ```{r load_tables, eval = FALSE}
-library(arrow)
 
-demo <- read_parquet(path_main, "demo.parquet")
+demo <- dt_parquet(path_main, "demo")
 ```
 
-> Parquet files will be loaded OUT of memory, by default. To change this behavior, remember to `dplyr::collect()` the tables
+> Parquet files will be loaded IN memory, by default. To change this behavior, remember to set `in_memory = FALSE`. Be careful that the output format will be different.
 
 You can `left_join` smq_content to smq_list if you work only with NON-algorithmic SMQs.
 
 ```{r joining_smq_tables, eval = FALSE}
-smq_list    <- read_parquet(path_meddra, "smq_list.parquet")
-smq_content <- read_parquet(path_meddra, "smq_content.parquet")
+smq_list    <- dt_parquet(path_meddra, "smq_list.parquet")
+smq_content <- dt_parquet(path_meddra, "smq_content.parquet")
 
 smq_list_content <-
   smq_list |>

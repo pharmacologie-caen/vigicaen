@@ -82,21 +82,21 @@ path_meddra <- "/home/dolladille-c/meddra_24_0/english/medascii/"
 ### Load datasets
 
 ```{r classic_datasets, eval = FALSE}
-demo     <- read_parquet(paste0(path_base, "demo.parquet"))
-adr      <- read_parquet(paste0(path_base, "adr.parquet"))
-drug     <- read_parquet(paste0(path_base, "drug.parquet"))
-link     <- read_parquet(paste0(path_base, "link.parquet"))
-out      <- read_parquet(paste0(path_base, "out.parquet"))
-srce     <- read_parquet(paste0(path_base, "srce.parquet"))
-followup <- read_parquet(paste0(path_base, "srce.parquet"))
+demo     <- dt_parquet(path_base, "demo", in_memory = FALSE)
+adr      <- dt_parquet(path_base, "adr",  in_memory = FALSE)
+drug     <- dt_parquet(path_base, "drug", in_memory = FALSE)
+link     <- dt_parquet(path_base, "link", in_memory = FALSE)
+out      <- dt_parquet(path_base, "out",  in_memory = FALSE)
+srce     <- dt_parquet(path_base, "srce", in_memory = FALSE)
+followup <- dt_parquet(path_base, "srce", in_memory = FALSE)
 
-suspdup  <- read_parquet(paste0(path_base, "suspdup.parquet"))
+suspdup  <- dt_parquet(path_base, "suspdup", in_memory = FALSE)
 
-thg      <- read_parquet(paste0(path_who, "thg.parquet")) |> collect()
-mp_short <- read_parquet(paste0(path_who, "mp_short.parquet")) |> collect()
+thg      <- dt_parquet(path_who, "thg")
+mp_short <- dt_parquet(path_who, "mp_short")
 ```
 
-Make sure to `dplyr::collect()` these datasets if you want to work **IN**-memory.
+You can work IN or OUT of memory, depending on the in_memory argument.
 
 ### Work with preloaded test tables
 
