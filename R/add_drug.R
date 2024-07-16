@@ -123,12 +123,12 @@ add_drug <-
       purrr::map(d_code, function(d_code_batch){
         if(any(c("Table", "Dataset") %in% class(.data))){
           dd_rb |>
-            dplyr::filter(did_col %in% d_code_batch) |>
-            dplyr::pull(t_id, as_vector = FALSE)
+            dplyr::filter(.data$did_col %in% d_code_batch) |>
+            dplyr::pull(.data$t_id, as_vector = FALSE)
           } else {
             dd_rb |>
-              dplyr::filter(did_col %in% d_code_batch) |>
-              dplyr::pull(t_id)
+              dplyr::filter(.data$did_col %in% d_code_batch) |>
+              dplyr::pull(.data$t_id)
           }
       })
 
@@ -137,7 +137,7 @@ add_drug <-
       purrr::map(function(t_id_subset){
 
         rlang::quo(ifelse(
-          t_id %in% t_id_subset,
+          .data$t_id %in% t_id_subset,
           1, 0
         ))
       }
