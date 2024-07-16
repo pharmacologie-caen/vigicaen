@@ -87,22 +87,23 @@
 #'     data.table(
 #'       UMCReportId = c(1, 2, 3, 4)
 #'     ),
-#'   suspectedduplicates =
+#'   suspdup =
 #'     data.table(
 #'       UMCReportId = c(3),
 #'       SuspectedduplicateReportId = c(4)
 #'     )
 #' )
 #'
-#'    purrr::iwalk(
-#'      mini_data,
-#'      function(dataset, name)
-#'        fst::write_fst(
-#'          dataset,
-#'          path = paste0(wd_in, "/", name, ".fst")
-#'        )
+#'   purrr::iwalk(
+#'     mini_data,
+#'     function(dataset, name)
+#'       arrow::write_parquet(
+#'         dataset |>
+#'           arrow::as_arrow_table(),
+#'         sink = paste0(wd_in, "/", name, ".parquet")
+#'       )
 #'
-#'    )
+#'   )
 
 #' # back to tb_custom, you should select a subset_var and corresponding data
 #'
@@ -167,6 +168,19 @@ tb_custom <-
     if(!dir.exists(wd_out)){
       dir.create(wd_out)
     }
+
+    # helps working with the "here" package, or tempdir
+
+    if(!grepl("(/|\\\\)$", wd_in, perl = TRUE)){
+      wd_in <-
+        paste0(wd_in, "/")
+    }
+
+    if(!grepl("(/|\\\\)$", wd_out, perl = TRUE)){
+      wd_out <-
+        paste0(wd_out, "/")
+    }
+
 
     # Subset variable
 
