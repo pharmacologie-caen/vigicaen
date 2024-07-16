@@ -2,7 +2,7 @@
 % Please edit documentation in R/tb_sub.R
 \name{tb_sub}
 \alias{tb_sub}
-\title{Create main VigiBase ECL tables}
+\title{Create subsidiary VigiBase ECL tables}
 \usage{
 tb_sub(path_sub)
 }
@@ -11,31 +11,24 @@ tb_sub(path_sub)
 output directory.}
 }
 \value{
-.parquet files into the \code{path_who} directory.
-Some columns are returned as \code{integer} (all Id columns, including MedicinalProd_Id,
-with notable exception of DrecNo),
-and some columns as \code{numeric} (Quantity from ingredient table)
-All other columns are \code{character}.
+.parquet files into the \code{path_sub} directory.
 }
 \description{
 Transform .txt files to .parquet files
 }
 \details{
-WHODrug is delivered as zipped text files, that you should
-transform to a more efficient format. Parquet format from arrow has many advantages:
-It works with out-of-memory data, which makes it possible to process tables on
-a computer with not-so-much RAM. It is also lightweighted and standard across different
-langages.
-The function also creates variables in each table. See \code{\link{tb_main}} for some running examples.
+Subsidiary files in VigiBase provide context to many numerically stored variables.
+Most important file here is the suspected duplicates table, but it is processed
+in tb_main. More documentation can be found in \code{\link{tb_main}}.
 }
 \examples{
 
 # Use the examples from tb_main if you want to see these functions in action.
 
-path_who <- "/whodrug_directory/"
+path_who <- "/vigibase_subsidiary_files/"
 
 ## NOT RUN ##
-# tb_who(path_who = path_who)
+# tb_sub(path_sub = path_sub)
 
 }
 \seealso{
