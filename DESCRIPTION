@@ -28,5 +28,6 @@ Imports:
     lifecycle,
     purrr,
     rlang,
-    stringr
+    stringr,
+    tidyr
 VignetteBuilder: knitr
