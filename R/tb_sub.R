@@ -9,7 +9,7 @@
 #' langages.
 #' The function also creates variables in each table. See \code{\link{tb_main}} for some running examples.
 #'
-#' @param path_who Character string, a directory containing whodrug txt tables. It is also the
+#' @param path_sub Character string, a directory containing whodrug txt tables. It is also the
 #' output directory.
 #'
 #' @importFrom stringr str_sub str_trim
@@ -42,8 +42,8 @@ AgeGroup <- reader("AgeGroup_Lx.txt")
 AgeGroup <-
   AgeGroup |>
   dplyr::transmute(
-    AgeGroup = substr(f0, start=1, stop=1),
-    Code = substr(f0, start=2, stop=nchar(f0))
+    AgeGroup = substr(.data$f0, start=1, stop=1),
+    Code = substr(.data$f0, start=2, stop=nchar(.data$f0))
   ) |>
   dplyr::compute()
 arrow::write_parquet(AgeGroup, sink = paste0(path_sub, "AgeGroup.parquet"))
@@ -55,8 +55,8 @@ Dechallenge <- reader("Dechallenge_Lx.txt")
 Dechallenge <-
   Dechallenge |>
   dplyr::transmute(
-    Dechallenge1 = substr(f0, start=1, stop=1),
-    Code = substr(f0, start=2, stop=nchar(f0))
+    Dechallenge1 = substr(.data$f0, start=1, stop=1),
+    Code = substr(.data$f0, start=2, stop=nchar(.data$f0))
   ) |>
   dplyr::compute()
 arrow::write_parquet(Dechallenge, sink = paste0(path_sub, "Dechallenge.parquet"))
@@ -68,8 +68,8 @@ Dechallenge2 <- reader("Dechallenge2_Lx.txt")
 Dechallenge2 <-
   Dechallenge2 |>
   dplyr::transmute(
-    Dechallenge2 = substr(f0, start=1, stop=1),
-    Code = substr(f0, start=2, stop=nchar(f0))
+    Dechallenge2 = substr(.data$f0, start=1, stop=1),
+    Code = substr(.data$f0, start=2, stop=nchar(.data$f0))
   ) |>
   dplyr::compute()
 arrow::write_parquet(Dechallenge2, sink = paste0(path_sub, "Dechallenge2.parquet"))
@@ -81,8 +81,8 @@ Frequency <- reader("Frequency_Lx.txt")
 Frequency <-
   Frequency |>
   dplyr::transmute(
-    FrequencyU = substr(f0, start=1, stop=3),
-    Code = substr(f0, start=4, stop=nchar(f0))
+    FrequencyU = substr(.data$f0, start=1, stop=3),
+    Code = substr(.data$f0, start=4, stop=nchar(.data$f0))
   ) |>
   dplyr::compute()
 arrow::write_parquet(Frequency, sink = paste0(path_sub, "Frequency.parquet"))
@@ -94,8 +94,8 @@ Gender <- reader("Gender_Lx.txt")
 Gender <-
   Gender |>
   dplyr::transmute(
-    Gender = substr(f0, start=1, stop=1),
-    Code = substr(f0, start=2, stop=nchar(f0))
+    Gender = substr(.data$f0, start=1, stop=1),
+    Code = substr(.data$f0, start=2, stop=nchar(.data$f0))
   ) |>
   dplyr::compute()
 arrow::write_parquet(Gender, sink = paste0(path_sub, "Gender.parquet"))
@@ -107,8 +107,8 @@ Notifier <- reader("Notifier_Lx.txt")
 Notifier <-
   Notifier |>
   dplyr::transmute(
-    Type = substr(f0, start=1, stop=2),
-    Code = substr(f0, start=3, stop=nchar(f0))
+    Type = substr(.data$f0, start=1, stop=2),
+    Code = substr(.data$f0, start=3, stop=nchar(.data$f0))
   ) |>
   dplyr::compute()
 arrow::write_parquet(Notifier, sink = paste0(path_sub, "Notifier.parquet"))
@@ -120,8 +120,8 @@ Outcome <- reader("Outcome_Lx.txt")
 Outcome <-
   Outcome |>
   dplyr::transmute(
-    Outcome = substr(f0, start=1, stop=1),
-    Code = substr(f0, start=2, stop=nchar(f0))
+    Outcome = substr(.data$f0, start=1, stop=1),
+    Code = substr(.data$f0, start=2, stop=nchar(.data$f0))
   ) |>
   dplyr::compute()
 arrow::write_parquet(Outcome, sink = paste0(path_sub, "Outcome.parquet"))
@@ -133,8 +133,8 @@ Rechallenge <- reader("Rechallenge_Lx.txt")
 Rechallenge <-
   Rechallenge |>
   dplyr::transmute(
-    Rechallenge1 = substr(f0, start=1, stop=1),
-    Code = substr(f0, start=2, stop=nchar(f0))
+    Rechallenge1 = substr(.data$f0, start=1, stop=1),
+    Code = substr(.data$f0, start=2, stop=nchar(.data$f0))
   ) |>
   dplyr::compute()
 arrow::write_parquet(Rechallenge, sink = paste0(path_sub, "Rechallenge.parquet"))
@@ -146,8 +146,8 @@ Rechallenge2 <- reader("Rechallenge2_Lx.txt")
 Rechallenge2 <-
   Rechallenge2 |>
   dplyr::transmute(
-    Rechallenge2 = substr(f0, start=1, stop=1),
-    Code = substr(f0, start=2, stop=nchar(f0))
+    Rechallenge2 = substr(.data$f0, start=1, stop=1),
+    Code = substr(.data$f0, start=2, stop=nchar(.data$f0))
   ) |>
   dplyr::compute()
 arrow::write_parquet(Rechallenge2, sink = paste0(path_sub, "Rechallenge2.parquet"))
@@ -159,8 +159,8 @@ Region <- reader("Region_Lx.txt")
 Region <-
   Region |>
   dplyr::transmute(
-    Region = substr(f0, start=1, stop=1),
-    Code = substr(f0, start=2, stop=nchar(f0))
+    Region = substr(.data$f0, start=1, stop=1),
+    Code = substr(.data$f0, start=2, stop=nchar(.data$f0))
   ) |>
   dplyr::compute()
 arrow::write_parquet(Region, sink = paste0(path_sub, "Region.parquet"))
@@ -172,8 +172,8 @@ RepBasis <- reader("RepBasis_Lx.txt")
 RepBasis <-
   RepBasis |>
   dplyr::transmute(
-    Basis = substr(f0, start=1, stop=1),
-    Code = substr(f0, start=2, stop=nchar(f0))
+    Basis = substr(.data$f0, start=1, stop=1),
+    Code = substr(.data$f0, start=2, stop=nchar(.data$f0))
   ) |>
   dplyr::compute()
 arrow::write_parquet(RepBasis, sink = paste0(path_sub, "RepBasis.parquet"))
@@ -185,8 +185,8 @@ ReportType <- reader("ReportType_Lx.txt")
 ReportType <-
   ReportType |>
   dplyr::transmute(
-    ReportType = substr(f0, start=1, stop=1),
-    Code = substr(f0, start=2, stop=nchar(f0))
+    ReportType = substr(.data$f0, start=1, stop=1),
+    Code = substr(.data$f0, start=2, stop=nchar(.data$f0))
   ) |>
   dplyr::compute()
 arrow::write_parquet(ReportType, sink = paste0(path_sub, "ReportType.parquet"))
@@ -198,8 +198,8 @@ RouteOfAdm <- reader("RouteOfAdm_Lx.txt")
 RouteOfAdm <-
   RouteOfAdm |>
   dplyr::transmute(
-    Route = substr(f0, start=1, stop=2),
-    Code = substr(f0, start=3, stop=nchar(f0))
+    Route = substr(.data$f0, start=1, stop=2),
+    Code = substr(.data$f0, start=3, stop=nchar(.data$f0))
   ) |>
   dplyr::compute()
 arrow::write_parquet(RouteOfAdm, sink = paste0(path_sub, "RouteOfAdm.parquet"))
@@ -211,8 +211,8 @@ Seriousness <- reader("Seriousness_Lx.txt")
 Seriousness <-
   Seriousness |>
   dplyr::transmute(
-    Seriousness = substr(f0, start=1, stop=2),
-    Code = substr(f0, start=3, stop=nchar(f0))
+    Seriousness = substr(.data$f0, start=1, stop=2),
+    Code = substr(.data$f0, start=3, stop=nchar(.data$f0))
   ) |>
   dplyr::compute()
 arrow::write_parquet(Seriousness, sink = paste0(path_sub, "Seriousness.parquet"))
@@ -224,8 +224,8 @@ SizeUnit <- reader("SizeUnit_Lx.txt")
 SizeUnit <-
   SizeUnit |>
   dplyr::transmute(
-    AmountU = substr(f0, start=1, stop=2),
-    Code = substr(f0, start=3, stop=nchar(f0))
+    AmountU = substr(.data$f0, start=1, stop=2),
+    Code = substr(.data$f0, start=3, stop=nchar(.data$f0))
   ) |>
   dplyr::compute()
 arrow::write_parquet(SizeUnit, sink = paste0(path_sub, "SizeUnit.parquet"))

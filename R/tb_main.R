@@ -44,7 +44,7 @@
 #'    SRCE.txt = data.frame(f0 = c("4898765    1 ",
 #'                                 "9804562    1 ")),
 #'    IND.txt = data.frame(# 266 length
-#'      f0 = "780954     Cutaneous diseases due to other mycobacteria                                                                                                                                                                                                                   "
+#'      f0 = paste0("780954     Cutaneous diseases due to other mycobacteria", rep(" ", 211))
 #'      ),
 #'    SUSPECTEDDUPLICATES.txt = data.frame(f0 = c("789054     789542     ",
 #'                                                "780546     654352     "))
@@ -62,9 +62,11 @@
 #'
 #' purrr::iwalk(f_sets, function(d_, name_){
 #'   if(name_ == "SUSPECTEDDUPLICATES.txt"){
-#'     write.table(d_, file = paste0(path_sub, name_), row.names = FALSE, quote = FALSE, col.names = FALSE)
+#'     write.table(d_, file = paste0(path_sub, name_), row.names = FALSE,
+#'                 quote = FALSE, col.names = FALSE)
 #'   } else {
-#'     write.table(d_, file = paste0(path_base, name_), row.names = FALSE, quote = FALSE, col.names = FALSE)
+#'     write.table(d_, file = paste0(path_base, name_), row.names = FALSE,
+#'                 quote = FALSE, col.names = FALSE)
 #'   }
 #' })
 #'
@@ -89,40 +91,10 @@ tb_main <-
         paste0(path_sub, "/")
     }
 
-    # same reading option for all but one (ind) file
-
-    reader <- function(file_name, folder = path_base){
-      arrow::read_delim_arrow(paste0(folder, file_name),
-                              col_names = FALSE,
-                              as_data_frame = FALSE,
-                              delim = "\t",
-                              schema = arrow::schema(f0 = arrow::utf8())
-      )
-    }
-
-    #  print progress text
-
-    texter <- function(msg, step){
-      cat(sprintf(
-        paste0("\r",
-               msg |>
-                 stringr::str_pad(
-                   side = "right",
-                   width = 28
-                 ),
-               step |>
-                 stringr::str_pad(
-                   side = "left",
-                   width = 5
-                 )
-          )
-      ))
-      }
-
     # ---- demo ---- ####
     texter("Read DEMO.txt", "3%%")
 
-    demo <- reader("DEMO.txt")
+    demo <- reader("DEMO.txt", path_base)
 
     # ---- split
     texter("Split demo", "6%%")
@@ -130,16 +102,16 @@ tb_main <-
     demo <-
       demo |>
       dplyr::transmute(
-        UMCReportId  = str_sub(f0, start = 1L,  end = 11L),
-        AgeGroup     = str_sub(f0, start = 12L, end = 12L),
-        Gender       = str_sub(f0, start = 13L, end = 13L),
-        DateDatabase = str_sub(f0, start = 14L, end = 21L),
-        Type         = str_sub(f0, start = 22L, end = 22L),
-        Region       = str_sub(f0, start = 23L, end = 23L),
-        FirstDateDatabase = str_sub(f0, start = 24L, end = 31L)
+        UMCReportId  = str_sub(.data$f0, start = 1L,  end = 11L),
+        AgeGroup     = str_sub(.data$f0, start = 12L, end = 12L),
+        Gender       = str_sub(.data$f0, start = 13L, end = 13L),
+        DateDatabase = str_sub(.data$f0, start = 14L, end = 21L),
+        Type         = str_sub(.data$f0, start = 22L, end = 22L),
+        Region       = str_sub(.data$f0, start = 23L, end = 23L),
+        FirstDateDatabase = str_sub(.data$f0, start = 24L, end = 31L)
       ) |>
       dplyr::mutate(
-        UMCReportId = UMCReportId |>
+        UMCReportId = .data$UMCReportId |>
           str_trim() |>
           as.integer()
         ) |>
@@ -155,7 +127,7 @@ tb_main <-
     # ---- drug ---- ####
     texter("Read DRUG.txt", "16%%")
 
-    drug <- reader("DRUG.txt")
+    drug <- reader("DRUG.txt", path_base)
 
     # ---- split
     texter("Split drug", "20%%")
@@ -163,21 +135,21 @@ tb_main <-
     drug <-
       drug |>
       dplyr::transmute(
-        UMCReportId = str_sub(f0, start = 1L, end = 11L),
-        Drug_Id     = str_sub(f0, start = 12L, end = 22L),
-        MedicinalProd_Id = str_sub(f0, start = 23L, end = 33L),
-        DrecNo      = str_sub(f0, start = 34L, end = 39L),
-        Seq1        = str_sub(f0, start = 40L, end = 41L),
-        Seq2        = str_sub(f0, start = 42L, end = 44L),
-        Route       = str_sub(f0, start = 45L, end = 46L),
-        Basis       = str_sub(f0, start = 47L, end = 47L),
-        Amount      = str_sub(f0, start = 48L, end = 52L),
-        AmountU     = str_sub(f0, start = 53L, end = 54L),
-        Frequency   = str_sub(f0, start = 55L, end = 56L),
-        FrequencyU  = str_sub(f0, start = 57L, end = 59L)
+        UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
+        Drug_Id     = str_sub(.data$f0, start = 12L, end = 22L),
+        MedicinalProd_Id = str_sub(.data$f0, start = 23L, end = 33L),
+        DrecNo      = str_sub(.data$f0, start = 34L, end = 39L),
+        Seq1        = str_sub(.data$f0, start = 40L, end = 41L),
+        Seq2        = str_sub(.data$f0, start = 42L, end = 44L),
+        Route       = str_sub(.data$f0, start = 45L, end = 46L),
+        Basis       = str_sub(.data$f0, start = 47L, end = 47L),
+        Amount      = str_sub(.data$f0, start = 48L, end = 52L),
+        AmountU     = str_sub(.data$f0, start = 53L, end = 54L),
+        Frequency   = str_sub(.data$f0, start = 55L, end = 56L),
+        FrequencyU  = str_sub(.data$f0, start = 57L, end = 59L)
         ) |>
       dplyr::mutate(
-        dplyr::across(c(UMCReportId, Drug_Id, MedicinalProd_Id),
+        dplyr::across(dplyr::all_of(c("UMCReportId", "Drug_Id", "MedicinalProd_Id")),
                ~ .x |>
           str_trim() |>
           as.integer()
@@ -196,7 +168,7 @@ tb_main <-
     # ---- followup ---- ####
     texter("Read FOLLOWUP.txt", "30%%")
 
-    followup <- reader("FOLLOWUP.txt")
+    followup <- reader("FOLLOWUP.txt", path_base)
 
     # ---- split
     texter("Split followup", "32%%")
@@ -204,11 +176,11 @@ tb_main <-
     followup <-
       followup |>
       dplyr::transmute(
-        UMCReportId = str_sub(f0, start = 1L, end = 11L),
-        ReplacedUMCReportId = str_sub(f0, start = 12L, end = 22L)
+        UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
+        ReplacedUMCReportId = str_sub(.data$f0, start = 12L, end = 22L)
         ) |>
       dplyr::mutate(
-        dplyr::across(c(UMCReportId, ReplacedUMCReportId),
+        dplyr::across(dplyr::all_of(c("UMCReportId", "ReplacedUMCReportId")),
                ~ .x |>
                  str_trim() |>
                  as.integer()
@@ -226,7 +198,7 @@ tb_main <-
     # ---- adr ---- ####
     texter("Read ADR.txt", "36%%")
 
-    adr <- reader("ADR.txt")
+    adr <- reader("ADR.txt", path_base)
 
     # ---- split
     texter("Split adr", "41%%")
@@ -234,13 +206,13 @@ tb_main <-
     adr <-
       adr |>
       dplyr::transmute(
-        UMCReportId = str_sub(f0, start = 1L, end = 11L),
-        Adr_Id      = str_sub(f0, start = 12L, end = 22L),
-        MedDRA_Id   = str_sub(f0, start = 23L, end = 30L),
-        Outcome     = str_sub(f0, start = 31L, end = 31L)
+        UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
+        Adr_Id      = str_sub(.data$f0, start = 12L, end = 22L),
+        MedDRA_Id   = str_sub(.data$f0, start = 23L, end = 30L),
+        Outcome     = str_sub(.data$f0, start = 31L, end = 31L)
       ) |>
       dplyr::mutate(
-        dplyr::across(c(UMCReportId, Adr_Id, MedDRA_Id),
+        dplyr::across(dplyr::all_of(c("UMCReportId", "Adr_Id", "MedDRA_Id")),
                       ~ .x |>
                         str_trim() |>
                         as.integer()
@@ -258,7 +230,7 @@ tb_main <-
     # ---- out ---- ####
     texter("Read OUT.txt", "51%%")
 
-    out <- reader("OUT.txt")
+    out <- reader("OUT.txt", path_base)
 
     # ---- split
     texter("Split out", "53%%")
@@ -266,12 +238,12 @@ tb_main <-
     out <-
       out |>
       dplyr::transmute(
-        UMCReportId = str_sub(f0, start = 1L, end = 11L),
-        Seriousness = str_trim(str_sub(f0, start = 12L, end = 13L)),
-        Serious     = str_sub(f0, start = 14L, end = 14L)
+        UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
+        Seriousness = str_trim(str_sub(.data$f0, start = 12L, end = 13L)),
+        Serious     = str_sub(.data$f0, start = 14L, end = 14L)
       ) |>
       dplyr::mutate(
-        dplyr::across(c(UMCReportId),
+        dplyr::across(dplyr::all_of(c("UMCReportId")),
                       ~ .x |>
                         str_trim() |>
                         as.integer()
@@ -289,7 +261,7 @@ tb_main <-
     # ---- srce ---- ####
     texter("Read SRCE.txt", "57%%")
 
-    srce <- reader("SRCE.txt")
+    srce <- reader("SRCE.txt", path_base)
 
     # ---- split
     texter("Split srce", "59%%")
@@ -297,11 +269,11 @@ tb_main <-
     srce <-
       srce |>
       dplyr::transmute(
-        UMCReportId = str_sub(f0, start = 1L, end = 11L),
-        Type        = str_trim(str_sub(f0, start = 12L, end = 13L))
+        UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
+        Type        = str_trim(str_sub(.data$f0, start = 12L, end = 13L))
       ) |>
       dplyr::mutate(
-        dplyr::across(c(UMCReportId),
+        dplyr::across(dplyr::all_of(c("UMCReportId")),
                       ~ .x |>
                         str_trim() |>
                         as.integer()
@@ -319,7 +291,7 @@ tb_main <-
     # ---- link ---- ####
     texter("Read LINK.txt", "63%%")
 
-    link <- reader("LINK.txt")
+    link <- reader("LINK.txt", path_base)
 
     # ---- split
     texter("Split link", "68%%")
@@ -327,29 +299,29 @@ tb_main <-
     link <-
       link |>
       dplyr::transmute(
-        Drug_Id        = str_sub(f0, start = 1L,  end = 11L),
-        Adr_Id         = str_sub(f0, start = 12L, end = 22L),
-        Dechallenge1   = str_sub(f0, start = 23L, end = 23L),
-        Dechallenge2   = str_sub(f0, start = 24L, end = 24L),
-        Rechallenge1   = str_sub(f0, start = 25L, end = 25L),
-        Rechallenge2   = str_sub(f0, start = 26L, end = 26L),
-        TimeToOnsetMin = str_sub(f0, start = 27L, end = 37L),
-        TimeToOnsetMax = str_sub(f0, start = 38L, end = 48L)
+        Drug_Id        = str_sub(.data$f0, start = 1L,  end = 11L),
+        Adr_Id         = str_sub(.data$f0, start = 12L, end = 22L),
+        Dechallenge1   = str_sub(.data$f0, start = 23L, end = 23L),
+        Dechallenge2   = str_sub(.data$f0, start = 24L, end = 24L),
+        Rechallenge1   = str_sub(.data$f0, start = 25L, end = 25L),
+        Rechallenge2   = str_sub(.data$f0, start = 26L, end = 26L),
+        TimeToOnsetMin = str_sub(.data$f0, start = 27L, end = 37L),
+        TimeToOnsetMax = str_sub(.data$f0, start = 38L, end = 48L)
       ) |>
       dplyr::mutate(
-        dplyr::across(c(Drug_Id, Adr_Id),
+        dplyr::across(dplyr::all_of(c("Drug_Id", "Adr_Id")),
                       ~ .x |>
                         str_trim() |>
                         as.integer()
                       ),
-        dplyr::across(c(TimeToOnsetMin, TimeToOnsetMax),
+        dplyr::across(dplyr::all_of(c("TimeToOnsetMin", "TimeToOnsetMax")),
                       ~
                         .x |>
                         str_trim() |>
                         stringr::str_replace("^-$", "1568459784.65489") |>
                         as.numeric()
         ),
-        dplyr::across(c(TimeToOnsetMin, TimeToOnsetMax),
+        dplyr::across(dplyr::all_of(c("TimeToOnsetMin", "TimeToOnsetMax")),
                       ~ dplyr::if_else(.x == 1568459784.65489, NA_real_, .x))
 
         )|>
@@ -381,11 +353,11 @@ tb_main <-
     ind <-
       ind |>
       dplyr::transmute(
-        Drug_Id    = str_sub(f0, start = 1L,  end = 11L),
-        Indication = str_trim(str_sub(f0, start = 12L, end = 266L))
+        Drug_Id    = str_sub(.data$f0, start = 1L,  end = 11L),
+        Indication = str_trim(str_sub(.data$f0, start = 12L, end = 266L))
       ) |>
       dplyr::mutate(
-        dplyr::across(c(Drug_Id),
+        dplyr::across(dplyr::all_of(c("Drug_Id")),
                       ~ .x |>
                         str_trim() |>
                         as.integer()
@@ -412,11 +384,11 @@ tb_main <-
     suspdup <-
       suspdup |>
       dplyr::transmute(
-        UMCReportId                = str_sub(f0, start = 1L,  end = 11L),
-        SuspectedduplicateReportId = str_sub(f0, start = 12L, end = 22L)
+        UMCReportId                = str_sub(.data$f0, start = 1L,  end = 11L),
+        SuspectedduplicateReportId = str_sub(.data$f0, start = 12L, end = 22L)
       ) |>
       dplyr::mutate(
-        dplyr::across(c(UMCReportId, SuspectedduplicateReportId),
+        dplyr::across(dplyr::all_of(c("UMCReportId", "SuspectedduplicateReportId")),
                       ~ .x |>
                         str_trim() |>
                         as.integer()
