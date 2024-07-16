@@ -14,10 +14,13 @@ dt_fst(path_base, name = NULL, ext = ".fst")
 \item{ext}{A character string, optional, specifying the file extension.}
 }
 \description{
-Short hand to \code{as.data.table(read_fst())}. File extension can be omitted.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Output is a data.table.
+The function is deprecated, with the use of parquet tables. Tables can now
+be loaded \strong{IN}-memory with \code{dt_parquet()}, and \strong{OUT} of memory with
+\code{arrow::read_parquet()}.
 }
 \details{
-Output is a data.table.
+Short hand to \code{as.data.table(read_fst())}. File extension can be omitted.
 }
 \examples{
 # Say you have a data.frame stored in an fst format, such as this one

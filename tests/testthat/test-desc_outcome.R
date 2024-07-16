@@ -10,6 +10,7 @@ test_that("gives proper counts", {
   drug_test <-
     data.table(
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
+      Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c("ici1", "ici2", "ici1", "ici1", "ici1"),
       UMCReportId = c(1, 1, 2, 2, 3)
     )

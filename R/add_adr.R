@@ -68,67 +68,81 @@ add_adr <-
     }
 
 
-    # Step 1: core function for demo data_type, ifelse on UMCReportId
+    # identify table_ids to collect
 
-    add_single_adr_demo <- function(adr_code,
-                                    MedDRA_Id = {{ MedDRA_Id }},
-                                    UMCReportId = {{ UMCReportId }}) {
-      # promise in adr_data
-
-      umc_ic <-
-          dplyr::filter(adr_data, MedDRA_Id %in% adr_code)[["UMCReportId"]]
-
-      rlang::eval_tidy(rlang::quo(
-        ifelse(UMCReportId %in%
-                 umc_ic,
-               1,
-               0)
-        ),
-        data = .data)
-      # evaluated in .data
-    }
-
-    add_single_adr_link <- function(adr_code,
-                                    MedDRA_Id = {{ MedDRA_Id }},
-                                    Adr_Id = {{ Adr_Id }}) {
-
-      adr_id <-
-        dplyr::filter(adr_data, MedDRA_Id %in% adr_code)[["Adr_Id"]]
-
-      rlang::eval_tidy(rlang::quo(
-        ifelse(Adr_Id %in%
-                 .env$adr_id,
-               1,
-               0)
-      ),
-      data = .data)
-      # evaluated in .data
-    }
-
-    # select appropriate core function according to data type
-
-    add_single_adr <-
-      switch (data_type,
-              demo = add_single_adr_demo,
-              adr  = add_single_adr_link,
-              link = add_single_adr_link
+    t_id <-
+      switch(data_type,
+             demo = "UMCReportId",
+             adr  = "Adr_Id",
+             link = "Adr_Id"
       )
 
-    # Step 2: build calls to core function for each adr
 
-    e_l <- purrr::map(a_code,
-                      function(x) {
-                        rlang::call2(
-                          rlang::quo(add_single_adr),
-                          rlang::quo(x)
-                          )
-                        }
-                      )
+    renamer_tid <-
+      c("t_id" = t_id)
 
-    names(e_l) <- a_names
+    # adr data renamed
+    ad_rn <-
+      adr_data |>
+      dplyr::rename(dplyr::all_of(renamer_tid))
 
-    # Step 3: apply the functions in .data
+    # collect table_ids
 
-    .data |>
-      dplyr::mutate(!!!e_l)
+    t_ids <-
+      purrr::map(a_code, function(a_code_batch){
+        if(any(c("Table", "Dataset") %in% class(.data))){
+          ad_rn |>
+            dplyr::filter(.data$MedDRA_Id %in% a_code_batch) |>
+            dplyr::pull(.data$t_id, as_vector = FALSE)
+        } else {
+          ad_rn |>
+            dplyr::filter(.data$MedDRA_Id %in% a_code_batch) |>
+            dplyr::pull(.data$t_id)
+        }
+      })
+
+    e_l <-
+      t_ids |>
+      purrr::map(function(t_id_subset){
+
+        rlang::quo(ifelse(
+          .data$t_id %in% t_id_subset,
+          1, 0
+        ))
+      }
+      ) |>
+      rlang::set_names(a_names)
+
+    # prepare destination table
+
+    dest_data <-
+      .data |>
+      dplyr::rename(dplyr::all_of(renamer_tid))
+
+    # add_cols
+
+    dest_data_withcols <-
+      dest_data |>
+      dplyr::mutate(
+        !!!e_l
+      )
+
+    # back rename table id to original name
+
+    back_renamer <-
+      c("t_id") |>
+      rlang::set_names(t_id)
+
+    final_data <-
+      dest_data_withcols |>
+      dplyr::rename(dplyr::all_of(back_renamer))
+
+    # compute everything (this is strictly required only for arrow objects)
+
+    if(any(c("Table", "Dataset") %in% class(.data))){
+      final_data |>
+        dplyr::compute()
+    } else {
+      final_data
+    }
   }

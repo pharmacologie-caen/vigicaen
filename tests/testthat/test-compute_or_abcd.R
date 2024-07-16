@@ -17,6 +17,14 @@ test_that("computation is accurate", {
       x = "nivolumab"
     )
 
+  res_a <-
+    demo |>
+    arrow::as_arrow_table() |>
+    compute_or_abcd(
+      y = "a_colitis",
+      x = "nivolumab"
+    )
+
   exp_res <- rlang::list2(
     or = cff(1.88, dig = 2),
     ic = cff(0.49, dig = 2)
@@ -31,6 +39,8 @@ test_that("computation is accurate", {
     cff(res[["ic"]], dig = 2),
     exp_res[["ic"]]
   )
+
+  expect_equal(res, res_a)
 })
 
 test_that("handles 0 cases in y/x combination", {
@@ -47,10 +57,20 @@ test_that("handles 0 cases in y/x combination", {
       x = "nivolumab"
     )
 
+  res_misb_a <-
+    demo |>
+    arrow::as_arrow_table() |>
+    compute_or_abcd(
+      y = "a_colitis",
+      x = "nivolumab"
+    )
+
   expect_equal(
     res_misb[["b"]],
     0
   )
+
+  expect_equal(res_misb, res_misb_a)
 
   demo_misc <-
     data.table::data.table(
@@ -65,10 +85,21 @@ test_that("handles 0 cases in y/x combination", {
       x = "nivolumab"
     )
 
+  res_misc_a <-
+    demo_misc |>
+    arrow::as_arrow_table() |>
+    compute_or_abcd(
+      y = "a_colitis",
+      x = "nivolumab"
+    )
+
+
   expect_equal(
     res_misc[["c"]],
     0
   )
+
+  expect_equal(res_misc, res_misc_a)
 
   demo_misa <-
     data.table::data.table(
@@ -83,10 +114,21 @@ test_that("handles 0 cases in y/x combination", {
       x = "nivolumab"
     )
 
+  res_misa_a <-
+    demo_misa |>
+    arrow::as_arrow_table() |>
+    compute_or_abcd(
+      y = "a_colitis",
+      x = "nivolumab"
+    )
+
+
   expect_equal(
     res_misa[["a"]],
     0
   )
+
+  expect_equal(res_misa, res_misa_a)
 
 
   demo_misd <-
@@ -102,20 +144,31 @@ test_that("handles 0 cases in y/x combination", {
       x = "nivolumab"
     )
 
+  res_misd_a <-
+    demo_misd |>
+    arrow::as_arrow_table() |>
+    compute_or_abcd(
+      y = "a_colitis",
+      x = "nivolumab"
+    )
+
+
   expect_equal(
     res_misd[["d"]],
     0
   )
 
+  expect_equal(res_misd, res_misd_a)
+
 })
 
 test_that("vectorization works inside and outside the function", {
   demo <-
-    demo_ %>%
+    demo_  |>
     add_drug(
       d_code = ex_$d_drecno,
       drug_data = drug_
-    ) %>%
+    )  |>
     add_adr(
       a_code = ex_$a_llt,
       adr_data = adr_
@@ -138,7 +191,7 @@ test_that("vectorization works inside and outside the function", {
       "1.82")
 
   vect_outside <-
-    many_drugs %>%
+    many_drugs  |>
    purrr::map(
      function(a_drug) {
        many_adrs |>
@@ -155,6 +208,25 @@ test_that("vectorization works inside and outside the function", {
    )  |>
    purrr::list_rbind()
 
+  vect_outside_a <-
+    many_drugs  |>
+    purrr::map(
+      function(a_drug) {
+        many_adrs |>
+          purrr::map(
+            function(an_adr)
+              demo  |>
+              arrow::as_arrow_table() |>
+              compute_or_abcd(
+                y = an_adr,
+                x = a_drug
+              )
+          ) |>
+          purrr::list_rbind()
+      }
+    )  |>
+    purrr::list_rbind()
+
   vect_inside <-
     demo |>
     compute_or_abcd(
@@ -162,7 +234,19 @@ test_that("vectorization works inside and outside the function", {
       x = many_drugs
       )
 
+  vect_inside_a <-
+    demo |>
+    arrow::as_arrow_table() |>
+    compute_or_abcd(
+      y = many_adrs,
+      x = many_drugs
+    )
+
   expect_equal(vect_outside, vect_inside)
+
+  expect_equal(vect_outside, vect_outside_a)
+
+  expect_equal(vect_inside,  vect_inside_a)
 
   expect_equal(vect_inside$orl,
                true_orl)

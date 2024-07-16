@@ -21,11 +21,13 @@ Suggests:
     here
 Config/testthat/edition: 3
 Imports: 
+    arrow,
     dplyr,
     data.table,
     fst,
     lifecycle,
     purrr,
     rlang,
-    stringr
+    stringr,
+    tidyr
 VignetteBuilder: knitr

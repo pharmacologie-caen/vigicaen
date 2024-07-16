@@ -105,22 +105,23 @@ mini_data <- rlang::list2(
     data.table(
       UMCReportId = c(1, 2, 3, 4)
     ),
-  suspectedduplicates =
+  suspdup =
     data.table(
       UMCReportId = c(3),
       SuspectedduplicateReportId = c(4)
     )
 )
 
-   purrr::iwalk(
-     mini_data,
-     function(dataset, name)
-       fst::write_fst(
-         dataset,
-         path = paste0(wd_in, "/", name, ".fst")
-       )
+  purrr::iwalk(
+    mini_data,
+    function(dataset, name)
+      arrow::write_parquet(
+        dataset |>
+          arrow::as_arrow_table(),
+        sink = paste0(wd_in, "/", name, ".parquet")
+      )
 
-   )
+  )
 # back to tb_custom, you should select a subset_var and corresponding data
 
 # Subset on adr colitis codes

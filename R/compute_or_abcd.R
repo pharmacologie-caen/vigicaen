@@ -79,98 +79,119 @@ compute_or_abcd <-
            dig = 2) {
     z_val <- qnorm(1 - alpha / 2)
 
+    # data mask
+    dm <-
+      data.frame(
+        one_x = c(1, 1, 0, 0),
+        one_y = c(1, 0, 1, 0)
+      )
+
+    # letters in the contingency table
+    cases <-
+      letters[1 : 4]
+
+    # extract counts from source table
     c_or_abcd_core <-
-      function(one_x,
-               one_y) {
+      function(.data, one_y, one_x) {
 
-        var <- c(one_y, one_x)
+        # rename variables
+        var <- c(one_y, one_x) |>
+          rlang::set_names(
+            c("one_y", "one_x")
+          )
 
-        eff_table <- .data[, list(eff = as.numeric(.N)), by = var]
+        # contingency table
+        ct <-
+          .data |>
+          dplyr::rename(dplyr::all_of(.env$var)) |>
+          dplyr::group_by(.data$one_y, .data$one_x) |>
+          dplyr::summarise(n_cas = dplyr::n(),
+                           .groups = "keep") |>
+          dplyr::collect()
 
-        lc <- function(x) {
-          if (length(x) == 0) {
-            0
-          } else {
-            x
-          }
-        }
-
-        a <-
-          lc(eff_table[eff_table[[one_y]] == 1 &
-                         eff_table[[one_x]] == 1, ][["eff"]])
-        b <-
-          lc(eff_table[eff_table[[one_y]] == 1 &
-                         eff_table[[one_x]] == 0, ][["eff"]])
-        c <-
-          lc(eff_table[eff_table[[one_y]] == 0 &
-                         eff_table[[one_x]] == 1, ][["eff"]])
-        d <-
-          lc(eff_table[eff_table[[one_y]] == 0 &
-                         eff_table[[one_x]] == 0, ][["eff"]])
-
-        n_exp <-
-          (a + b) * # n drug
-          (a + c) / # n event
-          (a + b + c + d) # n pop
-
-        std_er <- sqrt((1 / a) + (1 / b) + (1 / c) + (1 / d))
-
-        output <-
-          data.frame(y = one_y,
-                     x = one_x,
-                     a, b, c, d)  |>
+        # data manage contingency table
+        # starting with data mask
+        dm |>
+          dplyr::left_join(ct, by = c("one_y", "one_x")) |>
           dplyr::mutate(
-            or = .data$a * .data$d / (.data$b * .data$c),
-            low_ci = .data$or * exp(- .env$z_val * .env$std_er),
-            up_ci  = .data$or * exp(+ .env$z_val * .env$std_er),
-            orl = ifelse(
-              .data$or %in% c(0, Inf),
-              .env$na_format,
-              cff(
-                num = .data$or,
-                dig = .env$dig,
-                method = "num_only"
-              )
-            ),
-            or_ci = ifelse(
-              .data$low_ci %in% c(NaN, 0, Inf),
-              .env$na_format,
-              cff(
-                low_ci = .data$low_ci,
-                up_ci  = .data$up_ci,
-                dig    = .env$dig,
-                method = "ci"
-              )
-            ),
-            ic = log((.data$a + .5) / (.env$n_exp + .5), base = 2),
-            ic_tail = ic_tail(
-              n_obs = .data$a,
-              n_exp = .env$n_exp,
-              p = .env$alpha / 2
-            ),
-            ci_level  = paste0((1 - .env$alpha) * 100, "%"),
-            signif_or = ifelse(.data$low_ci  > 1, 1, 0),
-            signif_ic = ifelse(.data$ic_tail > 0, 1, 0)
-          )  |>
-          data.table()
-
-        output
+            n_cas = ifelse(is.na(.data$n_cas), 0, .data$n_cas)
+          ) |>
+          dplyr::mutate(y = .env$one_y, x = .env$one_x) |>
+          dplyr::relocate(dplyr::all_of(c("y", "x"))) |>
+          # have a, b, c, d counts sorted before adding letters
+          dplyr::arrange(
+            dplyr::desc(.data$one_y),
+            dplyr::desc(.data$one_x)) |>
+          dplyr::mutate(
+            cases = .env$cases
+          ) |>
+          dplyr::select(dplyr::all_of(c("y", "x", "cases", "n_cas"))) |>
+          tidyr::pivot_wider(
+            names_from  = dplyr::all_of("cases"),
+            values_from = dplyr::all_of("n_cas")
+          )
       }
 
-    x  |>
+    # all drugs and all adrs count tables
+    ad_aa_counts <-
+      x  |>
       purrr::map(
         function(one_x_) {
           y |>
             purrr::map(
               function(one_y_)
+                .data |>
                 c_or_abcd_core(
                   one_y = one_y_,
                   one_x = one_x_
-                  )
-              ) |>
-            purrr::list_rbind()
+                )
+            )
         }
       ) |>
+     unlist(recursive = FALSE) |>
       purrr::list_rbind()
 
+    # compute disproportionality
+    ad_aa_counts |>
+      dplyr::mutate(
+        n_exp = (.data$a + .data$b) * # n drug
+                (.data$a + .data$c) / # n event
+                (.data$a + .data$b + .data$c + .data$d), # n pop
+        std_er = sqrt((1 / .data$a) +
+                        (1 / .data$b) +
+                        (1 / .data$c) +
+                        (1 / .data$d)
+                      ),
+        or = .data$a * .data$d / (.data$b * .data$c),
+        low_ci = .data$or * exp(- .env$z_val * .data$std_er),
+        up_ci  = .data$or * exp(+ .env$z_val * .data$std_er),
+        orl = ifelse(
+          .data$or %in% c(0, Inf),
+          .env$na_format,
+          cff(
+            num = .data$or,
+            dig = .env$dig,
+            method = "num_only"
+          )
+        ),
+        or_ci = ifelse(
+          .data$low_ci %in% c(NaN, 0, Inf),
+          .env$na_format,
+          cff(
+            low_ci = .data$low_ci,
+            up_ci  = .data$up_ci,
+            dig    = .env$dig,
+            method = "ci"
+          )
+        ),
+        ic = log((.data$a + .5) / (.data$n_exp + .5), base = 2),
+        ic_tail = ic_tail(
+          n_obs = .data$a,
+          n_exp = .data$n_exp,
+          p = .env$alpha / 2
+        ),
+        ci_level  = paste0((1 - .env$alpha) * 100, "%"),
+        signif_or = ifelse(.data$low_ci  > 1, 1, 0),
+        signif_ic = ifelse(.data$ic_tail > 0, 1, 0)
+      )
   }

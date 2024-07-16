@@ -34,6 +34,7 @@ library(pharmacocaen)
 library(rlang)
 library(here) # if you like the here syntax for file paths
 library(dplyr)
+library(arrow)
 ```
 
 ## Imports
@@ -81,19 +82,21 @@ path_meddra <- "/home/dolladille-c/meddra_24_0/english/medascii/"
 ### Load datasets
 
 ```{r classic_datasets, eval = FALSE}
-demo     <- dt_fst(path_base, "demo")
-adr      <- dt_fst(path_base, "adr")
-drug     <- dt_fst(path_base, "drug")
-link     <- dt_fst(path_base, "link")
-out      <- dt_fst(path_base, "out")
-srce     <- dt_fst(path_base, "srce")
-followup <- dt_fst(path_base, "srce")
+demo     <- dt_parquet(path_base, "demo", in_memory = FALSE)
+adr      <- dt_parquet(path_base, "adr",  in_memory = FALSE)
+drug     <- dt_parquet(path_base, "drug", in_memory = FALSE)
+link     <- dt_parquet(path_base, "link", in_memory = FALSE)
+out      <- dt_parquet(path_base, "out",  in_memory = FALSE)
+srce     <- dt_parquet(path_base, "srce", in_memory = FALSE)
+followup <- dt_parquet(path_base, "srce", in_memory = FALSE)
 
-suspdup  <- dt_fst(path_base, "suspectedduplicates")
+suspdup  <- dt_parquet(path_base, "suspdup", in_memory = FALSE)
 
-thg <- dt_fst(path_who, "THG")
-mp_short <- dt_fst(path_who, "mp_short")
+thg      <- dt_parquet(path_who, "thg")
+mp_short <- dt_parquet(path_who, "mp_short")
 ```
+
+You can work IN or OUT of memory, depending on the in_memory argument.
 
 ### Work with preloaded test tables
 
@@ -126,7 +129,7 @@ suspdup <-
 
 > !! Wait a minute!
 
-Now you will "source" your dictionnaire...
+Now you will "source" your dictionary...
 
 Do you have one? There's a dedicated vignette here 
 \code{vignette("generic_dictionary", package = "pharmacocaen")}.
@@ -140,7 +143,7 @@ dictionary, and you may get lost if you haven't seen them before.
 Once you're done in generic_dictionnaire.R, move back here.
 
 ```{r dict, eval=FALSE}
-source(path_dic)
+source(path_dict)
 ```
 
 ### Don't have a dictionary yet or working with test sets?
