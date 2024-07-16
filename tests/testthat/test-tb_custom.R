@@ -42,7 +42,7 @@ test_that("you can subset on drecno, age, meddra_id", {
       data.table(
         UMCReportId = c(1, 2, 3, 4)
       ),
-    suspectedduplicates =
+    suspdup =
       data.table(
         UMCReportId = c(3),
         SuspectedduplicateReportId = c(4)
@@ -52,9 +52,10 @@ test_that("you can subset on drecno, age, meddra_id", {
      purrr::iwalk(
        mini_data,
        function(dataset, name)
-         fst::write_fst(
-           dataset,
-           path = paste0(wd_in, "/", name, ".fst")
+         arrow::write_parquet(
+           dataset |>
+             arrow::as_arrow_table(),
+           sink = paste0(wd_in, "/", name, ".parquet")
          )
 
      )
@@ -73,10 +74,10 @@ test_that("you can subset on drecno, age, meddra_id", {
 
 
   drug_sub <-
-    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_drecno", "/"), "drug")
+    dt_parquet(paste0(wd_in, "/", "subset_drecno", "/"), "drug")
 
   demo_sub <-
-    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_drecno", "/"), "demo")
+    dt_parquet(paste0(wd_in, "/", "subset_drecno", "/"), "demo")
 
   expect_equal(
     sort(unique(demo_sub$UMCReportId)),
@@ -105,10 +106,10 @@ test_that("you can subset on drecno, age, meddra_id", {
   )
 
   drug_sub <-
-    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_age", "/"), "drug")
+    dt_parquet(paste0(wd_in, "/", "subset_age", "/"), "drug")
 
   demo_sub <-
-    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_age", "/"), "demo")
+    dt_parquet(paste0(wd_in, "/", "subset_age", "/"), "demo")
 
   expect_equal(
     sort(unique(demo_sub$UMCReportId)),
@@ -141,10 +142,10 @@ test_that("you can subset on drecno, age, meddra_id", {
   )
 
   adr_sub <-
-    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_meddraid", "/"), "adr")
+    dt_parquet(paste0(wd_in, "/", "subset_meddraid", "/"), "adr")
 
   demo_sub <-
-    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_meddraid", "/"), "demo")
+    dt_parquet(paste0(wd_in, "/", "subset_meddraid", "/"), "demo")
 
   expect_equal(
     sort(unique(demo_sub$UMCReportId)),
@@ -177,6 +178,10 @@ test_that("wd_in exists", {
 test_that("you can keep suspdup", {
 
   wd_in <- tempdir()
+
+  wd_in <- paste0(wd_in, "\\", "sub") # avoid windows #1224
+
+  dir.create(path = wd_in)
 
   mini_data <- rlang::list2(
     demo =
@@ -218,7 +223,7 @@ test_that("you can keep suspdup", {
       data.table(
         UMCReportId = c(1, 2, 3, 4)
       ),
-    suspectedduplicates =
+    suspdup =
       data.table(
         UMCReportId = c(3),
         SuspectedduplicateReportId = c(4)
@@ -228,9 +233,10 @@ test_that("you can keep suspdup", {
   purrr::iwalk(
     mini_data,
     function(dataset, name)
-      fst::write_fst(
-        dataset,
-        path = paste0(wd_in, "/", name, ".fst")
+      arrow::write_parquet(
+        dataset |>
+          arrow::as_arrow_table(),
+        sink = paste0(wd_in, "/", name, ".parquet")
       )
 
   )
@@ -254,13 +260,13 @@ test_that("you can keep suspdup", {
   )
 
   drug_sub <-
-    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_age_suspdup", "/"), "drug")
+    dt_parquet(paste0(wd_in, "/", "subset_age_suspdup", "/"), "drug")
 
   demo_sub <-
-    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_age_suspdup", "/"), "demo")
+    dt_parquet(paste0(wd_in, "/", "subset_age_suspdup", "/"), "demo")
 
   demo_nosuspdup <-
-    pharmacocaen::dt_fst(paste0(wd_in, "/", "subset_age", "/"), "demo")
+    dt_parquet(paste0(wd_in, "/", "subset_age", "/"), "demo")
 
   expect_equal(
     sort(unique(demo_sub$UMCReportId)),
