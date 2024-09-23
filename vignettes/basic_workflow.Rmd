@@ -171,7 +171,7 @@ demo |>
   check_dm("nivolumab")
 ```
 
-Ici, nous avons regardé dans `demo` combien de lignes nivolumab avaient la valeur 1, c'est à dire combien de cas ont été identifiés comme rapportant du nivolumab. Au total, 36,729 cas rapportent du nivolumab.
+Ici, nous avons regardé dans `demo` combien de lignes nivolumab avaient la valeur 1, c'est à dire combien de cas ont été identifiés comme rapportant du nivolumab. Au total, 225 cas rapportent du nivolumab.
 
 ### Etape 4 et 5 variante : Suspect, concomitant, interacting
 
