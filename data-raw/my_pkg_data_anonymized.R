@@ -94,6 +94,28 @@ anonymizer <-
     }
   }
 
+anonymizer2 <-
+  function(value, replacement){
+
+    value_to_replace <-
+      as.numeric(value)
+
+    # use value input as indices to replacement
+
+    output <-
+      replacement[value_to_replace]
+
+    # output according to initial type
+
+    if(class(value) == "numeric"){
+      as.numeric(output)
+    } else if(class(value) == "integer"){
+      as.integer(output)
+    } else if(class(value) == "character"){
+      as.character(output)
+    }
+  }
+
 
 
 
@@ -135,36 +157,97 @@ testthat::test_that("input class is preserved", {
   )
 })
 
+load(here::here("data-raw", "nums_shuffled.RData"))
+
+# check the tests for ano_2
+testthat::test_that("the same number always produces the same replacement", {
+  n <- rep(6508068, 1000)
+
+  replaced <-
+    anonymizer2(n, nums_shuffled)
+
+  expect_equal(
+    length(unique(replaced)),
+    1
+  )
+})
+
+testthat::test_that("input class is preserved", {
+  n <- as.numeric(65080)
+
+  replacement <-
+    anonymizer2(n, nums_shuffled)
+
+  n_char <- as.character(65080)
+
+  replacement_char <-
+    anonymizer2(n_char, nums_shuffled)
+
+  n_int <- as.integer(65080)
+
+  replacement_int <-
+    anonymizer2(n_int, nums_shuffled)
+
+  expect_equal(
+    c(class(n),
+      class(n_char),
+      class(n_int)),
+    c(class(replacement),
+      class(replacement_char),
+      class(replacement_int))
+  )
+
+  expect_false(
+    any(is.na(replacement_char))
+  )
+  expect_false(
+    any(is.na(replacement_int))
+  )
+  expect_false(
+    any(is.na(replacement))
+  )
+})
+
+testthat::test_that("there can be several times the same input", {
+  n <- c(12, 12, 24, 24)
+
+  replaced <-
+    anonymizer2(n, nums_shuffled)
+
+  expect_equal(replaced[1], replaced[2])
+  expect_equal(replaced[3], replaced[4])
+})
+
 # ---- anonymized data ---- ####
 
 demo_ano <-
   demo_ |>
   mutate(across(c(UMCReportId),
-                ~ anonymizer(.x)))
+                ~ anonymizer2(.x, nums_shuffled)))
 
 drug_ano <-
   drug_ |>
   mutate(across(c(UMCReportId, Drug_Id, MedicinalProd_Id, DrecNo),
-                ~ anonymizer(.x)))
+                ~ anonymizer2(.x, nums_shuffled)))
 
 adr_ano <-
   adr_ |>
   mutate(across(c(UMCReportId, Adr_Id, MedDRA_Id),
-                ~ anonymizer(.x)))
+                ~ anonymizer2(.x, nums_shuffled)))
 
 link_ano <-
   link_ |>
   mutate(across(c(Drug_Id, Adr_Id),
-                ~ anonymizer(.x)))
+                ~ anonymizer2(.x, nums_shuffled)))
 
 ind_ano <-
   ind_ |>
   mutate(across(c(Drug_Id),
-                ~ anonymizer(.x)))
+                ~ anonymizer2(.x, nums_shuffled)))
 luda_ano <-
   luda_ |>
   mutate(across(c(UMCReportId, Drug_Id, Adr_Id),
-                ~ anonymizer(.x)))
+                ~ anonymizer2(.x, nums_shuffled)))
 
 luda_ano$DrecNo <- NULL
 luda_ano$MedDRA_Id <- NULL
@@ -172,48 +255,48 @@ luda_ano$MedDRA_Id <- NULL
 out_ano <-
   out_ |>
   mutate(across(c(UMCReportId),
-                ~ anonymizer(.x)))
+                ~ anonymizer2(.x, nums_shuffled)))
 
 srce_ano <-
   srce_ |>
   mutate(across(c(UMCReportId),
-                ~ anonymizer(.x)))
+                ~ anonymizer2(.x, nums_shuffled)))
 
 followup_ano <-
   followup_ |>
   mutate(across(c(UMCReportId, ReplacedUMCReportId),
-                ~ anonymizer(.x)))
+                ~ anonymizer2(.x, nums_shuffled)))
 thg_ano <-
   thg_ |>
   mutate(across(c(Therapgroup_Id, MedicinalProd_Id),
-                ~ anonymizer(.x)))
+                ~ anonymizer2(.x, nums_shuffled)))
 meddra_ano <-
   meddra_ |>
   mutate(across(c(llt_code, pt_code, hlt_code, hlgt_code, soc_code, pt_soc_code),
-                ~ anonymizer(.x)))
+                ~ anonymizer2(.x, nums_shuffled)))
 mp_short_ano <-
   mp_short_ |>
   mutate(across(c(MedicinalProd_Id, DrecNo, Create.date, Date.changed),
-                ~ anonymizer(.x)))
+                ~ anonymizer2(.x, nums_shuffled)))
 
 smq_list_content_ano <-
   smq_list_content_ |>
   mutate(across(c(smq_code, term_code),
-                ~ anonymizer(.x)))
+                ~ anonymizer2(.x, nums_shuffled)))
 
 ex_ano <- list()
 
 ex_ano$a_llt <-
   ex_$a_llt |>
-  purrr::map(anonymizer)
+  purrr::map(anonymizer2, replacement = nums_shuffled)
 
 ex_ano$d_drecno <-
   ex_$d_drecno |>
-  purrr::map(anonymizer)
+  purrr::map(anonymizer2, replacement = nums_shuffled)
 
 ex_ano$d_groups_drecno <-
   ex_$d_groups_drecno |>
-  purrr::map(anonymizer)
+  purrr::map(anonymizer2, replacement = nums_shuffled)
 
 ex_ano$d_groups <-
   ex_$d_groups
@@ -238,11 +321,14 @@ all.equal(ex_ano$d_groups_drecno, ex_$d_groups_drecno)
 
 # same drecnos extracted and stored
 
-get_drecno(ex_ano$d_groups,
+drec_ano <-get_drecno(ex_ano$d_groups,
            mp_short = mp_short_ano,
            allow_combination = TRUE)
 
+# had more drecnos before... don't know why.
 ex_ano$d_groups_drecno
+
+ex_ano$d_groups_drecno <- drec_ano
 
 get_drecno(ex_$d_groups,
            mp_short = mp_short_,
