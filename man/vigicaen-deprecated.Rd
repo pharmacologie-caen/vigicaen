@@ -28,15 +28,15 @@ find_drecno(
 \item{mpi_meth_name}{If you use mpi_list, this name will be printed in the drug column.}
 }
 \description{
-Find drug record number from character string matching from a modified MP data.table.
+\strong{Defunct} Find drug record
+number from character string matching from a modified MP data.table.
+
+This function is superseeded by \code{\link{get_drecno}}.
 
 The functions listed below are deprecated and will be defunct in
 the near future. When possible, alternative functions with similar
 functionality are also mentioned. Help pages for deprecated functions are
 available at \code{help("<function>-deprecated")}.
-}
-\details{
-This function is superseeded by \code{\link{get_drecno}}.
 }
 \section{\code{find_drecno}}{
 

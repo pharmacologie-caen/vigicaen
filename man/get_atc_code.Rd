@@ -9,18 +9,28 @@ get_atc_code(atc_sel, mp_short, thg_data, vigilyze = TRUE)
 \arguments{
 \item{atc_sel}{A named list of ATC codes. See Details.}
 
-\item{mp_short}{A modified MP data.table. See \code{\link{ex_}}}
+\item{mp_short}{A modified MP data.table. See \code{\link{mp_short_}}}
 
 \item{thg_data}{A data.table. Correspondence between ATC codes and MedicinalProd_Id (usually, it is \code{thg})}
 
 \item{vigilyze}{A logical. Should ATC classes be retrieved using the vigilyze style? See details}
 }
+\value{
+A list of \strong{DreNos} if \code{vigilyze} is set to \code{TRUE},
+or a list of \strong{MedicinalProd_Ids} if \code{vigilyze} is set to \code{FALSE}
+}
 \description{
-This function gets Drug Record Numbers or MedicinalProd_Ids associated to one or more ATC classes.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{get_atc_code()} collects
+Drug Record Numbers or MedicinalProd_Ids associated to one or more ATC classes.
 }
 \details{
-Provide \code{atc_sel} in the same way as \code{d_sel} with \code{\link{add_drug}}.
-Vigilyze style means all conditioning of drugs will be retrieved after requesting an ATC class (i.e., drugs are identified with their DrecNos), even if a specific conditioning is not present in the ATC class. This is the default behavior in vigilyze.
+Provide \code{atc_sel} in the same way as \code{d_sel} in \code{\link[=add_drug]{add_drug()}},
+but remember to specify its method arg as \code{MedicinalProd_Id} if
+\code{vigilyze} is set to \code{FALSE}.
+Vigilyze style means all conditioning of drugs will be retrieved after
+requesting an ATC class (i.e., drugs are identified with their DrecNos),
+even if a specific conditioning is not present in the ATC class.
+This is the default behavior in vigilyze.
 }
 \examples{
 # ## Find codes associated with one or more atc classes
@@ -48,4 +58,9 @@ atc_mpi <-
                thg_data = thg_,
                vigilyze = FALSE)
 }
+\seealso{
+\code{\link{mp_short_}}, \code{\link{thg_}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=get_drecno]{get_drecno()}}
+}
 \keyword{atc}
+\keyword{data_management}
+\keyword{drug}

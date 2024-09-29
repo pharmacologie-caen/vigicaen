@@ -17,9 +17,9 @@ Some columns are returned as \code{integer} (all \verb{*_code} columns).
 All other columns are \code{character}.
 }
 \description{
-Transform .ascii files to .parquet files
-}
-\details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{tb_meddra()} transforms .ascii
+files to .parquet files
+
 MedDRA is delivered as ascii files, that you should
 transform to a more efficient format. Parquet format from arrow has many advantages:
 It works with out-of-memory data, which makes it possible to process tables on
@@ -32,6 +32,7 @@ Class hierarchic classification. \code{smq_list} and \code{smq_content} for Stan
 MedDRA Queries.
 \strong{Caution} There tends to be small variations in the MedDRA ascii files structure.
 Last verified version on which this function is working is \strong{26.1}.
+Use \code{\link[=dt_parquet]{dt_parquet()}} to load the tables afterward.
 }
 \examples{
 
@@ -44,5 +45,7 @@ path_meddra <- "/meddra_directory/"
 
 }
 \seealso{
-\code{\link{tb_main}} \code{\link{tb_who}} \code{\link{tb_sub}}
+\code{\link[=tb_main]{tb_main()}}, \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_sub]{tb_sub()}}, \code{\link[=tb_custom]{tb_custom()}}, \code{\link[=dt_parquet]{dt_parquet()}}
 }
+\keyword{import}
+\keyword{meddra}

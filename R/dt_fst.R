@@ -1,18 +1,20 @@
 #' Read fst and convert to data.table
 #'
-#' Short hand to `as.data.table(read_fst())`. File extension can be omitted.
+#' @description `r lifecycle::badge('deprecated')` Short hand to `as.data.table(read_fst())`.
+#' File extension can be omitted.
 #'
-#' @description `r lifecycle::badge('deprecated')` Output is a data.table.
+#' @details Output is a data.table.
 #' The function is deprecated, with the use of parquet tables. Tables can now
-#' be loaded **IN**-memory with `dt_parquet()`, and **OUT** of memory with
-#' `arrow::read_parquet()`.
+#' be loaded **IN**-memory or **OUT** of memory with \code{\link{dt_parquet}}.
 #'
 #' @param path_base A character string, providing the path to read from.
 #' @param name A character string, the file name.
 #' @param ext A character string, optional, specifying the file extension.
 #' @keywords import
 #' @export
+#' @seealso [dt_parquet()], [tb_main()], [tb_who()], [tb_sub()], [tb_meddra()]
 #' @examples
+#'
 #' # Say you have a data.frame stored in an fst format, such as this one
 #' df <- data.frame(a = 1:100, b = rnorm(100))
 #'

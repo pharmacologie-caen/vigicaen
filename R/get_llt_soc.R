@@ -1,14 +1,20 @@
-#' Extract llts from soc classification
+#' Extract low level terms from soc classification
 #'
-#' Extracts a list of llt codes from a meddra data.table, given a specified level term
+#' @description `r lifecycle::badge('stable')` `get_llt_soc()`
+#' extracts a list of llt codes from a `meddra` data.table, given another term
+#' of the MedDRA SOC Hierarchy.
 #'
-#' The function extracts llt codes. It throws a warning when nothing was found, indicating that there is probably a mistake in the spelling of the term you were looking for. In meddra, terms are case sensitive and they are not tolower-ed by default (e.g. you may find "Colitis" but not "colitis" or "COLITIS").
-#' In term_sel, all terms should come from the same hierarchical level, e.g. all preferred terms, all high level terms, etc.
+#' @details The function extracts low level term codes.
+#' `get_llt_soc()` is **case-sensitive**, and MedDRA terms always begin with a capital letter,
+#' in their native version.
+#' In `term_sel`, all terms should come from the same hierarchical level,
+#' e.g. all preferred terms, all high level terms, etc.
 #'
 #' @param term_sel A named list of character vector(s). The terms to extract llts codes from. See details.
 #' @param term_level A character string. One of "soc", "hlgt", "hlt", "pt", or "llt"
 #' @param meddra A data.table. Built from meddra_builders functions
-#' @keywords meddra soc llt
+#' @keywords data_management meddra soc llt
+#' @seealso [get_llt_smq()]
 #' @export
 #' @examples
 #'

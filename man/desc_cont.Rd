@@ -2,7 +2,7 @@
 % Please edit documentation in R/desc_cont.R
 \name{desc_cont}
 \alias{desc_cont}
-\title{Summarise continuous variables}
+\title{Summarize continuous variables}
 \usage{
 desc_cont(.data, vc, format = "median (q1-q3) [min-max]", digits = 1)
 }
@@ -16,15 +16,17 @@ desc_cont(.data, vc, format = "median (q1-q3) [min-max]", digits = 1)
 \item{digits}{A numeric. How many digits? This argument calls internal formatting function}
 }
 \description{
-Shorthand to apply a subjectively outstanding format
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\code{desc_cont} will summarize continuous data and let you handled output format.
 }
 \details{
-That's very close to what tableone would do, except I have hand on the output.
-This makes it much easier to map to nice labelling thereafter.
+Many other packages provide tools to summarize data. This one is just
+the package author's favorite.
+This makes it much easier to map to nice labeling thereafter.
 The format argument shows the output of the function. You can change square
 and round brackets, spaces, separators...
 You can choose to display median, and interquartile range and/or range.
-The analogous for categorical variables is \code{count_facvar}.
+The analogous for categorical variables is \code{\link[=desc_facvar]{desc_facvar()}}.
 }
 \examples{
 df <-
@@ -38,7 +40,17 @@ df <-
     bmi = c(18, 30, 25, 22, 23, 21, 22)
   )
 
-desc_cont(vc = c("age", "bmi"),
-           .data = df,
-           format = "median (q1;q3)")
+# Use default formatting
+
+desc_cont(.data = df, vc = c("age", "bmi"))
+
+# Use custom formatting
+
+desc_cont(.data = df,
+          vc = c("age", "bmi"),
+          format = "median (q1;q3)"
+          )
+}
+\seealso{
+\code{\link[=desc_facvar]{desc_facvar()}}
 }

@@ -14,12 +14,13 @@ output directory.}
 .parquet files into the \code{path_sub} directory.
 }
 \description{
-Transform .txt files to .parquet files
-}
-\details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{tb_sub()} transform .txt files
+to .parquet files
+
 Subsidiary files in VigiBase provide context to many numerically stored variables.
 Most important file here is the suspected duplicates table, but it is processed
-in tb_main. More documentation can be found in \code{\link{tb_main}}.
+in \code{\link[=tb_main]{tb_main()}}. More documentation can be found in \code{\link[=tb_main]{tb_main()}}.
+Use \code{\link[=dt_parquet]{dt_parquet()}} to load the tables afterward.
 }
 \examples{
 
@@ -32,5 +33,7 @@ path_who <- "/vigibase_subsidiary_files/"
 
 }
 \seealso{
-\code{\link{tb_main}} \code{\link{tb_sub}}
+\code{\link[=tb_main]{tb_main()}}, \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_meddra]{tb_meddra()}}, \code{\link[=tb_custom]{tb_custom()}}, \code{\link[=dt_parquet]{dt_parquet()}}
 }
+\keyword{import}
+\keyword{sub}

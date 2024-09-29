@@ -1,8 +1,13 @@
-#' Rechallenge and TTO description
+#' Rechallenge descriptive
 #'
-#' drug-adr pair description of rechallenge cases and time to onsets.
+#' @description `r lifecycle::badge('stable')` `desc_rch()`
+#' computes counts of rechallenge cases, over a set of adr and drug pairs.
 #'
-#' Description span from rechallenge cases to __informative__ rechallenge cases (those cases where the outcome is known). Drug and Adr identifiers refer to DrecNo and MedDRA_Id, respectively.
+#' @details Counts are provided at the **case** level (not the drug-adr pair level).
+#' Description span from number of rechallenge cases
+#' to __informative__ rechallenge cases (those cases where the outcome is known).
+#' You will need a `luda` data.table, see \code{\link{luda_}}, on which
+#' you have added drugs and adrs with [add_drug()] and [add_adr()].
 #' Terminology
 #' \itemize{
 #'   \item `Overall` as opposed to `rch` for rechallenged (`rch` + `no_rch` = `overall`).
@@ -10,8 +15,8 @@
 #'   \item Among `inf`, `rec` (recurring) as opposed to `non_rec` (`rec` + `non_rec` = `inf`)
 #' }
 #'
-#' @param luda_data A data.table. luda stands for Link with UmcreportId, Drug and Adr identifiers (see details).
-#' @param demo_data A data.table. demo should have a serious and death columns.
+#' @param .data A \code{\link{luda_}} style data.table.
+#' @param demo_data A demo data.table.
 #' @param drug_s A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a luda table.
 #' @param adr_s A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a luda table.
 #'
@@ -22,6 +27,8 @@
 #'   \item Median (interquartile range) time to onset in all settings.
 #' }
 #' @export
+#' @keywords drug-adr pair, descriptive
+#' @seealso \code{\link{luda_}}, [add_drug()], [add_adr()], [desc_dch()], [desc_tto()]
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #' @importFrom data.table .N
@@ -40,25 +47,24 @@
 #'     data_type = "link"
 #'   )
 #'
-#' desc_rch(luda_data = luda_,
+#' desc_rch(.data = luda_,
 #'          demo_data = demo_,
 #'          drug_s = "pd1",
 #'          adr_s = "a_colitis")
 #'
 #' # You can vectorize over drugs and adrs
 #'
-#' desc_rch(luda_data = luda_,
+#' desc_rch(.data = luda_,
 #'          demo_data = demo_,
 #'          adr_s = c("a_colitis", "a_pneumonitis"),
 #'          drug_s = c("pd1", "pdl1")
 #'          )
 
-desc_rch <- function(luda_data,
+desc_rch <- function(.data,
                      demo_data,
-                     drug_s = "pd1",
-                     adr_s = "a_colitis"
+                     drug_s = "drug1",
+                     adr_s = "adr1"
 ){
-
 
   core_desc_rch <-
     function(one_drug,
@@ -66,7 +72,7 @@ desc_rch <- function(luda_data,
              UMCReportId = {{ UMCReportId }}
     ){
       luda_sel <- # selection
-        luda_data |>
+        .data |>
         dplyr::filter(.data[[one_drug]] == 1 &
                  .data[[one_adr]] == 1
                )

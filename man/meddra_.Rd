@@ -19,7 +19,7 @@ data(meddra_)
 smq_list_content_
 }
 \description{
-A small part of MedDRA, used to illustrate the package examples and vignettes.
+Anonymized data from MedDRA, used to illustrate the package examples and vignettes.
 You can find term codes related to colitis, pneumonitis, hepatitis, a SMQ of
 embolisms.
 Compounds are \code{meddra_} and \code{smq_list_content_}.

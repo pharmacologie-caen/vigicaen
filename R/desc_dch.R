@@ -1,19 +1,23 @@
 #' Dechallenge descriptive
 #'
-#' Compute positive dechallenge counts over a set of adr and drugs. Positive
-#' dechallenge refers to cases where drug was withdrawn or dose-reduced and
-#' reaction abated.
-#' You would need a `luda` data.table, that is a `link` data.table, joined for `UMCReportId`
-#' (via `drug` or `adr` tables), and with appropriate adrs and drugs columns,
-#' as adjuncted with `add_drug` and `add_adr`. See \code{\link{luda_}}.
+#' @description `r lifecycle::badge('stable')` `desc_dch()`
+#' computes positive dechallenge counts over a set of adr and drug pairs.
 #'
-#' @param .data A luda style data.table.
+#' @details Counts are provided at the **case** level (not the drug-adr pair level).
+#' Positive dechallenge refers to cases where drug was withdrawn or
+#' dose-reduced and reaction abated (in part or in full).
+#' You will need a `luda` data.table, see \code{\link{luda_}}, on which
+#' you have added drugs and adrs with [add_drug()] and [add_adr()].
+#'
+#' @param .data A \code{\link{luda_}} style data.table.
 #' @param drug_s A character vector, the drug column(s)
 #' @param adr_s A character vector, the adverse drug reaction column(s).
 #' @return A data.table with one row per drug-adr pair.
 #' @importFrom rlang .data
 #' @importFrom rlang .env
+#' @keywords drug-adr pair, descriptive
 #' @export
+#' @seealso \code{\link{luda_}}, [add_drug()], [add_adr()], [desc_tto()], [desc_rch()]
 #' @examples
 #'
 #' luda_ <-

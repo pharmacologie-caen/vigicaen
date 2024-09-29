@@ -1,18 +1,27 @@
 #' Get ATC codes (DrecNos or MPIs)
 #'
-#' This function gets Drug Record Numbers or MedicinalProd_Ids associated to one or more ATC classes.
+#' @description `r lifecycle::badge('stable')` `get_atc_code()` collects
+#' Drug Record Numbers or MedicinalProd_Ids associated to one or more ATC classes.
 #'
-#' Provide `atc_sel` in the same way as `d_sel` with \code{\link{add_drug}}.
-#' Vigilyze style means all conditioning of drugs will be retrieved after requesting an ATC class (i.e., drugs are identified with their DrecNos), even if a specific conditioning is not present in the ATC class. This is the default behavior in vigilyze.
+#' @details Provide `atc_sel` in the same way as `d_sel` in [add_drug()],
+#' but remember to specify its method arg as `MedicinalProd_Id` if
+#' `vigilyze` is set to `FALSE`.
+#' Vigilyze style means all conditioning of drugs will be retrieved after
+#' requesting an ATC class (i.e., drugs are identified with their DrecNos),
+#' even if a specific conditioning is not present in the ATC class.
+#' This is the default behavior in vigilyze.
 #'
 #' @param atc_sel A named list of ATC codes. See Details.
 #' @param vigilyze A logical. Should ATC classes be retrieved using the vigilyze style? See details
-#' @param mp_short A modified MP data.table. See \code{\link{ex_}}
+#' @param mp_short A modified MP data.table. See \code{\link{mp_short_}}
 #' @param thg_data A data.table. Correspondence between ATC codes and MedicinalProd_Id (usually, it is `thg`)
-#' @keywords atc
+#' @keywords data_management drug atc
 #' @export
+#' @returns A list of **DreNos** if `vigilyze` is set to `TRUE`,
+#' or a list of **MedicinalProd_Ids** if `vigilyze` is set to `FALSE`
 #' @importFrom rlang .data
 #' @importFrom rlang .env
+#' @seealso \code{\link{mp_short_}}, \code{\link{thg_}}, [add_drug()], [get_drecno()]
 #' @examples
 #' # ## Find codes associated with one or more atc classes
 #'

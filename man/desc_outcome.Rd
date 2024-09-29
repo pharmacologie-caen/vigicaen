@@ -4,10 +4,10 @@
 \alias{desc_outcome}
 \title{Outcome descriptive}
 \usage{
-desc_outcome(adr_data, drug_s = "drug1", adr_s = "adr1")
+desc_outcome(.data, drug_s = "drug1", adr_s = "adr1")
 }
 \arguments{
-\item{adr_data}{An adr data.table.}
+\item{.data, }{An \code{\link{adr_}} style data.table.}
 
 \item{drug_s}{A character vector, the drug column(s)}
 
@@ -17,9 +17,16 @@ desc_outcome(adr_data, drug_s = "drug1", adr_s = "adr1")
 A data.table with one row per drug-adr pair.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \code{desc_outcome()}
 Compute outcome description over a set of adr and drugs.
-You would need an adr data.table. Be careful that you cannot directly filter \code{adr} data.table on drugs! That is, if you want to extract outcomes for cases exposed to a drug of interest, you need to filter it out. Maybe add_drug could work. See \code{\link{adr_}}.
-The function takes the worst outcome into consideration for a given case, if many are reported.
+}
+\details{
+You need an \code{adr} data.table.
+Be careful that you cannot directly filter \code{adr} data.table on drugs!
+You first have to add drug columns to \code{adr}, with \code{\link[=add_drug]{add_drug()}}.
+See \code{\link{adr_}}.
+The function reports the worst outcome into consideration for a given case,
+if many are reported.
 Outcomes, from best to worst are:
 \itemize{
 \item Recovered/resolved
@@ -47,14 +54,24 @@ adr_ <-
   )
 
 
-desc_outcome(adr_,
-         drug_s = "pd1",
-         adr_s = "a_colitis")
+desc_outcome(
+  adr_,
+  drug_s = "pd1",
+  adr_s = "a_colitis"
+  )
 
 
 # you can vectorize over multiple adrs and drugs
 
-desc_outcome(adr_,
-         drug_s = c("pd1", "pdl1"),
-         adr_s = c("a_colitis", "a_pneumonitis"))
+desc_outcome(
+  adr_,
+  drug_s = c("pd1", "pdl1"),
+  adr_s = c("a_colitis", "a_pneumonitis")
+  )
 }
+\seealso{
+\code{\link{adr_}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}
+}
+\keyword{descriptive}
+\keyword{drug-adr}
+\keyword{pair,}

@@ -1,8 +1,10 @@
 #' Summarise categorical variables
 #'
-#' Shorthand to apply a subjectively outstanding format
+#' @description `r lifecycle::badge('experimental')`
+#' `desc_facvar()` will summarize categorical data and let you handled output format.
 #'
-#' Twin function of count_cont, but for categorical variables.
+#' @details Many other packages provide tools to summarize data. This one is just
+#' the package author's favorite.
 #' Valid format options should include `n_` (number of patients with the
 #' categorical variable at said level), `N_` (number of patients with an
 #' available value for this variable), and `pc_`, percentage between n and N.
@@ -11,6 +13,7 @@
 #' `ncat_max` ensures that you didn't accidentaly provided a continuous
 #' variable to `desc_facvar`. If you have many levels for one of your variables,
 #' set to `Inf` or high value.
+#' Equivalent for continuous data is [desc_cont()].
 #'
 #' @param .data A data.frame, where vf are column names of categorical variables
 #' @param vf A character vector
@@ -21,6 +24,7 @@
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #' @export
+#' @seealso [desc_cont()]
 #'
 #' @examples
 #' df1 <-
@@ -34,7 +38,16 @@
 #'     age = c(60, 50, 56, 49, 75, 69, 85),
 #'     bmi = c(18, 30, 25, 22, 23, 21, 22)
 #'   )
-#' desc_facvar(vf = c("hypertension", "smoke_status"), .data = df1)
+#'
+#' # Use default formatting
+#' desc_facvar(.data = df1, vf = c("hypertension", "smoke_status"))
+#'
+#' # Use custom formatting
+#' desc_facvar(.data = df1,
+#'            vf = c("hypertension", "smoke_status"),
+#'            format = "n_ out of N_, pc_%",
+#'            digits = 1)
+#'
 
 desc_facvar <-
   function( .data,

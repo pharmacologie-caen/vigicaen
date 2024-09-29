@@ -1,12 +1,13 @@
 #' Read parquet and convert to data.table
 #'
-#' This will load data **IN**-memory. File extension can be omitted.
+#' @description `r lifecycle::badge('experimental')` dt_parquet() will
+#' load data IN- our OUT- of memory. File extension can be omitted.
 #'
-#' @description `r lifecycle::badge('experimental')` Output is a data.table.
+#' @details  Output is a data.table.
 #' For meddra and whodrug tables, it is still a good option to load data in-memory.
-#' This function is wrapping `arrow::read_parquet`, `dplyr::collect` and
-#' `data.table::as.data.table` altogether.
-#' If you want to load **OUT** of memory, set arg `in_memory`to FALSE.
+#' This function is wrapping `arrow::read_parquet()`, `dplyr::collect()` and
+#' `data.table::as.data.table()` altogether.
+#' If you want to load **OUT** of memory, set arg `in_memory` to FALSE.
 #' **Be careful that doing so will change the function output format**.
 #'
 #' @param path_base A character string, providing the path to read from.
@@ -14,6 +15,7 @@
 #' @param ext A character string, optional, specifying the file extension.
 #' @param in_memory Logical, should data be loaded in memory?
 #' @keywords import
+#' @seealso [tb_main()], [tb_who()], [tb_sub()], [tb_meddra()]
 #' @export
 #' @examples
 #'

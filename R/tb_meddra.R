@@ -1,6 +1,7 @@
 #' Create MedDRA tables
 #'
-#' Transform .ascii files to .parquet files
+#' @description `r lifecycle::badge('stable')` `tb_meddra()` transforms .ascii
+#' files to .parquet files
 #'
 #' MedDRA is delivered as ascii files, that you should
 #' transform to a more efficient format. Parquet format from arrow has many advantages:
@@ -14,13 +15,14 @@
 #' MedDRA Queries.
 #' **Caution** There tends to be small variations in the MedDRA ascii files structure.
 #' Last verified version on which this function is working is **26.1**.
+#' Use [dt_parquet()] to load the tables afterward.
 #'
 #' @param path_meddra Character string, a directory containing MedDRA ascii tables.
 #' It is also the output directory.
 #'
 #' @importFrom utils read.table
-#'
-#' @seealso \code{\link{tb_main}} \code{\link{tb_who}} \code{\link{tb_sub}}
+#' @keywords import meddra
+#' @seealso [tb_main()], [tb_who()], [tb_sub()], [tb_custom()], [dt_parquet()]
 #'
 #' @export
 #'

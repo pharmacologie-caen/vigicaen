@@ -1,20 +1,21 @@
 #' Create main VigiBase ECL tables
 #'
-#' Transform .txt files to .parquet files
+#' @description `r lifecycle::badge('stable')` `tb_who()` transform .txt files to .parquet files
 #'
 #' WHODrug is delivered as zipped text files, that you should
 #' transform to a more efficient format. Parquet format from arrow has many advantages:
 #' It works with out-of-memory data, which makes it possible to process tables on
 #' a computer with not-so-much RAM. It is also lightweighted and standard across different
 #' langages.
-#' The function also creates variables in each table. See \code{\link{tb_main}} for some running examples.
+#' The function also creates variables in each table. See [tb_main()] for some running examples.
+#' Use [dt_parquet()] to load the tables afterward.
 #'
 #' @param path_who Character string, a directory containing whodrug txt tables. It is also the
 #' output directory.
 #'
 #' @importFrom stringr str_sub str_trim
 #'
-#' @seealso \code{\link{tb_main}} \code{\link{tb_sub}}
+#' @seealso [tb_main()], [tb_sub()], [tb_meddra()], [tb_custom()], [dt_parquet()]
 #'
 #' @export
 #'

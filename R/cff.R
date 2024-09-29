@@ -2,7 +2,9 @@
 #'
 #' This is a formatting function for consistent number reporting.
 #'
-#' Set `method` according to the printing you like: a unique number with `num_only` (default), the number and its confidence interval with `num_ci`, a `ci` only (for example a range of time to onset)
+#' Set `method` according to the printing you like: a unique number
+#' with `num_only` (default), the number and its confidence interval
+#' with `num_ci`, a `ci` only (for example a range of time to onset)
 #' The function properly returns `NA` when input is missing.
 #'
 #' @param num A numeric. The number to format.

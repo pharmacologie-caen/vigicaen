@@ -7,7 +7,7 @@
 desc_dch(.data, drug_s = "drug1", adr_s = "adr1")
 }
 \arguments{
-\item{.data}{A luda style data.table.}
+\item{.data}{A \code{\link{luda_}} style data.table.}
 
 \item{drug_s}{A character vector, the drug column(s)}
 
@@ -17,12 +17,15 @@ desc_dch(.data, drug_s = "drug1", adr_s = "adr1")
 A data.table with one row per drug-adr pair.
 }
 \description{
-Compute positive dechallenge counts over a set of adr and drugs. Positive
-dechallenge refers to cases where drug was withdrawn or dose-reduced and
-reaction abated.
-You would need a \code{luda} data.table, that is a \code{link} data.table, joined for \code{UMCReportId}
-(via \code{drug} or \code{adr} tables), and with appropriate adrs and drugs columns,
-as adjuncted with \code{add_drug} and \code{add_adr}. See \code{\link{luda_}}.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{desc_dch()}
+computes positive dechallenge counts over a set of adr and drug pairs.
+}
+\details{
+Counts are provided at the \strong{case} level (not the drug-adr pair level).
+Positive dechallenge refers to cases where drug was withdrawn or
+dose-reduced and reaction abated (in part or in full).
+You will need a \code{luda} data.table, see \code{\link{luda_}}, on which
+you have added drugs and adrs with \code{\link[=add_drug]{add_drug()}} and \code{\link[=add_adr]{add_adr()}}.
 }
 \examples{
 
@@ -51,3 +54,9 @@ desc_dch(luda_,
          drug_s = c("pd1", "pdl1"),
          adr_s = c("a_colitis", "a_pneumonitis"))
 }
+\seealso{
+\code{\link{luda_}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}, \code{\link[=desc_tto]{desc_tto()}}, \code{\link[=desc_rch]{desc_rch()}}
+}
+\keyword{descriptive}
+\keyword{drug-adr}
+\keyword{pair,}

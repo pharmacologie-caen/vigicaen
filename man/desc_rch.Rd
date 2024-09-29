@@ -2,14 +2,14 @@
 % Please edit documentation in R/desc_rch.R
 \name{desc_rch}
 \alias{desc_rch}
-\title{Rechallenge and TTO description}
+\title{Rechallenge descriptive}
 \usage{
-desc_rch(luda_data, demo_data, drug_s = "pd1", adr_s = "a_colitis")
+desc_rch(.data, demo_data, drug_s = "drug1", adr_s = "adr1")
 }
 \arguments{
-\item{luda_data}{A data.table. luda stands for Link with UmcreportId, Drug and Adr identifiers (see details).}
+\item{.data}{A \code{\link{luda_}} style data.table.}
 
-\item{demo_data}{A data.table. demo should have a serious and death columns.}
+\item{demo_data}{A demo data.table.}
 
 \item{drug_s}{A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a luda table.}
 
@@ -24,10 +24,15 @@ A one-row data.table with
 }
 }
 \description{
-drug-adr pair description of rechallenge cases and time to onsets.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{desc_rch()}
+computes counts of rechallenge cases, over a set of adr and drug pairs.
 }
 \details{
-Description span from rechallenge cases to \strong{informative} rechallenge cases (those cases where the outcome is known). Drug and Adr identifiers refer to DrecNo and MedDRA_Id, respectively.
+Counts are provided at the \strong{case} level (not the drug-adr pair level).
+Description span from number of rechallenge cases
+to \strong{informative} rechallenge cases (those cases where the outcome is known).
+You will need a \code{luda} data.table, see \code{\link{luda_}}, on which
+you have added drugs and adrs with \code{\link[=add_drug]{add_drug()}} and \code{\link[=add_adr]{add_adr()}}.
 Terminology
 \itemize{
 \item \code{Overall} as opposed to \code{rch} for rechallenged (\code{rch} + \code{no_rch} = \code{overall}).
@@ -49,16 +54,22 @@ luda_ <-
     data_type = "link"
   )
 
-desc_rch(luda_data = luda_,
+desc_rch(.data = luda_,
          demo_data = demo_,
          drug_s = "pd1",
          adr_s = "a_colitis")
 
 # You can vectorize over drugs and adrs
 
-desc_rch(luda_data = luda_,
+desc_rch(.data = luda_,
          demo_data = demo_,
          adr_s = c("a_colitis", "a_pneumonitis"),
          drug_s = c("pd1", "pdl1")
          )
 }
+\seealso{
+\code{\link{luda_}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}, \code{\link[=desc_dch]{desc_dch()}}, \code{\link[=desc_tto]{desc_tto()}}
+}
+\keyword{descriptive}
+\keyword{drug-adr}
+\keyword{pair,}

@@ -1,13 +1,21 @@
-#' Extract llts from SMQs
+#' Extract low level terms from SMQs
 #'
-#' Extracts from a smq_list_content a list of llts given an SMQ.
+#' @description `r lifecycle::badge('stable')` `get_llt_smq()`
+#' extracts a list of llts from an `smq_list_content` data.table, given an SMQ.
 #'
-#' !! You must use this function only for NON-algorithmic SMQs (this status is given in the smq_list table). There are 2 non-blocking checkers in the function. Be sure to add ` (SMQ)` at the end of the SMQ name. The other checker is when nothing is found. The function doesn't work with character vectors of length > 1.
+#' @details SMQ stands for Standardized MedDRA query.
+#' `get_llt_smq()`only works with NON-algorithmic SMQs
+#' (this status is given in the smq_list table).
+#' The `smq_list_content` data.table is obtained by joining `smq_list` and `smq_content`.
+#' An example is provided here \code{\link{smq_list_content_}}. You can choose
+#' between the narrow and the broad scope of the SMQ.
+#' If you want to work with the SOC hierarchy, use [get_llt_soc()].
 #'
 #' @param smq A named list of character vector of length 1.
 #' @param smq_scope A character vector. One of "narrow" or "broad".
 #' @param smq_list_content A data.table. A joint of smq_list and smq_content
-#' @keywords meddra smq llt
+#' @keywords data_management meddra smq llt
+#' @seealso [get_llt_soc()]
 #' @export
 #' @examples
 #' ## Finding llt codes for Embolism (SMQ)

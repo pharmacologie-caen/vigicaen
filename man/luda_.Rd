@@ -3,7 +3,7 @@
 \docType{data}
 \name{luda_}
 \alias{luda_}
-\title{Data for the rechallenge}
+\title{Data for drug-adr pair analysis.}
 \format{
 An object of class data.table and data.frame.
 }

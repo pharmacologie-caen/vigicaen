@@ -4,14 +4,14 @@
 \alias{extract_tto}
 \title{Time to onset extraction}
 \usage{
-extract_tto(luda_data, adr_s = "a_colitis", drug_s = "pd1", tto_time_range = 1)
+extract_tto(.data, adr_s = "a_colitis", drug_s = "pd1", tto_time_range = 1)
 }
 \arguments{
-\item{luda_data}{A data.table. luda stands for Link with UmcreportId, Drug and Adr identifiers (see details).}
+\item{.data}{A \code{\link{luda_}} style data.table.}
 
-\item{adr_s}{A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a luda table.}
+\item{adr_s}{A character string. The name of the adr column. (see details)}
 
-\item{drug_s}{A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a luda table.}
+\item{drug_s}{A character string. The name of the drug column. (see details)}
 
 \item{tto_time_range}{Incertitude range of Time to onset, in days. Defaults to 1 as recommended by umc}
 }
@@ -22,13 +22,19 @@ A data.table with
 }
 }
 \description{
-drug-adr pair extraction of time to onset.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{extract_tto()} collects
+all available time to onsets for a set of drug-adr pairs.
 }
 \details{
-Extraction of time (maximum available time) between drug initiation
+Extraction of (maximum available) time between drug initiation
 and event onset. This runs at the drug-adr pair level.
-You might want to run \code{\link{desc_tto}} to obtain summary statistics of
-time to onset.
+You will need a \code{luda} data.table, see \code{\link{luda_}}, on which
+you have added drugs and adrs with \code{\link[=add_drug]{add_drug()}} and \code{\link[=add_adr]{add_adr()}}.
+Uppsala Monitoring Centre recommends to use only cases where the incertitude
+on time to onset is less than \strong{1 day}. You can change this with \code{tto_time_range}.
+You might want to use \code{\link[=desc_tto]{desc_tto()}} to obtain summary statistics of
+time to onset, but \code{extract_tto()} is useful to get the raw data and plot it,
+for instance with \code{ggplot2}.
 }
 \examples{
 luda_ <-
@@ -44,10 +50,16 @@ luda_ <-
     data_type = "link"
   )
 
-extract_tto(luda_data = luda_,
+extract_tto(.data = luda_,
          adr_s = "a_colitis",
          drug_s = "pd1")
-extract_tto(luda_data = luda_,
+extract_tto(.data = luda_,
          adr_s = c("a_colitis", "a_pneumonitis"),
          drug_s = c("pd1", "ctla4"))
 }
+\seealso{
+\code{\link{luda_}}, \code{\link[=desc_tto]{desc_tto()}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}, \code{\link[=desc_dch]{desc_dch()}}, \code{\link[=desc_rch]{desc_rch()}}
+}
+\keyword{descriptive}
+\keyword{drug-adr}
+\keyword{pair,}

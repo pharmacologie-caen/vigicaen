@@ -1,17 +1,21 @@
 #' Create subsidiary VigiBase ECL tables
 #'
-#' Transform .txt files to .parquet files
+#' @description `r lifecycle::badge('stable')` `tb_sub()` transform .txt files
+#' to .parquet files
 #'
 #' Subsidiary files in VigiBase provide context to many numerically stored variables.
 #' Most important file here is the suspected duplicates table, but it is processed
-#' in tb_main. More documentation can be found in \code{\link{tb_main}}.
+#' in [tb_main()]. More documentation can be found in [tb_main()].
+#' Use [dt_parquet()] to load the tables afterward.
 #'
 #' @param path_sub Character string, a directory containing whodrug txt tables. It is also the
 #' output directory.
 #'
 #' @importFrom stringr str_sub str_trim
 #'
-#' @seealso \code{\link{tb_main}} \code{\link{tb_sub}}
+#' @keywords import sub
+#'
+#' @seealso [tb_main()], [tb_who()], [tb_meddra()], [tb_custom()], [dt_parquet()]
 #'
 #' @export
 #'

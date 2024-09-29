@@ -52,7 +52,7 @@
 
 #' Sample of Meddra.
 #'
-#' A small part of MedDRA, used to illustrate the package examples and vignettes.
+#' Anonymized data from MedDRA, used to illustrate the package examples and vignettes.
 #' You can find term codes related to colitis, pneumonitis, hepatitis, a SMQ of
 #' embolisms.
 #' Compounds are `meddra_` and `smq_list_content_`.
@@ -143,7 +143,7 @@
 
 
 
-#' Data for the rechallenge
+#' Data for drug-adr pair analysis.
 #'
 #' Luda is a very special table used to compute time to onset, dechallenge,
 #' and rechallenge. `luda_` is a Link table, augmented with Umcreportid,

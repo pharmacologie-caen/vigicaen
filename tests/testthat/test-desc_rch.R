@@ -14,7 +14,7 @@ test_that("find proper counts on a known dataset", {
     )
 
   rch_test <-
-    desc_rch(luda_data = luda_,
+    desc_rch(.data = luda_,
              demo_data = demo_,
              adr_s = "a_colitis",
              drug_s = "pd1")
@@ -66,7 +66,7 @@ test_that("can be vectorized", {
     )
 
   rch_test <-
-    desc_rch(luda_data = luda_,
+    desc_rch(.data = luda_,
              demo_data = demo_,
              adr_s = c("a_colitis", "a_pneumonitis"),
              drug_s = "pd1")
@@ -89,7 +89,7 @@ test_that("can be vectorized", {
 
 
   rch_test2 <-
-    desc_rch(luda_data = luda_,
+    desc_rch(.data = luda_,
              demo_data = demo_,
              adr_s = c("a_colitis"),
              drug_s = c("pd1", "pdl1")
@@ -139,7 +139,7 @@ test_that("works with few data", {
 
 
    res <- desc_rch(
-     luda_data = luda_rch,
+     .data = luda_rch,
      demo_data = demo_rch_test,
      adr_s = "adr1",
      drug_s = "drug1"

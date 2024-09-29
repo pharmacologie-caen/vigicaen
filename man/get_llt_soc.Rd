@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_llt_soc.R
 \name{get_llt_soc}
 \alias{get_llt_soc}
-\title{Extract llts from soc classification}
+\title{Extract low level terms from soc classification}
 \usage{
 get_llt_soc(
   term_sel,
@@ -18,11 +18,16 @@ get_llt_soc(
 \item{meddra}{A data.table. Built from meddra_builders functions}
 }
 \description{
-Extracts a list of llt codes from a meddra data.table, given a specified level term
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{get_llt_soc()}
+extracts a list of llt codes from a \code{meddra} data.table, given another term
+of the MedDRA SOC Hierarchy.
 }
 \details{
-The function extracts llt codes. It throws a warning when nothing was found, indicating that there is probably a mistake in the spelling of the term you were looking for. In meddra, terms are case sensitive and they are not tolower-ed by default (e.g. you may find "Colitis" but not "colitis" or "COLITIS").
-In term_sel, all terms should come from the same hierarchical level, e.g. all preferred terms, all high level terms, etc.
+The function extracts low level term codes.
+\code{get_llt_soc()} is \strong{case-sensitive}, and MedDRA terms always begin with a capital letter,
+in their native version.
+In \code{term_sel}, all terms should come from the same hierarchical level,
+e.g. all preferred terms, all high level terms, etc.
 }
 \examples{
 
@@ -42,6 +47,10 @@ get_llt_soc(
   meddra = meddra_
   )
 }
+\seealso{
+\code{\link[=get_llt_smq]{get_llt_smq()}}
+}
+\keyword{data_management}
 \keyword{llt}
 \keyword{meddra}
 \keyword{soc}

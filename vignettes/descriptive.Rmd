@@ -693,7 +693,7 @@ Ces informations sont extraites par la fonction `extract_tto`.
 
 ```{r extract_tto_example}
 extract_tto(
-  luda_data = luda,
+  .data = luda,
   drug_s = "nivolumab",
   adr_s  = "a_colitis"
 )
@@ -709,7 +709,7 @@ de nombreuses facon, notamment par la fonction `desc_tto`.
 
 ```{r desc_tto_example}
 desc_tto(
-  luda_data = luda,
+  .data = luda,
   drug_s = "nivolumab",
   adr_s  = "a_colitis"
 )
@@ -720,7 +720,7 @@ evenements dans ces deux fonctions.
 
 ```{r desc_tto_many_to_many}
 desc_tto(
-  luda_data = luda,
+  .data = luda,
   drug_s = c("nivolumab", "pembrolizumab"),
   adr_s  = c("a_colitis", "a_pneumonitis")
 )

@@ -5,14 +5,14 @@
 \title{Screening of adverse drug reactions}
 \usage{
 screen_adr(
-  adr_data,
+  .data,
   meddra,
   term_level = c("soc", "hlgt", "hlt", "pt", "llt"),
   freq_threshold = 0.01
 )
 }
 \arguments{
-\item{adr_data}{A data.table, an adr data}
+\item{.data}{A data.table, an adr data}
 
 \item{meddra}{A data.table, a meddra data}
 
@@ -22,27 +22,30 @@ screen_adr(
 screened.}
 }
 \value{
-A data.frame with counts of each term in adr_data.
+A data.frame with counts of each term in .data.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-If \code{freq_threshold} is set to 0.05, all adverse drug reactions found at least in
-5\% of adrs in adr_data will be shown. That is not exactly the same as 5\% of
-cases. Counts are provided at \emph{case} level (not adr level).
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \code{screen_adr()} sort top seen terms,
+according to a desired term level.
 }
 \details{
-According to a desired term level, sort top seen terms.
+If \code{freq_threshold} is set to 0.05, all adverse drug reactions found
+at least in 5\% of adrs in .data will be shown. That is not exactly the same as 5\% of
+cases. Counts are provided at \emph{case} level (not adr level).
+The function uses an \code{\link{adr_}} data.table and a \code{\link{meddra_}} data.table.
 }
 \examples{
 screen_adr(
-  adr_data = adr_,
+  .data = adr_,
   meddra = meddra_,
   term_level = "pt"
 )
 
 screen_adr(
-  adr_data = adr_,
+  .data = adr_,
   meddra = meddra_,
   term_level = "hlt"
 )
 }
+\keyword{adr}
+\keyword{descriptive,}

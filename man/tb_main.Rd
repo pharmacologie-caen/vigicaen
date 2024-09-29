@@ -19,15 +19,18 @@ and some columns as \code{numeric} (TimeToOnsetMin, TimeToOnsetMax)
 All other columns are \code{character}.
 }
 \description{
-Transform .txt files to .parquet files
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{tb_main()} transforms .txt
+files to .parquet files.
 }
 \details{
 Vigibase Extract Case Level is delivered as zipped text files, that you should
-transform to a more efficient format. Parquet format from arrow has many advantages:
+transform to a more efficient format. Parquet format from \code{arrow} has many advantages:
 It works with out-of-memory data, which makes it possible to process Vigibase tables on
 a computer with not-so-much RAM. It is also lightweighted and standard across different
 langages.
 The function also creates variables in each table.
+The \code{suspectedduplicates} table will be added to the base directory.
+Use \code{\link[=dt_parquet]{dt_parquet()}} to load the tables afterward.
 }
 \examples{
 
@@ -81,5 +84,6 @@ purrr::iwalk(f_sets, function(d_, name_){
         path_sub  = path_sub)
 }
 \seealso{
-\code{\link{tb_who}} \code{\link{tb_sub}}
+\code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_sub]{tb_sub()}}, \code{\link[=tb_meddra]{tb_meddra()}}, \code{\link[=tb_custom]{tb_custom()}}, \code{\link[=dt_parquet]{dt_parquet()}}
 }
+\keyword{import}

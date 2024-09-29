@@ -214,7 +214,7 @@ demo <-
                     TRUE ~ NA_real_)
   )
 
-# Death + disponibilite de l'outcome
+# Death + outcome availability
 
 demo <-
   demo |>

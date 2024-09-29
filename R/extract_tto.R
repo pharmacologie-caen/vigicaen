@@ -1,24 +1,32 @@
 #' Time to onset extraction
 #'
-#' drug-adr pair extraction of time to onset.
+#' @description `r lifecycle::badge('stable')` `extract_tto()` collects
+#' all available time to onsets for a set of drug-adr pairs.
 #'
-#' Extraction of time (maximum available time) between drug initiation
+#' @details Extraction of (maximum available) time between drug initiation
 #' and event onset. This runs at the drug-adr pair level.
-#' You might want to run \code{\link{desc_tto}} to obtain summary statistics of
-#' time to onset.
+#' You will need a `luda` data.table, see \code{\link{luda_}}, on which
+#' you have added drugs and adrs with [add_drug()] and [add_adr()].
+#' Uppsala Monitoring Centre recommends to use only cases where the incertitude
+#' on time to onset is less than **1 day**. You can change this with `tto_time_range`.
+#' You might want to use [desc_tto()] to obtain summary statistics of
+#' time to onset, but `extract_tto()` is useful to get the raw data and plot it,
+#' for instance with `ggplot2`.
 #'
-#' @param luda_data A data.table. luda stands for Link with UmcreportId, Drug and Adr identifiers (see details).
-#' @param adr_s A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a luda table.
-#' @param drug_s A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a luda table.
+#' @param .data A \code{\link{luda_}} style data.table.
+#' @param adr_s A character string. The name of the adr column. (see details)
+#' @param drug_s A character string. The name of the drug column. (see details)
 #' @param tto_time_range Incertitude range of Time to onset, in days. Defaults to 1 as recommended by umc
 #'
 #' @return A data.table with
 #' \itemize{
 #'   \item All available time to onsets for this combination (column `tto_max`).
 #' }
+#' @keywords drug-adr pair, descriptive
 #' @export
 #' @importFrom rlang .data
 #' @importFrom rlang .env
+#' @seealso \code{\link{luda_}}, [desc_tto()], [add_drug()], [add_adr()], [desc_dch()], [desc_rch()]
 #'
 #' @examples
 #' luda_ <-
@@ -34,21 +42,21 @@
 #'     data_type = "link"
 #'   )
 #'
-#' extract_tto(luda_data = luda_,
+#' extract_tto(.data = luda_,
 #'          adr_s = "a_colitis",
 #'          drug_s = "pd1")
-#' extract_tto(luda_data = luda_,
+#' extract_tto(.data = luda_,
 #'          adr_s = c("a_colitis", "a_pneumonitis"),
 #'          drug_s = c("pd1", "ctla4"))
 
 extract_tto <-
-  function(luda_data,
+  function(.data,
            adr_s = "a_colitis",
            drug_s = "pd1",
            tto_time_range = 1
   ){
 
-    if(!all(c("tto_mean", "range") %in% names(luda_data))){
+    if(!all(c("tto_mean", "range") %in% names(.data))){
 
       stop("Either tto_mean or range columns are missing. See ?luda_")
 
@@ -64,7 +72,7 @@ extract_tto <-
         # selection
 
         luda_sel <-
-          luda_data |>
+          .data |>
           dplyr::filter(
             dplyr::if_any(dplyr::all_of(.env$one_adr), ~ .x == 1) &
               dplyr::if_any(dplyr::all_of(.env$one_drug), ~ .x == 1) &

@@ -1,7 +1,7 @@
-
 #' Drug record number finder
 #'
-#' Find drug record number from character string matching from a modified MP data.table.
+#' @description **Defunct** Find drug record
+#' number from character string matching from a modified MP data.table.
 #'
 #' This function is superseeded by \code{\link{get_drecno}}.
 

@@ -23,16 +23,22 @@ tb_custom(
 
 \item{rm_suspdup}{A logical. Should suspected duplicates be removed? TRUE by default}
 }
+\value{
+Parquet files in the output directory. All files from Vigibase ECL
+are returned and subset-ed.
+}
 \description{
-This is a subsetting function
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{tb_custom()} creates
+subsets of the VigiBase ECL dataset
 }
 \details{
-You must select a subset variable with \code{subset_var} and provide an appropriate list according to this variable in \code{sv_selection}.
+You must select a subset variable with \code{subset_var} and provide
+an appropriate list according to this variable in \code{sv_selection}.
 Available \code{subset_var} :
 \itemize{
-\item \code{drecno} will use Drug Record Number (DrecNo), from WHO Drug, and will subset from \code{drug}. See \code{\link{get_drecno}}.
-\item \code{medprod_id} will use MedicinalProd_Id, also from \code{drug}. May be useful if requesting from ATC classes. See \code{\link{get_atc_code}}.
-\item \code{meddra_id} will use MedDRA_Id, subset from \code{adr}. See \code{\link{get_llt_soc}} or \code{\link{get_llt_smq}}.
+\item \code{drecno} will use Drug Record Number (DrecNo), from WHO Drug, and will subset from \code{drug} (see \code{\link[=get_drecno]{get_drecno()}}).
+\item \code{medprod_id} will use MedicinalProd_Id, also from \code{drug}. May be useful if requesting from ATC classes. (see \code{\link[=get_atc_code]{get_atc_code()}}).
+\item \code{meddra_id} will use MedDRA_Id, subset from \code{adr}. (see \code{\link[=get_llt_soc]{get_llt_soc()}} or See \code{\link[=get_llt_smq]{get_llt_smq()}}).
 \item \code{age} will use AgeGroup from \code{demo}. See below.
 }
 Age groups are as follows:
@@ -47,6 +53,7 @@ Age groups are as follows:
 \item 8 >= 75 years
 \item 9 Unknown
 }
+Use \code{\link[=dt_parquet]{dt_parquet()}} to load the tables afterward.
 }
 \examples{
 ## Extract all colitis cases
@@ -161,6 +168,9 @@ tb_custom(wd_in, wd_out,
           subset_var = "age",
           sv_selection = sv_selection)
 }
+\seealso{
+\code{\link[=get_drecno]{get_drecno()}}, \code{\link[=get_atc_code]{get_atc_code()}}, \code{\link[=get_llt_soc]{get_llt_soc()}}, \code{\link[=get_llt_smq]{get_llt_smq()}}, \code{\link[=dt_parquet]{dt_parquet()}}
+}
 \keyword{custom}
+\keyword{dataset}
 \keyword{subset}
-\keyword{vigibase}

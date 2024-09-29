@@ -16,15 +16,16 @@ dt_parquet(path_base, name = NULL, ext = ".parquet", in_memory = TRUE)
 \item{in_memory}{Logical, should data be loaded in memory?}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} Output is a data.table.
-For meddra and whodrug tables, it is still a good option to load data in-memory.
-This function is wrapping \code{arrow::read_parquet}, \code{dplyr::collect} and
-\code{data.table::as.data.table} altogether.
-If you want to load \strong{OUT} of memory, set arg \code{in_memory}to FALSE.
-\strong{Be careful that doing so will change the function output format}.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} dt_parquet() will
+load data IN- our OUT- of memory. File extension can be omitted.
 }
 \details{
-This will load data \strong{IN}-memory. File extension can be omitted.
+Output is a data.table.
+For meddra and whodrug tables, it is still a good option to load data in-memory.
+This function is wrapping \code{arrow::read_parquet()}, \code{dplyr::collect()} and
+\code{data.table::as.data.table()} altogether.
+If you want to load \strong{OUT} of memory, set arg \code{in_memory} to FALSE.
+\strong{Be careful that doing so will change the function output format}.
 }
 \examples{
 
@@ -49,5 +50,8 @@ rm(demo)
 # You may import the file directly to data.table format with dt_parquet
 demo <-
   dt_parquet(path_data, "demo")
+}
+\seealso{
+\code{\link[=tb_main]{tb_main()}}, \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_sub]{tb_sub()}}, \code{\link[=tb_meddra]{tb_meddra()}}
 }
 \keyword{import}

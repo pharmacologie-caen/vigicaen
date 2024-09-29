@@ -1,23 +1,27 @@
 #' Create main VigiBase ECL tables
 #'
-#' Transform .txt files to .parquet files
+#' @description `r lifecycle::badge('stable')` `tb_main()` transforms .txt
+#' files to .parquet files.
 #'
-#' Vigibase Extract Case Level is delivered as zipped text files, that you should
-#' transform to a more efficient format. Parquet format from arrow has many advantages:
+#' @details Vigibase Extract Case Level is delivered as zipped text files, that you should
+#' transform to a more efficient format. Parquet format from `arrow` has many advantages:
 #' It works with out-of-memory data, which makes it possible to process Vigibase tables on
 #' a computer with not-so-much RAM. It is also lightweighted and standard across different
 #' langages.
 #' The function also creates variables in each table.
+#' The `suspectedduplicates` table will be added to the base directory.
+#' Use [dt_parquet()] to load the tables afterward.
 #'
 #' @param path_base Character string, a directory containing vigibase txt tables. It is also the
 #' output directory.
 #' @param path_sub  Character string, a directory containing subsidiary tables.
 #'
+#' @keywords import
 #' @importFrom stringr str_sub str_trim
 #'
 #' @export
 #'
-#' @seealso \code{\link{tb_who}} \code{\link{tb_sub}}
+#' @seealso [tb_who()], [tb_sub()], [tb_meddra()], [tb_custom()], [dt_parquet()]
 #'
 #' @return .parquet files into the `path_base` directory (**including suspected duplicates tables**).
 #' Some columns are returned as `integer` (UMCReportId, Drug_Id, MedicinalProd_Id, Adr_Id, MedDRA_Id),

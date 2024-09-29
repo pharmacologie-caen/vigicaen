@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_llt_smq.R
 \name{get_llt_smq}
 \alias{get_llt_smq}
-\title{Extract llts from SMQs}
+\title{Extract low level terms from SMQs}
 \usage{
 get_llt_smq(smq, smq_scope = c("narrow", "broad"), smq_list_content)
 }
@@ -14,10 +14,17 @@ get_llt_smq(smq, smq_scope = c("narrow", "broad"), smq_list_content)
 \item{smq_list_content}{A data.table. A joint of smq_list and smq_content}
 }
 \description{
-Extracts from a smq_list_content a list of llts given an SMQ.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{get_llt_smq()}
+extracts a list of llts from an \code{smq_list_content} data.table, given an SMQ.
 }
 \details{
-!! You must use this function only for NON-algorithmic SMQs (this status is given in the smq_list table). There are 2 non-blocking checkers in the function. Be sure to add \code{ (SMQ)} at the end of the SMQ name. The other checker is when nothing is found. The function doesn't work with character vectors of length > 1.
+SMQ stands for Standardized MedDRA query.
+\code{get_llt_smq()}only works with NON-algorithmic SMQs
+(this status is given in the smq_list table).
+The \code{smq_list_content} data.table is obtained by joining \code{smq_list} and \code{smq_content}.
+An example is provided here \code{\link{smq_list_content_}}. You can choose
+between the narrow and the broad scope of the SMQ.
+If you want to work with the SOC hierarchy, use \code{\link[=get_llt_soc]{get_llt_soc()}}.
 }
 \examples{
 ## Finding llt codes for Embolism (SMQ)
@@ -30,6 +37,10 @@ get_llt_smq(smq_sel,
                 smq_list_content = smq_list_content_
                 )
 }
+\seealso{
+\code{\link[=get_llt_soc]{get_llt_soc()}}
+}
+\keyword{data_management}
 \keyword{llt}
 \keyword{meddra}
 \keyword{smq}

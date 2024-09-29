@@ -1,8 +1,15 @@
-
 #' Compute (r)OR from a model summary
 #'
-#' Helper in dplyr to compute and format OR based on `summary(glm)$coefficients`, or any equivalent in other modelling packages. Preferably, it is transformed into a data.table or data.frame before being evaluated in the function. Otherwise, `compute_or_mod` will transform it.
-#' Significant **R**-or column means low_ci is > 1. The `p_val` argument is only required if you wished to display a `nice_p` column see \code{\link{nice_p}}
+#' @description `r lifecycle::badge('stable')` compute_or_mod() computes
+#' and formats Odds-Ratio from a model summary.
+#'
+#' @details Helper to compute and format Odds-Ratio based on
+#' `summary(glm)$coefficients`, or any equivalent in other modelling packages.
+#' (see examples).
+#' Preferably, it is transformed into a data.table or data.frame before being
+#'  evaluated in the function. Otherwise, `compute_or_mod()` will transform it.
+#' Significant OR-or column means low_ci is > 1.
+#' The `p_val` argument is only required if you wished to display a [nice_p()].
 #'
 #' Output is a data.table.
 #' Actually, the function computes an Odds-Ratio, which is not necessarily a *reporting* Odds-Ratio.
@@ -12,7 +19,10 @@
 #' @param std_er Quasiquoted name of standard error parameter.
 #' @param p_val Quasiquoted name of p-value parameter. Optional.
 #' @param alpha alpha risk.
-#' @keywords ror
+#' @returns A data.table with OR, confidence intervals (at `1 - alpha`),
+#' significance (`low_ci > 1`) and (optionally) p-value.
+#' @keywords disproportionality
+#' @seealso [compute_or_abcd()], [add_drug()], [add_adr()]
 #' @export
 #' @examples
 #'
@@ -85,7 +95,8 @@ compute_or_mod <-
       data.table::data.table()
 
     # Drop p_val column if there was no p_val provided
-    if(all(unique(calcs$p_val) == "p_val was NULL") # this is the output of nice_p
+    if(all(unique(calcs$p_val) == "p_val was NULL")
+       # this is the output of nice_p
        ){
       calcs$p_val <- NULL
     }

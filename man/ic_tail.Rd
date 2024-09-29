@@ -14,13 +14,18 @@ ic_tail(n_obs = NULL, n_exp = NULL, p = 0.025)
 \item{p}{End of chosen credibility interval}
 }
 \description{
-Compute the IC credibility interval, typically the lower end of the 95\% CI, also known as the IC025.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{ic_tail} computes
+the Information Component credibility interval, typically the lower end of
+the 95\% CI, also known as the IC025.
 }
 \details{
-The ends of the credibility interval of the information componant are estimated with the gamma distribution.
-\code{n_exp} is defined as \code{n_drug * n_event / n_total} for the basic IC (formula is different for interactions)
-Do not add \code{+.5} to \code{n_obs} and \code{n_exp} as it is automatically down in the function.
+The ends of the credibility interval of the information component
+are estimated with the gamma distribution.
+\code{n_exp} is defined as \code{n_drug * n_event / n_total} for the basic IC
+(formula is different for interactions)
+Do not add \code{+.5} to \code{n_obs} and \code{n_exp} as it is automatically done in the function.
 By default, IC025 is computed. Change \code{p} for different ends.
+It may be easier to use \code{\link[=compute_or_abcd]{compute_or_abcd()}}, which internally calls this function.
 }
 \examples{
 
@@ -28,4 +33,8 @@ ic_tail(n_obs = 12,
         n_exp = 5)
 
 }
+\seealso{
+\code{\link[=compute_or_abcd]{compute_or_abcd()}}
+}
+\keyword{disproportionality}
 \keyword{ic}

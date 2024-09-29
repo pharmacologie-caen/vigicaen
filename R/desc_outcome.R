@@ -1,8 +1,15 @@
 #' Outcome descriptive
 #'
+#' @description `r lifecycle::badge('experimental')` `desc_outcome()`
 #' Compute outcome description over a set of adr and drugs.
-#' You would need an adr data.table. Be careful that you cannot directly filter `adr` data.table on drugs! That is, if you want to extract outcomes for cases exposed to a drug of interest, you need to filter it out. Maybe add_drug could work. See \code{\link{adr_}}.
-#' The function takes the worst outcome into consideration for a given case, if many are reported.
+#'
+#'
+#' @details You need an `adr` data.table.
+#' Be careful that you cannot directly filter `adr` data.table on drugs!
+#' You first have to add drug columns to `adr`, with [add_drug()].
+#' See \code{\link{adr_}}.
+#' The function reports the worst outcome into consideration for a given case,
+#' if many are reported.
 #' Outcomes, from best to worst are:
 #' \itemize{
 #'   \item Recovered/resolved
@@ -13,13 +20,14 @@
 #'   \item Died- unrelated to reaction
 #'   \item Died- reaction may be contributory
 #' }
-#'
-#' @param adr_data An adr data.table.
+#' @keywords drug-adr pair, descriptive
+#' @param .data, An \code{\link{adr_}} style data.table.
 #' @param drug_s A character vector, the drug column(s)
 #' @param adr_s A character vector, the adverse drug reaction column(s).
 #' @return A data.table with one row per drug-adr pair.
 #' @importFrom rlang .data
 #' @importFrom rlang .env
+#' @seealso \code{\link{adr_}}, [add_drug()], [add_adr()]
 #' @export
 #' @examples
 #'
@@ -37,20 +45,24 @@
 #'   )
 #'
 #'
-#' desc_outcome(adr_,
-#'          drug_s = "pd1",
-#'          adr_s = "a_colitis")
+#' desc_outcome(
+#'   adr_,
+#'   drug_s = "pd1",
+#'   adr_s = "a_colitis"
+#'   )
 #'
 #'
 #' # you can vectorize over multiple adrs and drugs
 #'
-#' desc_outcome(adr_,
-#'          drug_s = c("pd1", "pdl1"),
-#'          adr_s = c("a_colitis", "a_pneumonitis"))
+#' desc_outcome(
+#'   adr_,
+#'   drug_s = c("pd1", "pdl1"),
+#'   adr_s = c("a_colitis", "a_pneumonitis")
+#'   )
 
 
 desc_outcome <-
-  function(adr_data,
+  function(.data,
            drug_s = "drug1",
            adr_s = "adr1"
            ) {
@@ -92,8 +104,8 @@ desc_outcome <-
         names(grouping_variables) <- NULL
 
         data_subset <-
-          adr_data[adr_data[[one_drug]] == 1 &
-                     adr_data[[one_adr]] == 1
+          .data[.data[[one_drug]] == 1 &
+                     .data[[one_adr]] == 1
           ]
 
 

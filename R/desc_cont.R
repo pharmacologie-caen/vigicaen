@@ -1,13 +1,15 @@
-#' Summarise continuous variables
+#' Summarize continuous variables
 #'
-#' Shorthand to apply a subjectively outstanding format
+#' @description `r lifecycle::badge('experimental')`
+#' `desc_cont` will summarize continuous data and let you handled output format.
 #'
-#' That's very close to what tableone would do, except I have hand on the output.
-#' This makes it much easier to map to nice labelling thereafter.
+#' @details Many other packages provide tools to summarize data. This one is just
+#' the package author's favorite.
+#' This makes it much easier to map to nice labeling thereafter.
 #' The format argument shows the output of the function. You can change square
 #' and round brackets, spaces, separators...
 #' You can choose to display median, and interquartile range and/or range.
-#' The analogous for categorical variables is `count_facvar`.
+#' The analogous for categorical variables is [desc_facvar()].
 #'
 #' @param .data A data.frame, where vc are column names of continuous variables
 #' @param vc A character vector, list of column names. Should only contain continuous variables
@@ -17,6 +19,7 @@
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #' @export
+#' @seealso [desc_facvar()]
 #'
 #' @examples
 #' df <-
@@ -30,9 +33,16 @@
 #'     bmi = c(18, 30, 25, 22, 23, 21, 22)
 #'   )
 #'
-#' desc_cont(vc = c("age", "bmi"),
-#'            .data = df,
-#'            format = "median (q1;q3)")
+#' # Use default formatting
+#'
+#' desc_cont(.data = df, vc = c("age", "bmi"))
+#'
+#' # Use custom formatting
+#'
+#' desc_cont(.data = df,
+#'           vc = c("age", "bmi"),
+#'           format = "median (q1;q3)"
+#'           )
 
 desc_cont <-
   function(.data,

@@ -2,7 +2,7 @@ test_that("counts are good", {
 
   s1 <-
     screen_adr(
-    adr_data = adr_,
+    .data = adr_,
     meddra = meddra_,
     term_level = "pt"
   )
@@ -17,7 +17,7 @@ test_that("counts are good", {
 
   s2 <-
     screen_adr(
-      adr_data = adr_,
+      .data = adr_,
       meddra = meddra_,
       term_level = "hlt"
     )
@@ -33,7 +33,7 @@ test_that("counts are good", {
 
   s3 <-
     screen_adr(
-      adr_data = adr_,
+      .data = adr_,
       meddra = meddra_,
       term_level = "soc"
     )
@@ -50,7 +50,7 @@ test_that("counts are good", {
 
   s4 <-
     screen_adr(
-      adr_data = adr_,
+      .data = adr_,
       meddra = meddra_,
       term_level = "hlgt"
     )

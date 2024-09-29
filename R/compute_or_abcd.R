@@ -1,22 +1,28 @@
-
 #' Compute (r)OR
 #'
-#' Compute bivariate OR and IC from contingency table extracted from a data.table.
+#' @description `r lifecycle::badge('stable')` compute_or_abcd() computes
+#' bivariate (reporting) Odds-Ratio and Information Component for a drug-adr pair.
 #'
-#' Output is a data.table, containing the ror, the boundaries of the `1 - alpha` confidence interval, the ic, a simple formatting, and whether the ror result is significant (i.e. `low_ci > 1`), and the ic is signifiant (`ic_tail > 0`).
-#' Actually, the function computes an Odds-Ratio, which is not necessarily a reporting Odds-Ratio.
-
+#' @details Beware that input should be a data.table. Significance in pharmacovigilance
+#' analysis is only defined if the lower bound of the confidence/credibility
+#'  interval is above 1 (i.e. `low_ci > 1`, or `ic_tail > 0`).
+#' Actually, the function computes an Odds-Ratio,
+#' which is not necessarily a **reporting** Odds-Ratio.
+#'
+#' @returns A data.table, with ROR, IC, and their confidence interval (at `1 - alpha`).
+#' Significance of both (as `signif_or` and `signif_ic`).
 #' @param .data The data.table to compute from.
 #' @param y A character vector, one or more variable to explain.
 #' @param x A character vector, one or more explaining variable.
 #' @param alpha Alpha risk.
 #' @param na_format Character string to fill NA values in ror and ci legends.
 #' @param dig Number of digits for rounding (this argument is passed to `cff`)
-#' @keywords ror ic
+#' @keywords disproportionality
 #' @export
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #' @importFrom data.table data.table .N
+#' @seealso [compute_or_mod()], [add_drug()], [add_adr()]
 #' @examples
 #' # Say you want to perform a disproportionality analysis between colitis and
 #' # nivolumab among ICI cases
@@ -40,7 +46,7 @@
 #'
 #' # You don't have to use the pipe syntax, if you're not familiar
 #'
-#'   compute_or_abcd(
+#' compute_or_abcd(
 #'     .data = demo,
 #'     y = "a_colitis",
 #'     x = "nivolumab"

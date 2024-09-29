@@ -6,8 +6,34 @@
 [![R-CMD-check](https://github.com/pharmacologie-caen/vigicaen/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pharmacologie-caen/vigicaen/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of vigicaen is to provide tools for worldwide pharmacovigilance
-analysis.
+The goal of vigicaen is to provide tools to analyze VigiBase Extract
+Case Level.
+
+VigiBase is the World Health Organization’s global pharmacovigilance
+database of individual case safety reports (ICSRs). It is maintained by
+the Uppsala Monitoring Centre (UMC) in Sweden.
+
+> This package is **NOT** supported nor reflect the opinion of the WHO,
+> or the Uppsala Monitoring Centre.
+
+## Prerequisites
+
+Users are assumed to be familiar with pharmacovigilance analysis
+principles. Some useful resources can be found
+[here](https://doi.org/10.1016/j.therap.2020.02.022) (English) or
+[here](https://doi.org/10.1016/j.therap.2019.01.006) (French).
+
+vigicaen is a R package, so you need to have R installed on your
+computer, and optionally RStudio.
+
+Use of VigiBase Extract Case Level and the subsequent WHODrug data
+requires a license from the [Uppsala Monitoring
+Centre](https://who-umc.org/).
+
+Use of MedDRA requires a license from [MedDRA](https://www.meddra.org/).
+
+Of note, academic researchers are provided with accommodations for these
+licenses.
 
 ## Installation
 
@@ -18,25 +44,30 @@ You can install the development version of vigicaen from
 
 ### Solution 2
 
-Look at the **Releases** panel on the right of this Github page. You may
+Look at the **Releases** panel on the right of the Github page. You may
 find “vX.XX.X (Latest)”.
 
 Click on the version you want to install.
 
 Download source code as a tar.gz file.
 
-Now go to RStudio, click on “Tools”, “Install Packages…”, select
+If you use RStudio, click on “Tools”, “Install Packages…”, select
 “Package Archive file” and locate the tar.gz file on your computer.
 
-## Vignettes
+Alternatively, you can use the following command in R:
 
-//WIP
+`install.packages("path/to/vigicaen_X.XX.X.tar.gz", repos = NULL, type = "source")`
+
+## How to use
+
+> Visit the [package
+> website](https://pharmacologie-caen.github.io/vigicaen/)
 
 ## Example
 
-Say you want to create columns of drug and adr, then perform a
-univariate disproportionality analysis. You may want to use the
-`add_drug`, `add_adr`, and `compute_or_abcd` functions.
+Say you want to perform a disproportionality analysis between nivolumab
+exposure and colitis reporting. You may want to use `add_drug()`,
+`add_adr()`, and `compute_or_abcd()`.
 
 ``` r
 library(vigicaen)

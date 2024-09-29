@@ -21,7 +21,9 @@ cff(num, low_ci, up_ci, dig = 0, method = c("num_only", "num_ci", "ci"))
 This is a formatting function for consistent number reporting.
 }
 \details{
-Set \code{method} according to the printing you like: a unique number with \code{num_only} (default), the number and its confidence interval with \code{num_ci}, a \code{ci} only (for example a range of time to onset)
+Set \code{method} according to the printing you like: a unique number
+with \code{num_only} (default), the number and its confidence interval
+with \code{num_ci}, a \code{ci} only (for example a range of time to onset)
 The function properly returns \code{NA} when input is missing.
 }
 \examples{

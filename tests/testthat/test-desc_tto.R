@@ -15,7 +15,7 @@ test_that("find proper ttos on a known dataset", {
 
 
    tto_test <-
-    desc_tto(luda_data = luda_,
+    desc_tto(.data = luda_,
                 adr_s = "a_colitis",
                 drug_s = "pd1")
 
@@ -42,7 +42,7 @@ test_that("works with vectorization", {
     )
 
   tto_test <-
-    desc_tto(luda_data = luda_,
+    desc_tto(.data = luda_,
              adr_s = c("a_colitis", "a_pneumonitis"),
              drug_s = "pd1")
 
@@ -60,7 +60,7 @@ test_that("works with vectorization", {
   )
 
   tto_test2 <-
-    desc_tto(luda_data = luda_,
+    desc_tto(.data = luda_,
              adr_s = c("a_colitis"),
              drug_s = c("pd1", "pdl1")
     )
@@ -95,7 +95,7 @@ test_that("format is appropriately passed to desc_cont", {
 
 
   tto_test <-
-    desc_tto(luda_data = luda_,
+    desc_tto(.data = luda_,
              adr_s = "a_colitis",
              drug_s = "pd1",
              format = "median [q1-q3] ; (min to max)")
@@ -124,7 +124,7 @@ test_that("digits are appropriately passed to desc_cont", {
 
 
   tto_test <-
-    desc_tto(luda_data = luda_,
+    desc_tto(.data = luda_,
              adr_s = "a_colitis",
              drug_s = "pd1",
              digits = 0)

@@ -30,12 +30,17 @@ add_drug(
 \item{data_type}{A character string. The type of data to add columns to. Either \code{demo} or \code{link} (default to \code{demo})}
 }
 \description{
-This function creates drug columns using \code{dplyr::mutate}.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} add_drug() creates drug columns.
 }
 \details{
-d_code is a named list containing drug codes. Either medicinalprod_ids (e.g., from \code{tb_custom}), or drug record numbers (e.g., from \code{get_drecno}). Default method is to DrecNos.
-Drugs can be reported according to one of three reputation bases: suspect, concomitant or interacting in the occurrence of the adverse drug reaction. You may want to study only reports with a specific reputation basis.
-You can add drug identification to a \code{demo}, a \code{link}, or and \code{adr} dataset. Remember to set to the \code{data_type} argument to the appropriate value.
+d_code is a named list containing drug codes.
+Either medicinalprod_ids (e.g., from \code{tb_custom}), or drug record numbers
+(e.g., from \code{get_drecno}). Default method is to DrecNos.
+Drugs can be reported according to one of three reputation bases:
+suspect, concomitant or interacting in the occurrence of the adverse drug
+reaction. You may want to study only reports with a specific reputation basis.
+You can add drug identification to a \code{demo}, a \code{link}, or an \code{adr} dataset.
+Remember to set to the \code{data_type} argument to the appropriate value.
 }
 \examples{
 # create a nivolumab column in demo_
@@ -73,4 +78,8 @@ demo_ <-
 
 check_dm(demo_, cols = c("nivolumab", "nivolumab_suspected"))
 }
+\seealso{
+\code{\link[=add_adr]{add_adr()}}, \code{\link[=get_drecno]{get_drecno()}}, \code{\link[=get_atc_code]{get_atc_code()}}
+}
+\keyword{data_management}
 \keyword{drug}

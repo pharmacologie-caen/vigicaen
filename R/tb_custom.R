@@ -1,13 +1,15 @@
 #' Extract of subset of Vigibase
 #'
-#' This is a subsetting function
+#' @description `r lifecycle::badge('stable')` `tb_custom()` creates
+#' subsets of the VigiBase ECL dataset
 #'
-#' You must select a subset variable with `subset_var` and provide an appropriate list according to this variable in `sv_selection`.
+#' @details You must select a subset variable with `subset_var` and provide
+#' an appropriate list according to this variable in `sv_selection`.
 #' Available `subset_var` :
 #' \itemize{
-#'   \item `drecno` will use Drug Record Number (DrecNo), from WHO Drug, and will subset from `drug`. See \code{\link{get_drecno}}.
-#'   \item `medprod_id` will use MedicinalProd_Id, also from `drug`. May be useful if requesting from ATC classes. See \code{\link{get_atc_code}}.
-#'   \item `meddra_id` will use MedDRA_Id, subset from `adr`. See \code{\link{get_llt_soc}} or \code{\link{get_llt_smq}}.
+#'   \item `drecno` will use Drug Record Number (DrecNo), from WHO Drug, and will subset from `drug` (see [get_drecno()]).
+#'   \item `medprod_id` will use MedicinalProd_Id, also from `drug`. May be useful if requesting from ATC classes. (see [get_atc_code()]).
+#'   \item `meddra_id` will use MedDRA_Id, subset from `adr`. (see [get_llt_soc()] or See [get_llt_smq()]).
 #'   \item `age` will use AgeGroup from `demo`. See below.
 #' }
 #' Age groups are as follows:
@@ -22,14 +24,18 @@
 #'   \item 8 >= 75 years
 #'   \item 9 Unknown
 #' }
+#' Use [dt_parquet()] to load the tables afterward.
 #'
 #' @param wd_in Source directory pathway (character)
 #' @param wd_out Output directory pathway (character)
 #' @param subset_var One of `"drecno"`, `"medprod_id"`, `"meddra_id"`, `"age"`
 #' @param sv_selection A vector containing the appropriate type of data (according to the method, see details)
 #' @param rm_suspdup A logical. Should suspected duplicates be removed? TRUE by default
-#' @keywords vigibase subset custom
+#' @returns Parquet files in the output directory. All files from Vigibase ECL
+#' are returned and subset-ed.
+#' @keywords dataset subset custom
 #' @export
+#' @seealso [get_drecno()], [get_atc_code()], [get_llt_soc()], [get_llt_smq()], [dt_parquet()]
 #' @examples
 #' ## Extract all colitis cases
 #'

@@ -27,7 +27,8 @@ Have you subscribed to VigiBase Extract Case Level, WHODrug and MedDRA?
 
 Congratulations! You've made it half way to explore VigiBase.
 
-Now, you need to process those large text/ascii files into R readable files. This is the purpose of the `tb_*` functions (Table Builders).
+Now, you need to process those large text/ascii files into R readable files. 
+This is the purpose of the `tb_*` functions (Table Builders).
 
 ## Overview
 
@@ -55,11 +56,14 @@ And this is a step you only have to perform ONCE per database version.
 
 New parquet files will be created in the same directories as provided with `path_*`.
 
-> The suspectedduplicates table is delivered with subsidiary files, but the `tb_main` function will output it in the main directory, under a slightly modified name.
+> The suspectedduplicates table is delivered with subsidiary files, 
+but the `tb_main()` function will output it in the main directory, 
+under a slightly modified name.
 
 ## Outputs
 
-The `tb_*` functions create [parquet](https://arrow.apache.org/docs/r/index.html) files. Parquet is an open-source format, supported by Arrow.
+The `tb_*` functions create [parquet](https://arrow.apache.org/docs/r/index.html) 
+files. Parquet is an open-source format, supported by Arrow.
 
 Not all tables from each source are created during the process.
 
@@ -71,20 +75,26 @@ Not all tables from each source are created during the process.
 
 -   Meddra: meddra_hierarchy, smq_list, and smq_content.
 
-mp_short is a short version of mp table, which has been tolower-ed and trim-ed on drug name, to be more handy. A few columns also have been removed.
+`mp_short` is a short version of mp table, which has been tolower-ed 
+and trim-ed on drug name, to be more handy. A few columns also have been removed.
 
 # Loading tables into R
 
-You should use the arrow package built-in readers to load the tables.
+You can use the arrow package built-in readers to load the tables, or the
+`dt_parquet` function from this package, which is a shorthand.
 
 ```{r load_tables, eval = FALSE}
 
 demo <- dt_parquet(path_main, "demo")
+
 ```
 
-> Parquet files will be loaded IN memory, by default. To change this behavior, remember to set `in_memory = FALSE`. Be careful that the output format will be different.
+> Parquet files will be loaded IN memory, by default. 
+To change this behavior, remember to set `in_memory = FALSE`. 
+Be careful that the output format will be different.
 
-You can `left_join` smq_content to smq_list if you work only with NON-algorithmic SMQs.
+You can `dplyr::left_join()` smq_content to smq_list if you work only with 
+NON-algorithmic SMQs.
 
 ```{r joining_smq_tables, eval = FALSE}
 smq_list    <- dt_parquet(path_meddra, "smq_list.parquet")
@@ -93,13 +103,15 @@ smq_content <- dt_parquet(path_meddra, "smq_content.parquet")
 smq_list_content <-
   smq_list |>
   # Only works for NON-algorithmic SMQs
-  left_join(smq_content, by = "smq_code") |>
-  data.table
+  dplyr::left_join(smq_content, by = "smq_code") |>
+  data.table::data.table()
 ```
 
 # Subsetting tables
 
-If you want to work on a specific subset of VigiBase (e.g. older adults, some specific drugs, or adverse drug reaction), you can create a dedicated subset with the `tb_custom` function.
+If you want to work on a specific subset of VigiBase 
+(e.g. older adults, some specific drugs, or adverse drug reaction), 
+you can create a dedicated subset with the `tb_custom()` function.
 
 Currently, you can subset on
 
@@ -116,7 +128,7 @@ Type `?vigicaen::tb_custom` for more help
 sv_selection <-
     c(7, 8)
 
-wd_in <- "some/place/on/your/computer/containing/vigibase/data"
+wd_in <- "some/place/on/your/computer/containing/vigibase_ecl/data"
 
 wd_out <- paste0(wd_in, "/", "more_than_65_subset", "/")
 

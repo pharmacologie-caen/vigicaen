@@ -1,26 +1,32 @@
 #' Time to onset descriptive
 #'
+#' @description `r lifecycle::badge('stable')` `desc_tto()` provides a
 #' drug-adr pair description of time to onset.
 #'
-#' Description of time (maximum available time) between drug initiation
+#' @details Description of time (maximum available time) between drug initiation
 #' and event onset. This runs at the drug-adr pair level.
-#' Internally, this runs \code{\link{extract_tto}} and \code{\link{desc_cont}},
-#' you can supply extra arguments to `desc_cont` with `...`.
+#' Internally, it uses [extract_tto()] and [desc_cont()],
+#' You will need a `luda` data.table, see \code{\link{luda_}}, on which
+#' you have added drugs and adrs with [add_drug()] and [add_adr()].
+#' you can supply extra arguments to [desc_cont()] with `...`.
+#' Uppsala Monitoring Centre recommends to use only cases where the incertitude
+#' on time to onset is less than **1 day**. You can change this with `tto_time_range`.
 #'
-#' @param luda_data A data.table. luda stands for Link with UmcreportId, Drug and Adr identifiers (see details).
-#' @param adr_s A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a luda table.
-#' @param drug_s A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a luda table.
+#' @param .data A \code{\link{luda_}} style data.table.
+#' @param adr_s A character string. The name of the adr column. (see details)
+#' @param drug_s A character string. The name of the drug column. (see details)
 #' @param tto_time_range Incertitude range of Time to onset, in days. Defaults to 1 as recommended by umc
-#' @param ... Additional parameters to be passed to \code{\link{desc_cont}}. E.g. `format`, `digits`...
+#' @param ... Additional parameters to be passed to [desc_cont()]. E.g. `format`, `digits`...
 #'
 #' @return A one row data.table with
 #' \itemize{
 #'   \item A descriptive of time to onsets for this combination (column `tto_max`).
 #' }
+#' @keywords drug-adr pair, descriptive
 #' @export
 #' @importFrom rlang .data
 #' @importFrom rlang .env
-#'
+#' @seealso \code{\link{luda_}}, [extract_tto()], [add_drug()], [add_adr()], [desc_dch()], [desc_rch()]
 #' @examples
 #' luda_ <-
 #'   luda_ |>
@@ -35,17 +41,17 @@
 #'     data_type = "link"
 #'   )
 #'
-#' desc_tto(luda_data = luda_,
+#' desc_tto(.data = luda_,
 #'          adr_s = "a_colitis",
 #'          drug_s = "pd1")
 #'
 #'
-#' desc_tto(luda_data = luda_,
+#' desc_tto(.data = luda_,
 #'          adr_s = c("a_colitis", "a_pneumonitis"),
 #'          drug_s = c("pd1", "ctla4"))
 
 desc_tto <-
-  function(luda_data,
+  function(.data,
            adr_s = "a_colitis",
            drug_s = "pd1",
            tto_time_range = 1,
@@ -56,7 +62,7 @@ desc_tto <-
 
     ttos <-
       extract_tto(
-        luda_data = luda_data,
+        .data = .data,
         drug_s = drug_s,
         adr_s = adr_s,
         tto_time_range = tto_time_range

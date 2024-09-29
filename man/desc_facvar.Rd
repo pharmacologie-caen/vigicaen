@@ -27,10 +27,12 @@ desc_facvar(
 \item{ncat_max}{A numeric. How many levels should be allowed for all variables? See details.}
 }
 \description{
-Shorthand to apply a subjectively outstanding format
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\code{desc_facvar()} will summarize categorical data and let you handled output format.
 }
 \details{
-Twin function of count_cont, but for categorical variables.
+Many other packages provide tools to summarize data. This one is just
+the package author's favorite.
 Valid format options should include \code{n_} (number of patients with the
 categorical variable at said level), \code{N_} (number of patients with an
 available value for this variable), and \code{pc_}, percentage between n and N.
@@ -39,6 +41,7 @@ and optionally the word "pc". Words should be in that order, not mixed.
 \code{ncat_max} ensures that you didn't accidentaly provided a continuous
 variable to \code{desc_facvar}. If you have many levels for one of your variables,
 set to \code{Inf} or high value.
+Equivalent for continuous data is \code{\link[=desc_cont]{desc_cont()}}.
 }
 \examples{
 df1 <-
@@ -52,5 +55,17 @@ df1 <-
     age = c(60, 50, 56, 49, 75, 69, 85),
     bmi = c(18, 30, 25, 22, 23, 21, 22)
   )
-desc_facvar(vf = c("hypertension", "smoke_status"), .data = df1)
+
+# Use default formatting
+desc_facvar(.data = df1, vf = c("hypertension", "smoke_status"))
+
+# Use custom formatting
+desc_facvar(.data = df1,
+           vf = c("hypertension", "smoke_status"),
+           format = "n_ out of N_, pc_\%",
+           digits = 1)
+
+}
+\seealso{
+\code{\link[=desc_cont]{desc_cont()}}
 }

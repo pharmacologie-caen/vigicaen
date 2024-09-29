@@ -52,7 +52,7 @@ smq_content <- dt_fst(path_meddra, "meddra_smq_content.fst")
 
 smq_list_content <-
   smq_list |>
-  # SMQ sont toutes NON-algorithmiques dans la selection ci-dessous
+  # SMQ - only NON-algorithmic in the selection below
   left_join(smq_content, by = "smq_code") |>
   data.table
 
@@ -70,7 +70,7 @@ smq_list_content <- smq_list_content_
 ```{r drugs_adrs, include = FALSE}
 # #### Drug definitions #### ####
 
-# Noms de drug en minuscule si possible
+# drug selection, prefer use lower case
 
 d_sel <- # drug selection
   list2(
@@ -97,7 +97,8 @@ d_drecno <-
 # #### ATC definitions #### ####
 
 atc_sel <-
-  list2(l03 = "N06AB") # Selective serotonin reuptake inhibitors
+  list2(l03 = "N06AB") 
+# Selective serotonin reuptake inhibitors
 
 atc_drecno <-
   atc_sel |>
@@ -108,7 +109,7 @@ atc_drecno <-
 
 # #### ADR definitions #### ####
 
-# Noms d'adr en respectant la casse Meddra
+# adr selection, matching meddra case
 
 # ---- SOC definition
 

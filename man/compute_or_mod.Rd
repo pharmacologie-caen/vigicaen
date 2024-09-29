@@ -17,11 +17,23 @@ compute_or_mod(.coef_table, estimate, std_er, p_val = NULL, alpha = 0.05)
 
 \item{alpha}{alpha risk.}
 }
+\value{
+A data.table with OR, confidence intervals (at \code{1 - alpha}),
+significance (\code{low_ci > 1}) and (optionally) p-value.
+}
 \description{
-Helper in dplyr to compute and format OR based on \code{summary(glm)$coefficients}, or any equivalent in other modelling packages. Preferably, it is transformed into a data.table or data.frame before being evaluated in the function. Otherwise, \code{compute_or_mod} will transform it.
-Significant \strong{R}-or column means low_ci is > 1. The \code{p_val} argument is only required if you wished to display a \code{nice_p} column see \code{\link{nice_p}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} compute_or_mod() computes
+and formats Odds-Ratio from a model summary.
 }
 \details{
+Helper to compute and format Odds-Ratio based on
+\code{summary(glm)$coefficients}, or any equivalent in other modelling packages.
+(see examples).
+Preferably, it is transformed into a data.table or data.frame before being
+evaluated in the function. Otherwise, \code{compute_or_mod()} will transform it.
+Significant OR-or column means low_ci is > 1.
+The \code{p_val} argument is only required if you wished to display a \code{\link[=nice_p]{nice_p()}}.
+
 Output is a data.table.
 Actually, the function computes an Odds-Ratio, which is not necessarily a \emph{reporting} Odds-Ratio.
 }
@@ -65,4 +77,7 @@ coef_table |>
   estimate = Estimate,
   std_er = Std..Error)
 }
-\keyword{ror}
+\seealso{
+\code{\link[=compute_or_abcd]{compute_or_abcd()}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}
+}
+\keyword{disproportionality}

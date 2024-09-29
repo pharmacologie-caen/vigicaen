@@ -19,12 +19,20 @@ compute_or_abcd(.data, y, x, alpha = 0.05, na_format = "-", dig = 2)
 
 \item{dig}{Number of digits for rounding (this argument is passed to \code{cff})}
 }
+\value{
+A data.table, with ROR, IC, and their confidence interval (at \code{1 - alpha}).
+Significance of both (as \code{signif_or} and \code{signif_ic}).
+}
 \description{
-Compute bivariate OR and IC from contingency table extracted from a data.table.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} compute_or_abcd() computes
+bivariate (reporting) Odds-Ratio and Information Component for a drug-adr pair.
 }
 \details{
-Output is a data.table, containing the ror, the boundaries of the \code{1 - alpha} confidence interval, the ic, a simple formatting, and whether the ror result is significant (i.e. \code{low_ci > 1}), and the ic is signifiant (\code{ic_tail > 0}).
-Actually, the function computes an Odds-Ratio, which is not necessarily a reporting Odds-Ratio.
+Beware that input should be a data.table. Significance in pharmacovigilance
+analysis is only defined if the lower bound of the confidence/credibility
+interval is above 1 (i.e. \code{low_ci > 1}, or \code{ic_tail > 0}).
+Actually, the function computes an Odds-Ratio,
+which is not necessarily a \strong{reporting} Odds-Ratio.
 }
 \examples{
 # Say you want to perform a disproportionality analysis between colitis and
@@ -49,7 +57,7 @@ demo |>
 
 # You don't have to use the pipe syntax, if you're not familiar
 
-  compute_or_abcd(
+compute_or_abcd(
     .data = demo,
     y = "a_colitis",
     x = "nivolumab"
@@ -79,5 +87,7 @@ compute_or_abcd(
   x = many_drugs
 )
 }
-\keyword{ic}
-\keyword{ror}
+\seealso{
+\code{\link[=compute_or_mod]{compute_or_mod()}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}
+}
+\keyword{disproportionality}

@@ -12,10 +12,16 @@ check_dm(.data, cols)
 \item{cols}{A character vector, name of columns to look at (usually will be \code{d_names}, \code{a_names})}
 }
 \description{
-After adding drugs and/or adrs/atc classes to a dataset, check the number of reports with the feature.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} check_dm() let you quick check
+that your data management steps through \code{\link{add_adr}}
+or \code{\link{add_drug}} found cases.
 }
 \details{
-It is a simple wrapper around \code{dplyr::summarise}. Be careful not to supply factors with > 2 levels or continuous outcome (the function does NOT have a checker for this, so that it is faster). Also, the function WONT work with NAs. Use \code{\link{desc_facvar}} if you need more detailed description of your dataset.
+It is a simple wrapper around \code{dplyr::summarise()}.
+Be careful not to supply factors with > 2 levels or continuous outcome
+(the function does NOT have a checker for this, so that it is faster).
+Also, the function WONT work with NAs. Use \code{\link[=desc_facvar]{desc_facvar()}}.
+if you need more detailed description of your dataset.
 }
 \examples{
 # first create some new variables
@@ -34,4 +40,7 @@ demo <-
 demo |>
   check_dm(names(ex_$a_llt))
 }
-\keyword{check_dm}
+\seealso{
+\code{\link[=desc_facvar]{desc_facvar()}}, \code{\link[=add_adr]{add_adr()}}, \code{\link[=add_drug]{add_drug()}}
+}
+\keyword{data_management}

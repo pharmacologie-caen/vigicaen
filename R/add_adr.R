@@ -1,9 +1,12 @@
 #' Add ADR column(s) to a dataset (tidyverse syntax)
 #'
-#' This function creates adr columns using `dplyr::mutate`.
+#' @description `r lifecycle::badge('stable')` add_adr() creates adr columns.
 #'
-#' Low-level term codes are the preferred level of requesting in the Vigibase extract case level since it captures all possible codes for a given Preferred Term. Standardized names for demo and adr cols are assumed (e.g. `UMCReportId`).
-#' You can add adr identification to a `demo`, a `link`, or and `adr` dataset. Remember to set to the `data_type` argument to the appropriate value.
+#' @details Low-level term codes are the preferred level of requesting in
+#' Vigibase extract case level since they capture all possible codes for a given
+#' Preferred Term. Case identifiers should be standardized (e.g. `UMCReportId`, `Adr_Id`).
+#' You can add adr identification to a `demo`, a `link`, or and `adr` dataset.
+#' Remember to set to the `data_type` argument to the appropriate value.
 #'
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
 #' @param a_code A named list of low level terms codes (llt_codes).
@@ -13,7 +16,8 @@
 #' @export
 #' @importFrom rlang .data
 #' @importFrom rlang .env
-#' @keywords adr
+#' @keywords data_management adr
+#' @seealso [add_drug()], [get_llt_soc()], [get_llt_smq()]
 #' @examples
 #' # create adr_colitis, adr_embolism and adr_pneumonitis columns in demo
 #'

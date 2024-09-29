@@ -24,11 +24,14 @@ add_adr(
 \item{data_type}{A character string. The type of data to add columns to. Either \code{demo} or \code{link} (default to \code{demo})}
 }
 \description{
-This function creates adr columns using \code{dplyr::mutate}.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} add_adr() creates adr columns.
 }
 \details{
-Low-level term codes are the preferred level of requesting in the Vigibase extract case level since it captures all possible codes for a given Preferred Term. Standardized names for demo and adr cols are assumed (e.g. \code{UMCReportId}).
-You can add adr identification to a \code{demo}, a \code{link}, or and \code{adr} dataset. Remember to set to the \code{data_type} argument to the appropriate value.
+Low-level term codes are the preferred level of requesting in
+Vigibase extract case level since they capture all possible codes for a given
+Preferred Term. Case identifiers should be standardized (e.g. \code{UMCReportId}, \code{Adr_Id}).
+You can add adr identification to a \code{demo}, a \code{link}, or and \code{adr} dataset.
+Remember to set to the \code{data_type} argument to the appropriate value.
 }
 \examples{
 # create adr_colitis, adr_embolism and adr_pneumonitis columns in demo
@@ -58,4 +61,8 @@ demo <-
 demo |>
   check_dm(names(a_pt_sel))
 }
+\seealso{
+\code{\link[=add_drug]{add_drug()}}, \code{\link[=get_llt_soc]{get_llt_soc()}}, \code{\link[=get_llt_smq]{get_llt_smq()}}
+}
 \keyword{adr}
+\keyword{data_management}

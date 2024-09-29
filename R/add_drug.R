@@ -1,11 +1,15 @@
 #' Add DRUG column(s) to a dataset (tidyverse syntax)
 #'
-#' This function creates drug columns using `dplyr::mutate`.
+#' @description `r lifecycle::badge('stable')` add_drug() creates drug columns.
 #'
-#'
-#' d_code is a named list containing drug codes. Either medicinalprod_ids (e.g., from `tb_custom`), or drug record numbers (e.g., from `get_drecno`). Default method is to DrecNos.
-#' Drugs can be reported according to one of three reputation bases: suspect, concomitant or interacting in the occurrence of the adverse drug reaction. You may want to study only reports with a specific reputation basis.
-#' You can add drug identification to a `demo`, a `link`, or and `adr` dataset. Remember to set to the `data_type` argument to the appropriate value.
+#' @details d_code is a named list containing drug codes.
+#' Either medicinalprod_ids (e.g., from `tb_custom`), or drug record numbers
+#' (e.g., from `get_drecno`). Default method is to DrecNos.
+#' Drugs can be reported according to one of three reputation bases:
+#' suspect, concomitant or interacting in the occurrence of the adverse drug
+#' reaction. You may want to study only reports with a specific reputation basis.
+#' You can add drug identification to a `demo`, a `link`, or an `adr` dataset.
+#' Remember to set to the `data_type` argument to the appropriate value.
 #'
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
 #' @param d_code A named list of drug codes (DrecNos or MPI). See Details.
@@ -14,10 +18,11 @@
 #' @param repbasis Suspect, interacting and/or concomitant. Type initial of those you wish to select (s for suspect, c for concomitant and i for interacting ; default to all)
 #' @param drug_data A data.frame containing the drug data (usually, it is `drug`)
 #' @param data_type A character string. The type of data to add columns to. Either `demo` or `link` (default to `demo`)
-#' @keywords drug
+#' @keywords data_management drug
 #' @export
 #' @importFrom rlang .data
 #' @importFrom rlang .env
+#' @seealso [add_adr()], [get_drecno()], [get_atc_code()]
 #' @examples
 #' # create a nivolumab column in demo_
 #'
