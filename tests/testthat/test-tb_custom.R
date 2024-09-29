@@ -65,12 +65,14 @@ test_that("you can subset on drecno, age, meddra_id", {
   sv_selection_drecno <- # spurious paracetamol drecnos
     c("dr3", "dr4")
 
-  tb_custom(
-    wd_in = paste0(wd_in, "/"),
-    wd_out = paste0(wd_in, "/", "subset_drecno", "/"),
-    subset_var = "drecno",
-    sv_selection = sv_selection_drecno
+  expect_snapshot(
+    tb_custom(
+      wd_in = paste0(wd_in, "/"),
+      wd_out = paste0(wd_in, "/", "subset_drecno", "/"),
+      subset_var = "drecno",
+      sv_selection = sv_selection_drecno
     )
+  )
 
 
   drug_sub <-
@@ -98,12 +100,12 @@ test_that("you can subset on drecno, age, meddra_id", {
 
   # ---- age
 
-  tb_custom(
+  expect_snapshot(tb_custom(
     wd_in = paste0(wd_in, "/"),
     wd_out = paste0(wd_in, "/", "subset_age", "/"),
     subset_var = "age",
     sv_selection = c(7, 8)
-  )
+  ))
 
   drug_sub <-
     dt_parquet(paste0(wd_in, "/", "subset_age", "/"), "drug")
@@ -134,12 +136,12 @@ test_that("you can subset on drecno, age, meddra_id", {
 
   wd_out <- paste0(wd_in, "/", "subset_meddraid", "/")
 
-  tb_custom(
+  expect_snapshot(tb_custom(
     wd_in = paste0(wd_in, "/"),
     wd_out = paste0(wd_in, "/", "subset_meddraid", "/"),
     subset_var = "meddra_id",
     sv_selection = sv_selection_mid
-  )
+  ))
 
   adr_sub <-
     dt_parquet(paste0(wd_in, "/", "subset_meddraid", "/"), "adr")
@@ -243,21 +245,21 @@ test_that("you can keep suspdup", {
 
   # ---- age
 
-  tb_custom(
+  expect_snapshot(tb_custom(
     wd_in = paste0(wd_in, "/"),
     wd_out = paste0(wd_in, "/", "subset_age_suspdup", "/"),
     subset_var = "age",
     sv_selection = c(7, 8),
     rm_suspdup = FALSE
-  )
+  ))
 
-  tb_custom(
+  expect_snapshot(tb_custom(
     wd_in = paste0(wd_in, "/"),
     wd_out = paste0(wd_in, "/", "subset_age", "/"),
     subset_var = "age",
     sv_selection = c(7, 8),
     rm_suspdup = TRUE
-  )
+  ))
 
   drug_sub <-
     dt_parquet(paste0(wd_in, "/", "subset_age_suspdup", "/"), "drug")

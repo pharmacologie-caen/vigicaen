@@ -113,7 +113,7 @@ test_that("works with irregular names for demo and drug", {
 test_that("works with mpi_list", {
 
   mpi <- rlang::list2(
-    para = mp_short_[DrecNo == "773777", MedicinalProd_Id]
+    para = mp_short_[DrecNo == "42225260", MedicinalProd_Id]
   )
 
   mpi_count <- rlang::list2(
