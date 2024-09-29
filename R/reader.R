@@ -17,7 +17,7 @@
 #' write.table(demo, file = paste0(path_base, "DEMO.txt"),
 #'             row.names = FALSE, quote = FALSE, col.names = FALSE)
 #'
-#' pharmacocaen:::reader("DEMO.txt", path_base)
+#' vigicaen:::reader("DEMO.txt", path_base)
 
 reader <- function(file_name, folder){
   arrow::read_delim_arrow(paste0(folder, file_name),

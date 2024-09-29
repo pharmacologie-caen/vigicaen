@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(pharmacocaen)
+library(vigicaen)
 ```
 
 # Purpose
@@ -109,7 +109,7 @@ Currently, you can subset on
 
 -   MedDRA codes of adverse drug reactions (MedDRA_Id)
 
-Type `?pharmacocaen::tb_custom` for more help
+Type `?vigicaen::tb_custom` for more help
 
 ```{r tb_custom, eval = FALSE}
 

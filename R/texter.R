@@ -8,7 +8,7 @@
 #'
 #' @examples
 #'
-#' pharmacocaen:::texter("I am doing this step", "3%%")
+#' vigicaen:::texter("I am doing this step", "3%%")
 
 texter <- function(msg, step){
   cat(sprintf(

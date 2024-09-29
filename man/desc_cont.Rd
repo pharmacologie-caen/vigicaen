@@ -13,7 +13,7 @@ desc_cont(.data, vc, format = "median (q1-q3) [min-max]", digits = 1)
 
 \item{format}{A character string. How would you like the output? See details.}
 
-\item{digits}{A numeric. How many digits? This argument calls \code{pharmacocaen::cff()}}
+\item{digits}{A numeric. How many digits? This argument calls internal formatting function}
 }
 \description{
 Shorthand to apply a subjectively outstanding format

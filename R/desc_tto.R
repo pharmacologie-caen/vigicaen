@@ -55,7 +55,7 @@ desc_tto <-
     # extract ttos
 
     ttos <-
-      pharmacocaen::extract_tto(
+      extract_tto(
         luda_data = luda_data,
         drug_s = drug_s,
         adr_s = adr_s,
@@ -73,7 +73,7 @@ desc_tto <-
             adr_s == .env$one_adr,
             drug_s == .env$one_drug
           ) |>
-          pharmacocaen::desc_cont(
+          desc_cont(
             vc = "tto_max",
             ...
           ) |>

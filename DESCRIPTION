@@ -1,19 +1,32 @@
-Package: pharmacocaen
-Title: Worldwide pharmacovigilance analysis
-Version: 0.11.1
-Authors@R: 
-    person("Charles", "Dolladille", , "dolladille-c@chu-caen.fr", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0003-0449-6261"))
-Description: Tools to perform pharmacovigilance database analysis.
+Package: vigicaen
+Title: VigiBase Extract Case Level toolbox
+Version: 0.12.0
+Authors@R: c(
+       person("Charles", "Dolladille", email = "cdolladille@hotmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-0449-6261")),
+      person("Basile", "Chrétien", role = c("aut"),
+           comment = c(ORCID = "0000-0002-7483-2489")),
+       person("Universite de Caen Normandie", role = c("cph"), comment = "Caen, France"),
+       person("Unite de pharmaco-epidemiologie", role = c("cph") , comment = "Service de pharmacologie, Centre Hospitalier Universitaire de Caen, Caen, France")
+       )
+Description: vigicaen provides a set of tools to facilitate the analysis of the 
+       VigiBase Extract Case Level dataset e.g., load data, perform data management,
+       disproportionality analysis, and descriptive statistics. The package is designed
+       to be used in the context of pharmacovigilance studies. 
+       VigiBase Extract Case Level is the World Health Organization (WHO) 
+       global individual case safety reports (ICSRs) database, maintained by
+       the Uppsala Monitoring Centre, Sweden.
+       This package is NOT supported nor reflect the opinion of the WHO, or the
+       Uppsala Monitoring Centre.
 Depends: R (>= 4.1.0),
-License: MIT + file LICENSE
+License: CeCILL-2.1
 Encoding: UTF-8
 LazyData: true
 LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-URL: https://github.com/cdolladille/pharmacocaen
-BugReports: https://github.com/cdolladille/pharmacocaen/issues
+URL: https://github.com/pharmacologie-caen/pharmacocaen
+BugReports: https://github.com/pharmacologie-caen/pharmacocaen/issues
 Suggests: 
     knitr,
     rmarkdown,

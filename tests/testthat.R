@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(pharmacocaen)
+library(vigicaen)
 
-test_check("pharmacocaen")
+test_check("vigicaen")

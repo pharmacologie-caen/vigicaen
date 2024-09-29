@@ -11,43 +11,36 @@ knitr::opts_chunk$set(
 )
 ```
 
-# pharmacocaen
+# vigicaen
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/cdolladille/pharmacocaen/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cdolladille/pharmacocaen/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/pharmacologie-caen/vigicaen/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pharmacologie-caen/vigicaen/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of pharmacocaen is to provide tools for worldwide pharmacovigilance analysis.
+The goal of vigicaen is to provide tools for worldwide pharmacovigilance analysis.
 
 ## Installation
 
-You can install the development version of pharmacocaen from [GitHub](https://github.com/) with:
+You can install the development version of vigicaen from [GitHub](https://github.com/) with:
 
+> `devtools::install_github("pharmacologie-caen/vigicaen")`
 
-### Solution 1
+### Solution 2
 
-Look at the **Releases** panel on the right of this Github page. You may see something like "v0.3.1 (Latest)".
+Look at the **Releases** panel on the right of this Github page. 
+You may find "vX.XX.X (Latest)".
 
 Click on the version you want to install.
 
 Download source code as a tar.gz file.
 
-Now go to RStudio, click on "Tools", "Install Packages...", select "Package Archive file" and locate the tar.gz file on your computer.
+Now go to RStudio, click on "Tools", "Install Packages...", select 
+"Package Archive file" and locate the tar.gz file on your computer.
 
-### Solution 2
-
-You should first clone the repo on your local computer. You may use git command line, [GitKraken](https://help.gitkraken.com/gitkraken-client/open-clone-init/), or any other way to clone the repo.
-
-Once this is done, open the repo and click on "pharmacocaen.Rproj". This will open RStudio.
-
-In RStudio, go to "Build" then "Install Package". You will need an up to date version of Rtools to build the package.
-
-
-> `devtools::install_github("cdolladille/pharmacocaen")` isn't working for some unclear reason (#14).
 
 ## Vignettes
 
-There is a detailed vignette to explain simple data management [here](https://github.com/cdolladille/pharmacocaen/tree/master/vignettes/)
+//WIP
 
 ## Example
 
@@ -55,22 +48,22 @@ Say you want to create columns of drug and adr, then perform a univariate dispro
 You may want to use the `add_drug`, `add_adr`, and `compute_or_abcd` functions.
 
 ```{r example, warning=FALSE, message=FALSE}
-library(pharmacocaen)
+library(vigicaen)
 
 demo <-
-  demo_ %>%
+  demo_ |> 
   add_drug(
     d_code = ex_$d_drecno,
     drug_data = drug_
-  ) %>%
+  ) |> 
   add_adr(
     a_code = ex_$a_llt,
     adr_data = adr_
   )
 
-demo %>%
+demo |> 
   compute_or_abcd(
-    y = "colitis",
+    y = "a_colitis",
     x = "nivolumab"
   )
 ```

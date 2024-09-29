@@ -11,9 +11,9 @@
 #' @param method Should DrecNo be found from drug names or from MedicinalProd_Id?
 #' @param show_all Do you wish to see all MP_Ids entries from `mp_short` when working with drug names, or just one entry per DrecNo? Default to FALSE
 #' @param mpi_meth_name If you use mpi_list, this name will be printed in the drug column.
-#' @seealso \code{\link{pharmacocaen-deprecated}}
+#' @seealso \code{\link{vigicaen-deprecated}}
 #' @keywords drug drecno
-#' @rdname pharmacocaen-deprecated
+#' @rdname vigicaen-deprecated
 #' @section \code{find_drecno}:
 #' For \code{find_drecno}, use \code{\link{get_drecno}}.
 #'

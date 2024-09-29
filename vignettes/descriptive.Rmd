@@ -39,7 +39,7 @@ knitr::opts_chunk$set(
 ```{r library, warning=FALSE, message=FALSE}
 # library(tidyverse)
 library(rlang)
-library(pharmacocaen)
+library(vigicaen)
 library(dplyr)
 ```
 
@@ -70,7 +70,7 @@ suspdup <-
 ```
 
 Et on cree les colonnes medicaments et evenements indesirables comme
-dans \code{vignette("basic_workflow", package = "pharmacocaen")}
+dans \code{vignette("basic_workflow", package = "vigicaen")}
 
 ```{r codes, eval=TRUE}
 d_drecno <- ex_$d_drecno
@@ -98,7 +98,7 @@ demo <-
 L'interet etant de decrire des variables associees, comme l'age et le
 sexe, le type de rapport, le type de rapporteur, nous allons egalement
 ajouter ces variables, toujours comme dans
-\code{vignette("basic_workflow", package = "pharmacocaen")}
+\code{vignette("basic_workflow", package = "vigicaen")}
 
 ```{r demo_dm_other_cols}
 # ---- Demographics ---- ####
@@ -350,7 +350,7 @@ desc_facvar(
 
 Les deux autres variables principalement affectees par ce phenomene sont
 `Type`et `type_reporter`. Le code de transformation se trouve dans
-\code{vignette("generic_main.R", package = "pharmacocaen")}.
+\code{vignette("generic_main.R", package = "vigicaen")}.
 
 ### Autres arguments de desc_facvar()
 

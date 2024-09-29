@@ -12,7 +12,7 @@
 #' @param .data A data.frame, where vc are column names of continuous variables
 #' @param vc A character vector, list of column names. Should only contain continuous variables
 #' @param format A character string. How would you like the output? See details.
-#' @param digits A numeric. How many digits? This argument calls `pharmacocaen::cff()`
+#' @param digits A numeric. How many digits? This argument calls internal formatting function
 #' @importFrom stats median qnorm quantile var
 #' @importFrom rlang .data
 #' @importFrom rlang .env
@@ -135,7 +135,7 @@ desc_cont <-
                 max({{ vc_s }}, na.rm = TRUE),
 
               dplyr::across(dplyr::all_of(c("median", "q1", "q3", "min", "max")),
-                     ~ pharmacocaen::cff(.x, dig = .env$digits)),
+                     ~ cff(.x, dig = .env$digits)),
 
               value =
                 .env$format |>

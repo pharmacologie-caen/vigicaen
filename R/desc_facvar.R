@@ -15,7 +15,7 @@
 #' @param .data A data.frame, where vf are column names of categorical variables
 #' @param vf A character vector
 #' @param format A character string, formatting options.
-#' @param digits A numeric. Number of digits for the percentage (passed to `pharmacocaen::cff()`).
+#' @param digits A numeric. Number of digits for the percentage (passed to interval formatting function).
 #' @param pad_width A numeric. Minimum character length of value output (passed to `stringr::str_pad()`).
 #' @param ncat_max A numeric. How many levels should be allowed for all variables? See details.
 #' @importFrom rlang .data
@@ -131,17 +131,17 @@ desc_facvar <-
                       n_avail = sum(.data$n) - .data$n_missing) |>
         dplyr::filter(!is.na(.data$level)) |>
         dplyr::mutate(
-          pc = pharmacocaen::cff(.data$n / .data$n_avail * 100,
+          pc = cff(.data$n / .data$n_avail * 100,
                             dig = .env$digits),
           value =
             .env$format |>
             stringr::str_replace(
               "n_",
-              pharmacocaen::cff(.data$n)
+              cff(.data$n)
             ) |>
             stringr::str_replace(
               "N_",
-              pharmacocaen::cff(.data$n_avail)
+              cff(.data$n_avail)
             ) |>
             stringr::str_replace(
               "pc_",

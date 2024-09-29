@@ -30,7 +30,7 @@ Please follow the steps in this script.
 ## Libraries
 
 ```{r libraries}
-library(pharmacocaen)
+library(vigicaen)
 library(rlang)
 library(here) # if you like the here syntax for file paths
 library(dplyr)
@@ -132,7 +132,7 @@ suspdup <-
 Now you will "source" your dictionary...
 
 Do you have one? There's a dedicated vignette here 
-\code{vignette("generic_dictionary", package = "pharmacocaen")}.
+\code{vignette("generic_dictionary", package = "vigicaen")}.
 
 If its the first time you write this script, you may want
 to **STOP** here and create one.

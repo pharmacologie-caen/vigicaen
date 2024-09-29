@@ -20,7 +20,7 @@ desc_facvar(
 
 \item{format}{A character string, formatting options.}
 
-\item{digits}{A numeric. Number of digits for the percentage (passed to \code{pharmacocaen::cff()}).}
+\item{digits}{A numeric. Number of digits for the percentage (passed to interval formatting function).}
 
 \item{pad_width}{A numeric. Minimum character length of value output (passed to \code{stringr::str_pad()}).}
 

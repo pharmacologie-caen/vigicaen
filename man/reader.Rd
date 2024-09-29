@@ -25,5 +25,5 @@ path_base <- paste0(tmp_folder, "/")
 write.table(demo, file = paste0(path_base, "DEMO.txt"),
             row.names = FALSE, quote = FALSE, col.names = FALSE)
 
-pharmacocaen:::reader("DEMO.txt", path_base)
+vigicaen:::reader("DEMO.txt", path_base)
 }

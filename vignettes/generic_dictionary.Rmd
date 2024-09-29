@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 # Code d'un dictionnaire generique reutilisable
 
 ```{r libraries, include = FALSE}
-library(pharmacocaen)
+library(vigicaen)
 library(rlang)
 library(dplyr)
 ```

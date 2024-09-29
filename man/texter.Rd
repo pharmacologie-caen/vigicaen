@@ -16,5 +16,5 @@ Used in tb_main, tb_who, tb_sub. \% Should be escaped in step.
 }
 \examples{
 
-pharmacocaen:::texter("I am doing this step", "3\%\%")
+vigicaen:::texter("I am doing this step", "3\%\%")
 }
