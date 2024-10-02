@@ -2,7 +2,7 @@
 
 ## New features
 
-Improved documentation by adding tags, translating to English the 
+Improved documentation by adding tags, translating to english the 
 basic_workflow vignette. #62, #67, and #69
 
 ## Patchs

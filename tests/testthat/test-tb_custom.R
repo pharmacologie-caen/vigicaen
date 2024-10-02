@@ -2,6 +2,11 @@ test_that("you can subset on drecno, age, meddra_id", {
 
   wd_in <- tempdir()
 
+  wd_in <- paste0(wd_in, "\\", "tb_custom_t1") # avoid windows #1224
+  # never rewrite on the same tempfile in ANY test.
+
+  dir.create(path = wd_in)
+
   mini_data <- rlang::list2(
     demo =
       data.table(
@@ -301,6 +306,10 @@ test_that("you can keep suspdup", {
 test_that("alternative syntaxes work", {
 
   wd_in <- tempdir()
+
+  wd_in <- paste0(wd_in, "\\", "sub2") # avoid windows #1224
+
+  dir.create(path = wd_in)
 
   mini_data <- rlang::list2(
     demo =
