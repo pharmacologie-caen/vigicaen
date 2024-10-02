@@ -1,3 +1,9 @@
+# vigicaen 0.13.2
+
+## Patch
+
+Failed ubuntu latest oldrel-1 for licensing issue. Put license in license file.
+
 # vigicaen 0.13.1
 
 ## Patch
@@ -7,6 +13,8 @@ Fixing Windows 1224, by using different temp sub folder for each test
 # vigicaen 0.13.0
 
 ## New features
+
+Changing the package's name!! All set for a public release.
 
 Improved documentation by adding tags, translating to english the 
 basic_workflow vignette. #62, #67, and #69
