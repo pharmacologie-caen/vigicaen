@@ -75,3 +75,18 @@
       link.parquet subset has 2 rows.
       ind.parquet subset has 2 rows.
 
+# alternative syntaxes work
+
+    Code
+      tb_custom(wd_in = wd_in, wd_out = paste0(wd_in, "/", "subset_age"), subset_var = "age",
+      sv_selection = c(7, 8))
+    Output
+      demo.parquet subset has 2 rows.
+      adr.parquet subset has 2 rows.
+      out.parquet subset has 2 rows.
+      srce.parquet subset has 2 rows.
+      followup.parquet subset has 2 rows.
+      drug.parquet subset has 2 rows.
+      link.parquet subset has 2 rows.
+      ind.parquet subset has 2 rows.
+

@@ -53,7 +53,9 @@ test_that("basic use works", {
       write.table(d_, file = paste0(path_who, name_), row.names = FALSE, quote = FALSE, col.names = FALSE)
   })
 
-  tb_who(path_who = path_who)
+  expect_snapshot(
+    tb_who(path_who = path_who)
+  )
 
   mp_short_res <- arrow::read_parquet(paste0(path_who, "mp_short.parquet"))
 
@@ -71,4 +73,15 @@ test_that("basic use works", {
 
   expect_equal(mp_short_res, mp_short_true)
 
+  # no end slash to path_who
+
+  path_who_no_slash <- paste0(tmp_folder, "/", "who")
+
+  expect_snapshot(
+    tb_who(path_who = path_who_no_slash)
+  )
+
+  mp_short_res_ns <- arrow::read_parquet(paste0(path_who, "mp_short.parquet"))
+
+  expect_equal(mp_short_res_ns, mp_short_true)
 })

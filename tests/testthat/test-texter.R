@@ -1,5 +1,7 @@
 test_that("pads appropriately", {
-  expect_invisible(
-    texter("I am doing this step", "3%%")
+  expect_snapshot(
+    expect_invisible(
+      texter("I am doing this step", "3%%")
+      )
   )
 })

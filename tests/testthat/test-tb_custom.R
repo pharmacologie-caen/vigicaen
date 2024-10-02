@@ -166,6 +166,8 @@ test_that("you can subset on drecno, age, meddra_id", {
     TRUE
   )
 
+  unlink(wd_in, recursive = TRUE)
+
 })
 
 test_that("wd_in exists", {
@@ -290,5 +292,106 @@ test_that("you can keep suspdup", {
     nrow(demo_sub),
     nrow(demo_nosuspdup) + 1
   )
+
+  unlink(wd_in, recursive = TRUE)
+
+})
+
+
+test_that("alternative syntaxes work", {
+
+  wd_in <- tempdir()
+
+  mini_data <- rlang::list2(
+    demo =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4),
+        AgeGroup = c(1, 7, 7, 8)
+      ),
+    drug =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4),
+        Drug_Id = c("d1", "d2", "d3", "d4"),
+        DrecNo = c("dr1", "dr2", "dr3", "dr4"),
+        MedicinalProd_Id = c("mp1", "mp2", "mp3", "mp4")
+      ),
+    adr  =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4),
+        Adr_Id = c("a1", "a2", "a3", "a4"),
+        MedDRA_Id = c("m1", "m2", "m3", "m4")
+      ),
+    link =
+      data.table(
+        Drug_Id = c("d1", "d2", "d3", "d4"),
+        Adr_Id = c("a1", "a2", "a3", "a4")
+      ),
+    srce =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4)
+      ),
+    ind  =
+      data.table(
+        Drug_Id = c("d1", "d2", "d3", "d4")
+      ),
+    out  =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4)
+      ),
+    followup =
+      data.table(
+        UMCReportId = c(1, 2, 3, 4)
+      ),
+    suspdup =
+      data.table(
+        UMCReportId = c(3),
+        SuspectedduplicateReportId = c(4)
+      )
+  )
+
+  purrr::iwalk(
+    mini_data,
+    function(dataset, name)
+      arrow::write_parquet(
+        dataset |>
+          arrow::as_arrow_table(),
+        sink = paste0(wd_in, "/", name, ".parquet")
+      )
+
+  )
+
+  # no end slashes at wd_in and wd_out
+  expect_snapshot(
+    tb_custom(
+    wd_in = wd_in,
+    wd_out = paste0(wd_in, "/", "subset_age"),
+    subset_var = "age",
+    sv_selection = c(7, 8)
+  ))
+
+  drug_sub <-
+    dt_parquet(paste0(wd_in, "/", "subset_age", "/"), "drug")
+
+  demo_sub <-
+    dt_parquet(paste0(wd_in, "/", "subset_age", "/"), "demo")
+
+  expect_equal(
+    sort(unique(demo_sub$UMCReportId)),
+    sort(unique(drug_sub$UMCReportId))
+  )
+
+  age_test <-
+    demo_sub %>%
+    dplyr::mutate(
+      good_age = AgeGroup %in% c(7, 8)
+    )
+
+  expect_equal(
+    all(age_test$good_age == 1),
+    TRUE
+  )
+
+
+ unlink(wd_in, recursive = TRUE)
 
 })

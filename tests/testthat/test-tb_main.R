@@ -41,11 +41,20 @@ test_that("basic use and here package works", {
     }
   })
 
-   tb_main(path_base = path_base,
-           path_sub  = path_sub)
+   expect_snapshot(
+     tb_main(path_base = path_base,
+             path_sub  = path_sub)
+   )
 
    demo_res <- arrow::read_parquet(paste0(path_base, "demo.parquet"),
                                    mmap = FALSE)
+
+   drug_res <- arrow::read_parquet(paste0(path_base, "drug.parquet"),
+                                   mmap = FALSE)
+
+   link_res <- arrow::read_parquet(paste0(path_base, "link.parquet"),
+                                   mmap = FALSE)
+
    ind_res  <- arrow::read_parquet(paste0(path_base, "ind.parquet"),
                                    mmap = FALSE)
 
@@ -59,6 +68,34 @@ test_that("basic use and here package works", {
        Region = "1",
        FirstDateDatabase = "19460820")
 
+   drug_true <-
+     dplyr::tibble(
+       UMCReportId = 70548965,
+       Drug_Id = 8,
+       MedicinalProd_Id = 4901354,
+       DrecNo = "064392",
+       Seq1 = "08",
+       Seq2 = "005",
+       Route = "50",
+       Basis = "1",
+       Amount = "1    ",
+       AmountU = "31",
+       Frequency = "- ",
+       FrequencyU = "806"
+       )
+
+   link_true <-
+     dplyr::tibble(
+       Drug_Id = c(2, 2),
+       Adr_Id = c(654654, 456456),
+       Dechallenge1 = c("5", "5"),
+       Dechallenge2 = c("1", "1"),
+       Rechallenge1 = c("-", "-"),
+       Rechallenge2 = c("-", "-"),
+       TimeToOnsetMin = c(-0.78991, -6.98789),
+       TimeToOnsetMax = c(0.98745, NA)
+     )
+
    ind_true <-
      dplyr::tibble(
        Drug_Id = 780954,
@@ -66,7 +103,12 @@ test_that("basic use and here package works", {
 
    expect_equal(demo_res, demo_true)
 
+   expect_equal(drug_res, drug_true)
+
+   expect_equal(link_res, link_true)
+
    expect_equal(ind_res, ind_true)
+
 
    # here syntax
 
@@ -74,11 +116,15 @@ test_that("basic use and here package works", {
 
    here_path_sub <- here::here(tmp_folder, "sub")
 
-   tb_main(path_base = here_path_base,
-           path_sub  = here_path_sub)
+   expect_snapshot(
+     tb_main(path_base = here_path_base,
+             path_sub  = here_path_sub)
+   )
 
    demo_res_here <- arrow::read_parquet(here::here(here_path_base, "demo.parquet"),
                                         mmap = FALSE)
 
    expect_equal(demo_res_here, demo_true)
+
+   unlink(tmp_folder, recursive = TRUE)
 })

@@ -11,7 +11,8 @@ tb_sub(path_sub)
 output directory.}
 }
 \value{
-.parquet files into the \code{path_sub} directory.
+.parquet files into the \code{path_sub} directory. Character strings are
+stringr::str_trim()ed.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{tb_sub()} transform .txt files
