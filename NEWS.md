@@ -1,3 +1,9 @@
+# vigicaen 0.13.1
+
+## Patch
+
+Fixing Windows 1224, by using different temp sub folder for each test
+
 # vigicaen 0.13.0
 
 ## New features

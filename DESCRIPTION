@@ -1,6 +1,6 @@
 Package: vigicaen
 Title: VigiBase Extract Case Level toolbox
-Version: 0.13.0
+Version: 0.13.1
 Authors@R: c(
        person("Charles", "Dolladille", email = "cdolladille@hotmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-0449-6261")),
