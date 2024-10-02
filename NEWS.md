@@ -1,3 +1,14 @@
+# vigicaen 0.13.0
+
+## New features
+
+Improved documentation by adding tags, translating to English the 
+basic_workflow vignette. #62, #67, and #69
+
+## Patchs
+
+Increased code coverage back to 100%.
+
 # pharmacocaen 0.12.0
 
 ## New features
