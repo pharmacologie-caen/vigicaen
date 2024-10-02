@@ -22,7 +22,9 @@ test_that("can process meddra tables", {
                   quote = FALSE, col.names = FALSE)
     })
 
-  tb_meddra(path_meddra)
+  expect_snapshot(
+    tb_meddra(path_meddra)
+  )
 
   meddra_res <-
     arrow::read_parquet(paste0(path_meddra, "meddra_hierarchy.parquet"))
@@ -70,5 +72,7 @@ test_that("can process meddra tables", {
     smq_content_res$term_code,
     c(6548641L, 98143546L)
   )
+
+  unlink(tmp_folder, recursive = TRUE)
 })
 

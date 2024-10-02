@@ -19,7 +19,7 @@ Description: vigicaen provides a set of tools to facilitate the analysis of the
        This package is NOT supported nor reflect the opinion of the WHO, or the
        Uppsala Monitoring Centre.
 Depends: R (>= 4.1.0),
-License: CeCILL-2.1
+License: file LICENSE
 Encoding: UTF-8
 LazyData: true
 LazyDataCompression: xz

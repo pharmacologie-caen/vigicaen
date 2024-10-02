@@ -84,4 +84,6 @@ test_that("basic use works", {
   mp_short_res_ns <- arrow::read_parquet(paste0(path_who, "mp_short.parquet"))
 
   expect_equal(mp_short_res_ns, mp_short_true)
+
+  unlink(tmp_folder, recursive = TRUE)
 })
