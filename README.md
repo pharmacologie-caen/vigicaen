@@ -1,5 +1,5 @@
 
-# vigicaen
+# vigicaen <img src="man/figures/logo.png" align="right" height="138" alt="" />
 
 <!-- badges: start -->
 
@@ -9,9 +9,9 @@
 The goal of vigicaen is to provide tools to analyze VigiBase Extract
 Case Level.
 
-VigiBase is the World Health Organization’s global pharmacovigilance
-database of individual case safety reports (ICSRs). It is maintained by
-the Uppsala Monitoring Centre (UMC) in Sweden.
+VigiBase is the World Health Organization’s (WHO) global
+pharmacovigilance database of individual case safety reports. It is
+maintained by the Uppsala Monitoring Centre in Sweden.
 
 > This package is **NOT** supported nor reflect the opinion of the WHO,
 > or the Uppsala Monitoring Centre.
