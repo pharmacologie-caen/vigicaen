@@ -1,3 +1,11 @@
+# vigicaen 0.13.3
+
+## Patch
+
+#75 clearer example for `get_llt_soc()`
+#76 SizeUnit_Lx file in sub, which is encoded in an old format, is now appropriately
+treated as such. 
+
 # vigicaen 0.13.2
 
 ## Patch
