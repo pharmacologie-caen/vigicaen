@@ -34,16 +34,33 @@ e.g. all preferred terms, all high level terms, etc.
 ## Finding llt codes for colitis
 
 pt_sel <- rlang::list2(
-  colitis = ex_$pt_sel$colitis,
-  pneumonitis = ex_$pt_sel$pneumonitis
+  colitis = c("Colitis",
+              "Autoimmune colitis"),
+  pneumonitis = c("Pneumonitis",
+                  "Organising pneumonia")
+  )
+
+hlt_sel <- rlang::list2(
+  colitis = c("Gastrointestinal inflammatory disorders NEC"),
+  pneumonitis = c("Pulmonary thrombotic and embolic conditions")
   )
 
 # Remember you can use more than one term to define each adverse reaction,
 # but they should all be at the same hierarchical level in meddra.
 
+# with preferred terms
+
 get_llt_soc(
   term_sel = pt_sel,
   term_level = "pt",
+  meddra = meddra_
+  )
+
+# with high level terms
+
+get_llt_soc(
+  term_sel = hlt_sel,
+  term_level = "hlt",
   meddra = meddra_
   )
 }
