@@ -220,7 +220,22 @@ arrow::write_parquet(Seriousness, sink = paste0(path_sub, "Seriousness.parquet")
 # SizeUnit
 texter("Read SizeUnit_Lx.txt", "96%%")
 
-SizeUnit <- reader("SizeUnit_Lx.txt", path_sub)
+SizeUnit <-
+  read.table(
+    file = paste0(path_sub, "SizeUnit_Lx.txt"),
+    header = FALSE,
+    sep = "\t",
+    quote = "",
+    dec = ".",
+    fill = TRUE,
+    comment.char = "",
+    stringsAsFactors = FALSE,
+    col.names = "f0",
+    colClasses = "character",
+    nrows = 1000)
+
+SizeUnit$f0 <- iconv(SizeUnit$f0, from = "ANSI_X3.4-1986", to = "UTF8")
+
 SizeUnit <-
   SizeUnit |>
   dplyr::transmute(
@@ -231,5 +246,7 @@ SizeUnit <-
   ) |>
   dplyr::compute()
 arrow::write_parquet(SizeUnit, sink = paste0(path_sub, "SizeUnit.parquet"))
+
+texter("Done", "")
 
 }
