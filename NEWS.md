@@ -4,6 +4,8 @@
 
 #78 compute_or_abcd() now correctly handles large amount of reports.
 
+#80 hot fix on windows 1224 error
+
 # vigicaen 0.13.3
 
 ## Patch
@@ -12,8 +14,6 @@
 
 #76 SizeUnit_Lx file in sub, which is encoded in an old format, is now appropriately
 treated as such. 
-
-#80 hot fix on windows 1224 error
 
 # vigicaen 0.13.2
 
