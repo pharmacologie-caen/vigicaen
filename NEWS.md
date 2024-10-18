@@ -13,6 +13,8 @@
 #76 SizeUnit_Lx file in sub, which is encoded in an old format, is now appropriately
 treated as such. 
 
+#80 hot fix on windows 1224 error
+
 # vigicaen 0.13.2
 
 ## Patch

@@ -75,7 +75,14 @@ test_that("basic use works", {
 
   # no end slash to path_who
 
-  path_who_no_slash <- paste0(tmp_folder, "/", "who")
+  path_who_no_slash <- paste0(tmp_folder, "/", "who_no_slash")
+
+  if(!dir.exists(paste0(path_who_no_slash, "/")))
+    dir.create(paste0(path_who_no_slash, "/"))
+
+  purrr::iwalk(f_sets, function(d_, name_){
+    write.table(d_, file = paste0(path_who_no_slash, "/", name_), row.names = FALSE, quote = FALSE, col.names = FALSE)
+  })
 
   expect_snapshot(
     tb_who(path_who = path_who_no_slash)
