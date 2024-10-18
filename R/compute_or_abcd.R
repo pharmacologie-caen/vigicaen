@@ -160,6 +160,7 @@ compute_or_abcd <-
     # compute disproportionality
     ad_aa_counts |>
       dplyr::mutate(
+        dplyr::across(dplyr::all_of(c("a", "b", "c", "d")), ~ as.numeric(.x)),
         n_exp = (.data$a + .data$b) * # n drug
                 (.data$a + .data$c) / # n event
                 (.data$a + .data$b + .data$c + .data$d), # n pop

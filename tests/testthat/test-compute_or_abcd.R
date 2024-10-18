@@ -253,3 +253,72 @@ test_that("vectorization works inside and outside the function", {
 
 
 })
+
+test_that("works with large numbers", {
+
+  demo <-
+    data.table::data.table(
+      event1 =
+        c(rep(1, 10000000),
+          rep(0, 20000000)
+          ),
+
+      drug1  =
+        c(rep(1, 02000000),
+          rep(0, 08000000),
+          rep(1, 16000000),
+          rep(0, 04000000)
+        )
+    )
+
+  r1 <-
+    demo |>
+    compute_or_abcd(
+      y = "event1",
+      x = "drug1"
+    )
+
+  z_val <- qnorm(1 - 0.05 / 2)
+
+  r1_true <-
+    dplyr::tibble(
+      y = "event1",
+      x = "drug1",
+      a = as.numeric(2000000),
+      b = as.numeric(8000000),
+      c = as.numeric(16000000),
+      d = as.numeric(4000000),
+      n_exp = 6000000,
+      std_er = sqrt((1 / .data$a) +
+                      (1 / .data$b) +
+                      (1 / .data$c) +
+                      (1 / .data$d)
+      ),
+      or     =  .data$a * .data$d / (.data$b * .data$c),
+      low_ci  = .data$or * exp(- .env$z_val * .data$std_er),
+      up_ci  = .data$or * exp(+ .env$z_val * .data$std_er),
+      orl    = "0.06",
+      or_ci  = "(0.06-0.06)",
+      ic = log((.data$a + .5) / (.data$n_exp + .5), base = 2),
+      ic_tail = ic_tail(
+        n_obs = .data$a,
+        n_exp = .data$n_exp,
+        p = 0.05 / 2
+      ),
+      ci_level = "95%",
+      signif_or = 0,
+      signif_ic = 0
+    )
+
+
+  expect_equal(
+    r1,
+    r1_true
+  )
+
+  expect_equal(
+    round(r1$ic, 2),
+    -1.58
+  )
+
+})
