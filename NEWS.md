@@ -9,6 +9,7 @@
 ## Patch
 
 #75 clearer example for `get_llt_soc()`
+
 #76 SizeUnit_Lx file in sub, which is encoded in an old format, is now appropriately
 treated as such. 
 
@@ -43,7 +44,9 @@ Increased code coverage back to 100%.
 
 #60 add table builders to arrow format (`tb_*` functions). This is supposed to overwrite the
 current fst and dt_fst process, which is being deprecated as of this release.
+
 New `build_tables` vignette shows the process.
+
 `dt_parquet` function is to replace `dt_fst` in the workflow.
 
 
@@ -52,9 +55,13 @@ New `build_tables` vignette shows the process.
 ## Minor
 
 Sounds like minor but... Added tests to hit 100% test coverage for the package!
+
 #56 Had R CMD CHECK pass on 3 different OS! Test coverage also works.
+
 #58 Further anonymized datasets.
+
 get_drecno now correctly inspects DrecNos identified from an mpi_list.
+
 Fix a bug, get_drecno wasn't correctly returning DrecNos from mpi_list.
 
 # pharmacocaen 0.11.0
@@ -62,15 +69,20 @@ Fix a bug, get_drecno wasn't correctly returning DrecNos from mpi_list.
 ## New features
 
 #55 add `soc` option to argument `term_level` of `get_llt_soc`.
+
 #15 `compute_or_abcd` is now internally vectorized on drugs and adrs.
+
 #53 `get_atc_code` now appropriately tolowers and trims names as it states,
 even when argument `vigilyze` is set to `FALSE`.
+
 #39 added a `d_names` argument to `add_drug`.
+
 Introducing `tb_custom` to pharmacocaen.
 
 ## Minor
 
 Improved description of `add_drug` and `add_adr`.
+
 #7 was fixed a long time ago. Internal improvement to `get_llt_smq`
 
 # pharmacocaen 0.10.0
