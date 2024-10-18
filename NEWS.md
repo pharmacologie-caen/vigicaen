@@ -1,3 +1,9 @@
+# vigicaen 0.13.4
+
+## Patch
+
+#78 compute_or_abcd() now correctly handles large amount of reports.
+
 # vigicaen 0.13.3
 
 ## Patch
