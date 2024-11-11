@@ -1,43 +1,3 @@
-#' Screening of adverse drug reactions
-#'
-#' @description `r lifecycle::badge('experimental')` `screen_adr()` sort top seen terms,
-#' according to a desired term level.
-#'
-#' @details If `freq_threshold` is set to 0.05, all adverse drug reactions found
-#' at least in 5% of adrs in .data will be shown. That is not exactly the same as 5% of
-#'  cases. Counts are provided at *case* level (not adr level).
-#' The function uses an \code{\link{adr_}} data.table and a \code{\link{meddra_}} data.table.
-#'
-#'## Arguments of the function ##
-#' @param .data A data.table, an adr data
-#' @param meddra A data.table, a meddra data
-#' @param term_level A character string, one of "pt", "hlt", "hlgt", "soc".
-#' @param freq_threshold A numeric, lowest frequency percentage of term to be
-#' screened.
-#' @param top_n A numeric, representing the number of the most represented adverse effects to be screened. You can only use top_n OR freq_threshold
-#'
-#' @return A data.frame with counts of each term in .data. with the following variables :
-#' @param term Name of the adverse effect at the selected level
-#' @param n Number of reports for this adverse effect
-#' @param percentage Percentage of cases with this adverse effect
-#'
-#' @export
-#' @keywords descriptive, adr
-#' @examples
-#' screen_adr(
-#'   .data = adr_,
-#'   meddra = meddra_,
-#'   term_level = "pt",
-#'   top_n = 20
-#' )
-#'
-#' screen_adr(
-#'   .data = adr_,
-#'   meddra = meddra_,
-#'   term_level = "hlt",
-#'   freq_threshold = 0.05
-#' )
-
 screen_adr <- function (.data, meddra, term_level = c("soc", "hlgt", "hlt", "pt", "llt"), freq_threshold = NULL, top_n = NULL) {
   # Check if both freq_threshold and top_n are provided, and issue a warning
   if (!is.null(freq_threshold) && !is.null(top_n)) {
@@ -45,8 +5,13 @@ screen_adr <- function (.data, meddra, term_level = c("soc", "hlgt", "hlt", "pt"
     freq_threshold <- NULL  # Ignore freq_threshold if both are provided
   }
 
-  # Match the term_level argument to one of the allowed values
-  term_level <- match.arg(term_level)
+  # Match the term_level argument to one of the allowed values, or raise an error
+  tryCatch({
+    term_level <- match.arg(term_level)
+  }, error = function(e) {
+    stop("Invalid 'term_level' specified. Choose from 'soc', 'hlgt', 'hlt', 'pt', 'llt'.")
+  })
+
   term_level_name <- paste0(term_level, "_name")  # Use term_level_name directly
 
   # Create the unique MedDRA ID table
