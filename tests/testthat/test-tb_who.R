@@ -94,3 +94,12 @@ test_that("basic use works", {
 
   unlink(tmp_folder, recursive = TRUE)
 })
+
+test_that("path_who exists before working on tables", {
+  wrong_path <- "/a/wrong/filepath/"
+
+  expect_error(
+    tb_who(path_who  = wrong_path),
+    info = "/a/wrong/filepath/ does not exist"
+  )
+})

@@ -85,14 +85,18 @@ tb_main <-
            path_sub
            ){
 
-    # helps working with the "here" package, or tempdir
+    path_base <-
+      fix_path_endslash(path_base)
 
-    if(!grepl("(/|\\\\)$", path_base, perl = TRUE)){
-      path_base <-
-        paste0(path_base, "/")
+    path_sub <-
+      fix_path_endslash(path_sub)
 
-      path_sub <-
-        paste0(path_sub, "/")
+    if(!dir.exists(path_base)){
+      stop(paste0(path_base, " does not exist"))
+    }
+
+    if(!dir.exists(path_sub)){
+      stop(paste0(path_sub, " does not exist"))
     }
 
     # ---- demo ---- ####

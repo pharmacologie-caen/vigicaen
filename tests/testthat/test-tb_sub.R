@@ -22,6 +22,8 @@ test_that("basic use and here package works", {
 
   path_test <- paste0(tmp_folder, "/", "test", "/")
 
+  here_path_test <- here::here(tmp_folder, "test")
+
   if(!dir.exists(path_test))
     dir.create(path_test)
 
@@ -31,6 +33,8 @@ test_that("basic use and here package works", {
     })
 
   expect_snapshot(tb_sub(path_test))
+
+  expect_snapshot(tb_sub(here_path_test))
 
   age_group_res <-
     arrow::read_parquet(paste0(path_test, "AgeGroup.parquet"),
@@ -186,3 +190,11 @@ test_that("basic use and here package works", {
 
 })
 
+test_that("path_sub exists before working on tables", {
+  wrong_path <- "/a/wrong/filepath/"
+
+  expect_error(
+    tb_sub(path_sub  = wrong_path),
+    info = "/a/wrong/filepath/ does not exist"
+  )
+})

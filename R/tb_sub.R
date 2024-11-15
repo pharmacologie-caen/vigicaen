@@ -33,6 +33,15 @@
 #'
 
 tb_sub <- function(path_sub){
+
+  path_sub <-
+    fix_path_endslash(path_sub)
+
+  if(!dir.exists(path_sub)){
+    stop(paste0(path_sub, " does not exist"))
+  }
+
+
 # AgeGroup
 texter("Read AgeGroup_Lx.txt", "1%%")
 

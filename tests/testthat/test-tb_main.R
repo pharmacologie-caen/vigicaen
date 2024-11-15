@@ -126,5 +126,42 @@ test_that("basic use and here package works", {
 
    expect_equal(demo_res_here, demo_true)
 
-   unlink(tmp_folder, recursive = TRUE)
+
+   # mix of path with end slash and without, for path_base and path_sub
+
+   expect_snapshot(
+     tb_main(path_base = path_base,
+             path_sub  = here_path_sub)
+   )
+
+   expect_snapshot(
+     tb_main(path_base = here_path_base,
+             path_sub  = path_sub)
+   )
+
+     unlink(tmp_folder, recursive = TRUE)
+})
+
+test_that("path_base and path_sub exist before working on tables", {
+  wrong_path <- "/a/wrong/filepath/"
+
+  right_path <- tempdir()
+
+  expect_error(
+    tb_main(path_base = wrong_path,
+            path_sub  = right_path),
+    info = "/a/wrong/filepath/ does not exist"
+  )
+
+  expect_error(
+    tb_main(path_base = right_path,
+            path_sub  = wrong_path),
+    info = "/a/wrong/filepath/ does not exist"
+  )
+
+  expect_error(
+    tb_main(path_base = wrong_path,
+            path_sub  = wrong_path),
+    info = "/a/wrong/filepath/ does not exist"
+  )
 })

@@ -1,3 +1,8 @@
+## Patch
+
+#91 tb_* family correctly handles different ways of providing paths,
+and check for the existence of the files **before** working on tables.
+
 # vigicaen 0.13.4
 
 ## Patch

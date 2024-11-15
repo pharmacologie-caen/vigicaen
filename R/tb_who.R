@@ -38,12 +38,11 @@ tb_who <-
   function(path_who
            ){
 
-    # helps working with the "here" package, or tempdir
+    path_who <-
+        fix_path_endslash(path_who)
 
-    if(!grepl("(/|\\\\)$", path_who, perl = TRUE)){
-      path_who <-
-        paste0(path_who, "/")
-
+    if(!dir.exists(path_who)){
+      stop(paste0(path_who, " does not exist"))
     }
 
     # ---- mp ---- ####
