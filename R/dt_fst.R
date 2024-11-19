@@ -12,7 +12,7 @@
 #' @param ext A character string, optional, specifying the file extension.
 #' @keywords import
 #' @export
-#' @seealso [dt_parquet()], [tb_main()], [tb_who()], [tb_sub()], [tb_meddra()]
+#' @seealso [dt_parquet()], [tb_vigibase()], [tb_who()], [tb_meddra()]
 #' @examples
 #'
 #' # Say you have a data.frame stored in an fst format, such as this one

@@ -22,7 +22,7 @@
 #'
 #' @importFrom utils read.table
 #' @keywords import meddra
-#' @seealso [tb_main()], [tb_who()], [tb_sub()], [tb_custom()], [dt_parquet()]
+#' @seealso [tb_vigibase()], [tb_who()], [tb_custom()], [dt_parquet()]
 #'
 #' @export
 #'

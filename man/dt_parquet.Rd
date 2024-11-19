@@ -52,6 +52,6 @@ demo <-
   dt_parquet(path_data, "demo")
 }
 \seealso{
-\code{\link[=tb_main]{tb_main()}}, \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_sub]{tb_sub()}}, \code{\link[=tb_meddra]{tb_meddra()}}
+\code{\link[=tb_vigibase]{tb_vigibase()}}, \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_meddra]{tb_meddra()}}
 }
 \keyword{import}
