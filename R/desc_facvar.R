@@ -21,8 +21,21 @@
 #' @param digits A numeric. Number of digits for the percentage (passed to interval formatting function).
 #' @param pad_width A numeric. Minimum character length of value output (passed to `stringr::str_pad()`).
 #' @param ncat_max A numeric. How many levels should be allowed for all variables? See details.
+#' @param export_raw_values A logical. Should the raw values be exported?
 #' @importFrom rlang .data
 #' @importFrom rlang .env
+#'
+#' @returns A data.frame with columns
+#' \itemize{
+#'  \item `var` the variable name
+#'  \item `level` the level of the variable
+#'  \item `value` the formatted value with possible number of cases `n_`,
+#'  number of available cases `N_`, and percentage `pc_`, depending on
+#'  format argument.
+#'  \item `n_avail` the number of cases with available data
+#'  for this variable.
+#'  }
+#'
 #' @export
 #' @seealso [desc_cont()]
 #'

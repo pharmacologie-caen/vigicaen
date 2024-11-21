@@ -4,7 +4,13 @@
 \alias{desc_cont}
 \title{Summarize continuous variables}
 \usage{
-desc_cont(.data, vc, format = "median (q1-q3) [min-max]", digits = 1)
+desc_cont(
+  .data,
+  vc,
+  format = "median (q1-q3) [min-max]",
+  digits = 1,
+  export_raw_values = FALSE
+)
 }
 \arguments{
 \item{.data}{A data.frame, where vc are column names of continuous variables}
@@ -14,6 +20,20 @@ desc_cont(.data, vc, format = "median (q1-q3) [min-max]", digits = 1)
 \item{format}{A character string. How would you like the output? See details.}
 
 \item{digits}{A numeric. How many digits? This argument calls internal formatting function}
+
+\item{export_raw_values}{A logical. Should the raw values be exported?}
+}
+\value{
+A data.frame with columns
+\itemize{
+\item \code{var} the variable name
+\item \code{level} NA, it is provided to have a consistent output
+with \code{\link[=desc_facvar]{desc_facvar()}}
+\item \code{value} the formatted value with possibly the median,
+interquartile range, and range (see details)
+\item \code{n_avail} the number of cases with available data for this
+variable.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
@@ -23,9 +43,16 @@ desc_cont(.data, vc, format = "median (q1-q3) [min-max]", digits = 1)
 Many other packages provide tools to summarize data. This one is just
 the package author's favorite.
 This makes it much easier to map to nice labeling thereafter.
-The format argument shows the output of the function. You can change square
-and round brackets, spaces, separators...
-You can choose to display median, and interquartile range and/or range.
+The \code{format} argument shows the output of the function. You can change square
+and round brackets, spaces, separators... Important \code{format}
+inputs are
+\itemize{
+\item \code{median} the median value
+\item \code{q1} the first quartile
+\item \code{q3} the third quartile
+\item \code{min} the minimum value
+\item \code{max} the maximum value
+}
 The analogous for categorical variables is \code{\link[=desc_facvar]{desc_facvar()}}.
 }
 \examples{
@@ -50,6 +77,12 @@ desc_cont(.data = df,
           vc = c("age", "bmi"),
           format = "median (q1;q3)"
           )
+
+# You might want to export raw values, to run plotting or
+# other formatting functions
+
+desc_cont(.data = df, vc = c("age", "bmi"),
+          export_raw_values = TRUE)
 }
 \seealso{
 \code{\link[=desc_facvar]{desc_facvar()}}

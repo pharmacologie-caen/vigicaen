@@ -26,6 +26,20 @@ desc_facvar(
 \item{pad_width}{A numeric. Minimum character length of value output (passed to \code{stringr::str_pad()}).}
 
 \item{ncat_max}{A numeric. How many levels should be allowed for all variables? See details.}
+
+\item{export_raw_values}{A logical. Should the raw values be exported?}
+}
+\value{
+A data.frame with columns
+\itemize{
+\item \code{var} the variable name
+\item \code{level} the level of the variable
+\item \code{value} the formatted value with possible number of cases \code{n_},
+number of available cases \code{N_}, and percentage \code{pc_}, depending on
+format argument.
+\item \code{n_avail} the number of cases with available data
+for this variable.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

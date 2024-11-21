@@ -6,15 +6,35 @@
 #' @details Many other packages provide tools to summarize data. This one is just
 #' the package author's favorite.
 #' This makes it much easier to map to nice labeling thereafter.
-#' The format argument shows the output of the function. You can change square
-#' and round brackets, spaces, separators...
-#' You can choose to display median, and interquartile range and/or range.
+#' The `format` argument shows the output of the function. You can change square
+#' and round brackets, spaces, separators... Important `format`
+#' inputs are
+#' \itemize{
+#' \item `median` the median value
+#' \item `q1` the first quartile
+#' \item `q3` the third quartile
+#' \item `min` the minimum value
+#' \item `max` the maximum value
+#' }
 #' The analogous for categorical variables is [desc_facvar()].
 #'
 #' @param .data A data.frame, where vc are column names of continuous variables
 #' @param vc A character vector, list of column names. Should only contain continuous variables
 #' @param format A character string. How would you like the output? See details.
 #' @param digits A numeric. How many digits? This argument calls internal formatting function
+#' @param export_raw_values A logical. Should the raw values be exported?
+#'
+#' @returns A data.frame with columns
+#' \itemize{
+#' \item `var` the variable name
+#' \item `level` NA, it is provided to have a consistent output
+#' with [desc_facvar()]
+#' \item `value` the formatted value with possibly the median,
+#' interquartile range, and range (see details)
+#' \item `n_avail` the number of cases with available data for this
+#' variable.
+#' }
+#'
 #' @importFrom stats median qnorm quantile var
 #' @importFrom rlang .data
 #' @importFrom rlang .env
