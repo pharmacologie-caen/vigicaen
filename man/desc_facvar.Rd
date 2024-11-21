@@ -10,7 +10,8 @@ desc_facvar(
   format = "n_/N_ (pc_\%)",
   digits = 0,
   pad_width = 12,
-  ncat_max = 10
+  ncat_max = 10,
+  export_raw_values = FALSE
 )
 }
 \arguments{
@@ -65,6 +66,12 @@ desc_facvar(.data = df1,
            format = "n_ out of N_, pc_\%",
            digits = 1)
 
+# You might want to export raw values, to run plotting or
+# other formatting functions
+
+desc_facvar(.data = df1,
+            vf = c("hypertension", "smoke_status"),
+            export_raw_values = TRUE)
 }
 \seealso{
 \code{\link[=desc_cont]{desc_cont()}}

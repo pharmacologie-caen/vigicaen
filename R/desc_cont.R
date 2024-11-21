@@ -43,12 +43,19 @@
 #'           vc = c("age", "bmi"),
 #'           format = "median (q1;q3)"
 #'           )
+#'
+#' # You might want to export raw values, to run plotting or
+#' # other formatting functions
+#'
+#' desc_cont(.data = df, vc = c("age", "bmi"),
+#'           export_raw_values = TRUE)
 
 desc_cont <-
   function(.data,
            vc,
            format = "median (q1-q3) [min-max]",
-           digits = 1
+           digits = 1,
+           export_raw_values = FALSE
            ){
 
     # checkers ----
@@ -116,6 +123,14 @@ desc_cont <-
           stop(paste0("format code `", param_name, "` is present more than once in `format`."))
       )
 
+    var_to_export <-
+      if(export_raw_values){
+        c("var", "level", "value", "n_avail",
+          "median", "q1", "q3", "min", "max")
+      } else {
+        c("var", "level", "value", "n_avail")
+      }
+
     # ---- core ----
 
     cc_core <- function(one_var){
@@ -145,29 +160,30 @@ desc_cont <-
                 max({{ vc_s }}, na.rm = TRUE),
 
               dplyr::across(dplyr::all_of(c("median", "q1", "q3", "min", "max")),
-                     ~ cff(.x, dig = .env$digits)),
+                     ~ cff(.x, dig = .env$digits),
+                     .names = "{.col}_fmt"),
 
               value =
                 .env$format |>
                 stringr::str_replace(
                   "median",
-                  paste0(.data$median)
+                  paste0(.data$median_fmt)
                 ) |>
                 stringr::str_replace(
                   "q1",
-                  paste0(.data$q1)
+                  paste0(.data$q1_fmt)
                 ) |>
                 stringr::str_replace(
                   "q3",
-                  .data$q3
+                  .data$q3_fmt
                 ) |>
                 stringr::str_replace(
                   "min",
-                  .data$min
+                  .data$min_fmt
                 ) |>
                 stringr::str_replace(
                   "max",
-                  .data$max
+                  .data$max_fmt
                 )
               ,
               n_missing =
@@ -175,7 +191,7 @@ desc_cont <-
               n_avail =
                 sum(!is.na({{ vc_s }}))
             ) |>
-            dplyr::select(dplyr::all_of(c("var", "level", "value", "n_avail")))
+            dplyr::select(dplyr::all_of(var_to_export))
         } else {
           .data |>
             dplyr::summarise(

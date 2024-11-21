@@ -48,6 +48,12 @@
 #'            format = "n_ out of N_, pc_%",
 #'            digits = 1)
 #'
+#' # You might want to export raw values, to run plotting or
+#' # other formatting functions
+#'
+#' desc_facvar(.data = df1,
+#'             vf = c("hypertension", "smoke_status"),
+#'             export_raw_values = TRUE)
 
 desc_facvar <-
   function( .data,
@@ -55,7 +61,8 @@ desc_facvar <-
             format = "n_/N_ (pc_%)",
             digits = 0,
             pad_width = 12,
-            ncat_max = 10){
+            ncat_max = 10,
+            export_raw_values = FALSE){
 
     # only columns present in the dataset
     if(!all(vf %in% names(.data))){
@@ -109,10 +116,19 @@ desc_facvar <-
           stop(paste0("format code `", param_name, "` is present more than once in `format`."))
         )
 
+    var_to_export <-
+      if(export_raw_values){
+        c("var", "level", "value", "n_avail", "n", "pc")
+      } else {
+        c("var", "level", "value", "n_avail")
+      }
+
     # ---- core ----
 
-    cf_core <- function(one_var) {
+    cf_core <- function(
+                  one_var) {
       vf_s <- rlang::ensym(one_var)
+
       r1 <-
         .data |>
         dplyr::group_by({
@@ -144,8 +160,10 @@ desc_facvar <-
                       n_avail = sum(.data$n) - .data$n_missing) |>
         dplyr::filter(!is.na(.data$level)) |>
         dplyr::mutate(
-          pc = cff(.data$n / .data$n_avail * 100,
-                            dig = .env$digits),
+          pc = .data$n / .data$n_avail * 100,
+
+          pc_fmt = cff(.data$pc,
+                       dig = .env$digits),
           value =
             .env$format |>
             stringr::str_replace(
@@ -158,7 +176,7 @@ desc_facvar <-
             ) |>
             stringr::str_replace(
               "pc_",
-              .data$pc
+              .data$pc_fmt
             ),
 
           value =
@@ -167,11 +185,14 @@ desc_facvar <-
                              side = "both")
 
         ) |>
-        dplyr::select(dplyr::all_of(c("var", "level", "value", "n_avail")))
+        dplyr::select(dplyr::all_of(.env$var_to_export))
     }
 
     # ---- apply core ----
 
-    purrr::map(vf, cf_core) |>
+    purrr::map(
+      vf,
+      cf_core
+      ) |>
       purrr::list_rbind()
   }
