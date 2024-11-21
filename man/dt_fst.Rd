@@ -39,6 +39,6 @@ rm(df)
 df <- dt_fst(path, "df")
 }
 \seealso{
-\code{\link[=dt_parquet]{dt_parquet()}}, \code{\link[=tb_main]{tb_main()}}, \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_sub]{tb_sub()}}, \code{\link[=tb_meddra]{tb_meddra()}}
+\code{\link[=dt_parquet]{dt_parquet()}}, \code{\link[=tb_vigibase]{tb_vigibase()}}, \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_meddra]{tb_meddra()}}
 }
 \keyword{import}

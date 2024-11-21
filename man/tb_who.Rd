@@ -25,7 +25,7 @@ transform to a more efficient format. Parquet format from arrow has many advanta
 It works with out-of-memory data, which makes it possible to process tables on
 a computer with not-so-much RAM. It is also lightweighted and standard across different
 langages.
-The function also creates variables in each table. See \code{\link[=tb_main]{tb_main()}} for some running examples.
+The function also creates variables in each table. See \code{\link[=tb_vigibase]{tb_vigibase()}} for some running examples.
 Use \code{\link[=dt_parquet]{dt_parquet()}} to load the tables afterward.
 }
 \examples{
@@ -38,5 +38,5 @@ path_who <- "/whodrug_directory/"
 # tb_who(path_who = path_who)
 }
 \seealso{
-\code{\link[=tb_main]{tb_main()}}, \code{\link[=tb_sub]{tb_sub()}}, \code{\link[=tb_meddra]{tb_meddra()}}, \code{\link[=tb_custom]{tb_custom()}}, \code{\link[=dt_parquet]{dt_parquet()}}
+\code{\link[=tb_vigibase]{tb_vigibase()}}, \code{\link[=tb_meddra]{tb_meddra()}}, \code{\link[=tb_custom]{tb_custom()}}, \code{\link[=dt_parquet]{dt_parquet()}}
 }

@@ -10,7 +10,7 @@
 #'
 #' @return A character string with the path, fixed with its end slash.
 #'
-#' @seealso [tb_main()], [tb_who()], [tb_meddra()], [tb_custom()], [dt_parquet()]
+#' @seealso [tb_vigibase()], [tb_meddra()], [tb_custom()], [dt_parquet()]
 #'
 #' @examples
 #' vigicaen:::fix_path_endslash("C:/Users/username/Documents")

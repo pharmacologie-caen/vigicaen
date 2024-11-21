@@ -7,7 +7,7 @@
 #' It works with out-of-memory data, which makes it possible to process tables on
 #' a computer with not-so-much RAM. It is also lightweighted and standard across different
 #' langages.
-#' The function also creates variables in each table. See [tb_main()] for some running examples.
+#' The function also creates variables in each table. See [tb_vigibase()] for some running examples.
 #' Use [dt_parquet()] to load the tables afterward.
 #'
 #' @param path_who Character string, a directory containing whodrug txt tables. It is also the
@@ -15,7 +15,7 @@
 #'
 #' @importFrom stringr str_sub str_trim
 #'
-#' @seealso [tb_main()], [tb_sub()], [tb_meddra()], [tb_custom()], [dt_parquet()]
+#' @seealso [tb_vigibase()], [tb_meddra()], [tb_custom()], [dt_parquet()]
 #'
 #' @export
 #'

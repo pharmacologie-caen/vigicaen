@@ -15,7 +15,7 @@
 #' @param ext A character string, optional, specifying the file extension.
 #' @param in_memory Logical, should data be loaded in memory?
 #' @keywords import
-#' @seealso [tb_main()], [tb_who()], [tb_sub()], [tb_meddra()]
+#' @seealso [tb_vigibase()], [tb_who()], [tb_meddra()]
 #' @export
 #' @examples
 #'
