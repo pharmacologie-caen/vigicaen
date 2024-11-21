@@ -374,3 +374,45 @@ test_that(
   }
 )
 
+test_that(
+  "exporting raw values work", {
+    df <-
+      data.frame(
+        smoke_status = c("smoker", "non-smoker",
+                         "smoker", "smoker",
+                         "smoker", "smoker",
+                         "non-smoker"
+        ),
+        hta = c(1, 1, 0, 1, 0, 0, 0)
+      )
+
+    res <- desc_facvar(vf = c("hta", "smoke_status"),
+                        .data = df,
+                        format = "n_/N_ (pc_%)",
+                        dig = 0,
+                        pad_width = 0,
+                        export_raw_values = TRUE) |>
+      dplyr::mutate(
+        pc = cff(pc, dig = 2)
+      )
+
+    res_true <-
+      dplyr::tibble(
+        var = c("hta", "hta",
+                "smoke_status", "smoke_status"),
+        level = c("0", "1", "non-smoker", "smoker"),
+        value =
+          c("4/7 (57%)", "3/7 (43%)",
+            "2/7 (29%)", "5/7 (71%)"),
+        n_avail =
+          c(7, 7, 7, 7),
+        n = c(4, 3, 2, 5),
+        pc = c("57.14", "42.86", "28.57", "71.43")
+      )
+
+    expect_equal(
+      res,
+      res_true
+    )
+  })
+

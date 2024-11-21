@@ -325,3 +325,33 @@ test_that(
   }
 )
 
+test_that("exporting raw values works", {
+  df <-
+    data.frame(
+      age = c(60, 50, 56, 49, 75, 69, 85)
+    )
+
+  res_age <- desc_cont(vc = c("age"),
+                       .data = df,
+                       format = "median (q1;q3) [min-max]",
+                       dig = 0,
+                       export_raw_values = TRUE)
+
+  res_age_true <-
+    data.frame(
+      var = "age",
+      level = NA_character_,
+      value = "60 (53;72) [49-85]",
+      n_avail = 7,
+      median = 60,
+      q1 = 53,
+      q3 = 72,
+      min = 49,
+      max = 85
+    )
+
+  expect_equal(
+    res_age,
+    res_age_true
+  )
+})
