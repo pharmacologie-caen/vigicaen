@@ -7,7 +7,7 @@
 desc_dch(.data, drug_s = "drug1", adr_s = "adr1")
 }
 \arguments{
-\item{.data}{A \code{\link{luda_}} style data.table.}
+\item{.data}{A \code{\link{link_}} style data.table.}
 
 \item{drug_s}{A character vector, the drug column(s)}
 
@@ -24,13 +24,13 @@ computes positive dechallenge counts over a set of adr and drug pairs.
 Counts are provided at the \strong{case} level (not the drug-adr pair level).
 Positive dechallenge refers to cases where drug was withdrawn or
 dose-reduced and reaction abated (in part or in full).
-You will need a \code{luda} data.table, see \code{\link{luda_}}, on which
+You will need a \code{link} data.table, see \code{\link{link_}}, on which
 you have added drugs and adrs with \code{\link[=add_drug]{add_drug()}} and \code{\link[=add_adr]{add_adr()}}.
 }
 \examples{
 
-luda_ <-
-  luda_ |>
+link_ <-
+  link_ |>
   add_drug(
     d_code = ex_$d_groups_drecno,
     drug_data = drug_,
@@ -43,19 +43,19 @@ luda_ <-
   )
 
 
-desc_dch(luda_,
+desc_dch(link_,
          drug_s = "pd1",
          adr_s = "a_colitis")
 
 
 # you can vectorize over multiple adrs and drugs
 
-desc_dch(luda_,
+desc_dch(link_,
          drug_s = c("pd1", "pdl1"),
          adr_s = c("a_colitis", "a_pneumonitis"))
 }
 \seealso{
-\code{\link{luda_}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}, \code{\link[=desc_tto]{desc_tto()}}, \code{\link[=desc_rch]{desc_rch()}}
+\code{\link{link_}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}, \code{\link[=desc_tto]{desc_tto()}}, \code{\link[=desc_rch]{desc_rch()}}
 }
 \keyword{descriptive}
 \keyword{drug-adr}

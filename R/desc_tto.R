@@ -6,13 +6,13 @@
 #' @details Description of time (maximum available time) between drug initiation
 #' and event onset. This runs at the drug-adr pair level.
 #' Internally, it uses [extract_tto()] and [desc_cont()],
-#' You will need a `luda` data.table, see \code{\link{luda_}}, on which
+#' You will need a `link` data.table, see \code{\link{link_}}, on which
 #' you have added drugs and adrs with [add_drug()] and [add_adr()].
 #' you can supply extra arguments to [desc_cont()] with `...`.
 #' Uppsala Monitoring Centre recommends to use only cases where the incertitude
 #' on time to onset is less than **1 day**. You can change this with `tto_time_range`.
 #'
-#' @param .data A \code{\link{luda_}} style data.table.
+#' @param .data A \code{\link{link_}} style data.table.
 #' @param adr_s A character string. The name of the adr column. (see details)
 #' @param drug_s A character string. The name of the drug column. (see details)
 #' @param tto_time_range Incertitude range of Time to onset, in days. Defaults to 1 as recommended by umc
@@ -26,10 +26,10 @@
 #' @export
 #' @importFrom rlang .data
 #' @importFrom rlang .env
-#' @seealso \code{\link{luda_}}, [extract_tto()], [add_drug()], [add_adr()], [desc_dch()], [desc_rch()]
+#' @seealso \code{\link{link_}}, [extract_tto()], [add_drug()], [add_adr()], [desc_dch()], [desc_rch()]
 #' @examples
-#' luda_ <-
-#'   luda_ |>
+#' link_ <-
+#'   link_ |>
 #'   add_drug(
 #'     d_code = ex_$d_groups_drecno,
 #'     drug_data = drug_,
@@ -41,12 +41,12 @@
 #'     data_type = "link"
 #'   )
 #'
-#' desc_tto(.data = luda_,
+#' desc_tto(.data = link_,
 #'          adr_s = "a_colitis",
 #'          drug_s = "pd1")
 #'
 #'
-#' desc_tto(.data = luda_,
+#' desc_tto(.data = link_,
 #'          adr_s = c("a_colitis", "a_pneumonitis"),
 #'          drug_s = c("pd1", "ctla4"))
 

@@ -510,9 +510,9 @@ dechallenge and rechallenge data at case level.
 
 ## Step 1: Load the datasets
 
-```{r create_luda}
-luda <- 
-  luda_
+```{r create_link}
+link <- 
+  link_
 ```
 
 ## Step 2: Add drug and adr columns
@@ -594,16 +594,16 @@ with drug and adr columns, using the `add_*` family functions.
 The `data_type` argument should be set to "link".
 
 ```{r link_dm}
-luda <-
-  luda |> 
+link <-
+  link |> 
    add_drug(
     d_code = d_drecno,
     drug_data = drug,
     data_type = "link"
   )
 
-luda <-
-  luda |>
+link <-
+  link |>
   add_adr(
     a_code = a_llt,
     adr_data = adr,
@@ -613,8 +613,8 @@ luda <-
 
 Counts check
 
-```{r luda_check_dm}
-luda |> 
+```{r link_check_dm}
+link |> 
    check_dm(
      cols = c(names(d_drecno), names(a_llt))
      )
@@ -656,8 +656,8 @@ Two parameters are derived from this information: the mean time to onset
 `tto_mean` and the `range`. The calculation is as follows:
 
 ```{r tto_mean_range}
-luda <- 
-  luda |> 
+link <- 
+  link |> 
   mutate(
     tto_mean = (TimeToOnsetMax + TimeToOnsetMin) / 2,
     range = (TimeToOnsetMax + TimeToOnsetMin) / 2 - TimeToOnsetMin
@@ -702,7 +702,7 @@ This information, that we call `tto_max`, is accessible with the
 
 ```{r extract_tto_example}
 extract_tto(
-  .data = luda,
+  .data = link,
   drug_s = "nivolumab",
   adr_s  = "a_colitis"
 )
@@ -717,7 +717,7 @@ notably with the `desc_tto()` function.
 
 ```{r desc_tto_example}
 desc_tto(
-  .data = luda,
+  .data = link,
   drug_s = "nivolumab",
   adr_s  = "a_colitis"
 )
@@ -727,7 +727,7 @@ Several drugs and reactions can be quiried in these two functions.
 
 ```{r desc_tto_many_to_many}
 desc_tto(
-  .data = luda,
+  .data = link,
   drug_s = c("nivolumab", "pembrolizumab"),
   adr_s  = c("a_colitis", "a_pneumonitis")
 )
@@ -742,7 +742,7 @@ The `desc_dch()` function synthesizes the number of positive dechallenges:
 
 ```{r desc_dch_example}
 desc_dch(
-  luda,
+  link,
   drug_s = "nivolumab",
   adr_s  = "a_colitis"
 )
@@ -750,7 +750,7 @@ desc_dch(
 
 ```{r desc_dch_many_to_many}
 desc_dch(
-  luda,
+  link,
   drug_s = c("nivolumab", "pembrolizumab"),
   adr_s  = c("a_colitis", "a_pneumonitis")
 )
@@ -772,7 +772,7 @@ to DrecNo and MedDRA_Id, respectively. Terminology
 
 ```{r desc_rch_example}
 desc_rch(
-  luda,
+  link,
   demo_data = demo,
   drug_s = "nivolumab",
   adr_s  = "a_colitis"
@@ -794,8 +794,8 @@ rechallenge cases for our entire dataset
 We must create a variable that takes the value 1 for all cases.
 
 ```{r desc_rch_dm_hack}
-luda <-
-  luda |> 
+link <-
+  link |> 
   mutate(
     all_cases = 1
   )
@@ -805,7 +805,7 @@ We a particular syntax, we can access the information
 
 ```{r desc_rch_hack}
 desc_rch(
-  luda,
+  link,
   demo_data = demo,
   drug_s = "all_cases",
   adr_s  = "all_cases"
