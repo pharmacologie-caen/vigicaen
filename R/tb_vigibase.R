@@ -382,9 +382,16 @@ tb_vigibase <-
                         as.numeric()
         ),
         dplyr::across(dplyr::all_of(c("TimeToOnsetMin", "TimeToOnsetMax")),
-                      ~ dplyr::if_else(.x == 1568459784.65489, NA_real_, .x))
+                      ~ dplyr::if_else(.x == 1568459784.65489, NA_real_, .x)),
 
+        tto_mean = (.data$TimeToOnsetMax + .data$TimeToOnsetMin) / 2,
+        range = (.data$TimeToOnsetMax + .data$TimeToOnsetMin) / 2 - .data$TimeToOnsetMin
         )|>
+      dplyr::left_join(
+        adr |>
+          dplyr::select(dplyr::all_of(c("UMCReportId", 'Adr_Id'))),
+        by = "Adr_Id"
+      ) |>
       dplyr::compute()
 
     # ---- write
