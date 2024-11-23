@@ -64,7 +64,7 @@ test_that("basic use works", {
       MedicinalProd_Id = 1,
       Sequence.number.1 = "01",
       Sequence.number.2 = "001",
-      DrecNo = "000001",
+      DrecNo = 1,
       drug_name_t = "methyldopa",
       Create.date = "19851231",
       Date.changed = "20170907",

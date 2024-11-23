@@ -209,7 +209,9 @@ tb_vigibase <-
         FrequencyU  = str_sub(.data$f0, start = 57L, end = 59L)
         ) |>
       dplyr::mutate(
-        dplyr::across(dplyr::all_of(c("UMCReportId", "Drug_Id", "MedicinalProd_Id")),
+        dplyr::across(dplyr::all_of(c("UMCReportId", "Drug_Id",
+                                      "MedicinalProd_Id",
+                                      "DrecNo")),
                ~ .x |>
           str_trim() |>
           as.integer()
