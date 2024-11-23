@@ -1,3 +1,10 @@
+## Minor
+
+#92 `tb_main()` and `tb_sub()` are fusionned into `tb_vigibase()`.
+
+#93 It is now possible to export raw data composing the `value` column
+of `desc_facvar()` and `desc_cont()`, with argument `export_raw_values`.
+
 # vigicaen 0.13.5
 
 ## Patch
