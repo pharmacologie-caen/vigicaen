@@ -19,6 +19,18 @@
 #' @keywords import
 #' @importFrom stringr str_sub str_trim
 #'
+#' @returns
+#' \itemize{
+#'   \item .parquet files of all main tables into the `path_base`
+#'   directory: demo, adr, drug, link, ind, out, srce,
+#'   followup, and the suspdup (suspected duplicates) table.
+#'   Check `?demo_` for more information on the tables.
+#'   \item .parquet files of all other subsidiary tables into the `path_sub`
+#'   directory: AgeGroup, Dechallenge, Dechallenge2, Frequency,
+#'   Gender, Notifier, Outcome, Rechallenge, Rechallenge2, Region,
+#'   RepBasis, ReportType, RouteOfAdm, Seriousness, and SizeUnit.
+#'   }
+#'
 #' @export
 #'
 #' @seealso [tb_who()], [tb_meddra()], [tb_custom()], [dt_parquet()]
@@ -93,11 +105,11 @@
 #'
 #' path_base <- paste0(tmp_folder, "/", "main", "/")
 #'
-#' dir.create(path_base)
+#' if(!dir.exists(path_base)) {dir.create(path_base)}
 #'
 #' path_sub  <- paste0(tmp_folder, "/", "sub",  "/")
 #'
-#' dir.create(path_sub)
+#' if(!dir.exists(path_sub)) {dir.create(path_sub)}
 #'
 #' purrr::iwalk(f_sets, function(d_, name_){
 #'   if(name_ %in%
@@ -151,6 +163,10 @@ tb_vigibase <-
       stop(paste0(path_sub, " does not exist"))
     }
 
+    message("Creating vigibase tables.\n
+            This process must only be done once per database version.\n
+            It can take up to 30minutes.")
+
     # ---- demo ---- ####
     texter("Read DEMO.txt", "3%%")
 
@@ -183,6 +199,10 @@ tb_vigibase <-
     arrow::write_parquet(demo,
                   sink = paste0(path_base, "demo.parquet")
     )
+
+    rm(demo)
+
+    gc()
 
     # ---- drug ---- ####
     texter("Read DRUG.txt", "16%%")
@@ -226,6 +246,10 @@ tb_vigibase <-
                          sink = paste0(path_base, "drug.parquet")
     )
 
+    rm(drug)
+
+    gc()
+
 
     # ---- followup ---- ####
     texter("Read FOLLOWUP.txt", "30%%")
@@ -256,6 +280,10 @@ tb_vigibase <-
     arrow::write_parquet(followup,
                          sink = paste0(path_base, "followup.parquet")
     )
+
+    rm(followup)
+
+    gc()
 
     # ---- adr ---- ####
     texter("Read ADR.txt", "36%%")
@@ -320,6 +348,11 @@ tb_vigibase <-
                          sink = paste0(path_base, "out.parquet")
     )
 
+
+    rm(out)
+
+    gc()
+
     # ---- srce ---- ####
     texter("Read SRCE.txt", "55%%")
 
@@ -349,6 +382,11 @@ tb_vigibase <-
     arrow::write_parquet(srce,
                          sink = paste0(path_base, "srce.parquet")
     )
+
+    rm(srce)
+
+    gc()
+
 
     # ---- link ---- ####
     texter("Read LINK.txt", "60%%")
@@ -403,6 +441,9 @@ tb_vigibase <-
                          sink = paste0(path_base, "link.parquet")
     )
 
+    rm(adr, link)
+    gc()
+
     # ---- ind ---- ####
     texter("Read IND.txt", "70%%")
 
@@ -441,6 +482,9 @@ tb_vigibase <-
                          sink = paste0(path_base, "ind.parquet")
     )
 
+    rm(ind)
+    gc()
+
     # ---- suspectedduplicates ---- ####
     texter("Read SUSPECTEDDUPLICATES.txt", "80%%")
 
@@ -471,6 +515,10 @@ tb_vigibase <-
     arrow::write_parquet(suspdup,
                          sink = paste0(path_base, "suspdup.parquet")
     )
+
+
+    rm(suspdup)
+    gc()
 
     # AgeGroup
     texter("Read AgeGroup_Lx.txt", "85%%")
