@@ -7,7 +7,7 @@
 desc_tto(.data, adr_s = "a_colitis", drug_s = "pd1", tto_time_range = 1, ...)
 }
 \arguments{
-\item{.data}{A \code{\link{luda_}} style data.table.}
+\item{.data}{A \code{\link{link_}} style data.table.}
 
 \item{adr_s}{A character string. The name of the adr column. (see details)}
 
@@ -31,15 +31,15 @@ drug-adr pair description of time to onset.
 Description of time (maximum available time) between drug initiation
 and event onset. This runs at the drug-adr pair level.
 Internally, it uses \code{\link[=extract_tto]{extract_tto()}} and \code{\link[=desc_cont]{desc_cont()}},
-You will need a \code{luda} data.table, see \code{\link{luda_}}, on which
+You will need a \code{link} data.table, see \code{\link{link_}}, on which
 you have added drugs and adrs with \code{\link[=add_drug]{add_drug()}} and \code{\link[=add_adr]{add_adr()}}.
 you can supply extra arguments to \code{\link[=desc_cont]{desc_cont()}} with \code{...}.
 Uppsala Monitoring Centre recommends to use only cases where the incertitude
 on time to onset is less than \strong{1 day}. You can change this with \code{tto_time_range}.
 }
 \examples{
-luda_ <-
-  luda_ |>
+link_ <-
+  link_ |>
   add_drug(
     d_code = ex_$d_groups_drecno,
     drug_data = drug_,
@@ -51,17 +51,17 @@ luda_ <-
     data_type = "link"
   )
 
-desc_tto(.data = luda_,
+desc_tto(.data = link_,
          adr_s = "a_colitis",
          drug_s = "pd1")
 
 
-desc_tto(.data = luda_,
+desc_tto(.data = link_,
          adr_s = c("a_colitis", "a_pneumonitis"),
          drug_s = c("pd1", "ctla4"))
 }
 \seealso{
-\code{\link{luda_}}, \code{\link[=extract_tto]{extract_tto()}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}, \code{\link[=desc_dch]{desc_dch()}}, \code{\link[=desc_rch]{desc_rch()}}
+\code{\link{link_}}, \code{\link[=extract_tto]{extract_tto()}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}, \code{\link[=desc_dch]{desc_dch()}}, \code{\link[=desc_rch]{desc_rch()}}
 }
 \keyword{descriptive}
 \keyword{drug-adr}

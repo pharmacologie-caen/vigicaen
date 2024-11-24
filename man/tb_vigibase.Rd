@@ -13,6 +13,17 @@ output directory.}
 \item{path_sub}{Character string, a directory containing subsidiary tables.}
 }
 \value{
+\itemize{
+\item .parquet files of all main tables into the \code{path_base}
+directory: demo, adr, drug, link, ind, out, srce,
+followup, and the suspdup (suspected duplicates) table.
+Check \code{?demo_} for more information on the tables.
+\item .parquet files of all other subsidiary tables into the \code{path_sub}
+directory: AgeGroup, Dechallenge, Dechallenge2, Frequency,
+Gender, Notifier, Outcome, Rechallenge, Rechallenge2, Region,
+RepBasis, ReportType, RouteOfAdm, Seriousness, and SizeUnit.
+}
+
 .parquet files into the \code{path_base} directory (\strong{including suspected duplicates tables}).
 Some columns are returned as \code{integer} (UMCReportId, Drug_Id, MedicinalProd_Id, Adr_Id, MedDRA_Id),
 and some columns as \code{numeric} (TimeToOnsetMin, TimeToOnsetMax)
@@ -97,11 +108,11 @@ tmp_folder <- tempdir()
 
 path_base <- paste0(tmp_folder, "/", "main", "/")
 
-dir.create(path_base)
+if(!dir.exists(path_base)) {dir.create(path_base)}
 
 path_sub  <- paste0(tmp_folder, "/", "sub",  "/")
 
-dir.create(path_sub)
+if(!dir.exists(path_sub)) {dir.create(path_sub)}
 
 purrr::iwalk(f_sets, function(d_, name_){
   if(name_ \%in\%

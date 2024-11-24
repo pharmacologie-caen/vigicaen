@@ -6,10 +6,10 @@
 #' @details Counts are provided at the **case** level (not the drug-adr pair level).
 #' Positive dechallenge refers to cases where drug was withdrawn or
 #' dose-reduced and reaction abated (in part or in full).
-#' You will need a `luda` data.table, see \code{\link{luda_}}, on which
+#' You will need a `link` data.table, see \code{\link{link_}}, on which
 #' you have added drugs and adrs with [add_drug()] and [add_adr()].
 #'
-#' @param .data A \code{\link{luda_}} style data.table.
+#' @param .data A \code{\link{link_}} style data.table.
 #' @param drug_s A character vector, the drug column(s)
 #' @param adr_s A character vector, the adverse drug reaction column(s).
 #' @return A data.table with one row per drug-adr pair.
@@ -17,11 +17,11 @@
 #' @importFrom rlang .env
 #' @keywords drug-adr pair, descriptive
 #' @export
-#' @seealso \code{\link{luda_}}, [add_drug()], [add_adr()], [desc_tto()], [desc_rch()]
+#' @seealso \code{\link{link_}}, [add_drug()], [add_adr()], [desc_tto()], [desc_rch()]
 #' @examples
 #'
-#' luda_ <-
-#'   luda_ |>
+#' link_ <-
+#'   link_ |>
 #'   add_drug(
 #'     d_code = ex_$d_groups_drecno,
 #'     drug_data = drug_,
@@ -34,14 +34,14 @@
 #'   )
 #'
 #'
-#' desc_dch(luda_,
+#' desc_dch(link_,
 #'          drug_s = "pd1",
 #'          adr_s = "a_colitis")
 #'
 #'
 #' # you can vectorize over multiple adrs and drugs
 #'
-#' desc_dch(luda_,
+#' desc_dch(link_,
 #'          drug_s = c("pd1", "pdl1"),
 #'          adr_s = c("a_colitis", "a_pneumonitis"))
 

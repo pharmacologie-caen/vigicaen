@@ -4,8 +4,8 @@ test_that("basic use and here package works", {
      DEMO.txt = data.frame(f0 = c("96548661   32194501051119460820")),
      DRUG.txt = data.frame(f0 = c("70548965   8          4901354    064392080055011    31- 806")
                            ),
-     LINK.txt = data.frame(f0 = c("2          654654     51---0.78991   0.98745    ",
-                                  "2          456456     51---6.98789   -          ")),
+     LINK.txt = data.frame(f0 = c("2              17     51---0.78991   0.98745    ",
+                                  "2              14     51---6.98789   -          ")),
      FOLLOWUP.txt = data.frame(f0 = c("0548978    0254687    ",
                                       "7568798    4565321    ")),
      ADR.txt = data.frame(f0 = c("96570161   14         100474561",
@@ -85,6 +85,13 @@ test_that("basic use and here package works", {
                                    mmap = FALSE)
 
    link_res <- arrow::read_parquet(paste0(path_base, "link.parquet"),
+                                   mmap = FALSE) |>
+     dplyr::mutate(
+       range = cff(range, dig = 2),
+       tto_mean = cff(tto_mean, dig = 2)
+     )
+
+   adr_res  <- arrow::read_parquet(paste0(path_base, "adr.parquet"),
                                    mmap = FALSE)
 
    ind_res  <- arrow::read_parquet(paste0(path_base, "ind.parquet"),
@@ -105,7 +112,7 @@ test_that("basic use and here package works", {
        UMCReportId = 70548965,
        Drug_Id = 8,
        MedicinalProd_Id = 4901354,
-       DrecNo = "064392",
+       DrecNo = 64392,
        Seq1 = "08",
        Seq2 = "005",
        Route = "50",
@@ -116,16 +123,27 @@ test_that("basic use and here package works", {
        FrequencyU = "806"
        )
 
+   adr_true <-
+     dplyr::tibble(
+       UMCReportId = c(96570161, 70578465),
+       Adr_Id = c(14, 17),
+       MedDRA_Id = c(10047456, 14507814),
+       Outcome = c("1", "4")
+     )
+
    link_true <-
      dplyr::tibble(
        Drug_Id = c(2, 2),
-       Adr_Id = c(654654, 456456),
+       Adr_Id = c(17, 14),
        Dechallenge1 = c("5", "5"),
        Dechallenge2 = c("1", "1"),
        Rechallenge1 = c("-", "-"),
        Rechallenge2 = c("-", "-"),
        TimeToOnsetMin = c(-0.78991, -6.98789),
-       TimeToOnsetMax = c(0.98745, NA)
+       TimeToOnsetMax = c(0.98745, NA),
+       tto_mean = c("0.10", NA_character_),
+       range = c("0.89", NA_character_),
+       UMCReportId = c(70578465, 96570161)
      )
 
    ind_true <-
@@ -140,6 +158,8 @@ test_that("basic use and here package works", {
    expect_equal(link_res, link_true)
 
    expect_equal(ind_res, ind_true)
+
+   expect_equal(adr_res, adr_true)
 
 
    # here syntax

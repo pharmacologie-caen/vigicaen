@@ -6,7 +6,41 @@
 \alias{smq_list_content_}
 \title{Sample of Meddra.}
 \format{
-An object of class \code{data.frame} and \code{data.table}.
+\code{meddra_} is a data.table with 15 variables and 677 rows.
+\itemize{
+\item The \verb{*_code} columns. Integers. MedDRA code for the given term.
+\item The \verb{*_name} columns. Characters. The name of the term.
+\item \code{soc_abbrev} Character. The abbreviation of the SOC.
+\item \code{null_field} Logical. Empty column.
+\item \code{pt_soc_code} Integer. The preferred term code of the SOC itself.
+\item \code{primary_soc_fg} Character. Whether the SOC is primary for this code.
+"Y" or "N", Yes or No.
+\item \code{empty_col} Logical. Empty column.
+}
+\code{smq_list_content_} is a data.table with 19 variables and 3386 rows.
+It is a fusion of smq_list and smq_content, as created with \code{\link[=tb_meddra]{tb_meddra()}}.
+\itemize{
+\item \code{smq_code} Integer. The code of the SMQ.
+\item \code{smq_name} Character. The name of the SMQ.
+\item \code{smq_level} Integer. The hierarchical level of the SMQ.
+\item \code{smq_description} Character. The description of the SMQ.
+\item \code{smq_source} Character. The source of the SMQ.
+\item \code{smq_note} Character. Additional note on the SMQ.
+\item \code{MedDRA_version} Numeric. The version of MedDRA.
+\item \code{status} Character. The status of the SMQ (active or not)
+\item \code{smq_algorithm} Character. Whether the SMQ is algorithmic or not.
+\item \code{empty_col.x} Logical. Empty column.
+\item \code{term_code} Integer. The low-level term code.
+\item \code{term_level} Integer. The hierarchical level of the term.
+\item \code{term_scope} Integer. The scope of the term (narrow 2 or broad 1)
+\item \code{term_category} Character. In algorithmic SMQs, the category of the term.
+\item \code{term_weight} Integer. The weight of the term (algorithmic SMQs).
+\item \code{term_status} Integer. The status of the term (active or not)
+\item \code{term_addition_version} Numeric. The version of the term addition.
+\item \code{term_last_modified_version} Numeric. The last MedDRA version
+the term was modified.
+\item \code{empty_col.y} Logical. Empty column.
+}
 
 An object of class \code{data.table} (inherits from \code{data.frame}) with 3386 rows and 19 columns.
 }

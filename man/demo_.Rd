@@ -12,7 +12,91 @@
 \alias{srce_}
 \title{Data of immune checkpoint inhibitors.}
 \format{
-An object of class \code{data.frame} and \code{data.table}.
+\code{demo_} is a data.table with 7 variables and 750 rows.
+\itemize{
+\item \code{UMCReportId} Integer. The unique identifier of the case report.
+\item \code{AgeGroup} Character. The age group of the patient. Correspondence
+table is \code{path_sub/AgeGroup.parquet}.
+\item \code{Gender} Character. Case gender. \code{path_sub/Gender.parquet}
+\item \code{DateDatabase} Character (not date or numeric!). The date of the
+latest update of the report in the database.
+\item \code{Type} Character. The type of report. \code{path_sub/ReportType.parquet}
+\item \code{Region} Character. The world region where the report comes from
+\code{path_sub/Region.parquet}.
+\item \code{FirstDateDatabase} Character. The date the report was first
+submitted to the database.
+}
+\code{drug_} is a data.table with 10 variables and 3514 rows.
+\itemize{
+\item \code{UMCReportId} Integer. See \code{demo_}.
+\item \code{Drug_Id} Integer. The unique identifier of each drug report.
+\item \code{MedicinalProd_Id} Integer. The medicinalproduct identifier.
+See \code{\link[=get_atc_code]{get_atc_code()}}.
+\item \code{DrecNo} Integer. Drug Record Number, pivotal to identify drugs
+with \code{\link[=get_drecno]{get_drecno()}}.
+\item \code{Seq1}, \code{Seq2} Character. Seq 1 and 2 complement DrecNo,
+in WHODrug dictionary.
+\item \code{Route} Character. The route of administration of the drug.
+\item \code{Basis} Character. The reputation basis of the drug (suspect,
+concomitant, or interacting). \code{path_sub/RepBasis.parquet}
+\item \code{Amount} Character. The amount of drug administered.
+\item \code{AmountU} Character. The unit of the amount of drug administered.
+\code{path_sub/SizeUnit.parquet}
+\item \code{Frequency} Character. The frequency of drug administration.
+\item \code{FrequencyU} Character. The unit of the frequency of drug
+administration. \code{path_sub/Frequency.parquet}
+}
+\code{adr_} is a data.table with 4 variables and 2133 rows.
+\itemize{
+\item \code{UMCReportId} Integer. See \code{demo_}.
+\item \code{Adr_Id} Integer. The unique identifier of each adverse event report.
+\item \code{MedDRA_Id} Integer. The MedDRA identifier of the adverse event.
+It is used in \code{\link[=get_llt_soc]{get_llt_soc()}} and \code{\link[=get_llt_smq]{get_llt_smq()}}.
+\item \code{Outcome} Character. The outcome of the adverse event.
+\code{path_sub/Outcome.parquet}
+}
+\code{link_} is a data.table with 3 variables and 3514 rows. The version
+built with \code{\link[=tb_vigibase]{tb_vigibase()}} is slightly different than the original one.
+\itemize{
+\item \code{Drug_Id} and \code{Adr_Id} . Integers. Together, they are the key variable
+of \code{link}. See \code{drug_} and \code{adr_}.
+\item \code{Dechallenge1} and \code{2} Characters. Dechallenge action and outcome.
+\code{path_sub/Dechallenge.parquet}, \code{path_sub/Dechallenge2.parquet}
+\item \code{Rechallenge1} and \code{2} Characters. Rechallenge action and outcome.
+\code{path_sub/Rechallenge.parquet}, \code{path_sub/Rechallenge2.parquet}
+\item \code{TimeToOnsetMin} and \code{Max} Numerics. The minimum and maximum time to
+onset of the adverse event.
+\item \code{tto_mean} Numeric. The mean time to onset of the adverse event.
+It is the average of \code{TimeToOnsetMin} and \code{Max}.
+\item \code{range} Numeric. The incertitude around \code{tto_mean}.
+See \code{vignette("descriptive")}.
+\item \code{UMCReportId} Integer. See \code{demo_}.
+}
+\code{ind_} is a data.table with 2 variables and 2426 rows.
+\itemize{
+\item \code{Drug_Id} Integer. See \code{drug_}.
+\item \code{Indication} Character. The indication of the drug.
+}
+\code{out_} is a data.table with 3 variables and 747 rows.
+\itemize{
+\item \code{UMCReportId} Integer. See \code{demo_}.
+\item \code{Seriousness} Character. The seriousness criteria of the report.
+\code{path_sub/Seriousness.parquet}
+\item \code{Serious} Character. Whether the case is serious or
+not ("N" No, "Y" Yes)
+}
+\code{srce_} is a data.table with 2 variables and 729 rows.
+\itemize{
+\item \code{UMCReportId} Integer. See \code{demo_}.
+\item \code{Type} Character. The Type of Reporter.
+\code{path_sub/Notifier.parquet}
+}
+\code{followup_} is a data.table with 2 variables and 902 rows.
+\itemize{
+\item \code{UMCReportId} Integer. See \code{demo_}.
+\item \code{ReplacedUMCReportId} Integer. Previous version of the case,
+which is no longer available in \code{demo_}.
+}
 
 An object of class \code{data.table} (inherits from \code{data.frame}) with 3514 rows and 12 columns.
 
@@ -22,7 +106,7 @@ An object of class \code{data.table} (inherits from \code{data.frame}) with 2426
 
 An object of class \code{data.table} (inherits from \code{data.frame}) with 2133 rows and 4 columns.
 
-An object of class \code{data.table} (inherits from \code{data.frame}) with 5136 rows and 8 columns.
+An object of class \code{data.table} (inherits from \code{data.frame}) with 5136 rows and 11 columns.
 
 An object of class \code{data.table} (inherits from \code{data.frame}) with 747 rows and 3 columns.
 
@@ -49,9 +133,28 @@ out_
 srce_
 }
 \description{
-Demo is the cornerstone table in Vigibase Extract Case Level data. It contains the \code{UMCReportId} identifier for individual case safety reports, which is a jointure key with most other tables (see "VigiBase Extract Case Level - file description.pdf" in VigiBase ECL folders for more details). It is the preferred table to update for drugs and adrs identification before performing disproportionality analyses.
-This \code{demo_} table is a subset of reports reporting at least one ICI, from the September 2019 version of Vigibase ECL. All other tables were subsetted to match these records. I used the "substance" table at this time, with substances \verb{"Ipilimumab", "Atezolizumab", "Durvalumab", "Nivolumab", "Pembrolizumab", "Avelumab", "Cemiplimab","REGN 2810", "Tremelimumab"} identified.
-Others tables are \code{drug_}, \code{adr_}, \code{link_}, \code{ind_}, \code{out_}, \code{srce_}, \code{followup_}.
+Demo, drug, adr, link, ind, out, srce, and followup are the main table in
+Vigibase Extract Case Level data.
+In a regular workflow, you will work with those tables as R
+objects (e.g. \code{demo}, \code{drug}, \code{adr}, \code{link}, \code{ind}, \code{out}, \code{srce}, \code{followup}).
+These built-in example datasets use an underscore "_" to avoid ambiguity
+with your own tables (e.g.
+\code{demo_}, \code{drug_}, \code{adr_}, \code{link_}, \code{ind_}, \code{out_}, \code{srce_}, \code{followup_}).
+This is a relational database, which means every table has a primary key
+variable (e.g., \code{UMCReportId} for \code{demo_}. Keys will allow joints with other tables
+The full details on the original structure can be found in
+"VigiBase Extract Case Level - file description.pdf"
+in your VigiBase ECL folders.
+\code{demo_} will typically be your cornerstone table, since it contains
+one row per report. It is the preferred table to update for drugs and adrs
+identification before performing disproportionality analyses.
+These tables are subsets of the original ones, with some of the
+immune checkpoint inhibitor cases or immune-related adverse events.
+All data shown in these example data are \strong{FAKE}, which means
+you shouldn't consider the counts and computations as accurate.
+Immune checkpoint inhibitors drugs can include
+"Ipilimumab", "Atezolizumab", "Durvalumab", "Nivolumab", "Pembrolizumab",
+"Avelumab", "Cemiplimab","REGN 2810", "Tremelimumab"\verb{in these tables. More details on how to use vigibase tables can be found in the vignettes.}vignette("basic_workflow")\verb{, }vignette("descriptive")\verb{. To build your own tables, use [tb_vigibase()]. See }vignette("build_tables")`.
 }
 \examples{
 data(demo_)

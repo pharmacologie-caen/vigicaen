@@ -7,7 +7,7 @@
 extract_tto(.data, adr_s = "a_colitis", drug_s = "pd1", tto_time_range = 1)
 }
 \arguments{
-\item{.data}{A \code{\link{luda_}} style data.table.}
+\item{.data}{A \code{\link{link_}} style data.table.}
 
 \item{adr_s}{A character string. The name of the adr column. (see details)}
 
@@ -28,7 +28,7 @@ all available time to onsets for a set of drug-adr pairs.
 \details{
 Extraction of (maximum available) time between drug initiation
 and event onset. This runs at the drug-adr pair level.
-You will need a \code{luda} data.table, see \code{\link{luda_}}, on which
+You will need a \code{link} data.table, see \code{\link{link_}}, on which
 you have added drugs and adrs with \code{\link[=add_drug]{add_drug()}} and \code{\link[=add_adr]{add_adr()}}.
 Uppsala Monitoring Centre recommends to use only cases where the incertitude
 on time to onset is less than \strong{1 day}. You can change this with \code{tto_time_range}.
@@ -37,8 +37,8 @@ time to onset, but \code{extract_tto()} is useful to get the raw data and plot i
 for instance with \code{ggplot2}.
 }
 \examples{
-luda_ <-
-  luda_ |>
+link_ <-
+  link_ |>
   add_drug(
     d_code = ex_$d_groups_drecno,
     drug_data = drug_,
@@ -50,15 +50,15 @@ luda_ <-
     data_type = "link"
   )
 
-extract_tto(.data = luda_,
+extract_tto(.data = link_,
          adr_s = "a_colitis",
          drug_s = "pd1")
-extract_tto(.data = luda_,
+extract_tto(.data = link_,
          adr_s = c("a_colitis", "a_pneumonitis"),
          drug_s = c("pd1", "ctla4"))
 }
 \seealso{
-\code{\link{luda_}}, \code{\link[=desc_tto]{desc_tto()}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}, \code{\link[=desc_dch]{desc_dch()}}, \code{\link[=desc_rch]{desc_rch()}}
+\code{\link{link_}}, \code{\link[=desc_tto]{desc_tto()}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}, \code{\link[=desc_dch]{desc_dch()}}, \code{\link[=desc_rch]{desc_rch()}}
 }
 \keyword{descriptive}
 \keyword{drug-adr}

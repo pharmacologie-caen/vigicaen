@@ -92,7 +92,8 @@ tb_who <-
         drug_name_t = .data$Drug.name |>
           str_trim() |>
           stringr::str_to_lower(),
-        DrecNo = .data$Drug.record.number
+        DrecNo = .data$Drug.record.number |>
+          as.integer()
       ) |>
       dplyr::select(
         dplyr::all_of(c(

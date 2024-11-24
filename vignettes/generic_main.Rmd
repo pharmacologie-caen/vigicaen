@@ -288,31 +288,13 @@ demo |>
   check_dm(cols = c(names(d_drecno), names(a_llt), "fup"))
 ```
 
-## LUDA 
+## LINK 
 
-### Create LUDA
+### Data managed LINK
 
-Create the LUDA table (a link table joined with UMCReportId). For convenience, it is also best practice to create tto_mean and range variables at this stage (at least in my opinion).
-
-```{r luda_create}
-luda <-
+```{r link_drug_adr}
+link <-
   link |> 
-  left_join(
-    drug |> 
-      select(UMCReportId, Drug_Id),
-    by = "Drug_Id"
-  ) |>
-    mutate(
-    tto_mean = (TimeToOnsetMax + TimeToOnsetMin) / 2,
-    range = (TimeToOnsetMax + TimeToOnsetMin) / 2 - TimeToOnsetMin
-  ) 
-```
-
-### Data managed LUDA
-
-```{r luda_drug_adr}
-luda <-
-  luda |> 
     add_drug(
     d_code = d_drecno,
     drug_data = drug,
@@ -378,7 +360,7 @@ r_desc <-
 ```{r desc_tto}
 r_tto <-
   desc_tto(
-    luda,
+    link,
     adr_s = names(a_llt),
     drug_s = names(d_drecno)
     ) 
@@ -387,7 +369,7 @@ r_tto <-
 ```{r desc_dch}
 r_dch <-
   desc_dch(
-    luda,
+    link,
     adr_s = names(a_llt),
     drug_s = names(d_drecno)
     )
@@ -396,7 +378,7 @@ r_dch <-
 ```{r desc_rch}
 r_rch <-
   desc_rch(
-    luda,
+    link,
     demo_data = demo,
     adr_s = names(a_llt),
     drug_s = names(d_drecno)
