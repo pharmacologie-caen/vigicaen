@@ -69,6 +69,21 @@ get_atc_code <-
       warning("names of atc_sel were tolower-ed and trimed")
     }
 
+    if("Table"  %in% class(mp_short)){
+      # automatically collect mp_short if out of memory
+      # since it's a small table
+      mp_short <-
+        dplyr::collect(mp_short)
+    }
+
+    if("Table"  %in% class(thg_data)){
+      # automatically collect thg_data if out of memory
+      # since it's a small table
+      thg_data <-
+        dplyr::collect(thg_data)
+    }
+
+
     # core function ----
     core_get_atc_code <-
       function(atc_,

@@ -52,6 +52,13 @@ get_llt_smq <-
         TRUE ~ "this is an error"
       )
 
+    if("Table"  %in% class(smq_list_content)){
+      # automatically collect smq_list_content if out of memory
+      # since it's a small table
+      smq_list_content <-
+        dplyr::collect(smq_list_content)
+    }
+
     get_one_smq_batch_llt <- function(one_smq,
                                 smq_name = {{ smq_name }},
                                 term_scope = {{ term_scope }},

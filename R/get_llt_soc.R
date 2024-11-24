@@ -61,6 +61,13 @@ get_llt_soc <-
 
     term_sym <- rlang::sym(paste0(term_level, "_name"))
 
+    if("Table"  %in% class(meddra)){
+      # automatically collect meddra if out of memory
+      # since it's a small table
+      meddra <-
+        dplyr::collect(meddra)
+    }
+
     get_one_term_llt <- function(one_term,
                                  llt_code = {{ llt_code }}){
       term_request <- rlang::expr(!!term_sym %in% !!one_term)

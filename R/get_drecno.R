@@ -97,6 +97,13 @@ get_drecno <- function(
 
   method <- match.arg(method)
 
+  if("Table"  %in% class(mp_short)){
+    # automatically collect mp_short if out of memory
+    # since it's a small table
+    mp_short <-
+      dplyr::collect(mp_short)
+  }
+
   if(method == "mpi_list" && allow_combination)
     warning("allow_combination set to TRUE but mpi requested")
 
