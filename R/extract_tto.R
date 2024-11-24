@@ -50,84 +50,48 @@
 #'          drug_s = c("pd1", "ctla4"))
 
 extract_tto <-
-  function(.data,
-           adr_s = "a_colitis",
-           drug_s = "pd1",
-           tto_time_range = 1
-  ){
-
-    if(!all(c("tto_mean", "range") %in% names(.data))){
-
+  function (.data,
+            adr_s,
+            drug_s,
+            tto_time_range = 1)
+  {
+    if (!all(c("tto_mean", "range") %in% names(.data))) {
       stop("Either tto_mean or range columns are missing. See ?link_")
-
     }
-
-    # core extractor ----
-
-    core_extract_tto <-
-      function(one_adr,
-               one_drug,
-               UMCReportId = {{ UMCReportId }}
-      ){
-        # selection
-
-        link_sel <-
-          .data |>
-          dplyr::filter(
-            dplyr::if_any(dplyr::all_of(.env$one_adr), ~ .x == 1) &
-              dplyr::if_any(dplyr::all_of(.env$one_drug), ~ .x == 1) &
-                   .data$range <= .env$tto_time_range &
-                   .data$tto_mean >= 0
-          )
-
-        # TTO for each drug-adr pair - longest delay between drug introduction
-        # and adr occurrence
-
-        ttos <-
-          link_sel |>
-          dplyr::summarise(
-            tto_max = max(.data$tto_mean, na.rm = TRUE),
-            .by = UMCReportId
-            # its a bit ambiguous to use UMCReportId
-            # but works since there is filtering on adr and drug of interest
-            # at the previous step
-          )
-
-        res <-
-          # if(nrow(ttos) == 0){
-          #   warning(paste0(
-          #     "there is no available time to onset for `",
-          #     drug_s,
-          #     "` with `", adr_s, "`."
-          #   ))
-          #
-          #   NULL
-          #
-          # } else {
-            ttos |>
-              dplyr::mutate(
-                .data$tto_max,
-                adr_s = .env$one_adr,
-                drug_s = .env$one_drug
-              )
-          # }
-
-        res
+    core_extract_tto <- function(one_adr, one_drug, UMCReportId = {
+      {
+        UMCReportId
       }
+    }) {
 
-    purrr::map(
-      adr_s,
-      function(one_adr_)
-        purrr::map(
-          drug_s,
-          function(one_drug_)
-            core_extract_tto(
-              one_adr = one_adr_,
-              one_drug = one_drug_
-              )
-        ) |>
-        purrr::list_rbind()
-    ) |>
-      purrr::list_rbind()
+      renamer <-
+        c(one_adr_col = one_adr,
+          one_drug_col = one_drug)
 
+      link_sel <-
+        .data |>
+        dplyr::rename(dplyr::all_of(renamer)) |>
+        dplyr::filter(
+          .data$one_adr_col == 1 &
+            .data$one_drug_col == 1 &
+            .data$range <= .env$tto_time_range &
+            .data$tto_mean >= 0
+        )
+
+      ttos <- dplyr::summarise(link_sel,
+                               tto_max = max(.data$tto_mean, na.rm = TRUE),
+                               .by = UMCReportId)
+      res <- dplyr::mutate(ttos,
+                           adr_s = .env$one_adr,
+                           drug_s = .env$one_drug) |>
+        dplyr::collect()
+
+      res
+    }
+    purrr::list_rbind(purrr::map(adr_s, function(one_adr_)
+      purrr::list_rbind(
+        purrr::map(drug_s, function(one_drug_)
+          core_extract_tto(one_adr = one_adr_, one_drug = one_drug_))
+      )))
   }
+

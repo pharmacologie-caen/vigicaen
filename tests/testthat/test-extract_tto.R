@@ -218,3 +218,39 @@ test_that("breaks if tto_mean or range are missing", {
     fixed = TRUE
   )
 })
+
+test_that("works with link as Table (out of memory)", {
+  link_ <-
+    link_ |>
+    add_drug(
+      d_code = ex_$d_groups_drecno,
+      drug_data = drug_,
+      data_type = "link"
+    ) |>
+    add_adr(
+      a_code = ex_$a_llt,
+      adr_data = adr_,
+      data_type = "link"
+    ) |>
+    arrow::as_arrow_table()
+
+  tto_test <-
+    extract_tto(.data = link_,
+                adr_s = "a_colitis",
+                drug_s = "pd1")
+
+  true_n_tto_avail <- 39
+
+  expect_equal(
+    nrow(tto_test),
+    true_n_tto_avail
+  )
+
+  true_tto_rch <-
+    c(205, 175, 36, 740, 379)
+
+  expect_equal(
+    head(tto_test$tto_max, 5),
+    true_tto_rch
+  )
+})
