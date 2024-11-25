@@ -9,11 +9,13 @@ test_that("import is successful", {
 
   # You may import the file directly to data.table format with dt_fst
   expect_warning({
-    df2 <<- dt_fst(path, "df")
+    df2 <- dt_fst(path, "df")
   })
 
   expect_equal(df, df2)
   expect_equal(class(df2), c("data.table", "data.frame"))
+
+  unlink(path, recursive = TRUE)
 })
 
 
@@ -30,11 +32,13 @@ test_that("works with here syntax seemlessly", {
 
   # You may import the file directly to data.table format with dt_fst
   expect_warning({
-    df2 <<- dt_fst(here_path, "df")
+    df2 <- dt_fst(here_path, "df")
   })
 
   expect_equal(df, df2)
   expect_equal(class(df2), c("data.table", "data.frame"))
+
+  unlink(path, recursive = TRUE)
 })
 
 test_that("works without name arg", {
@@ -48,7 +52,7 @@ test_that("works without name arg", {
 
   # You may import the file directly to data.table format with dt_fst
   expect_warning({
-    df2 <<- dt_fst(path_base = paste0(path, "\\", "df.fst"))
+    df2 <- dt_fst(path_base = paste0(path, "\\", "df.fst"))
   })
 
   expect_equal(df, df2)
@@ -56,10 +60,12 @@ test_that("works without name arg", {
 
   # You don't need to specify .fst
   expect_warning({
-    df3 <<- dt_fst(path_base = paste0(path, "\\", "df"))
+    df3 <- dt_fst(path_base = paste0(path, "\\", "df"))
   })
 
   expect_equal(df, df3)
   expect_equal(class(df3), c("data.table", "data.frame"))
+
+  unlink(path, recursive = TRUE)
 })
 

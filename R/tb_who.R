@@ -19,7 +19,7 @@
 #'
 #' @export
 #'
-#' @return .parquet files into the `path_who` directory.
+#' @returns .parquet files into the `path_who` directory.
 #' Some columns are returned as `integer` (all Id columns, including MedicinalProd_Id,
 #' with notable exception of DrecNo),
 #' and some columns as `numeric` (Quantity from ingredient table)

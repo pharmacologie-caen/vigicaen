@@ -1,6 +1,6 @@
 #' Read parquet and convert to data.table
 #'
-#' @description `r lifecycle::badge('experimental')` dt_parquet() will
+#' @description `r lifecycle::badge('experimental')` `dt_parquet()` will
 #' load data IN- our OUT- of memory. File extension can be omitted.
 #'
 #' @details  Output is a data.table.

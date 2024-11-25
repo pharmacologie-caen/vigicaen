@@ -1,7 +1,7 @@
 #' Summarise categorical variables
 #'
 #' @description `r lifecycle::badge('experimental')`
-#' `desc_facvar()` will summarize categorical data and let you handled output format.
+#' `desc_facvar()` will summarize categorical data and let you handle output format.
 #'
 #' @details Many other packages provide tools to summarize data. This one is just
 #' the package author's favorite.
@@ -9,9 +9,9 @@
 #' categorical variable at said level), `N_` (number of patients with an
 #' available value for this variable), and `pc_`, percentage between n and N.
 #' The format argument should contain at least the words "n", and "N",
-#' and optionally the word "pc". Words should be in that order, not mixed.
-#' `ncat_max` ensures that you didn't accidentaly provided a continuous
-#' variable to `desc_facvar`. If you have many levels for one of your variables,
+#' and optionally the word "pc".
+#' `ncat_max` ensures that you didn't provided a continuous
+#' variable to `desc_facvar()`. If you have many levels for one of your variables,
 #' set to `Inf` or high value.
 #' Equivalent for continuous data is [desc_cont()].
 #'

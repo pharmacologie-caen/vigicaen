@@ -19,7 +19,7 @@
 #' Negative lookarounds are used to ensure that a string does not match to
 #' composite drug names including the string, i.e. `trastuzumab emtasine`
 #' is not retrieved when looking for `trastuzumab` and `alitretinoin` is not
-#' ound when looking for `tretinoin`.
+#' found when looking for `tretinoin`.
 #' Fixed associations of drugs refers to specialty containing more than one
 #' active ingredient (for example, acetylsalicylic acid and clopidogrel).
 #' In VigiLyze, the default is NOT to account for these fixed associations.
