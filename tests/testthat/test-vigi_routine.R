@@ -85,9 +85,10 @@ test_that("standard use works", {
     dir.create(path_vigiroutine_test)
   }
 
-  expect_doppelganger(
-    "Exporting",
-    expect_message(
+  expect_message(
+    expect_doppelganger(
+      "Exporting",
+
       vigi_routine(
        case_tto = 150,
        demo_data = demo,
@@ -101,11 +102,11 @@ test_that("standard use works", {
        a_label = "Colitis",
        export_to = paste0(path_vigiroutine_test,
                           "vigicaen_graph.png"
+                          )
        )
-       ),
-      "Plot exported to .*vigicaen_graph.png"
+      ),
+    "Plot exported to .*vigicaen_graph.png"
     )
-  )
 
   expect_equal(
     file.exists(paste0(path_vigiroutine_test, "vigicaen_graph.png")),
@@ -288,18 +289,20 @@ test_that("too few time to onset prevents graph drawing", {
 
   # run routine
 
-  expect_doppelganger(
-    "no time to onset",
-    expect_message(vigi_routine(
-      demo_data = demo,
-      drug_data = drug,
-      adr_data  = adr,
-      link_data = link,
-      d_code = d_drecno,
-      a_code = a_llt,
-      vigibase_version = "September 2024"
-    ),
-    "Not enough data to plot time to onset")
+  expect_message(
+    expect_doppelganger(
+      "no time to onset",
+      vigi_routine(
+        demo_data = demo,
+        drug_data = drug,
+        adr_data  = adr,
+        link_data = link,
+        d_code = d_drecno,
+        a_code = a_llt,
+        vigibase_version = "September 2024"
+        )
+      ),
+      "Not enough data to plot time to onset"
   )
 
   # export is smaller
@@ -314,9 +317,10 @@ test_that("too few time to onset prevents graph drawing", {
     dir.create(path_vigiroutine_test2)
   }
 
-  expect_doppelganger(
-    "no time to onset export",
-    expect_message(expect_message(
+
+  expect_message(expect_message(
+    expect_doppelganger(
+      "no time to onset export",
       vigi_routine(
         case_tto = 150,
         demo_data = demo,
@@ -329,12 +333,12 @@ test_that("too few time to onset prevents graph drawing", {
         export_to = paste0(path_vigiroutine_test2,
                            "vigicaen_graph.png"
         )
+      )
       ),
-      "Plot exported to .*vigicaen_graph.png"
+    "Plot exported to .*vigicaen_graph.png"
     ),
     "Not enough data to plot time to onset"
-  )
-  )
+    )
 
   expect_equal(
     file.exists(paste0(path_vigiroutine_test2, "vigicaen_graph.png")),
