@@ -27,7 +27,8 @@
 #'   ) |>
 #'   arrow::as_arrow_table()
 #'
-#' tmp_folder <- tempdir()
+#' tmp_folder <- paste0(tempdir(), "/dtparquetex")
+#' dir.create(tmp_folder)
 #' path_data <- paste0(tmp_folder, "/")
 #'
 #' arrow::write_parquet(demo,
@@ -40,6 +41,9 @@
 #' # You may import the file directly to data.table format with dt_parquet
 #' demo <-
 #'   dt_parquet(path_data, "demo")
+#'
+#' # Clean up (required for CRAN checks)
+#' unlink(tmp_folder, recursive = TRUE)
 
 dt_parquet <- function(path_base,
                    name = NULL,

@@ -18,7 +18,8 @@
 #' # Say you have a data.frame stored in an fst format, such as this one
 #' df <- data.frame(a = 1:100, b = rnorm(100))
 #'
-#' path <- tempdir()
+#' path <- paste0(tempdir(), "/dtfstex")
+#' dir.create(path)
 #'
 #' fst::write_fst(x = df,
 #'               path = paste0(path, "/", "df.fst")
@@ -28,6 +29,9 @@
 #'
 #' # You may import the file directly to data.table format with dt_fst
 #' df <- dt_fst(path, "df")
+#'
+#' # Clean up (required for CRAN checks)
+#' unlink(path, recursive = TRUE)
 
 dt_fst <- function(path_base,
                    name = NULL,

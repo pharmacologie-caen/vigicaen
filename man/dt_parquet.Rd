@@ -37,7 +37,8 @@ demo <-
   ) |>
   arrow::as_arrow_table()
 
-tmp_folder <- tempdir()
+tmp_folder <- paste0(tempdir(), "/dtparquetex")
+dir.create(tmp_folder)
 path_data <- paste0(tmp_folder, "/")
 
 arrow::write_parquet(demo,
@@ -50,6 +51,9 @@ rm(demo)
 # You may import the file directly to data.table format with dt_parquet
 demo <-
   dt_parquet(path_data, "demo")
+
+# Clean up (required for CRAN checks)
+unlink(tmp_folder, recursive = TRUE)
 }
 \seealso{
 \code{\link[=tb_vigibase]{tb_vigibase()}}, \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_meddra]{tb_meddra()}}
