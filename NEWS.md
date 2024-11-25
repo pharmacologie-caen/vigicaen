@@ -1,3 +1,5 @@
+# vigicaen 0.14.0
+
 ## New features
 
 #90 Introducing `vigi_routine()` to streamline the process for
