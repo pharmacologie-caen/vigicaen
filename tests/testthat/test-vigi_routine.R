@@ -82,15 +82,15 @@ test_that("standard use works", {
        d_label = "Nivolumab",
        a_label = "Colitis",
        export_to = paste0(path_vigiroutine_test,
-                          "vigicaen_graph.svg"
+                          "vigicaen_graph.png"
        )
        ),
-      "Plot exported to .*vigicaen_graph.svg"
+      "Plot exported to .*vigicaen_graph.png"
     )
   )
 
   expect_equal(
-    file.exists(paste0(path_vigiroutine_test, "vigicaen_graph.svg")),
+    file.exists(paste0(path_vigiroutine_test, "vigicaen_graph.png")),
     TRUE
   )
 })
@@ -309,17 +309,17 @@ test_that("too few time to onset prevents graph drawing", {
         a_code = a_llt,
         vigibase_version = "September 2024",
         export_to = paste0(path_vigiroutine_test2,
-                           "vigicaen_graph.svg"
+                           "vigicaen_graph.png"
         )
       ),
-      "Plot exported to .*vigicaen_graph.svg"
+      "Plot exported to .*vigicaen_graph.png"
     ),
     "Not enough data to plot time to onset"
   )
   )
 
   expect_equal(
-    file.exists(paste0(path_vigiroutine_test2, "vigicaen_graph.svg")),
+    file.exists(paste0(path_vigiroutine_test2, "vigicaen_graph.png")),
     TRUE
   )
 

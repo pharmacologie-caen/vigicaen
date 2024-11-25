@@ -123,7 +123,7 @@
 #'   vigibase_version = "September 2024",
 #'   d_label = "Nivolumab",
 #'   a_label = "Colitis",
-#'   export_to = paste0(tempdir(), "/", "vigicaen_graph.svg")
+#'   export_to = paste0(tempdir(), "/", "vigicaen_graph.png")
 #' )
 
 vigi_routine <-

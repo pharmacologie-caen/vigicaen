@@ -68,6 +68,8 @@ a_code <-
 
 # Change export_to to an appropriate path on your computer
 
+# install.packages("svglite") # run this line if you want to use .svg
+
 vigi_routine(
   case_tto  = 150,
   demo_data = demo,

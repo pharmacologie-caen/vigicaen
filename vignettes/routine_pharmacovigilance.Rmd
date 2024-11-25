@@ -241,6 +241,9 @@ extensions:
 > ".eps", ".ps", ".tex" (pictex), ".pdf", ".jpeg",
 > ".tiff", ".png", ".bmp", ".svg" or ".wmf" (windows only)
 
+Some of these extensions (like .svg) require additional packages to work.
+(e.g. svglite for ".svg").
+
 ```{r vigi_routine_case_export, eval=FALSE}
 vigi_routine(
   case_tto  = 150,
@@ -253,6 +256,6 @@ vigi_routine(
   d_label   = "Nivolumab",
   a_label   = "Colitis (HLT)",
   vigibase_version = "September 2024",
-  export_to = "~/vigicaen_graph.svg"
+  export_to = "~/vigicaen_graph.png"
 )
 ```
