@@ -1,3 +1,10 @@
+## New features
+
+#90 Introducing `vigi_routine()` to streamline the process for
+pharmacovigilance practitioners. This function is intended for 
+non-expert users, to produce an Information Component and 
+time to onset graph.
+
 ## Minor
 
 #92 `tb_main()` and `tb_sub()` are fusionned into `tb_vigibase()`.

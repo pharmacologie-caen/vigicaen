@@ -1,5 +1,5 @@
 ---
-title: "basic_workflow"
+title: "Basic Workflow"
 output: 
   rmarkdown::html_vignette:
     keep_md: true
@@ -109,7 +109,7 @@ from a scientific point of view. But for now, it's pretty trivial.
 
 Once you've decided which drugs you would like to study
 (e.g. nivolumab in this tutorial), you need to create
-a named list of character vectors.
+a **named list** of character vectors.
 
 ```{r drug_sel}
 d_sel <- # drug selection

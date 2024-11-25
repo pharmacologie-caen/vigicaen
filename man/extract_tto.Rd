@@ -4,7 +4,7 @@
 \alias{extract_tto}
 \title{Time to onset extraction}
 \usage{
-extract_tto(.data, adr_s = "a_colitis", drug_s = "pd1", tto_time_range = 1)
+extract_tto(.data, adr_s, drug_s, tto_time_range = 1)
 }
 \arguments{
 \item{.data}{A \code{\link{link_}} style data.table.}
