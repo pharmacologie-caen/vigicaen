@@ -1,3 +1,21 @@
+# By default, if vdiffr is not installed, all visual tests are skipped unless
+# VDIFFR_RUN_TESTS is explicitly set to "true", which should be the case only on
+# a GitHub Actions CI runner with stable version of R.
+
+if (requireNamespace("vdiffr", quietly = TRUE) && utils::packageVersion('testthat') >= '3.0.3') {
+  expect_doppelganger <- vdiffr::expect_doppelganger
+} else {
+  # If vdiffr is not available and visual tests are explicitly required, raise error.
+  if (identical(Sys.getenv("VDIFFR_RUN_TESTS"), "true")) {
+    abort("vdiffr is not installed")
+  }
+
+  # Otherwise, assign a dummy function
+  expect_doppelganger <- function(...) skip("vdiffr is not installed.")
+}
+
+# from https://github.com/tidyverse/ggplot2/blob/ddd207e926cc1c1847dc661d9a099b8ec19c4010/tests/testthat/helper-vdiffr.R#L1-L15
+
 test_that("standard use works", {
   d_drecno <-
     ex_$d_drecno["nivolumab"]
@@ -12,7 +30,7 @@ test_that("standard use works", {
 
   # run routine
 
-  vdiffr::expect_doppelganger(
+  expect_doppelganger(
     "Base graphic",
    vigi_routine(
       demo_data = demo,
@@ -25,7 +43,7 @@ test_that("standard use works", {
     )
   )
 
- vdiffr::expect_doppelganger(
+ expect_doppelganger(
     "Case time to onset",
     vigi_routine(
      case_tto = 150,
@@ -41,7 +59,7 @@ test_that("standard use works", {
 
 # Additional customization with d_name and a_name args
 
-  vdiffr::expect_doppelganger(
+  expect_doppelganger(
     "Custom drug and adr labels",
    vigi_routine(
      case_tto = 150,
@@ -67,7 +85,7 @@ test_that("standard use works", {
     dir.create(path_vigiroutine_test)
   }
 
-  vdiffr::expect_doppelganger(
+  expect_doppelganger(
     "Exporting",
     expect_message(
       vigi_routine(
@@ -213,7 +231,7 @@ test_that("formatting IC025 with out of bound value works", {
 
   # run routine
 
-  vdiffr::expect_doppelganger(
+  expect_doppelganger(
     "ic025 below 0",
     vigi_routine(
       demo_data = demo,
@@ -241,7 +259,7 @@ test_that("patient label is left or right justified, depending on tto median", {
 
   # run routine
 
-  vdiffr::expect_doppelganger(
+  expect_doppelganger(
     "case_tto below median",
     vigi_routine(
       demo_data = demo,
@@ -270,7 +288,7 @@ test_that("too few time to onset prevents graph drawing", {
 
   # run routine
 
-  vdiffr::expect_doppelganger(
+  expect_doppelganger(
     "no time to onset",
     expect_message(vigi_routine(
       demo_data = demo,
@@ -296,7 +314,7 @@ test_that("too few time to onset prevents graph drawing", {
     dir.create(path_vigiroutine_test2)
   }
 
-  vdiffr::expect_doppelganger(
+  expect_doppelganger(
     "no time to onset export",
     expect_message(expect_message(
       vigi_routine(
