@@ -67,7 +67,7 @@ smq_list_content <- smq_list_content_
 ```
 
 
-```{r drugs_adrs, include = FALSE}
+```{r drugs_adrs, eval = FALSE}
 # #### Drug definitions #### ####
 
 # drug selection, prefer use lower case
