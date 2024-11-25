@@ -12,7 +12,7 @@ It is also the output directory.}
 }
 \value{
 .parquet files into the \code{path_meddra} directory.
-Three tables: \code{meddra_hierarchy}, \code{smq_list}, and \code{smq_content.}
+Three tables: \code{meddra_hierarchy}, \code{smq_list}, and \code{smq_content}.
 Some columns are returned as \code{integer} (all \verb{*_code} columns).
 All other columns are \code{character}.
 }

@@ -43,7 +43,7 @@ for this variable.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-\code{desc_facvar()} will summarize categorical data and let you handled output format.
+\code{desc_facvar()} will summarize categorical data and let you handle output format.
 }
 \details{
 Many other packages provide tools to summarize data. This one is just
@@ -52,9 +52,9 @@ Valid format options should include \code{n_} (number of patients with the
 categorical variable at said level), \code{N_} (number of patients with an
 available value for this variable), and \code{pc_}, percentage between n and N.
 The format argument should contain at least the words "n", and "N",
-and optionally the word "pc". Words should be in that order, not mixed.
-\code{ncat_max} ensures that you didn't accidentaly provided a continuous
-variable to \code{desc_facvar}. If you have many levels for one of your variables,
+and optionally the word "pc".
+\code{ncat_max} ensures that you didn't provided a continuous
+variable to \code{desc_facvar()}. If you have many levels for one of your variables,
 set to \code{Inf} or high value.
 Equivalent for continuous data is \code{\link[=desc_cont]{desc_cont()}}.
 }

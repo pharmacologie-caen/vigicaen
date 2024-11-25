@@ -16,7 +16,7 @@ dt_parquet(path_base, name = NULL, ext = ".parquet", in_memory = TRUE)
 \item{in_memory}{Logical, should data be loaded in memory?}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} dt_parquet() will
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \code{dt_parquet()} will
 load data IN- our OUT- of memory. File extension can be omitted.
 }
 \details{

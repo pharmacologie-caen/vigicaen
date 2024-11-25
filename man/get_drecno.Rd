@@ -47,7 +47,7 @@ You should use WHO names to ensure proper identification of drugs and DrecNos.
 Negative lookarounds are used to ensure that a string does not match to
 composite drug names including the string, i.e. \verb{trastuzumab emtasine}
 is not retrieved when looking for \code{trastuzumab} and \code{alitretinoin} is not
-ound when looking for \code{tretinoin}.
+found when looking for \code{tretinoin}.
 Fixed associations of drugs refers to specialty containing more than one
 active ingredient (for example, acetylsalicylic acid and clopidogrel).
 In VigiLyze, the default is NOT to account for these fixed associations.
