@@ -52,8 +52,8 @@
 
 desc_tto <-
   function(.data,
-           adr_s = "a_colitis",
-           drug_s = "pd1",
+           adr_s,
+           drug_s,
            tto_time_range = 1,
            ...
            ){
