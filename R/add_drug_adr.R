@@ -94,7 +94,7 @@ add_drug_adr  <- function(.data,
 
 
   # Merge final_data_drug and final_data_adr
-  final_data <-  final_data_adr %>%
+  final_data <-  final_data_adr |>
     dplyr::left_join(final_data_drug_filtered, by = "UMCReportId") # or use the appropriate column to join
 
 }
