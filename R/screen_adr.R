@@ -1,5 +1,5 @@
-  #' Screening of Adverse Drug Reactions
-  #'
+#' @name screen_adr
+#' @title Screening of Adverse Drug Reactions
   #' @description `r lifecycle::badge('experimental')`
   #' The `screen_adr()` function identifies and ranks the most frequently reported adverse drug reaction (ADR) terms in a dataset, based on a specified MedDRA term level. It allows users to filter terms by a frequency threshold or extract the top `n` most frequently occurring terms.
   #'
@@ -13,8 +13,8 @@
   #' @param .data A `data.table` containing ADR data, including a column `MedDRA_Id` for MedDRA terms and `UMCReportId` for unique report identifiers.
   #' @param meddra A `data.table` containing the MedDRA hierarchy, with mappings between `llt_code` and terms at the specified `term_level`.
   #' @param term_level A character string specifying the MedDRA hierarchy level. Must be one of `"soc"`, `"hlgt"`, `"hlt"`, `"pt"`, or `"llt"`.
-  #' @param freq_threshold A numeric value indicating the minimum frequency (as a proportion) of cases where a term must appear to be included in the results. For example, `0.05` means 5%. Ignored if `top_n` is specified.
-  #' @param top_n An integer specifying the number of most frequently occurring terms to return. Overrides `freq_threshold` if both are provided.
+#' @param freq_threshold A numeric value indicating the minimum frequency (as a proportion) of cases where a term must appear to be included in the results. For example, `0.05` means 5%. Defaults to `NULL`, meaning no threshold is applied unless `top_n` is different from `NULL`.
+#' @param top_n An integer specifying the number of most frequently occurring terms to return. Defaults to `NULL`. Overrides `freq_threshold` if both are provided.
   #'
   #' @return A `data.frame` with the following columns:
   #' - **term**: The MedDRA term at the specified hierarchy level.
@@ -41,7 +41,6 @@
   #'   term_level = "hlt",
   #'   top_n = 5
   #' )
-
 
 utils::globalVariables(c("UMCReportId", "term", "n", "percentage"))
 
@@ -76,26 +75,26 @@ screen_adr <- function (.data, meddra, term_level = c("soc", "hlgt", "hlt", "pt"
   t_to_mid <- create_term_to_mid_table(meddra, m_id_unique, llt_code = "llt_code")
 
   # Count the number of distinct reports for each term
-  n_case_counts <- .data %>%
-    dplyr::left_join(t_to_mid, by = c("MedDRA_Id" = "llt_code"), relationship = "many-to-many") %>%
-    dplyr::distinct(UMCReportId, term) %>%  # Unique UMCReportId and term combinations
+  n_case_counts <- .data |>
+    dplyr::left_join(t_to_mid, by = c("MedDRA_Id" = "llt_code"), relationship = "many-to-many") |>
+    dplyr::distinct(UMCReportId, term) |>  # Unique UMCReportId and term combinations
     dplyr::count(term)  # Count the number of distinct reports for each term
 
   # Calculate the percentage per report
   total_reports <- dplyr::n_distinct(.data$UMCReportId)  # Total unique reports
-  n_case_counts <- n_case_counts %>%
-    dplyr::mutate(percentage = (n / total_reports) * 100) %>%  # Calculate percentage based on unique reports
+  n_case_counts <- n_case_counts |>
+    dplyr::mutate(percentage = (n / total_reports) * 100) |>  # Calculate percentage based on unique reports
     dplyr::arrange(dplyr::desc(percentage))  # Arrange terms by percentage
 
   # Filter terms based on the frequency threshold if specified
   if (!is.null(freq_threshold)) {
-    n_case_counts <- n_case_counts %>%
+    n_case_counts <- n_case_counts |>
       dplyr::filter(percentage >= freq_threshold * 100)  # Apply the frequency threshold
   }
 
   # Keep only the top_n most frequent terms if specified
   if (!is.null(top_n)) {
-    n_case_counts <- n_case_counts %>%
+    n_case_counts <- n_case_counts |>
       dplyr::slice_head(n = top_n)  # Select the top_n most frequent terms
   }
 
