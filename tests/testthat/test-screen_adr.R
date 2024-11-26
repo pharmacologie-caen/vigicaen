@@ -75,7 +75,7 @@ test_that("counts are good", {
 
 test_that("screen_adr works with top_n", {
   result <- screen_adr(.data = adr_, meddra = meddra_, term_level = "pt", top_n = 3)
-  expect_equal(nrow(result), 2)  # Ensure it returns only top 2 terms
+  expect_equal(nrow(result), 3)  # Ensure it returns only top 3 terms
   expect_true("Pneumonitis" %in% result$term && "Diarrhoea" %in% result$term && NA %in% result$term)  # Top 2 frequent terms are correct
 })
 
