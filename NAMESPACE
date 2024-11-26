@@ -2,6 +2,7 @@
 
 export(add_adr)
 export(add_drug)
+export(add_drug_adr)
 export(cff)
 export(check_dm)
 export(compute_or_abcd)
