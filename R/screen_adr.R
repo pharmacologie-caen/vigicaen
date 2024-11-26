@@ -42,7 +42,7 @@
   #'   top_n = 5
   #' )
 
-utils::globalVariables(c("UMCReportId", "term", "n", "percentage"))
+utils::globalVariables(c(".", "UMCReportId", "term", "n", "percentage"))
 
 
 
@@ -102,4 +102,4 @@ screen_adr <- function (.data, meddra, term_level = c("soc", "hlgt", "hlt", "pt"
 }
 
 tmp_file <- tempfile()
-on.exit(unlink(tmp_file))
+on.exit(unlink(tmp_file), add = TRUE)
