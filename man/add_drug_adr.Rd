@@ -3,20 +3,6 @@
 \name{add_drug_adr}
 \alias{add_drug_adr}
 \title{Add DRUG and ADR columns}
-\usage{
-add_drug_adr(
-  .data,
-  d_code,
-  d_names = names(d_code),
-  drug_data,
-  a_code,
-  a_names = names(a_code),
-  adr_data,
-  repbasis = "sci",
-  method = c("DrecNo", "MedicinalProd_Id"),
-  data_type = c("demo", "link", "adr")
-)
-}
 \arguments{
 \item{.data}{The dataset used to identify individual reports (usually, it is \code{demo}).}
 
@@ -49,6 +35,20 @@ The function first uses \code{add_drug()} to add the drug columns, then filters 
 \examples{
 # Example usage:
 # Combine both drug and ADR columns into a dataset `demo_`
+
+d_names <- rlang::list2(
+nivolumab = "nivolumab",
+pembrolizumab = "pembrolizumab"
+)
+
+d_drecno <-
+ d_names |>
+ get_drecno(
+   mp_short = mp_short_
+ )
+
+a_llt <- ex_$a_llt
+
 demo_ <- add_drug_adr(
   .data = demo_,
   d_code = d_drecno,

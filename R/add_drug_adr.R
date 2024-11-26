@@ -26,6 +26,20 @@
 #' @examples
 #' # Example usage:
 #' # Combine both drug and ADR columns into a dataset `demo_`
+#'
+#' d_names <- rlang::list2(
+#' nivolumab = "nivolumab",
+#' pembrolizumab = "pembrolizumab"
+#' )
+#'
+#' d_drecno <-
+#'  d_names |>
+#'  get_drecno(
+#'    mp_short = mp_short_
+#'  )
+#'
+#' a_llt <- ex_$a_llt
+#'
 #' demo_ <- add_drug_adr(
 #'   .data = demo_,
 #'   d_code = d_drecno,
@@ -41,8 +55,9 @@
 #'
 #' # Check the merged dataset
 #' check_dm(demo_, cols = c("nivolumab", "colitis"))
+#' @name add_drug_adr
 
-
+utils::globalVariables("UMCReportId")
 
 add_drug_adr  <- function(.data,
                           d_code,
@@ -53,11 +68,8 @@ add_drug_adr  <- function(.data,
                           adr_data,
                           repbasis = "sci",
                           method = c("DrecNo", "MedicinalProd_Id"),
-                          data_type = c("demo", "link", "adr")
-)
+                          data_type = c("demo", "link", "adr")) {
 
-
-{
   final_data_drug  <- #just use add_drug
     add_drug(.data = .data,
              d_code = d_code,
@@ -86,3 +98,6 @@ add_drug_adr  <- function(.data,
     dplyr::left_join(final_data_drug_filtered, by = "UMCReportId") # or use the appropriate column to join
 
 }
+
+tmp_file <- tempfile()
+on.exit(unlink(tmp_file), add = TRUE)
