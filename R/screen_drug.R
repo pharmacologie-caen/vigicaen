@@ -1,18 +1,31 @@
 #' @name screen_drug
-#' @title Screening of Drug Mentions
+#'
+#' @title Screening of Drugs
+#'
 #' @description `r lifecycle::badge('experimental')`
-#' The `screen_drug()` function identifies and ranks the most frequently reported drugs (by substance) in a dataset. It combines mappings from two input tables to resolve substances for each drug ID.
+#' The `screen_drug()` function identifies and ranks the most frequently
+#' reported drugs (by active ingredient) in a dataset.
 #'
 #' @details
-#' - If `freq_threshold` is set (e.g., `0.05`), the function filters drugs appearing in at least 5% of unique reports in `.data`.
-#' - If `top_n` is specified, only the most frequent `n` drugs are returned. If both `freq_threshold` and `top_n` are provided, only `top_n` is applied (a warning is issued in such cases).
-#' - Counts are computed at the *case* level, not the drug mention level. This means frequencies reflect the proportion of unique reports (cases) where a drug is mentioned, rather than the total mentions across all reports.
+#' - If `freq_threshold` is set (e.g., `0.05`), the function filters
+#' drugs appearing in at least 5% of unique reports in `.data`.
+#' - If `top_n` is specified, only the most frequent `n` drugs are returned.
+#' If both `freq_threshold` and `top_n` are provided, only `top_n` is
+#' applied (a warning is raised in such cases).
+#' - Counts are computed at the *case* level, not the drug mention level.
+#' This means frequencies reflect the proportion of unique
+#' reports (cases) where a drug is mentioned, rather than the total
+#' mentions across all reports.
 #'
-#' @param .data A `data.table` containing drug data, including columns `MedicinalProd_Id` for drug identifiers and `UMCReportId` for unique report identifiers.
+#' @param .data A `data.table` containing drug data,
+#' including columns `MedicinalProd_Id` for drug identifiers and `UMCReportId`
+#' for unique report identifiers.
 #' @param sun A `data.table` containing `Substance_Id` and `Substance.name` mappings.
 #' @param ing A `data.table` containing `Substance_Id` and `MedicinalProd_Id` mappings.
 #' @param mp A `data.table` containing `MedicinalProd_Id` and `drug-name-t` mappings
-#' @param freq_threshold A numeric value indicating the minimum frequency (as a proportion) of cases where a drug must appear to be included in the results. Defaults to `NULL`.
+#' @param freq_threshold A numeric value indicating the minimum
+#' frequency (as a proportion) of cases where a drug must appear
+#' to be included in the results. Defaults to `NULL`.
 #' @param top_n An integer specifying the number of most frequently occurring drugs to return. Defaults to `NULL`.
 #'
 #' @return A `data.frame` with the following columns:
