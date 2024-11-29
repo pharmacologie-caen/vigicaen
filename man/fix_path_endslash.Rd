@@ -24,5 +24,5 @@ And also with \code{tempdir()}.
 vigicaen:::fix_path_endslash("C:/Users/username/Documents")
 }
 \seealso{
-\code{\link[=tb_vigibase]{tb_vigibase()}}, \code{\link[=tb_meddra]{tb_meddra()}}, \code{\link[=tb_custom]{tb_custom()}}, \code{\link[=dt_parquet]{dt_parquet()}}
+\code{\link[=tb_vigibase]{tb_vigibase()}}, \code{\link[=tb_meddra]{tb_meddra()}}, \code{\link[=tb_subset]{tb_subset()}}, \code{\link[=dt_parquet]{dt_parquet()}}
 }

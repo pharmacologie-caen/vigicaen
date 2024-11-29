@@ -140,7 +140,7 @@ smq_list_content <-
 
 If you want to work on a specific subset of VigiBase (e.g. older adults,
 some specific drugs, or adverse drug reaction), you can create a
-dedicated subset with the `tb_custom()` function.
+dedicated subset with the `tb_subset()` function.
 
 Currently, you can subset on
 
@@ -151,9 +151,9 @@ Currently, you can subset on
 
 -   MedDRA codes of adverse drug reactions (MedDRA_Id)
 
-Type `?vigicaen::tb_custom` for more help
+Type `?vigicaen::tb_subset` for more help
 
-```{r tb_custom, eval = FALSE}
+```{r tb_subset, eval = FALSE}
 
 sv_selection <-
     c(7, 8)
@@ -162,7 +162,7 @@ wd_in <- "some/place/on/your/computer/containing/vigibase_ecl/data"
 
 wd_out <- paste0(wd_in, "/", "more_than_65_subset", "/")
 
-tb_custom(wd_in, wd_out,
+tb_subset(wd_in, wd_out,
           subset_var = "age",
           sv_selection = sv_selection)
 ```

@@ -1,7 +1,7 @@
 # you can subset on drecno, age, meddra_id
 
     Code
-      tb_custom(wd_in = paste0(wd_in, "/"), wd_out = paste0(wd_in, "/",
+      tb_subset(wd_in = paste0(wd_in, "/"), wd_out = paste0(wd_in, "/",
         "subset_drecno", "/"), subset_var = "drecno", sv_selection = sv_selection_drecno)
     Output
       demo.parquet subset has 1 rows.
@@ -16,7 +16,7 @@
 ---
 
     Code
-      tb_custom(wd_in = paste0(wd_in, "/"), wd_out = paste0(wd_in, "/", "subset_age",
+      tb_subset(wd_in = paste0(wd_in, "/"), wd_out = paste0(wd_in, "/", "subset_age",
         "/"), subset_var = "age", sv_selection = c(7, 8))
     Output
       demo.parquet subset has 1 rows.
@@ -31,7 +31,7 @@
 ---
 
     Code
-      tb_custom(wd_in = paste0(wd_in, "/"), wd_out = paste0(wd_in, "/",
+      tb_subset(wd_in = paste0(wd_in, "/"), wd_out = paste0(wd_in, "/",
         "subset_meddraid", "/"), subset_var = "meddra_id", sv_selection = sv_selection_mid)
     Output
       demo.parquet subset has 2 rows.
@@ -46,7 +46,7 @@
 # you can keep suspdup
 
     Code
-      tb_custom(wd_in = paste0(wd_in, "/"), wd_out = paste0(wd_in, "/",
+      tb_subset(wd_in = paste0(wd_in, "/"), wd_out = paste0(wd_in, "/",
         "subset_age_suspdup", "/"), subset_var = "age", sv_selection = c(7, 8),
       rm_suspdup = FALSE)
     Output
@@ -63,7 +63,7 @@
 ---
 
     Code
-      tb_custom(wd_in = paste0(wd_in, "/"), wd_out = paste0(wd_in, "/", "subset_age",
+      tb_subset(wd_in = paste0(wd_in, "/"), wd_out = paste0(wd_in, "/", "subset_age",
         "/"), subset_var = "age", sv_selection = c(7, 8), rm_suspdup = TRUE)
     Output
       demo.parquet subset has 2 rows.
@@ -78,7 +78,7 @@
 # alternative syntaxes work
 
     Code
-      tb_custom(wd_in = wd_in, wd_out = paste0(wd_in, "/", "subset_age"), subset_var = "age",
+      tb_subset(wd_in = wd_in, wd_out = paste0(wd_in, "/", "subset_age"), subset_var = "age",
       sv_selection = c(7, 8))
     Output
       demo.parquet subset has 2 rows.

@@ -38,5 +38,5 @@ path_who <- "/whodrug_directory/"
 # tb_who(path_who = path_who)
 }
 \seealso{
-\code{\link[=tb_vigibase]{tb_vigibase()}}, \code{\link[=tb_meddra]{tb_meddra()}}, \code{\link[=tb_custom]{tb_custom()}}, \code{\link[=dt_parquet]{dt_parquet()}}
+\code{\link[=tb_vigibase]{tb_vigibase()}}, \code{\link[=tb_meddra]{tb_meddra()}}, \code{\link[=tb_subset]{tb_subset()}}, \code{\link[=dt_parquet]{dt_parquet()}}
 }
