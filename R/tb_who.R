@@ -15,7 +15,7 @@
 #'
 #' @importFrom stringr str_sub str_trim
 #'
-#' @seealso [tb_vigibase()], [tb_meddra()], [tb_custom()], [dt_parquet()]
+#' @seealso [tb_vigibase()], [tb_meddra()], [tb_subset()], [dt_parquet()]
 #'
 #' @export
 #'

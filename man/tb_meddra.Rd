@@ -45,7 +45,7 @@ path_meddra <- "/meddra_directory/"
 
 }
 \seealso{
-\code{\link[=tb_vigibase]{tb_vigibase()}}, \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_custom]{tb_custom()}}, \code{\link[=dt_parquet]{dt_parquet()}}
+\code{\link[=tb_vigibase]{tb_vigibase()}}, \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_subset]{tb_subset()}}, \code{\link[=dt_parquet]{dt_parquet()}}
 }
 \keyword{import}
 \keyword{meddra}

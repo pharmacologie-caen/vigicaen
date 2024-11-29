@@ -33,7 +33,7 @@
 #'
 #' @export
 #'
-#' @seealso [tb_who()], [tb_meddra()], [tb_custom()], [dt_parquet()]
+#' @seealso [tb_who()], [tb_meddra()], [tb_subset()], [dt_parquet()]
 #'
 #' @return .parquet files into the `path_base` directory (**including suspected duplicates tables**).
 #' Some columns are returned as `integer` (UMCReportId, Drug_Id, MedicinalProd_Id, Adr_Id, MedDRA_Id),
