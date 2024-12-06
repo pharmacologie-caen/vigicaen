@@ -82,6 +82,7 @@ screen_adr <- function (.data, meddra, term_level = c("soc", "hlgt", "hlt", "pt"
     meddra[llt_code %in% m_id_unique$MedDRA_Id, .(term = get(term_level_name), llt_code)]
   }
   t_to_mid <- create_term_to_mid_table(meddra, m_id_unique, llt_code = "llt_code")
+  t_to_mid <- unique(t_to_mid) # to avoid duplicates
 
   # Count the number of distinct reports for each term
   n_case_counts <- .data |>
