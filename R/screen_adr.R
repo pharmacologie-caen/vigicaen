@@ -10,8 +10,8 @@
   #'
   #' The function processes an ADR dataset (`adr_`) and a MedDRA dataset (`meddra_`) to generate results that are linked to a specific MedDRA hierarchy level (`soc`, `hlgt`, `hlt`, `pt`, or `llt`).
   #'
-  #' @param .data A `data.table` containing ADR data, including a column `MedDRA_Id` for MedDRA terms and `UMCReportId` for unique report identifiers.
-  #' @param meddra A `data.table` containing the MedDRA hierarchy, with mappings between `llt_code` and terms at the specified `term_level`.
+  #' @param .data A `data.table` containing ADR data, including a column `MedDRA_Id` for MedDRA terms and `UMCReportId` for unique report identifiers.(Works with data.frames but slower)
+  #' @param meddra A `data.table` containing the MedDRA hierarchy, with mappings between `llt_code` and terms at the specified `term_level`.(Works with data.frames but slower)
   #' @param term_level A character string specifying the MedDRA hierarchy level. Must be one of `"soc"`, `"hlgt"`, `"hlt"`, `"pt"`, or `"llt"`.
 #' @param freq_threshold A numeric value indicating the minimum frequency (as a proportion) of cases where a term must appear to be included in the results. For example, `0.05` means 5%. Defaults to `NULL`, meaning no threshold is applied unless `top_n` is different from `NULL`.
 #' @param top_n An integer specifying the number of most frequently occurring terms to return. Defaults to `NULL`. Overrides `freq_threshold` if both are provided.
@@ -61,6 +61,15 @@ screen_adr <- function (.data, meddra, term_level = c("soc", "hlgt", "hlt", "pt"
   })
 
   term_level_name <- paste0(term_level, "_name")  # Use term_level_name directly
+
+  # Convert to data.table if necessary
+  if (!inherits(.data, "data.table")) {
+    .data <- as.data.table(.data)
+  }
+
+  if (!inherits(meddra, "data.table")) {
+    meddra <- as.data.table(meddra)
+  }
 
   # Create the unique MedDRA ID table
   create_mid_unique_table <- function(.data, MedDRA_Id, N) {
