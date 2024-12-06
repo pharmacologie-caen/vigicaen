@@ -41,6 +41,8 @@
   #'   term_level = "hlt",
   #'   top_n = 5
   #' )
+  #'
+  #' @import data.table
 
 utils::globalVariables(c(".", "UMCReportId", "term", "n", "percentage"))
 
