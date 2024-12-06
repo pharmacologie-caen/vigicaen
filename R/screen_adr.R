@@ -66,11 +66,11 @@ screen_adr <- function (.data, meddra, term_level = c("soc", "hlgt", "hlt", "pt"
 
   # Convert to data.table if necessary
   if (!inherits(.data, "data.table")) {
-    .data <- as.data.table(.data)
+    .data <- data.table::as.data.table(.data)
   }
 
   if (!inherits(meddra, "data.table")) {
-    meddra <- as.data.table(meddra)
+    meddra <- data.table::as.data.table(meddra)
   }
 
   # Create the unique MedDRA ID table
