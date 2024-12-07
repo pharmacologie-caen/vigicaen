@@ -4,37 +4,66 @@
 \alias{screen_adr}
 \title{Screening of Adverse Drug Reactions}
 \arguments{
-\item{.data}{A \code{data.table} containing ADR data, including a column \code{MedDRA_Id} for MedDRA terms and \code{UMCReportId} for unique report identifiers.}
+\item{.data}{A \code{data.table} containing ADR data,
+including a column \code{MedDRA_Id} for MedDRA terms
+and \code{UMCReportId} for unique report
+identifiers. (Works with data.frames but slower)}
 
-\item{meddra}{A \code{data.table} containing the MedDRA hierarchy, with mappings between \code{llt_code} and terms at the specified \code{term_level}.}
+\item{meddra}{A \code{data.table} containing the MedDRA hierarchy,
+with mappings between \code{llt_code} and terms at the
+specified \code{term_level}.(Works with data.frames but slower)}
 
-\item{term_level}{A character string specifying the MedDRA hierarchy level. Must be one of \code{"soc"}, \code{"hlgt"}, \code{"hlt"}, \code{"pt"}, or \code{"llt"}.}
+\item{term_level}{A character string specifying the
+MedDRA hierarchy level. Must be one
+of \code{"soc"}, \code{"hlgt"}, \code{"hlt"}, \code{"pt"}, or \code{"llt"}.}
 
-\item{freq_threshold}{A numeric value indicating the minimum frequency (as a proportion) of cases where a term must appear to be included in the results. For example, \code{0.05} means 5\%. Defaults to \code{NULL}, meaning no threshold is applied unless \code{top_n} is different from \code{NULL}.}
+\item{freq_threshold}{A numeric value indicating
+the minimum frequency (as a proportion) of cases
+where a term must appear to be included in the results.
+For example, \code{0.05} means 5\%. Defaults to \code{NULL},
+meaning no threshold is applied unless \code{top_n}
+is different from \code{NULL}.}
 
-\item{top_n}{An integer specifying the number of most frequently occurring terms to return. Defaults to \code{NULL}. Overrides \code{freq_threshold} if both are provided.}
+\item{top_n}{An integer specifying the number of most
+frequently occurring terms to return.
+Defaults to \code{NULL}. Overrides \code{freq_threshold} if both are provided.}
 }
 \value{
 A \code{data.frame} with the following columns:
 \itemize{
 \item \strong{term}: The MedDRA term at the specified hierarchy level.
-\item \strong{n}: The number of unique reports (cases) where the term appears.
-\item \strong{percentage}: The percentage of total unique reports where the term appears.
-The results are sorted in descending order of \code{percentage}.
+\item \strong{n}: The number of unique reports (cases) where
+the term appears.
+\item \strong{percentage}: The percentage of total unique reports
+where the term appears.
 }
+The results are sorted in descending order of \code{percentage}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-The \code{screen_adr()} function identifies and ranks the most frequently reported adverse drug reaction (ADR) terms in a dataset, based on a specified MedDRA term level. It allows users to filter terms by a frequency threshold or extract the top \code{n} most frequently occurring terms.
+The \code{screen_adr()} function identifies and ranks the
+most frequently reported adverse drug reaction (ADR) terms
+in a dataset, based on a specified MedDRA term level.
+It allows users to filter terms by a frequency
+threshold or extract the top \code{n} most frequently occurring terms.
 }
 \details{
 \itemize{
-\item If \code{freq_threshold} is set (e.g., \code{0.05}), the function filters ADR terms appearing in at least 5\% of unique reports in \code{.data}.
-\item If \code{top_n} is specified, only the most frequent \code{n} terms are returned. If both \code{freq_threshold} and \code{top_n} are provided, only \code{top_n} is applied (a warning is issued in such cases).
-\item Counts are computed at the \emph{case} level, not the ADR level. This means frequencies reflect the proportion of unique reports (cases) where a term is mentioned, rather than the total mentions across all reports.
+\item If \code{freq_threshold} is set (e.g., \code{0.05}), the function
+filters ADR terms appearing in at least 5\% of unique reports in \code{.data}.
+\item If \code{top_n} is specified, only the most frequent \code{n} terms
+are returned. If both \code{freq_threshold} and \code{top_n} are provided,
+only \code{top_n} is applied (a warning is issued in such cases).
+\item Counts are computed at the \emph{case} level, not the ADR level.
+This means frequencies reflect the proportion of unique
+reports (cases) where a term is mentioned,
+rather than the total mentions across all reports.
 }
 
-The function processes an ADR dataset (\code{adr_}) and a MedDRA dataset (\code{meddra_}) to generate results that are linked to a specific MedDRA hierarchy level (\code{soc}, \code{hlgt}, \code{hlt}, \code{pt}, or \code{llt}).
+The function processes an ADR dataset (\code{adr_}) and
+a MedDRA dataset (\code{meddra_}) to generate results
+that are linked to a specific MedDRA hierarchy
+level (\code{soc}, \code{hlgt}, \code{hlt}, \code{pt}, or \code{llt}).
 }
 \examples{
 # Example 1: Filter terms appearing in at least 5\% of reports
@@ -52,6 +81,7 @@ screen_adr(
   term_level = "hlt",
   top_n = 5
 )
+
 }
 \keyword{adr}
 \keyword{descriptive,}
