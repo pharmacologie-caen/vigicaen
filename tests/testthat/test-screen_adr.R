@@ -124,7 +124,7 @@ test_that("screen_adr handles term_level mismatch", {
   )
 })
 
-test_that("result is exact with dummy data.frames, even with low frequency ae", {
+test_that("result is exact with low frequency ae compounds", {
   adr_test <- data.frame(
     UMCReportId = 1:50,
     MedDRA_Id = c(rep(1,49), 2)
@@ -153,7 +153,7 @@ test_that("result is exact with dummy data.frames, even with low frequency ae", 
 
 
 
-test_that("result is correct with dummy data.frames per adr", {
+test_that("result is correct with double adr entries per case", {
   adr_test <- data.frame(
     UMCReportId = c(1, 1, 2),
     MedDRA_Id = c(1, 1, 2)
@@ -178,4 +178,128 @@ test_that("result is correct with dummy data.frames per adr", {
   )
 
   expect_equal(s_test2, s_true2)
+})
+
+test_that("multiple entries in meddra do not count several folds", {
+  adr_test <- data.frame(
+    UMCReportId = c(1, 2),
+    MedDRA_Id = c(1, 2)
+  )
+
+  meddra_test <- data.frame(
+    hlt_name = c("ae1", "ae1", "ae2"),
+    llt_code = c(1, 1, 2)
+  )
+
+  s_test <-
+    screen_adr(
+      .data = adr_test,
+      meddra = meddra_test,
+      term_level = "hlt",
+      freq_threshold = 0.05
+    )
+
+  s_true <- data.table(
+    term = c("ae1", "ae2"),
+    n = c(1, 1),
+    percentage = c(50, 50)
+  )
+
+  expect_equal(s_test, s_true)
+
+})
+
+test_that("unused llt codes don't show up in output", {
+  adr_test <- data.frame(
+    UMCReportId = c(1, 2),
+    MedDRA_Id = c(1, 2)
+  )
+
+  meddra_test <- data.frame(
+    hlt_name = c("ae1", "ae2", "ae3"),
+    llt_code = c(1, 2, 3)
+  )
+
+  s_test <-
+    screen_adr(
+      .data = adr_test,
+      meddra = meddra_test,
+      term_level = "hlt"
+    )
+
+  s_true <- data.table(
+    term = c("ae1", "ae2"),
+    n = c(1, 1),
+    percentage = c(50, 50)
+  )
+
+  expect_equal(s_test, s_true)
+})
+
+test_that("an llt code used in two hlt codes is counted twice", {
+  adr_test <- data.frame(
+    UMCReportId = c(1, 2, 2),
+    MedDRA_Id = c(1, 1, 2)
+  )
+
+  meddra_test <- data.frame(
+    hlt_name = c("ae1", "ae2", "ae3"),
+    llt_code = c(1, 1, 2)
+  )
+
+  s_test <-
+    screen_adr(
+      .data = adr_test,
+      meddra = meddra_test,
+      term_level = "hlt"
+    )
+
+  s_true <- data.table(
+    term = c("ae1", "ae2", "ae3"),
+    n = c(2, 2, 1),
+    percentage = c(100, 100, 50)
+  )
+
+  expect_equal(s_test, s_true)
+
+  # consequence: sum(n) is larger than number of cases
+
+  expect_true(
+    sum(s_test$n) > length(unique(adr_test$UMCReportId))
+  )
+
+  # but still, no unique n is larger than number of cases
+
+  expect_true(
+    all(s_test$n <= length(unique(adr_test$UMCReportId)))
+    )
+})
+
+test_that("works with arrow Tables", {
+  adr_test <- data.table(
+    UMCReportId = c(1, 2, 3, 4),
+    MedDRA_Id = c(1, 1, 2, 3)
+  ) |>
+    arrow::as_arrow_table()
+
+  meddra_test <- data.table(
+    hlt_name = c("ae1", "ae2", "ae3"),
+    llt_code = c(1, 2, 3)
+  ) |>
+    arrow::as_arrow_table()
+
+  s_test <-
+    screen_adr(
+      .data = adr_test,
+      meddra = meddra_test,
+      term_level = "hlt"
+    )
+
+  s_true <- data.table(
+    term = c("ae1", "ae2", "ae3"),
+    n = c(2, 1, 1),
+    percentage = c(50, 25, 25)
+  )
+
+  expect_equal(s_test, s_true)
 })
