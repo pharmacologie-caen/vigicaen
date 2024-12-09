@@ -1,7 +1,7 @@
 #' Summarise categorical variables
 #'
 #' @description `r lifecycle::badge('experimental')`
-#' `desc_facvar()` will summarize categorical data and let you handled output format.
+#' `desc_facvar()` will summarize categorical data and let you handle output format.
 #'
 #' @details Many other packages provide tools to summarize data. This one is just
 #' the package author's favorite.
@@ -9,9 +9,9 @@
 #' categorical variable at said level), `N_` (number of patients with an
 #' available value for this variable), and `pc_`, percentage between n and N.
 #' The format argument should contain at least the words "n", and "N",
-#' and optionally the word "pc". Words should be in that order, not mixed.
-#' `ncat_max` ensures that you didn't accidentaly provided a continuous
-#' variable to `desc_facvar`. If you have many levels for one of your variables,
+#' and optionally the word "pc".
+#' `ncat_max` ensures that you didn't provided a continuous
+#' variable to `desc_facvar()`. If you have many levels for one of your variables,
 #' set to `Inf` or high value.
 #' Equivalent for continuous data is [desc_cont()].
 #'
@@ -21,8 +21,21 @@
 #' @param digits A numeric. Number of digits for the percentage (passed to interval formatting function).
 #' @param pad_width A numeric. Minimum character length of value output (passed to `stringr::str_pad()`).
 #' @param ncat_max A numeric. How many levels should be allowed for all variables? See details.
+#' @param export_raw_values A logical. Should the raw values be exported?
 #' @importFrom rlang .data
 #' @importFrom rlang .env
+#'
+#' @returns A data.frame with columns
+#' \itemize{
+#'  \item `var` the variable name
+#'  \item `level` the level of the variable
+#'  \item `value` the formatted value with possible number of cases `n_`,
+#'  number of available cases `N_`, and percentage `pc_`, depending on
+#'  format argument.
+#'  \item `n_avail` the number of cases with available data
+#'  for this variable.
+#'  }
+#'
 #' @export
 #' @seealso [desc_cont()]
 #'
@@ -48,6 +61,12 @@
 #'            format = "n_ out of N_, pc_%",
 #'            digits = 1)
 #'
+#' # You might want to export raw values, to run plotting or
+#' # other formatting functions
+#'
+#' desc_facvar(.data = df1,
+#'             vf = c("hypertension", "smoke_status"),
+#'             export_raw_values = TRUE)
 
 desc_facvar <-
   function( .data,
@@ -55,7 +74,8 @@ desc_facvar <-
             format = "n_/N_ (pc_%)",
             digits = 0,
             pad_width = 12,
-            ncat_max = 10){
+            ncat_max = 10,
+            export_raw_values = FALSE){
 
     # only columns present in the dataset
     if(!all(vf %in% names(.data))){
@@ -109,10 +129,19 @@ desc_facvar <-
           stop(paste0("format code `", param_name, "` is present more than once in `format`."))
         )
 
+    var_to_export <-
+      if(export_raw_values){
+        c("var", "level", "value", "n_avail", "n", "pc")
+      } else {
+        c("var", "level", "value", "n_avail")
+      }
+
     # ---- core ----
 
-    cf_core <- function(one_var) {
+    cf_core <- function(
+                  one_var) {
       vf_s <- rlang::ensym(one_var)
+
       r1 <-
         .data |>
         dplyr::group_by({
@@ -144,8 +173,10 @@ desc_facvar <-
                       n_avail = sum(.data$n) - .data$n_missing) |>
         dplyr::filter(!is.na(.data$level)) |>
         dplyr::mutate(
-          pc = cff(.data$n / .data$n_avail * 100,
-                            dig = .env$digits),
+          pc = .data$n / .data$n_avail * 100,
+
+          pc_fmt = cff(.data$pc,
+                       dig = .env$digits),
           value =
             .env$format |>
             stringr::str_replace(
@@ -158,7 +189,7 @@ desc_facvar <-
             ) |>
             stringr::str_replace(
               "pc_",
-              .data$pc
+              .data$pc_fmt
             ),
 
           value =
@@ -167,11 +198,14 @@ desc_facvar <-
                              side = "both")
 
         ) |>
-        dplyr::select(dplyr::all_of(c("var", "level", "value", "n_avail")))
+        dplyr::select(dplyr::all_of(.env$var_to_export))
     }
 
     # ---- apply core ----
 
-    purrr::map(vf, cf_core) |>
+    purrr::map(
+      vf,
+      cf_core
+      ) |>
       purrr::list_rbind()
   }

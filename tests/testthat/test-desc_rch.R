@@ -1,7 +1,7 @@
 test_that("find proper counts on a known dataset", {
 
-  luda_ <-
-    luda_ %>%
+  link_ <-
+    link_ %>%
     add_drug(
       d_code = ex_$d_groups_drecno,
       drug_data = drug_,
@@ -14,7 +14,7 @@ test_that("find proper counts on a known dataset", {
     )
 
   rch_test <-
-    desc_rch(.data = luda_,
+    desc_rch(.data = link_,
              demo_data = demo_,
              adr_s = "a_colitis",
              drug_s = "pd1")
@@ -52,8 +52,8 @@ test_that("find proper counts on a known dataset", {
 
 test_that("can be vectorized", {
 
-  luda_ <-
-    luda_ %>%
+  link_ <-
+    link_ %>%
     add_drug(
       d_code = ex_$d_groups_drecno,
       drug_data = drug_,
@@ -66,7 +66,7 @@ test_that("can be vectorized", {
     )
 
   rch_test <-
-    desc_rch(.data = luda_,
+    desc_rch(.data = link_,
              demo_data = demo_,
              adr_s = c("a_colitis", "a_pneumonitis"),
              drug_s = "pd1")
@@ -89,7 +89,7 @@ test_that("can be vectorized", {
 
 
   rch_test2 <-
-    desc_rch(.data = luda_,
+    desc_rch(.data = link_,
              demo_data = demo_,
              adr_s = c("a_colitis"),
              drug_s = c("pd1", "pdl1")
@@ -114,7 +114,7 @@ test_that("can be vectorized", {
 })
 
 test_that("works with few data", {
-   luda_rch <- data.table(
+   link_rch <- data.table(
      UMCReportId = c(1, 1, 2, 3, 4, 5, 5, 6, 7, 8),
      Drug_Id = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
      Adr_Id = c(101, 102, 103, 104, 105, 106, 107, 108, 109, 110),
@@ -139,7 +139,7 @@ test_that("works with few data", {
 
 
    res <- desc_rch(
-     .data = luda_rch,
+     .data = link_rch,
      demo_data = demo_rch_test,
      adr_s = "adr1",
      drug_s = "drug1"

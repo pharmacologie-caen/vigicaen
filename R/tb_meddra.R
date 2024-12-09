@@ -22,12 +22,12 @@
 #'
 #' @importFrom utils read.table
 #' @keywords import meddra
-#' @seealso [tb_main()], [tb_who()], [tb_sub()], [tb_custom()], [dt_parquet()]
+#' @seealso [tb_vigibase()], [tb_who()], [tb_subset()], [dt_parquet()]
 #'
 #' @export
 #'
 #' @return .parquet files into the `path_meddra` directory.
-#' Three tables: `meddra_hierarchy`, `smq_list`, and `smq_content.`
+#' Three tables: `meddra_hierarchy`, `smq_list`, and `smq_content`.
 #' Some columns are returned as `integer` (all `*_code` columns).
 #' All other columns are `character`.
 #'

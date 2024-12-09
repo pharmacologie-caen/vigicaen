@@ -1,6 +1,6 @@
 #' Extract of subset of Vigibase
 #'
-#' @description `r lifecycle::badge('stable')` `tb_custom()` creates
+#' @description `r lifecycle::badge('stable')` `tb_subset()` creates
 #' subsets of the VigiBase ECL dataset
 #'
 #' @details You must select a subset variable with `subset_var` and provide
@@ -111,7 +111,7 @@
 #'
 #'   )
 
-#' # back to tb_custom, you should select a subset_var and corresponding data
+#' # back to tb_subset, you should select a subset_var and corresponding data
 #'
 #' # Subset on adr colitis codes
 #' sv_selection <-
@@ -122,7 +122,7 @@
 #'
 #' wd_out <- paste0(wd_in, "/", "colitis_subset", "/")
 #'
-#' tb_custom(wd_in, wd_out,
+#' tb_subset(wd_in, wd_out,
 #'           subset_var = "meddra_id",
 #'           sv_selection = sv_selection)
 #'
@@ -135,7 +135,7 @@
 #'
 #' wd_out <- paste0(wd_in, "/", "nivolumab_subset", "/")
 #'
-#' tb_custom(wd_in, wd_out,
+#' tb_subset(wd_in, wd_out,
 #'           subset_var = "drecno",
 #'           sv_selection = sv_selection)
 #'
@@ -146,11 +146,11 @@
 #'
 #' wd_out <- paste0(wd_in, "/", "more_than_65_subset", "/")
 #'
-#' tb_custom(wd_in, wd_out,
+#' tb_subset(wd_in, wd_out,
 #'           subset_var = "age",
 #'           sv_selection = sv_selection)
 
-tb_custom <-
+tb_subset <-
   function(wd_in,
            wd_out,
 

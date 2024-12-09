@@ -1,7 +1,7 @@
 test_that("find proper ttos on a known dataset", {
 
-  luda_ <-
-    luda_ %>%
+  link_ <-
+    link_ %>%
     add_drug(
       d_code = ex_$d_groups_drecno,
       drug_data = drug_,
@@ -15,7 +15,7 @@ test_that("find proper ttos on a known dataset", {
 
 
    tto_test <-
-    desc_tto(.data = luda_,
+    desc_tto(.data = link_,
                 adr_s = "a_colitis",
                 drug_s = "pd1")
 
@@ -28,8 +28,8 @@ test_that("find proper ttos on a known dataset", {
 
 test_that("works with vectorization", {
 
-  luda_ <-
-    luda_ %>%
+  link_ <-
+    link_ %>%
     add_drug(
       d_code = ex_$d_groups_drecno,
       drug_data = drug_,
@@ -42,7 +42,7 @@ test_that("works with vectorization", {
     )
 
   tto_test <-
-    desc_tto(.data = luda_,
+    desc_tto(.data = link_,
              adr_s = c("a_colitis", "a_pneumonitis"),
              drug_s = "pd1")
 
@@ -60,7 +60,7 @@ test_that("works with vectorization", {
   )
 
   tto_test2 <-
-    desc_tto(.data = luda_,
+    desc_tto(.data = link_,
              adr_s = c("a_colitis"),
              drug_s = c("pd1", "pdl1")
     )
@@ -80,8 +80,8 @@ test_that("works with vectorization", {
 
 test_that("format is appropriately passed to desc_cont", {
 
-  luda_ <-
-    luda_ %>%
+  link_ <-
+    link_ %>%
     add_drug(
       d_code = ex_$d_groups_drecno,
       drug_data = drug_,
@@ -95,7 +95,7 @@ test_that("format is appropriately passed to desc_cont", {
 
 
   tto_test <-
-    desc_tto(.data = luda_,
+    desc_tto(.data = link_,
              adr_s = "a_colitis",
              drug_s = "pd1",
              format = "median [q1-q3] ; (min to max)")
@@ -109,8 +109,8 @@ test_that("format is appropriately passed to desc_cont", {
 
 test_that("digits are appropriately passed to desc_cont", {
 
-  luda_ <-
-    luda_ %>%
+  link_ <-
+    link_ %>%
     add_drug(
       d_code = ex_$d_groups_drecno,
       drug_data = drug_,
@@ -124,7 +124,7 @@ test_that("digits are appropriately passed to desc_cont", {
 
 
   tto_test <-
-    desc_tto(.data = luda_,
+    desc_tto(.data = link_,
              adr_s = "a_colitis",
              drug_s = "pd1",
              digits = 0)

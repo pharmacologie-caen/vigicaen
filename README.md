@@ -4,6 +4,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/pharmacologie-caen/vigicaen/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pharmacologie-caen/vigicaen/actions/workflows/R-CMD-check.yaml)
+[![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](Redirect-URL)
 <!-- badges: end -->
 
 The goal of vigicaen is to provide tools to analyze VigiBase Extract
@@ -34,6 +35,23 @@ Use of MedDRA requires a license from [MedDRA](https://www.meddra.org/).
 
 Of note, academic researchers are provided with accommodations for these
 licenses.
+
+## Target users
+
+There are 2 types of users this package is aimed at:
+
+- Routine pharmacovigilance practitioners. These users may not be very
+  familiar with R, or statistics in general. They would like to collect
+  additional data, when writing pharmacovigilance reports, or working on
+  a reported case. These users will be interested in the “Routine
+  pharmacovigilance” vignette, `vignette("routine_pharmacovigilance")`.
+
+- Advanced pharmacovigilance researchers. These users must be familiar
+  with R and (a bit of) statistics. The will find tools to load tables,
+  perform usual data management, identify drug and reaction IDs,
+  describe complexe features, perform disproportionality, and get
+  ready-to-use datasets to apply any regression or machine learning
+  algorithm.
 
 ## Installation
 
@@ -90,7 +108,7 @@ demo |>
   )
 #> # A tibble: 1 × 18
 #>   y         x          a     b     c     d n_exp std_er    or low_ci up_ci orl  
-#>   <chr>     <chr>  <int> <int> <int> <int> <dbl>  <dbl> <dbl>  <dbl> <dbl> <chr>
+#>   <chr>     <chr>  <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl> <dbl>  <dbl> <dbl> <chr>
 #> 1 a_colitis nivol…    44    60   181   465  31.2  0.217  1.88   1.23  2.88 1.88 
 #> # ℹ 6 more variables: or_ci <chr>, ic <dbl>, ic_tail <dbl>, ci_level <chr>,
 #> #   signif_or <dbl>, signif_ic <dbl>

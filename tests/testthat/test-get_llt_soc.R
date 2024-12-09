@@ -1,3 +1,20 @@
+test_that("basic use works", {
+  llt_extraction_soc <-
+    get_llt_soc(
+      rlang::list2(pneumonitis = "Pneumonitis"),
+      term_level = "pt",
+      meddra = meddra_
+    )
+
+  llt_extraction_true <-
+    list(pneumonitis =
+           c(77064677,  56481317, 136339570,  56401565, 111041017, 116513289)
+    )
+
+  expect_equal(llt_extraction_soc, llt_extraction_true)
+
+})
+
 test_that("there is no duplicate in extracted llts", {
   # Intended for the rechallenge data management
   llt_extraction_soc <-
@@ -97,4 +114,20 @@ test_that("works at different term levels (soc, hlgt, hlt, pt, llt)", {
     expect_equal(tl_res_length, tl_res_correct_length)
 })
 
+test_that("works with meddra as Table (out of memory)", {
+  llt_extraction_soc <-
+    get_llt_soc(
+      rlang::list2(pneumonitis = "Pneumonitis"),
+      term_level = "pt",
+      meddra = meddra_ |>
+        arrow::as_arrow_table()
+    )
 
+  llt_extraction_true <-
+    list(pneumonitis =
+           c(77064677,  56481317, 136339570,  56401565, 111041017, 116513289)
+    )
+
+  expect_equal(llt_extraction_soc, llt_extraction_true)
+
+})

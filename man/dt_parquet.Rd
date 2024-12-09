@@ -16,7 +16,7 @@ dt_parquet(path_base, name = NULL, ext = ".parquet", in_memory = TRUE)
 \item{in_memory}{Logical, should data be loaded in memory?}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} dt_parquet() will
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \code{dt_parquet()} will
 load data IN- our OUT- of memory. File extension can be omitted.
 }
 \details{
@@ -37,7 +37,8 @@ demo <-
   ) |>
   arrow::as_arrow_table()
 
-tmp_folder <- tempdir()
+tmp_folder <- paste0(tempdir(), "/dtparquetex")
+dir.create(tmp_folder)
 path_data <- paste0(tmp_folder, "/")
 
 arrow::write_parquet(demo,
@@ -50,8 +51,11 @@ rm(demo)
 # You may import the file directly to data.table format with dt_parquet
 demo <-
   dt_parquet(path_data, "demo")
+
+# Clean up (required for CRAN checks)
+unlink(tmp_folder, recursive = TRUE)
 }
 \seealso{
-\code{\link[=tb_main]{tb_main()}}, \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_sub]{tb_sub()}}, \code{\link[=tb_meddra]{tb_meddra()}}
+\code{\link[=tb_vigibase]{tb_vigibase()}}, \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_meddra]{tb_meddra()}}
 }
 \keyword{import}

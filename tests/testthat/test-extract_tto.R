@@ -1,7 +1,7 @@
 test_that("find proper ttos on a known dataset", {
 
-  luda_ <-
-    luda_ |>
+  link_ <-
+    link_ |>
     add_drug(
       d_code = ex_$d_groups_drecno,
       drug_data = drug_,
@@ -14,7 +14,7 @@ test_that("find proper ttos on a known dataset", {
     )
 
   tto_test <-
-    extract_tto(.data = luda_,
+    extract_tto(.data = link_,
                 adr_s = "a_colitis",
                 drug_s = "pd1")
 
@@ -35,8 +35,8 @@ test_that("find proper ttos on a known dataset", {
 })
 
 test_that("works with vectorized adrs and drugs", {
-  luda_ <-
-    luda_ |>
+  link_ <-
+    link_ |>
     add_drug(
       d_code = ex_$d_groups_drecno,
       drug_data = drug_,
@@ -49,7 +49,7 @@ test_that("works with vectorized adrs and drugs", {
     )
 
   tto_many_adr <-
-    extract_tto(.data = luda_,
+    extract_tto(.data = link_,
              adr_s = c("a_colitis", "a_pneumonitis"),
              drug_s = c("pd1"))
 
@@ -76,7 +76,7 @@ test_that("works with vectorized adrs and drugs", {
   )
 
   tto_many_drug <-
-    extract_tto(.data = luda_,
+    extract_tto(.data = link_,
                 adr_s = c("a_colitis"),
                 drug_s = c("pd1", "pdl1"))
 
@@ -103,7 +103,7 @@ test_that("works with vectorized adrs and drugs", {
   )
 
   tto_many_both <-
-    extract_tto(.data = luda_,
+    extract_tto(.data = link_,
                 adr_s = c("a_colitis", "a_pneumonitis"),
                 drug_s = c("pd1", "pdl1"))
 
@@ -118,8 +118,8 @@ test_that("works with vectorized adrs and drugs", {
 })
 
 test_that("output type is consistent in presence or absence of tto data", {
-  luda_ <-
-    luda_ |>
+  link_ <-
+    link_ |>
     add_drug(
       d_code = ex_$d_groups_drecno,
       drug_data = drug_,
@@ -132,7 +132,7 @@ test_that("output type is consistent in presence or absence of tto data", {
     )
 
   tto_a1 <- # adr with some tto data
-    extract_tto(.data = luda_,
+    extract_tto(.data = link_,
 
                 adr_s = "a_colitis",
                 drug_s = "pd1")
@@ -142,7 +142,7 @@ test_that("output type is consistent in presence or absence of tto data", {
   expect_warning(
     # https://stackoverflow.com/questions/60417969/r-how-to-omit-tested-warning-message-from-test-report-when-testing-for-result-a
     tto_a2 <<-
-      extract_tto(.data = luda_ |>
+      extract_tto(.data = link_ |>
                   dplyr::filter(a_pneumonitis == 0),
 
                 adr_s = "a_pneumonitis",
@@ -174,8 +174,8 @@ test_that("output type is consistent in presence or absence of tto data", {
 })
 
 test_that("breaks if tto_mean or range are missing", {
-  wrong_luda <-
-    luda_ |>
+  wrong_link <-
+    link_ |>
     dplyr::select(-tto_mean) |>
     add_drug(
       d_code = ex_$d_groups_drecno,
@@ -189,15 +189,15 @@ test_that("breaks if tto_mean or range are missing", {
     )
 
   expect_error(
-    extract_tto(.data = wrong_luda,
+    extract_tto(.data = wrong_link,
                 adr_s = "a_colitis",
                 drug_s = "pd1"),
-    "Either tto_mean or range columns are missing. See ?luda_",
+    "Either tto_mean or range columns are missing. See ?link_",
     fixed = TRUE
   )
 
   wrong_luda2 <-
-    luda_ |>
+    link_ |>
     dplyr::select(-range) |>
     add_drug(
       d_code = ex_$d_groups_drecno,
@@ -214,7 +214,43 @@ test_that("breaks if tto_mean or range are missing", {
     extract_tto(.data = wrong_luda2,
                 adr_s = "a_colitis",
                 drug_s = "pd1"),
-    "Either tto_mean or range columns are missing. See ?luda_",
+    "Either tto_mean or range columns are missing. See ?link_",
     fixed = TRUE
+  )
+})
+
+test_that("works with link as Table (out of memory)", {
+  link_ <-
+    link_ |>
+    add_drug(
+      d_code = ex_$d_groups_drecno,
+      drug_data = drug_,
+      data_type = "link"
+    ) |>
+    add_adr(
+      a_code = ex_$a_llt,
+      adr_data = adr_,
+      data_type = "link"
+    ) |>
+    arrow::as_arrow_table()
+
+  tto_test <-
+    extract_tto(.data = link_,
+                adr_s = "a_colitis",
+                drug_s = "pd1")
+
+  true_n_tto_avail <- 39
+
+  expect_equal(
+    nrow(tto_test),
+    true_n_tto_avail
+  )
+
+  true_tto_rch <-
+    c(205, 175, 36, 740, 379)
+
+  expect_equal(
+    head(tto_test$tto_max, 5),
+    true_tto_rch
   )
 })

@@ -34,7 +34,7 @@ add_drug(
 }
 \details{
 d_code is a named list containing drug codes.
-Either medicinalprod_ids (e.g., from \code{tb_custom}), or drug record numbers
+Either medicinalprod_ids (e.g., from \code{tb_subset}), or drug record numbers
 (e.g., from \code{get_drecno}). Default method is to DrecNos.
 Drugs can be reported according to one of three reputation bases:
 suspect, concomitant or interacting in the occurrence of the adverse drug

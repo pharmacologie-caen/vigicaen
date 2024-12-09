@@ -12,7 +12,7 @@ It is also the output directory.}
 }
 \value{
 .parquet files into the \code{path_meddra} directory.
-Three tables: \code{meddra_hierarchy}, \code{smq_list}, and \code{smq_content.}
+Three tables: \code{meddra_hierarchy}, \code{smq_list}, and \code{smq_content}.
 Some columns are returned as \code{integer} (all \verb{*_code} columns).
 All other columns are \code{character}.
 }
@@ -45,7 +45,7 @@ path_meddra <- "/meddra_directory/"
 
 }
 \seealso{
-\code{\link[=tb_main]{tb_main()}}, \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_sub]{tb_sub()}}, \code{\link[=tb_custom]{tb_custom()}}, \code{\link[=dt_parquet]{dt_parquet()}}
+\code{\link[=tb_vigibase]{tb_vigibase()}}, \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_subset]{tb_subset()}}, \code{\link[=dt_parquet]{dt_parquet()}}
 }
 \keyword{import}
 \keyword{meddra}

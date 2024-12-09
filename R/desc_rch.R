@@ -6,7 +6,7 @@
 #' @details Counts are provided at the **case** level (not the drug-adr pair level).
 #' Description span from number of rechallenge cases
 #' to __informative__ rechallenge cases (those cases where the outcome is known).
-#' You will need a `luda` data.table, see \code{\link{luda_}}, on which
+#' You will need a `link` data.table, see \code{\link{link_}}, on which
 #' you have added drugs and adrs with [add_drug()] and [add_adr()].
 #' Terminology
 #' \itemize{
@@ -15,10 +15,10 @@
 #'   \item Among `inf`, `rec` (recurring) as opposed to `non_rec` (`rec` + `non_rec` = `inf`)
 #' }
 #'
-#' @param .data A \code{\link{luda_}} style data.table.
+#' @param .data A \code{\link{link_}} style data.table.
 #' @param demo_data A demo data.table.
-#' @param drug_s A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a luda table.
-#' @param adr_s A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a luda table.
+#' @param drug_s A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a link table.
+#' @param adr_s A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a link table.
 #'
 #' @return A one-row data.table with
 #' \itemize{
@@ -28,14 +28,14 @@
 #' }
 #' @export
 #' @keywords drug-adr pair, descriptive
-#' @seealso \code{\link{luda_}}, [add_drug()], [add_adr()], [desc_dch()], [desc_tto()]
+#' @seealso \code{\link{link_}}, [add_drug()], [add_adr()], [desc_dch()], [desc_tto()]
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #' @importFrom data.table .N
 #'
 #' @examples
-#' luda_ <-
-#'   luda_ |>
+#' link_ <-
+#'   link_ |>
 #'   add_drug(
 #'     d_code = ex_$d_groups_drecno,
 #'     drug_data = drug_,
@@ -47,14 +47,14 @@
 #'     data_type = "link"
 #'   )
 #'
-#' desc_rch(.data = luda_,
+#' desc_rch(.data = link_,
 #'          demo_data = demo_,
 #'          drug_s = "pd1",
 #'          adr_s = "a_colitis")
 #'
 #' # You can vectorize over drugs and adrs
 #'
-#' desc_rch(.data = luda_,
+#' desc_rch(.data = link_,
 #'          demo_data = demo_,
 #'          adr_s = c("a_colitis", "a_pneumonitis"),
 #'          drug_s = c("pd1", "pdl1")
@@ -71,31 +71,31 @@ desc_rch <- function(.data,
              one_adr,
              UMCReportId = {{ UMCReportId }}
     ){
-      luda_sel <- # selection
+      link_sel <- # selection
         .data |>
         dplyr::filter(.data[[one_drug]] == 1 &
                  .data[[one_adr]] == 1
                )
 
-      demo_sel <- demo_data[UMCReportId %in% luda_sel[, UMCReportId]]
+      demo_sel <- demo_data[UMCReportId %in% link_sel[, UMCReportId]]
 
-      luda_sel_rch <-
-        luda_sel |>
+      link_sel_rch <-
+        link_sel |>
         dplyr::filter(.data$Rechallenge1 == "1")
 
-      demo_sel_rch <- demo_sel[UMCReportId %in% luda_sel_rch[, UMCReportId]]
+      demo_sel_rch <- demo_sel[UMCReportId %in% link_sel_rch[, UMCReportId]]
 
-      luda_sel_inf <-
-        luda_sel |>
+      link_sel_inf <-
+        link_sel |>
         dplyr::filter(.data$Rechallenge2 %in% c("1", "2"))
 
-      demo_sel_inf <- demo_sel[UMCReportId %in% luda_sel_inf[, UMCReportId]]
+      demo_sel_inf <- demo_sel[UMCReportId %in% link_sel_inf[, UMCReportId]]
 
-      luda_sel_rec <-
-        luda_sel |>
+      link_sel_rec <-
+        link_sel |>
         dplyr::filter(.data$Rechallenge2 %in% c("1"))
 
-      demo_sel_rec <- demo_sel[UMCReportId %in% luda_sel_rec[, UMCReportId]]
+      demo_sel_rec <- demo_sel[UMCReportId %in% link_sel_rec[, UMCReportId]]
 
       n_overall <- demo_sel[, .N]
 

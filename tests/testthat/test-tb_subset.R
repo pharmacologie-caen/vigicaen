@@ -2,7 +2,7 @@ test_that("you can subset on drecno, age, meddra_id", {
 
   wd_in <- tempdir()
 
-  wd_in <- paste0(wd_in, "\\", "tb_custom_t1") # avoid windows #1224
+  wd_in <- paste0(wd_in, "\\", "tb_subset_t1") # avoid windows #1224
   # never rewrite on the same tempfile in ANY test.
 
   dir.create(path = wd_in)
@@ -71,7 +71,7 @@ test_that("you can subset on drecno, age, meddra_id", {
     c("dr3", "dr4")
 
   expect_snapshot(
-    tb_custom(
+    tb_subset(
       wd_in = paste0(wd_in, "/"),
       wd_out = paste0(wd_in, "/", "subset_drecno", "/"),
       subset_var = "drecno",
@@ -105,7 +105,7 @@ test_that("you can subset on drecno, age, meddra_id", {
 
   # ---- age
 
-  expect_snapshot(tb_custom(
+  expect_snapshot(tb_subset(
     wd_in = paste0(wd_in, "/"),
     wd_out = paste0(wd_in, "/", "subset_age", "/"),
     subset_var = "age",
@@ -141,7 +141,7 @@ test_that("you can subset on drecno, age, meddra_id", {
 
   wd_out <- paste0(wd_in, "/", "subset_meddraid", "/")
 
-  expect_snapshot(tb_custom(
+  expect_snapshot(tb_subset(
     wd_in = paste0(wd_in, "/"),
     wd_out = paste0(wd_in, "/", "subset_meddraid", "/"),
     subset_var = "meddra_id",
@@ -177,7 +177,7 @@ test_that("you can subset on drecno, age, meddra_id", {
 
 test_that("wd_in exists", {
   expect_error(
-    tb_custom(
+    tb_subset(
       wd_in = "that_dir_doesnt_exists"
       ),
     "that_dir_doesnt_exists was not found, check spelling and availability."
@@ -252,7 +252,7 @@ test_that("you can keep suspdup", {
 
   # ---- age
 
-  expect_snapshot(tb_custom(
+  expect_snapshot(tb_subset(
     wd_in = paste0(wd_in, "/"),
     wd_out = paste0(wd_in, "/", "subset_age_suspdup", "/"),
     subset_var = "age",
@@ -260,7 +260,7 @@ test_that("you can keep suspdup", {
     rm_suspdup = FALSE
   ))
 
-  expect_snapshot(tb_custom(
+  expect_snapshot(tb_subset(
     wd_in = paste0(wd_in, "/"),
     wd_out = paste0(wd_in, "/", "subset_age", "/"),
     subset_var = "age",
@@ -371,7 +371,7 @@ test_that("alternative syntaxes work", {
 
   # no end slashes at wd_in and wd_out
   expect_snapshot(
-    tb_custom(
+    tb_subset(
     wd_in = wd_in,
     wd_out = paste0(wd_in, "/", "subset_age"),
     subset_var = "age",

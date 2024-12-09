@@ -19,7 +19,6 @@ These are a set of data to provide examples on how my library works.
 \item \code{smq_sel} is a named list of smq names
 \item \code{pt_sel} is a named list of pt names
 \item \code{a_llt} is a named list of meddra llt codes related to adrs from \code{smq_sel} and \code{pt_sel}
-\item \code{mp_short} is a correspondence table between drug names and drecnos (first created in Vigibase ECL / who data). \code{mp_short} data.table is typically created using the \code{tb_mp.R} script in \verb{/STAT/R_FUN}, or \code{tb_who.R}. \code{mp_short} is MP whose  \code{Drug.name} column has been \code{tolower(trimws())}-ed and with less details on MP.
 \item \code{d_drecno} is a named list of drecnos for immune checkpoint inhibitors (some of them)
 \item \code{d_groups} is a named list of ici classes according to icis
 \item \code{d_groups_drecno} is a named list of drecnos for drug groups

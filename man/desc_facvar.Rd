@@ -10,7 +10,8 @@ desc_facvar(
   format = "n_/N_ (pc_\%)",
   digits = 0,
   pad_width = 12,
-  ncat_max = 10
+  ncat_max = 10,
+  export_raw_values = FALSE
 )
 }
 \arguments{
@@ -25,10 +26,24 @@ desc_facvar(
 \item{pad_width}{A numeric. Minimum character length of value output (passed to \code{stringr::str_pad()}).}
 
 \item{ncat_max}{A numeric. How many levels should be allowed for all variables? See details.}
+
+\item{export_raw_values}{A logical. Should the raw values be exported?}
+}
+\value{
+A data.frame with columns
+\itemize{
+\item \code{var} the variable name
+\item \code{level} the level of the variable
+\item \code{value} the formatted value with possible number of cases \code{n_},
+number of available cases \code{N_}, and percentage \code{pc_}, depending on
+format argument.
+\item \code{n_avail} the number of cases with available data
+for this variable.
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-\code{desc_facvar()} will summarize categorical data and let you handled output format.
+\code{desc_facvar()} will summarize categorical data and let you handle output format.
 }
 \details{
 Many other packages provide tools to summarize data. This one is just
@@ -37,9 +52,9 @@ Valid format options should include \code{n_} (number of patients with the
 categorical variable at said level), \code{N_} (number of patients with an
 available value for this variable), and \code{pc_}, percentage between n and N.
 The format argument should contain at least the words "n", and "N",
-and optionally the word "pc". Words should be in that order, not mixed.
-\code{ncat_max} ensures that you didn't accidentaly provided a continuous
-variable to \code{desc_facvar}. If you have many levels for one of your variables,
+and optionally the word "pc".
+\code{ncat_max} ensures that you didn't provided a continuous
+variable to \code{desc_facvar()}. If you have many levels for one of your variables,
 set to \code{Inf} or high value.
 Equivalent for continuous data is \code{\link[=desc_cont]{desc_cont()}}.
 }
@@ -65,6 +80,12 @@ desc_facvar(.data = df1,
            format = "n_ out of N_, pc_\%",
            digits = 1)
 
+# You might want to export raw values, to run plotting or
+# other formatting functions
+
+desc_facvar(.data = df1,
+            vf = c("hypertension", "smoke_status"),
+            export_raw_values = TRUE)
 }
 \seealso{
 \code{\link[=desc_cont]{desc_cont()}}

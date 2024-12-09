@@ -7,13 +7,13 @@
 desc_rch(.data, demo_data, drug_s = "drug1", adr_s = "adr1")
 }
 \arguments{
-\item{.data}{A \code{\link{luda_}} style data.table.}
+\item{.data}{A \code{\link{link_}} style data.table.}
 
 \item{demo_data}{A demo data.table.}
 
-\item{drug_s}{A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a luda table.}
+\item{drug_s}{A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a link table.}
 
-\item{adr_s}{A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a luda table.}
+\item{adr_s}{A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a link table.}
 }
 \value{
 A one-row data.table with
@@ -31,7 +31,7 @@ computes counts of rechallenge cases, over a set of adr and drug pairs.
 Counts are provided at the \strong{case} level (not the drug-adr pair level).
 Description span from number of rechallenge cases
 to \strong{informative} rechallenge cases (those cases where the outcome is known).
-You will need a \code{luda} data.table, see \code{\link{luda_}}, on which
+You will need a \code{link} data.table, see \code{\link{link_}}, on which
 you have added drugs and adrs with \code{\link[=add_drug]{add_drug()}} and \code{\link[=add_adr]{add_adr()}}.
 Terminology
 \itemize{
@@ -41,8 +41,8 @@ Terminology
 }
 }
 \examples{
-luda_ <-
-  luda_ |>
+link_ <-
+  link_ |>
   add_drug(
     d_code = ex_$d_groups_drecno,
     drug_data = drug_,
@@ -54,21 +54,21 @@ luda_ <-
     data_type = "link"
   )
 
-desc_rch(.data = luda_,
+desc_rch(.data = link_,
          demo_data = demo_,
          drug_s = "pd1",
          adr_s = "a_colitis")
 
 # You can vectorize over drugs and adrs
 
-desc_rch(.data = luda_,
+desc_rch(.data = link_,
          demo_data = demo_,
          adr_s = c("a_colitis", "a_pneumonitis"),
          drug_s = c("pd1", "pdl1")
          )
 }
 \seealso{
-\code{\link{luda_}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}, \code{\link[=desc_dch]{desc_dch()}}, \code{\link[=desc_tto]{desc_tto()}}
+\code{\link{link_}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}, \code{\link[=desc_dch]{desc_dch()}}, \code{\link[=desc_tto]{desc_tto()}}
 }
 \keyword{descriptive}
 \keyword{drug-adr}

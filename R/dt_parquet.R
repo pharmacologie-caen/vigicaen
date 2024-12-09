@@ -1,6 +1,6 @@
 #' Read parquet and convert to data.table
 #'
-#' @description `r lifecycle::badge('experimental')` dt_parquet() will
+#' @description `r lifecycle::badge('experimental')` `dt_parquet()` will
 #' load data IN- our OUT- of memory. File extension can be omitted.
 #'
 #' @details  Output is a data.table.
@@ -15,7 +15,7 @@
 #' @param ext A character string, optional, specifying the file extension.
 #' @param in_memory Logical, should data be loaded in memory?
 #' @keywords import
-#' @seealso [tb_main()], [tb_who()], [tb_sub()], [tb_meddra()]
+#' @seealso [tb_vigibase()], [tb_who()], [tb_meddra()]
 #' @export
 #' @examples
 #'
@@ -27,7 +27,8 @@
 #'   ) |>
 #'   arrow::as_arrow_table()
 #'
-#' tmp_folder <- tempdir()
+#' tmp_folder <- paste0(tempdir(), "/dtparquetex")
+#' dir.create(tmp_folder)
 #' path_data <- paste0(tmp_folder, "/")
 #'
 #' arrow::write_parquet(demo,
@@ -40,6 +41,9 @@
 #' # You may import the file directly to data.table format with dt_parquet
 #' demo <-
 #'   dt_parquet(path_data, "demo")
+#'
+#' # Clean up (required for CRAN checks)
+#' unlink(tmp_folder, recursive = TRUE)
 
 dt_parquet <- function(path_base,
                    name = NULL,

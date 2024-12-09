@@ -1,10 +1,10 @@
 test_that("get drecno of a single drug, no combination allowed", {
 
-  nivo_drecno <- "111841511"
+  nivo_drecno <- 111841511
 
-  ipi_drecno <- "133138448"
+  ipi_drecno <- 133138448
 
-  ipi_nivo_drecno <- "98742214"
+  ipi_nivo_drecno <- 98742214
 
   d_sel_names <- rlang::list2(
    nivolumab = "nivolumab",
@@ -25,8 +25,6 @@ test_that("get drecno of a single drug, no combination allowed", {
     c(nivo_drecno, ipi_nivo_drecno, ipi_drecno)
   ) %>%
     rlang::set_names(names(d_sel_names))
-
-  mp_short_
 
   expect_equal(
     get_drecno(d_sel = d_sel_names,
@@ -136,11 +134,11 @@ test_that("works for drugs, which is the default setting", {
 
   drug1 <- rlang::list2(atra = "tretinoin")
 
-  atra_drecno <- "133241834"
+  atra_drecno <- 133241834
 
   drug2 <- rlang::list2(pc = "protein c (coagulation inhibitor)") # name with parenthesis
 
-  pc_drecno <- "108022014"
+  pc_drecno <- 108022014
 
   res_drug1 <- get_drecno(drug1,
                            mp_short_,
@@ -176,7 +174,7 @@ test_that("works for drugs, which is the default setting", {
 test_that("works for mpi_list as well", {
 
   mpi <- rlang::list2(
-    para = mp_short_[DrecNo == "42225260", MedicinalProd_Id]
+    para = mp_short_[DrecNo == 42225260, MedicinalProd_Id]
   )
 
   res_mpi <- get_drecno(mpi,
@@ -189,7 +187,7 @@ test_that("works for mpi_list as well", {
   expect_equal(length(res_mpi[["para"]]),
                1)
 
-  expect_equal(res_mpi[["para"]], "42225260")
+  expect_equal(res_mpi[["para"]], 42225260)
 
   expect_warning(get_drecno(mpi,
                              mp_short_,
@@ -268,7 +266,7 @@ test_that("inspection works", {
   # with method = mpi_list
 
   mpi <- rlang::list2(
-    para = mp_short_[DrecNo == "42225260", MedicinalProd_Id]
+    para = mp_short_[DrecNo == 42225260, MedicinalProd_Id]
   )
 
   r_insp3 <- get_drecno(mpi,
@@ -311,5 +309,48 @@ test_that("names of d_sel were tolower-ed and trimed warning", {
       inspect = TRUE
     ),
     "names of d_sel were tolower-ed and trimed"
+  )
+})
+
+test_that("works with mp_short as Table (out of memory)", {
+
+  nivo_drecno <- 111841511
+
+  ipi_drecno <- 133138448
+
+  ipi_nivo_drecno <- 98742214
+
+  d_sel_names <- rlang::list2(
+    nivolumab = "nivolumab",
+    ipilimumab = "ipilimumab",
+    nivo_ipi = c("nivolumab", "ipilimumab")
+  )
+
+  d_drecno_nocomb <- rlang::list2(
+    nivo_drecno,
+    ipi_drecno,
+    c(nivo_drecno, ipi_drecno)
+  ) %>%
+    rlang::set_names(names(d_sel_names))
+
+  d_drecno_comb <- rlang::list2(
+    c(nivo_drecno, ipi_nivo_drecno),
+    c(ipi_drecno, ipi_nivo_drecno),
+    c(nivo_drecno, ipi_nivo_drecno, ipi_drecno)
+  ) %>%
+    rlang::set_names(names(d_sel_names))
+
+  mp_short_ <-
+    arrow::as_arrow_table(mp_short_)
+
+  expect_equal(
+    get_drecno(d_sel = d_sel_names,
+               mp_short = mp_short_,
+               allow_combination = FALSE,
+               method = "drug_name",
+               show_all = FALSE,
+               inspect = FALSE
+    ),
+    d_drecno_nocomb
   )
 })

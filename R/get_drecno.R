@@ -19,7 +19,7 @@
 #' Negative lookarounds are used to ensure that a string does not match to
 #' composite drug names including the string, i.e. `trastuzumab emtasine`
 #' is not retrieved when looking for `trastuzumab` and `alitretinoin` is not
-#' ound when looking for `tretinoin`.
+#' found when looking for `tretinoin`.
 #' Fixed associations of drugs refers to specialty containing more than one
 #' active ingredient (for example, acetylsalicylic acid and clopidogrel).
 #' In VigiLyze, the default is NOT to account for these fixed associations.
@@ -96,6 +96,13 @@ get_drecno <- function(
     ){
 
   method <- match.arg(method)
+
+  if("Table"  %in% class(mp_short)){
+    # automatically collect mp_short if out of memory
+    # since it's a small table
+    mp_short <-
+      dplyr::collect(mp_short)
+  }
 
   if(method == "mpi_list" && allow_combination)
     warning("allow_combination set to TRUE but mpi requested")

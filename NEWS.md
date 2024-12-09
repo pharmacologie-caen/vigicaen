@@ -1,3 +1,4 @@
+
 ## Minor  
 
 #86 New `top_n` argument added to `screen_adr`  
@@ -6,6 +7,41 @@
 
 #86 `screen_adr` now counts effects at the case level.  
 
+# vigicaen 0.14.0
+
+## New features
+
+#90 Introducing `vigi_routine()` to streamline the process for
+pharmacovigilance practitioners. This function is intended for 
+non-expert users, to produce an Information Component and 
+time to onset graph.
+
+#94 The `luda` table no longer exists. It is replaced by an augmented
+version of `link` - built directly from `tb_vigibase()`, 
+which is used downstream in place of luda.
+
+## Minor
+
+#92 `tb_main()` and `tb_sub()` are fusionned into `tb_vigibase()`.
+
+#93 It is now possible to export raw data composing the `value` column
+of `desc_facvar()` and `desc_cont()`, with argument `export_raw_values`.
+
+#83 `vignette("descriptive")` was translated in English.
+
+## Bug fixes
+
+#89 and #87 the `get_*` family of functions now correctly handle out of memory tables
+(by pulling them into memory). The same is true for `extract_tto()`.
+
+#85 Useless default values to some arguments of `extract_tto()` were removed. 
+
+# vigicaen 0.13.5
+
+## Patch
+
+#91 tb_* family correctly handles different ways of providing paths,
+and check for the existence of the files **before** working on tables.
 
 # vigicaen 0.13.4
 

@@ -1,3 +1,16 @@
+test_that("basic use works", {
+  llt_extraction_smq <-
+    get_llt_smq(
+      "Embolic and thrombotic events, venous (SMQ)",
+      smq_list_content = smq_list_content_)
+
+  expect_equal(
+    sum(llt_extraction_smq[[1]]
+    ),
+    26895551000
+  )
+})
+
 test_that("there is no duplicate in extracted llts", {
   # Intended for the rechallenge data management
 
@@ -177,5 +190,16 @@ test_that("works with multiple smqs in a single item", {
       length(adr_llt2$ischemic_heart_disease)),
     true_ihd_length
   )
+
+})
+
+test_that("works with smq_list_content as Table (out of memory)", {
+
+  llt_extraction_smq <-
+    get_llt_smq("Embolic and thrombotic events, venous (SMQ)",
+                smq_list_content = smq_list_content_ |>
+                  arrow::as_arrow_table())
+
+  expect_equal(sum(llt_extraction_smq[[1]]), 26895551000)
 
 })

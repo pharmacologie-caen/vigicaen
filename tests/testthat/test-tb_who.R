@@ -64,7 +64,7 @@ test_that("basic use works", {
       MedicinalProd_Id = 1,
       Sequence.number.1 = "01",
       Sequence.number.2 = "001",
-      DrecNo = "000001",
+      DrecNo = 1,
       drug_name_t = "methyldopa",
       Create.date = "19851231",
       Date.changed = "20170907",
@@ -93,4 +93,13 @@ test_that("basic use works", {
   expect_equal(mp_short_res_ns, mp_short_true)
 
   unlink(tmp_folder, recursive = TRUE)
+})
+
+test_that("path_who exists before working on tables", {
+  wrong_path <- "/a/wrong/filepath/"
+
+  expect_error(
+    tb_who(path_who  = wrong_path),
+    info = "/a/wrong/filepath/ does not exist"
+  )
 })

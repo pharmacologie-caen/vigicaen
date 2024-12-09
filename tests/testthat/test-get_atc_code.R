@@ -11,7 +11,7 @@ test_that("Works for single and multiple ATC selections", {
     )
 
   expect_message({
-  atc_drecno <<-
+  atc_drecno <-
     get_atc_code(atc_sel = atc_sel,
                  mp_short = mp_short_,
                  thg_data = thg_,
@@ -116,6 +116,40 @@ test_that("names are tolower-ed and trimed", {
   expect_equal(
     names(atc_drecno_vigifalse),
     tolower_names
+  )
+
+})
+
+test_that("works with thg or mp_short as Table (out of memory)", {
+  atc_sel <-
+    rlang::list2(l03_j01 = c("L03AA", "J01CA"),
+                 c09aa = c("C09AA")
+    )
+
+  atc_sel_drecno_counts <-
+    rlang::list2(l03_j01 = 77,
+                 c09aa = 26
+    )
+
+  expect_message({
+    atc_drecno <-
+      get_atc_code(atc_sel = atc_sel,
+                   mp_short = mp_short_ |>
+                     arrow::as_arrow_table(),
+                   thg_data = thg_ |>
+                     arrow::as_arrow_table(),
+                   vigilyze = TRUE)
+  },
+  "DrecNo"
+  )
+
+  purrr::iwalk(
+    atc_sel_drecno_counts,
+    function(a, a_n)
+      expect_equal(
+        length(atc_drecno[[a_n]]),
+        a
+      )
   )
 
 })

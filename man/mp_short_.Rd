@@ -6,7 +6,26 @@
 \alias{thg_}
 \title{Sample of WHODrug}
 \format{
-An object of class \code{data.frame} and \code{data.table}.
+\code{mp_short_} is a data.table with 8 variables and 14146 rows.
+\itemize{
+\item \code{MedicinalProd_Id} Integer. The medicinalproduct identifier.
+\item \code{Sequence.number.1} and \code{2} Characters. Complement to DrecNo.
+\item \code{DrecNo} Character. Drug Record Number, pivotal to identify drugs
+with \code{\link[=get_drecno]{get_drecno()}}.
+\item \code{drug_name_t} Character. The name of the drug.
+\item \code{Create.date} Character. The date the record was created.
+\item \code{Date.changed} Character. The date the record was last changed.
+\item \code{Country} Character. The country where the record was created.
+}
+\code{thg_} is a data.table with 5 variables and 4079 rows.
+\itemize{
+\item \code{Therapgroup_Id} Integer. The identifier of the therapeutic group.
+\item \code{ATC.code} Character. The ATC code of the drug.
+\item \code{Create.date} Character. The date the record was created.
+\item \code{Official.ATC.code} Character. Whether the ATC code
+is official (Yes/No).
+\item \code{MedicinalProd_Id} Integer. The medicinalproduct identifier.
+}
 
 An object of class \code{data.table} (inherits from \code{data.frame}) with 4079 rows and 5 columns.
 }

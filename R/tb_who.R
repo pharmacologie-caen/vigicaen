@@ -7,7 +7,7 @@
 #' It works with out-of-memory data, which makes it possible to process tables on
 #' a computer with not-so-much RAM. It is also lightweighted and standard across different
 #' langages.
-#' The function also creates variables in each table. See [tb_main()] for some running examples.
+#' The function also creates variables in each table. See [tb_vigibase()] for some running examples.
 #' Use [dt_parquet()] to load the tables afterward.
 #'
 #' @param path_who Character string, a directory containing whodrug txt tables. It is also the
@@ -15,11 +15,11 @@
 #'
 #' @importFrom stringr str_sub str_trim
 #'
-#' @seealso [tb_main()], [tb_sub()], [tb_meddra()], [tb_custom()], [dt_parquet()]
+#' @seealso [tb_vigibase()], [tb_meddra()], [tb_subset()], [dt_parquet()]
 #'
 #' @export
 #'
-#' @return .parquet files into the `path_who` directory.
+#' @returns .parquet files into the `path_who` directory.
 #' Some columns are returned as `integer` (all Id columns, including MedicinalProd_Id,
 #' with notable exception of DrecNo),
 #' and some columns as `numeric` (Quantity from ingredient table)
@@ -38,12 +38,11 @@ tb_who <-
   function(path_who
            ){
 
-    # helps working with the "here" package, or tempdir
+    path_who <-
+        fix_path_endslash(path_who)
 
-    if(!grepl("(/|\\\\)$", path_who, perl = TRUE)){
-      path_who <-
-        paste0(path_who, "/")
-
+    if(!dir.exists(path_who)){
+      stop(paste0(path_who, " does not exist"))
     }
 
     # ---- mp ---- ####
@@ -93,7 +92,8 @@ tb_who <-
         drug_name_t = .data$Drug.name |>
           str_trim() |>
           stringr::str_to_lower(),
-        DrecNo = .data$Drug.record.number
+        DrecNo = .data$Drug.record.number |>
+          as.integer()
       ) |>
       dplyr::select(
         dplyr::all_of(c(
