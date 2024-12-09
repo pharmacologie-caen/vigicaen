@@ -1,3 +1,12 @@
+
+## Minor  
+
+#86 New `top_n` argument added to `screen_adr`  
+
+## Bug Fixes  
+
+#86 `screen_adr` now counts effects at the case level.  
+
 # vigicaen 0.14.0
 
 ## New features
