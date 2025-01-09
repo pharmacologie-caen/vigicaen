@@ -228,7 +228,7 @@
 #' tramadol, tretinoin, anti-thrombin iii, and ATC classes
 #' L03AA Colony stimulating factors, C09AA ACE inhibitors, plain,
 #' J01CA Penicillins with extended spectrum.
-#' Compounds are `thg_` and `mp_short_`.
+#' Compounds are `thg_` and `mp_`.
 #' See examples in \code{\link{get_drecno}} and \code{\link{get_atc_code}}
 #'
 #' @docType data
@@ -236,7 +236,7 @@
 #' @usage data(meddra_)
 #'
 #' @format
-#' `mp_short_` is a data.table with 8 variables and 14146 rows.
+#' `mp_` is a data.table with 8 variables and 14146 rows.
 #' \itemize{
 #'   \item `MedicinalProd_Id` Integer. The medicinalproduct identifier.
 #'   \item `Sequence.number.1` and `2` Characters. Complement to DrecNo.
@@ -264,11 +264,11 @@
 #' @source None
 #'
 #' @examples
-#' data(mp_short_)
+#' data(mp_)
 
-"mp_short_"
+"mp_"
 
-#' @rdname mp_short_
+#' @rdname mp_
 
 "thg_"
 

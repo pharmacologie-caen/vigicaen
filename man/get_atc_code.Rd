@@ -4,12 +4,12 @@
 \alias{get_atc_code}
 \title{Get ATC codes (DrecNos or MPIs)}
 \usage{
-get_atc_code(atc_sel, mp_short, thg_data, vigilyze = TRUE)
+get_atc_code(atc_sel, mp, thg_data, vigilyze = TRUE)
 }
 \arguments{
 \item{atc_sel}{A named list of ATC codes. See Details.}
 
-\item{mp_short}{A modified MP data.table. See \code{\link{mp_short_}}}
+\item{mp}{A modified MP data.table. See \code{\link{mp_}}}
 
 \item{thg_data}{A data.table. Correspondence between ATC codes and MedicinalProd_Id (usually, it is \code{thg})}
 
@@ -46,7 +46,7 @@ atc_sel <-
 
 atc_drecno <-
   get_atc_code(atc_sel = atc_sel,
-               mp_short = mp_short_,
+               mp = mp_,
                thg_data = thg_,
                vigilyze = TRUE)
 
@@ -54,12 +54,12 @@ atc_drecno <-
 
 atc_mpi <-
   get_atc_code(atc_sel = atc_sel,
-               mp_short = mp_short_,
+               mp = mp_,
                thg_data = thg_,
                vigilyze = FALSE)
 }
 \seealso{
-\code{\link{mp_short_}}, \code{\link{thg_}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=get_drecno]{get_drecno()}}
+\code{\link{mp_}}, \code{\link{thg_}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=get_drecno]{get_drecno()}}
 }
 \keyword{atc}
 \keyword{data_management}

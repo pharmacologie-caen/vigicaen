@@ -109,10 +109,10 @@ tb_who <-
       dplyr::compute()
 
     # ---- write
-    texter("Write mp_short.parquet", "12%%")
+    texter("Write mp.parquet", "12%%")
 
     arrow::write_parquet(mp,
-                         sink = paste0(path_who, "mp_short.parquet")
+                         sink = paste0(path_who, "mp.parquet")
     )
 
     # ---- pharmaceutical products ---- ####

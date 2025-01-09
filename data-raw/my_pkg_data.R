@@ -14,8 +14,8 @@ link <-     dt_fst(path_ici_data, "link")
 ind  <-     dt_fst(path_ici_data, "ind")
 followup <- dt_fst(path_ici_data, "followup")
 
-mp_short <- dt_fst("C:/Users/dolladille-c/vigibase_2023_sep/who/",
-                   "mp_short")
+mp <- dt_fst("C:/Users/dolladille-c/vigibase_2023_sep/who/",
+                   "mp")
 
 path_meddra <-
   "C:/Users/dolladille-c/meddra_26_1/MedAscii/"
@@ -100,7 +100,7 @@ meddra_small <-
                 ~ factor(.x))) %>%
   data.table()
 
-# restrain mp_short to ici drugs, and L03AA class and C01BB, paracetamol, and tramadol
+# restrain mp to ici drugs, and L03AA class and C01BB, paracetamol, and tramadol
 
 ex_$d_drecno
 
@@ -137,7 +137,7 @@ ex_$d_groups <-
 ex_$d_groups_drecno <-
   get_drecno(
     ex_$d_groups,
-    mp_short = mp_short
+    mp = mp
   )
 
 # some drecno used for tests
@@ -149,13 +149,13 @@ other_drecno <-
                  at3  = "antithrombin iii",
                  pc = "protein c (coagulation inhibitor)"
                  ),
-    mp_short = mp_short
+    mp = mp
   )
 
 atc_drecno <-
   get_atc_code(
     atc_sel = list(l03aa = "L03AA", c09aa = "C09AA", j01ca = "J01CA"),
-    mp_short = mp_short,
+    mp = mp,
     thg_data = thg_
   )
 
@@ -167,13 +167,13 @@ atc_drecno <-
 atc_mpi <-
   get_atc_code(
     atc_sel = list(l03aa = "L03AA", c09aa = "C09AA", j01ca = "J01CA"),
-    mp_short = mp_short,
+    mp = mp,
     thg_data = thg_,
     vigilyze = FALSE
   )
 
-mp_short_small <-
-  mp_short %>%
+mp_small <-
+  mp %>%
   filter(
     DrecNo %in%
       c(unlist(ex_$d_drecno), unlist(atc_drecno), unlist(other_drecno))
@@ -601,16 +601,15 @@ ind_              <- ind_small
 followup_         <- followup_small
 thg_              <- thg_small
 meddra_           <- meddra_small
-mp_short_         <- mp_short_small
+mp_         <- mp_small
 smq_list_content_ <- smq_list_content_small
 luda_             <- luda_minimal %>%
   filter(UMCReportId %in% luda_small[["UMCReportId"]])
 
 ex_$meddra   <- NULL
-ex_$mp_short <- NULL
+ex_$mp <- NULL
 ex_$smq_list_content <- NULL
 ex_$d_sel_names <- NULL
-
 
 usethis::use_data(demo_            , compress = "xz", overwrite = TRUE)
 usethis::use_data(drug_            , compress = "xz", overwrite = TRUE)
@@ -622,7 +621,7 @@ usethis::use_data(ind_             , compress = "xz", overwrite = TRUE)
 usethis::use_data(followup_        , compress = "xz", overwrite = TRUE)
 usethis::use_data(thg_             , compress = "xz", overwrite = TRUE)
 usethis::use_data(meddra_          , compress = "xz", overwrite = TRUE)
-usethis::use_data(mp_short_        , compress = "xz", overwrite = TRUE)
+usethis::use_data(mp_        , compress = "xz", overwrite = TRUE)
 usethis::use_data(smq_list_content_, compress = "xz", overwrite = TRUE)
 usethis::use_data(ex_              , compress = "xz", overwrite = TRUE)
 usethis::use_data(luda_            , compress = "xz", overwrite = TRUE)

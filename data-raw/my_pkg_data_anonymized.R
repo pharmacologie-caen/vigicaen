@@ -274,8 +274,8 @@ meddra_ano <-
   meddra_ |>
   mutate(across(c(llt_code, pt_code, hlt_code, hlgt_code, soc_code, pt_soc_code),
                 ~ anonymizer2(.x, nums_shuffled)))
-mp_short_ano <-
-  mp_short_ |>
+mp_ano <-
+  mp_ |>
   mutate(across(c(MedicinalProd_Id, DrecNo, Create.date, Date.changed),
                 ~ anonymizer2(.x, nums_shuffled)))
 
@@ -322,7 +322,7 @@ all.equal(ex_ano$d_groups_drecno, ex_$d_groups_drecno)
 # same drecnos extracted and stored
 
 drec_ano <-get_drecno(ex_ano$d_groups,
-           mp_short = mp_short_ano,
+           mp = mp_ano,
            allow_combination = TRUE)
 
 # had more drecnos before... don't know why.
@@ -331,7 +331,7 @@ ex_ano$d_groups_drecno
 ex_ano$d_groups_drecno <- drec_ano
 
 get_drecno(ex_$d_groups,
-           mp_short = mp_short_,
+           mp = mp_,
            allow_combination = TRUE)
 
 demo <-
@@ -389,7 +389,7 @@ ind_              <- ind_ano
 followup_         <- followup_ano
 thg_              <- thg_ano
 meddra_           <- meddra_ano
-mp_short_         <- mp_short_ano
+mp_         <- mp_ano
 smq_list_content_ <- smq_list_content_ano
 luda_             <- luda_ano
 
@@ -406,7 +406,7 @@ usethis::use_data(ind_             , compress = "xz", overwrite = TRUE)
 usethis::use_data(followup_        , compress = "xz", overwrite = TRUE)
 usethis::use_data(thg_             , compress = "xz", overwrite = TRUE)
 usethis::use_data(meddra_          , compress = "xz", overwrite = TRUE)
-usethis::use_data(mp_short_        , compress = "xz", overwrite = TRUE)
+usethis::use_data(mp_        , compress = "xz", overwrite = TRUE)
 usethis::use_data(smq_list_content_, compress = "xz", overwrite = TRUE)
 usethis::use_data(ex_              , compress = "xz", overwrite = TRUE)
 usethis::use_data(luda_            , compress = "xz", overwrite = TRUE)

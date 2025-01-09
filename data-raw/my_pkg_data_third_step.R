@@ -4,14 +4,14 @@
 
 
 drug     <- drug_
-mp_short <- mp_short_
+mp <- mp_
 thg      <- thg_
 
 
 drug_cvt <- drug |>
   dplyr::mutate(dplyr::across(c(DrecNo, MedicinalProd_Id), as.integer))
 
-mp_short_cvt <- mp_short |>
+mp_cvt <- mp |>
   dplyr::mutate(dplyr::across(c(DrecNo, MedicinalProd_Id), as.integer))
 
 thg_cvt <- thg |>
@@ -20,12 +20,12 @@ thg_cvt <- thg |>
 # exporting to .rda files
 
 drug_     <- drug_cvt
-mp_short_ <- mp_short_cvt
+mp_ <- mp_cvt
 thg_      <- thg_cvt
 
 usethis::use_data(drug_            , compress = "xz", overwrite = TRUE)
 usethis::use_data(thg_             , compress = "xz", overwrite = TRUE)
-usethis::use_data(mp_short_        , compress = "xz", overwrite = TRUE)
+usethis::use_data(mp_        , compress = "xz", overwrite = TRUE)
 
 
 ## built in luda_ becomes link_

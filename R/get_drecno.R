@@ -7,7 +7,7 @@
 #' Use `inspect = TRUE` whenever you use this function for the first time on a
 #' new set of drug names. It is a **critical** checkpoint to your data analysis.
 #' This function uses perl style regex to find drug names in generic names OR
-#' exact matching to MedicinalProd_Id, from the WHO shortened MP tables \code{\link{mp_short_}}.
+#' exact matching to MedicinalProd_Id, from the WHO shortened MP tables \code{\link{mp_}}.
 #' A drug can have multiple MedicinalProd_Ids, corresponding to different packagings.
 #' The MedicinalProd_Id matching is typically used to identify DrecNo(s)
 #' contained in an ATC class (extracted from `thg`), since not all MPI of drugs are present in `thg`.
@@ -36,11 +36,11 @@
 #' demo as a single class in a single column.
 #'
 #' @param d_sel A named list of character vectors. Selection of drug names or medicinalprod_id. See details
-#' @param mp_short A modified MP data.table. See \code{\link{mp_short_}}
+#' @param mp A modified MP data.table. See \code{\link{mp_}}
 #' @param allow_combination A logical. Should fixed associations including the drug of interest be retrieved? See details.
 #' @param method Should DrecNo be found from drug names or from MedicinalProd_Id?
 #' @param inspect Instead of providing a list of drecnos, do you wish to see a larger data.frame with additional data? See details.
-#' @param show_all Do you wish to see all MP_Ids entries from `mp_short` when working with drug names, or just one entry per DrecNo? Default to FALSE
+#' @param show_all Do you wish to see all MP_Ids entries from `mp` when working with drug names, or just one entry per DrecNo? Default to FALSE
 #' @keywords data_management drug atc
 #' @export
 #' @importFrom rlang .data
@@ -56,12 +56,12 @@
 #'   nivo_ipi = c("nivolumab", "ipilimumab")
 #'   )
 #'
-#' # Read mp_short with get_drecno, to identify drugs without combinations
+#' # Read mp with get_drecno, to identify drugs without combinations
 #'
-#' # First, you shall **always** inspect mp_short reading before getting the codes
+#' # First, you shall **always** inspect mp reading before getting the codes
 #'
 #' get_drecno(d_sel_names,
-#'            mp_short = mp_short_,
+#'            mp = mp_,
 #'            allow_combination = FALSE,
 #'            method = "drug_name",
 #'            inspect = TRUE)
@@ -71,7 +71,7 @@
 #'
 #' d_drecno <-
 #'   get_drecno(d_sel_names,
-#'              mp_short = mp_short_,
+#'              mp = mp_,
 #'              allow_combination = FALSE,
 #'              method = "drug_name")
 #' d_drecno
@@ -80,7 +80,7 @@
 #'
 #' d_drecno <-
 #' get_drecno(d_sel = d_sel_names,
-#'             mp_short = mp_short_,
+#'             mp = mp_,
 #'             allow_combination = TRUE,
 #'             method = "drug_name"
 #'             )
@@ -88,7 +88,7 @@
 
 get_drecno <- function(
     d_sel,
-    mp_short,
+    mp,
     allow_combination = TRUE,
     method = c("drug_name", "mpi_list"),
     inspect = FALSE,
@@ -97,11 +97,11 @@ get_drecno <- function(
 
   method <- match.arg(method)
 
-  if("Table"  %in% class(mp_short)){
-    # automatically collect mp_short if out of memory
+  if("Table"  %in% class(mp)){
+    # automatically collect mp if out of memory
     # since it's a small table
-    mp_short <-
-      dplyr::collect(mp_short)
+    mp <-
+      dplyr::collect(mp)
   }
 
   if(method == "mpi_list" && allow_combination)
@@ -119,7 +119,7 @@ get_drecno <- function(
     warning("names of d_sel were tolower-ed and trimed")
   }
 
-  find_combination <- function(x_drug_name, env = mp_short,
+  find_combination <- function(x_drug_name, env = mp,
                                drug_name_t = {{ drug_name_t }}){
     x_drug_name <-
       gsub("\\(", "\\\\(", x_drug_name)
@@ -135,11 +135,11 @@ get_drecno <- function(
     # negative lookahead: x is not followed by a space or an alphabetic character.
   }
 
-  find_isolated <- function(x_drug_name, env = mp_short,
+  find_isolated <- function(x_drug_name, env = mp,
                             drug_name_t = {{ drug_name_t }})
     eval(rlang::expr(drug_name_t == x_drug_name), envir = env) # exact match
 
-  find_mpi <- function(x_mpi_list, env = mp_short,
+  find_mpi <- function(x_mpi_list, env = mp,
                        MedicinalProd_Id = {{ MedicinalProd_Id }})
     eval(rlang::expr(MedicinalProd_Id %in% x_mpi_list), envir = env)
 
@@ -161,7 +161,7 @@ get_drecno <- function(
       )
 
     # drug finder
-    drecno_list <- mp_short[find_select(x),]
+    drecno_list <- mp[find_select(x),]
     # 2022 06 25 il faut ajouter, quelque part par ici, un checker sur le nom du medicament isole, pour ne pas admettre des erreurs dorthographe dans le find combination, qui est plus permissif que find isolated. ou plutot modifier find combination pour etre moins permissif aux noms incomplets.
 
     # exist checker
@@ -180,7 +180,7 @@ get_drecno <- function(
         drecno_list[find_isolated(x, env = drecno_list), unique(DrecNo)]
       # there can be combinations and there can be multiple MP_Ids
 
-      who_name <- mp_short[DrecNo == drecno  &
+      who_name <- mp[DrecNo == drecno  &
                              Sequence.number.1 == "01" &
                              Sequence.number.2 == "001",
                            unique(drug_name_t)] # there can be multiple packagings for a non WHO name drug
@@ -236,7 +236,7 @@ get_drecno <- function(
 
     res_list <-
       purrr::map(d_sel_renamed, function(d_n)
-        mp_short[find_mpi(d_n), ] |>
+        mp[find_mpi(d_n), ] |>
           dplyr::mutate(drug = 1) # for compatibility with inspect instructions
       )
 

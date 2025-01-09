@@ -7,7 +7,7 @@
 \usage{
 find_drecno(
   x,
-  mp_short,
+  mp,
   allow_combination = TRUE,
   method = c("drug_name", "mpi_list"),
   show_all = FALSE,
@@ -17,13 +17,13 @@ find_drecno(
 \arguments{
 \item{x}{A character vector of either drug names (use WHO names, see details) or MedicinalProd_Ids to be matched.}
 
-\item{mp_short}{A modified data.table of medicinal products, see details.}
+\item{mp}{A modified data.table of medicinal products, see details.}
 
 \item{allow_combination}{A logical. Should fixed associations including the drug of interest be retrieved? See details.}
 
 \item{method}{Should DrecNo be found from drug names or from MedicinalProd_Id?}
 
-\item{show_all}{Do you wish to see all MP_Ids entries from \code{mp_short} when working with drug names, or just one entry per DrecNo? Default to FALSE}
+\item{show_all}{Do you wish to see all MP_Ids entries from \code{mp} when working with drug names, or just one entry per DrecNo? Default to FALSE}
 
 \item{mpi_meth_name}{If you use mpi_list, this name will be printed in the drug column.}
 }

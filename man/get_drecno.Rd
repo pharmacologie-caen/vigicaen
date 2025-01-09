@@ -6,7 +6,7 @@
 \usage{
 get_drecno(
   d_sel,
-  mp_short,
+  mp,
   allow_combination = TRUE,
   method = c("drug_name", "mpi_list"),
   inspect = FALSE,
@@ -16,7 +16,7 @@ get_drecno(
 \arguments{
 \item{d_sel}{A named list of character vectors. Selection of drug names or medicinalprod_id. See details}
 
-\item{mp_short}{A modified MP data.table. See \code{\link{mp_short_}}}
+\item{mp}{A modified MP data.table. See \code{\link{mp_}}}
 
 \item{allow_combination}{A logical. Should fixed associations including the drug of interest be retrieved? See details.}
 
@@ -24,7 +24,7 @@ get_drecno(
 
 \item{inspect}{Instead of providing a list of drecnos, do you wish to see a larger data.frame with additional data? See details.}
 
-\item{show_all}{Do you wish to see all MP_Ids entries from \code{mp_short} when working with drug names, or just one entry per DrecNo? Default to FALSE}
+\item{show_all}{Do you wish to see all MP_Ids entries from \code{mp} when working with drug names, or just one entry per DrecNo? Default to FALSE}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{get_drecno()} collects
@@ -35,7 +35,7 @@ Drug Record Numbers associated to one or more drugs.
 Use \code{inspect = TRUE} whenever you use this function for the first time on a
 new set of drug names. It is a \strong{critical} checkpoint to your data analysis.
 This function uses perl style regex to find drug names in generic names OR
-exact matching to MedicinalProd_Id, from the WHO shortened MP tables \code{\link{mp_short_}}.
+exact matching to MedicinalProd_Id, from the WHO shortened MP tables \code{\link{mp_}}.
 A drug can have multiple MedicinalProd_Ids, corresponding to different packagings.
 The MedicinalProd_Id matching is typically used to identify DrecNo(s)
 contained in an ATC class (extracted from \code{thg}), since not all MPI of drugs are present in \code{thg}.
@@ -73,12 +73,12 @@ d_sel_names <- rlang::list2(
   nivo_ipi = c("nivolumab", "ipilimumab")
   )
 
-# Read mp_short with get_drecno, to identify drugs without combinations
+# Read mp with get_drecno, to identify drugs without combinations
 
-# First, you shall **always** inspect mp_short reading before getting the codes
+# First, you shall **always** inspect mp reading before getting the codes
 
 get_drecno(d_sel_names,
-           mp_short = mp_short_,
+           mp = mp_,
            allow_combination = FALSE,
            method = "drug_name",
            inspect = TRUE)
@@ -88,7 +88,7 @@ get_drecno(d_sel_names,
 
 d_drecno <-
   get_drecno(d_sel_names,
-             mp_short = mp_short_,
+             mp = mp_,
              allow_combination = FALSE,
              method = "drug_name")
 d_drecno
@@ -97,7 +97,7 @@ d_drecno
 
 d_drecno <-
 get_drecno(d_sel = d_sel_names,
-            mp_short = mp_short_,
+            mp = mp_,
             allow_combination = TRUE,
             method = "drug_name"
             )

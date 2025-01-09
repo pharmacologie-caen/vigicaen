@@ -62,7 +62,7 @@ followup <- followup_
 srce     <- srce_
 
 thg      <- thg_
-mp_short <- mp_short_
+mp <- mp_
 meddra   <- meddra_
 smq_list_content <- smq_list_content_
 

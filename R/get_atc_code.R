@@ -13,7 +13,7 @@
 #'
 #' @param atc_sel A named list of ATC codes. See Details.
 #' @param vigilyze A logical. Should ATC classes be retrieved using the vigilyze style? See details
-#' @param mp_short A modified MP data.table. See \code{\link{mp_short_}}
+#' @param mp A modified MP data.table. See \code{\link{mp_}}
 #' @param thg_data A data.table. Correspondence between ATC codes and MedicinalProd_Id (usually, it is `thg`)
 #' @keywords data_management drug atc
 #' @export
@@ -21,7 +21,7 @@
 #' or a list of **MedicinalProd_Ids** if `vigilyze` is set to `FALSE`
 #' @importFrom rlang .data
 #' @importFrom rlang .env
-#' @seealso \code{\link{mp_short_}}, \code{\link{thg_}}, [add_drug()], [get_drecno()]
+#' @seealso \code{\link{mp_}}, \code{\link{thg_}}, [add_drug()], [get_drecno()]
 #' @examples
 #' # ## Find codes associated with one or more atc classes
 #'
@@ -36,7 +36,7 @@
 #'
 #' atc_drecno <-
 #'   get_atc_code(atc_sel = atc_sel,
-#'                mp_short = mp_short_,
+#'                mp = mp_,
 #'                thg_data = thg_,
 #'                vigilyze = TRUE)
 #'
@@ -44,14 +44,14 @@
 #'
 #' atc_mpi <-
 #'   get_atc_code(atc_sel = atc_sel,
-#'                mp_short = mp_short_,
+#'                mp = mp_,
 #'                thg_data = thg_,
 #'                vigilyze = FALSE)
 
 
 get_atc_code <-
   function(atc_sel,
-           mp_short,
+           mp,
            thg_data,
            vigilyze = TRUE) {
 
@@ -69,11 +69,11 @@ get_atc_code <-
       warning("names of atc_sel were tolower-ed and trimed")
     }
 
-    if("Table"  %in% class(mp_short)){
-      # automatically collect mp_short if out of memory
+    if("Table"  %in% class(mp)){
+      # automatically collect mp if out of memory
       # since it's a small table
-      mp_short <-
-        dplyr::collect(mp_short)
+      mp <-
+        dplyr::collect(mp)
     }
 
     if("Table"  %in% class(thg_data)){
@@ -118,7 +118,7 @@ get_atc_code <-
 
       get_drecno(
         d_sel = atc_sel_mpi,
-        mp_short = mp_short,
+        mp = mp,
         allow_combination = FALSE,
         method = "mpi_list",
         inspect = FALSE,
