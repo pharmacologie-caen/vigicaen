@@ -93,7 +93,7 @@ followup <- dt_parquet(path_base, "srce", in_memory = FALSE)
 suspdup  <- dt_parquet(path_base, "suspdup", in_memory = FALSE)
 
 thg      <- dt_parquet(path_who, "thg")
-mp_short <- dt_parquet(path_who, "mp_short")
+mp <- dt_parquet(path_who, "mp")
 ```
 
 You can work IN or OUT of memory, depending on the in_memory argument.
@@ -114,7 +114,7 @@ followup <- followup_
 srce     <- srce_
 
 thg      <- thg_
-mp_short <- mp_short_
+mp <- mp_
 meddra   <- meddra_
 smq_list_content <- smq_list_content_
 
@@ -153,7 +153,7 @@ d_drecno <- ex_$d_drecno
 
 atc_drecno <-
   get_atc_code(atc_sel =  rlang::list2(l03_j01 = c("L03AA", "J01CA")),
-               mp_short = mp_short_,
+               mp = mp_,
                thg_data = thg_,
                vigilyze = TRUE)
 

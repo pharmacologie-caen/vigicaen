@@ -13,7 +13,7 @@ test_that("Works for single and multiple ATC selections", {
   expect_message({
   atc_drecno <-
     get_atc_code(atc_sel = atc_sel,
-                 mp_short = mp_short_,
+                 mp = mp_,
                  thg_data = thg_,
                  vigilyze = TRUE)
   },
@@ -48,7 +48,7 @@ test_that("extracts mpi if vigilyze is FALSE", {
   expect_message({
     atc_drecno <-
       get_atc_code(atc_sel = atc_sel,
-                   mp_short = mp_short_,
+                   mp = mp_,
                    thg_data = thg_,
                    vigilyze = FALSE)
 
@@ -83,7 +83,7 @@ test_that("names are tolower-ed and trimed", {
     expect_message({
     atc_drecno <<-
       get_atc_code(atc_sel = atc_sel,
-                   mp_short = mp_short_,
+                   mp = mp_,
                    thg_data = thg_,
                    vigilyze = TRUE)
   },
@@ -104,7 +104,7 @@ test_that("names are tolower-ed and trimed", {
       atc_drecno_vigifalse <<-
         get_atc_code(
           atc_sel = atc_sel,
-          mp_short = mp_short_,
+          mp = mp_,
           thg_data = thg_,
           vigilyze = FALSE
         )
@@ -120,7 +120,7 @@ test_that("names are tolower-ed and trimed", {
 
 })
 
-test_that("works with thg or mp_short as Table (out of memory)", {
+test_that("works with thg or mp as Table (out of memory)", {
   atc_sel <-
     rlang::list2(l03_j01 = c("L03AA", "J01CA"),
                  c09aa = c("C09AA")
@@ -134,7 +134,7 @@ test_that("works with thg or mp_short as Table (out of memory)", {
   expect_message({
     atc_drecno <-
       get_atc_code(atc_sel = atc_sel,
-                   mp_short = mp_short_ |>
+                   mp = mp_ |>
                      arrow::as_arrow_table(),
                    thg_data = thg_ |>
                      arrow::as_arrow_table(),

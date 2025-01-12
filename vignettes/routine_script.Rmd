@@ -36,7 +36,7 @@ drug <- dt_parquet(path_base, "drug", in_memory = FALSE)
 adr  <- dt_parquet(path_base, "adr",  in_memory = FALSE)
 link <- dt_parquet(path_base, "link", in_memory = FALSE)
 
-mp_short <- dt_parquet(path_who,  "mp_short")
+mp <- dt_parquet(path_who,  "mp")
 meddra   <- dt_parquet(path_meddra, "meddra")
 
 # ---- Select drug and adverse drug reaction ---- ####
@@ -53,7 +53,7 @@ a_sel <- list(
 # ---- Collect drug and adr IDs ---- ####
 
 d_code <- 
-  get_drecno(d_sel, mp_short = mp_short)
+  get_drecno(d_sel, mp = mp)
 
 a_code <-
   get_llt_soc(a_sel, 

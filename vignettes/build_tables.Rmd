@@ -89,13 +89,13 @@ AgeGroup, Dechallenge, Dechallenge2, Frequency,
 Gender, Notifier, Outcome, Rechallenge, Rechallenge2, Region,
 RepBasis, ReportType, RouteOfAdm, Seriousness, and SizeUnit.
 
--   WHODrug: All tables - mp + mp_short: thg, pp, 
+-   WHODrug: All tables - mp + mp: thg, pp, 
 ing, srce, org, ccode, atc, sun, pf, str, prg, prt, unitx. Again,
 check correspondence in the delivered files from UMC.
 
 -   Meddra: meddra_hierarchy, smq_list, and smq_content.
 
-`mp_short` is a short version of mp table, which has been tolower-ed and
+`mp` is a short version of mp table, which has been tolower-ed and
 trim-ed on drug name, to be more handy. A few columns have also been
 removed.
 
@@ -112,7 +112,7 @@ adr  <- dt_parquet(path_main, "adr")
 link <- dt_parquet(path_main, "link")
 # etc.
 
-mp_short <- dt_parquet(path_who, "mp_short")
+mp <- dt_parquet(path_who, "mp")
 
 meddra <- dt_parquet(path_meddra, "meddra_hierarchy")
 

@@ -71,10 +71,10 @@ See the vignette here \code{vignette("build_tables", package = "vigicaen")}.
 
 ### Principle
 
-1.  Load the `demo`, `drug`, and `mp_short` tables.
+1.  Load the `demo`, `drug`, and `mp` tables.
 2.  Select one or more medications of interest.
 3.  Identify the drug codes (e.g., the `DrecNo(s)`)
-associated with these drug using the `mp` (or `mp_short`)
+associated with these drug using the `mp` (or `mp`)
 table.
 4.  Search for cases exposed to these medications using the codes in the `drug` table.
 5.  Update the `demo` table: code 1 if the case reports the medication of interest, 0 otherwise.
@@ -96,7 +96,7 @@ step 6 is performed with `check_dm()`.
 demo <- demo_
 drug <- drug_
 
-mp_short <- mp_short_
+mp <- mp_
 ```
 
 > Note: if you are working with your own tables, 
@@ -122,12 +122,12 @@ d_sel
 
 ### Step 3: Identify drug codes
 
-The function `get_drecno()` allows you to query the `mp_short`
+The function `get_drecno()` allows you to query the `mp`
 table with a selection of drug names.
 
 It takes several arguments, two of which must be filled in: 
 the selection of drugs and the table containing the
-correspondence between the name and the code (here, `mp_short`).
+correspondence between the name and the code (here, `mp`).
 
 You should **always** proceed in two steps.
 
@@ -136,12 +136,12 @@ You should **always** proceed in two steps.
 ```{r inspect_with_get_drecno}
 d_sel |> 
   get_drecno(
-    mp_short = mp_short_,
+    mp = mp_,
     inspect = TRUE
   )
 ```
 
-We see that `get_drecno()` finds two entries containing the drug "nivolumab" in the `mp_short` table:
+We see that `get_drecno()` finds two entries containing the drug "nivolumab" in the `mp` table:
 
 -   The entry for nivolumab alone
 
@@ -162,7 +162,7 @@ in an R object called `d_drecno`.
 d_drecno <-
   d_sel |> 
   get_drecno(
-    mp_short = mp_short_,
+    mp = mp_,
     inspect = FALSE
   )
 ```
@@ -267,7 +267,7 @@ The correspondence between ATC (Anatomical and Therapeutical
 Classification) classes and drug codes is found in the `thg`
 table. In this table, drug codes are stored as
 `MedicinalProd_Id`. It is therefore necessary to make a second
-correspondence with `mp_short` to find `DrecNo`.
+correspondence with `mp` to find `DrecNo`.
 
 This can be done with the `get_atc_code()` function.
 
@@ -280,12 +280,12 @@ atc_sel <-
 atc_drecno <- 
   atc_sel |> 
     get_atc_code(
-      mp_short = mp_short,
+      mp = mp,
       thg_data = thg_
     )
 ```
 
-The `get_atc_code()` function requires the `mp_short` 
+The `get_atc_code()` function requires the `mp` 
 and `thg` tables, as well as the selection of ATC classes.
 
 ```{r str_atc_drecno}
@@ -321,7 +321,7 @@ d_sel <-
 
 d_drecno <-
   d_sel |> 
-  get_drecno(mp_short = mp_short)
+  get_drecno(mp = mp)
 
 demo <- 
   demo |> 
@@ -349,7 +349,7 @@ d_sel <-
 
 d_drecno <-
   d_sel |> 
-  get_drecno(mp_short = mp_short)
+  get_drecno(mp = mp)
 
 demo <- 
   demo |> 

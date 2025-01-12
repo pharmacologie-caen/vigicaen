@@ -86,7 +86,7 @@ drug <- dt_parquet(path_base, "drug", in_memory = FALSE)
 adr  <- dt_parquet(path_base, "adr", in_memory = FALSE)
 link <- dt_parquet(path_base, "link", in_memory = FALSE)
 
-mp_short <- dt_parquet(path_who,  "mp_short")
+mp <- dt_parquet(path_who,  "mp")
 meddra   <- dt_parquet(path_meddra, "meddra")
 ```
 
@@ -98,7 +98,7 @@ adr      <- adr_
 drug     <- drug_
 link     <- link_
 
-mp_short <- mp_short_
+mp <- mp_
 meddra   <- meddra_
 ```
 
@@ -153,7 +153,7 @@ Feel free to browse the other `get_*` functions: `get_llt_smq()`,
 
 ```{r get_drecno_get_llt_soc}
 d_code <- 
-  get_drecno(d_sel, mp_short = mp_short)
+  get_drecno(d_sel, mp = mp)
 
 a_code <-
   get_llt_soc(a_sel, term_level = "hlt", meddra = meddra)

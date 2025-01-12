@@ -57,9 +57,9 @@ test_that("basic use works", {
     tb_who(path_who = path_who)
   )
 
-  mp_short_res <- arrow::read_parquet(paste0(path_who, "mp_short.parquet"))
+  mp_res <- arrow::read_parquet(paste0(path_who, "mp.parquet"))
 
-  mp_short_true <-
+  mp_true <-
     dplyr::tibble(
       MedicinalProd_Id = 1,
       Sequence.number.1 = "01",
@@ -71,7 +71,7 @@ test_that("basic use works", {
       Country = "N/A       ")
 
 
-  expect_equal(mp_short_res, mp_short_true)
+  expect_equal(mp_res, mp_true)
 
   # no end slash to path_who
 
@@ -88,9 +88,9 @@ test_that("basic use works", {
     tb_who(path_who = path_who_no_slash)
   )
 
-  mp_short_res_ns <- arrow::read_parquet(paste0(path_who, "mp_short.parquet"))
+  mp_res_ns <- arrow::read_parquet(paste0(path_who, "mp.parquet"))
 
-  expect_equal(mp_short_res_ns, mp_short_true)
+  expect_equal(mp_res_ns, mp_true)
 
   unlink(tmp_folder, recursive = TRUE)
 })

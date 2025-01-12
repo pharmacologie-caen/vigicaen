@@ -18,7 +18,7 @@ test_that("works with drecnos, regular names for demo and drug", {
   d_drecno <-
     d_names |>
     get_drecno(
-      mp_short = mp_short_
+      mp = mp_
     )
 
   demo_n <-
@@ -85,7 +85,7 @@ test_that("works with irregular names for demo and drug", {
   d_drecno <-
     d_names |>
     get_drecno(
-      mp_short = mp_short_
+      mp = mp_
     )
 
   dema <-
@@ -113,7 +113,7 @@ test_that("works with irregular names for demo and drug", {
 test_that("works with mpi_list", {
 
   mpi <- rlang::list2(
-    para = mp_short_[DrecNo == "42225260", MedicinalProd_Id]
+    para = mp_[DrecNo == "42225260", MedicinalProd_Id]
   )
 
   mpi_count <- rlang::list2(
@@ -166,7 +166,7 @@ test_that("selecting only s, c, i works and provide less cases than sci altogeth
   d_drecno <-
     d_names |>
     get_drecno(
-      mp_short = mp_short_
+      mp = mp_
     )
 
   bas <- c("s", "c", "i")

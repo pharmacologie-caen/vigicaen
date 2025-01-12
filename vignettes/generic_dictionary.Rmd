@@ -44,7 +44,7 @@ library(dplyr)
 
 meddra <- dt_fst(path_meddra, "meddra_hierarchy")
 
-mp_short <- dt_fst(path_who, "mp_short")
+mp <- dt_fst(path_who, "mp")
 
 smq_list <- dt_fst(path_meddra, "meddra_smq_list")
 
@@ -61,7 +61,7 @@ smq_list_content <-
 ```{r test_data}
 meddra <- meddra_
 
-mp_short <- mp_short_
+mp <- mp_
 
 smq_list_content <- smq_list_content_
 ```
@@ -81,7 +81,7 @@ d_sel <- # drug selection
 
 d_sel |>
   get_drecno(
-    mp_short = mp_short,
+    mp = mp,
     inspect = TRUE
   )
 
@@ -90,7 +90,7 @@ d_sel |>
 d_drecno <-
   d_sel |>
   get_drecno(
-    mp_short = mp_short,
+    mp = mp,
     inspect = FALSE
   )
 
@@ -103,7 +103,7 @@ atc_sel <-
 atc_drecno <-
   atc_sel |>
   get_atc_code(
-    mp_short = mp_short,
+    mp = mp,
     thg_data = thg_
   )
 
