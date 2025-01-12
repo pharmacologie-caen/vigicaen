@@ -1,11 +1,28 @@
 
-## Minor  
+## Breaking changes
 
-#86 New `top_n` argument added to `screen_adr`  
+* `mp` replaces `mp_short` throughout the package (#110). 
+Users will have to change existing code to replace calls to `mp_short` with `mp`.
+ 
+  ```R
+  # the old way
+  mp_short <- dt_parquet(path_who, "mp_short")
+  d_names <- list(drug1 = "paracetamol")
+  d_drecno <- get_drecno(d_names, mp_short = mp_short)
+  
+  # the new way
+  mp <- dt_parquet(path_who, "mp")
+  d_names <- list(drug1 = "paracetamol")
+  d_drecno <- get_drecno(d_names, mp = mp)
+  ```
 
-## Bug Fixes  
+## New features  
 
-#86 `screen_adr` now counts effects at the case level.  
+* New `top_n` argument added to `screen_adr()` (#86).
+
+## Minor and bug Fixes  
+
+* `screen_adr()` now counts effects at the case level (#86).  
 
 # vigicaen 0.14.0
 

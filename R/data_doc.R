@@ -242,7 +242,10 @@
 #'   \item `Sequence.number.1` and `2` Characters. Complement to DrecNo.
 #'   \item `DrecNo` Character. Drug Record Number, pivotal to identify drugs
 #'   with [get_drecno()].
-#'   \item `drug_name_t` Character. The name of the drug.
+#'   \item `drug_name_t` Character. The name of the drug. Compared to the
+#'   original `drug_name` variable in `mp` table,
+#'   this variable is trimmed for white spaces, and names
+#'   are in lowercase.
 #'   \item `Create.date` Character. The date the record was created.
 #'   \item `Date.changed` Character. The date the record was last changed.
 #'   \item `Country` Character. The country where the record was created.

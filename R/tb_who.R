@@ -4,10 +4,10 @@
 #'
 #' WHODrug is delivered as zipped text files, that you should
 #' transform to a more efficient format. Parquet format from arrow has many advantages:
-#' It works with out-of-memory data, which makes it possible to process tables on
+#' It can work with out-of-memory data, which makes it possible to process tables on
 #' a computer with not-so-much RAM. It is also lightweighted and standard across different
-#' langages.
-#' The function also creates variables in each table. See [tb_vigibase()] for some running examples.
+#' languages.
+#' The function also creates variables in each table. See [tb_vigibase()] for some running examples, and try `?mp_` or `?thg_` for more details.
 #' Use [dt_parquet()] to load the tables afterward.
 #'
 #' @param path_who Character string, a directory containing whodrug txt tables. It is also the
