@@ -18,97 +18,149 @@
 #' mentions across all reports.
 #'
 #' @param .data A `data.table` containing drug data,
-#' including columns `MedicinalProd_Id` for drug identifiers and `UMCReportId`
+#' including columns `DrecNo` for drug identifiers and `UMCReportId`
 #' for unique report identifiers.
-#' @param sun A `data.table` containing `Substance_Id` and `Substance.name` mappings.
-#' @param ing A `data.table` containing `Substance_Id` and `MedicinalProd_Id` mappings.
-#' @param mp A `data.table` containing `MedicinalProd_Id` and `drug-name-t` mappings
+#' @param mp_data An MP `data.table` containing `DrecNo` and `drug_name` mappings.
 #' @param freq_threshold A numeric value indicating the minimum
 #' frequency (as a proportion) of cases where a drug must appear
 #' to be included in the results. Defaults to `NULL`.
 #' @param top_n An integer specifying the number of most frequently occurring drugs to return. Defaults to `NULL`.
 #'
 #' @return A `data.frame` with the following columns:
-#' - **substance**: The substance name.
-#' - **n**: The number of unique reports (cases) where the substance appears.
-#' - **percentage**: The percentage of total unique reports where the substance appears.
+#' \itemize{
+#'    \item `Drug name`: The drug name.
+#'    \item `DrecNo`: The drug record number
+#'    \item `N`: The number of unique reports (cases) where the drug appears.
+#'    \item `percentage`: The percentage of total unique reports
+#'    where the drug appears.
+#' }
 #' The results are sorted in descending order of `percentage`.
 #'
 #' @export
 #' @examples
 #' # Example 1: Filter substances appearing in at least 5% of reports
 #' screen_drug(
-#'   .data = drug_data,
-#'   sun = sun_data,
-#'   ing = ing_data,
+#'   .data = drug_,
+#'   mp_data = mp_
 #'   freq_threshold = 0.05
 #' )
 #'
 #' # Example 2: Get the top 5 most frequent substances
 #' screen_drug(
 #'   .data = drug_data,
-#'   sun = sun_data,
-#'   ing = ing_data,
+#'   mp_data = mp_
 #'   top_n = 5
 #' )
+#'
+#' # nb: in the example datasets, not all drugs are recorded in mp_,
+#' # leading to NAs in screen_drug output.
 
-screen_drug <- function (.data, sun, ing, mp, freq_threshold = NULL, top_n = NULL) {
+
+screen_drug <-
+  function (.data,
+            mp_data,
+            freq_threshold = NULL,
+            top_n = NULL) {
+
   # Check if both freq_threshold and top_n are provided, and issue a warning
   if (!is.null(freq_threshold) && !is.null(top_n)) {
-    warning("Both 'freq_threshold' and 'top_n' are specified. Only 'top_n' will be applied. Please specify only one for precise control.")
+    rlang::warn(c(
+      "Both 'freq_threshold' and 'top_n' are specified.",
+      "i" = "Only 'top_n' will be applied.",
+      ">" = "Specify only one for precise control."
+    )
+    )
     freq_threshold <- NULL  # Ignore freq_threshold if both are provided
   }
 
-  # Ensure matching data types for Substance_Id
-  ing <- ing |> dplyr::mutate(Substance_Id = as.numeric(Substance_Id))
-  sun <- sun |> dplyr::mutate(Substance_Id = as.numeric(Substance_Id))
+ check_data_mp <-
+   function(mp_data,
+            arg = rlang::caller_arg(mp_data),
+            call = rlang::caller_env()){
+     if (!all(c("DrecNo", "drug_name_t") %in% names(mp_data))) {
+       cli::cli_abort(
+         cli::cli_bullets(c(
+           "x" = "{.arg {arg}} is invalid.",
+           "!" = "Either {.arg DrecNo} or {.arg drug_name_t} columns are missing.",
+           ">" = "Supply an {.arg mp} table to {.arg mp_data}. See ?mp_."
+         )),
+         call = call
+         )
+     }
+   }
 
-  # Merge ing and sun to create a complete mapping
-  drug_mapping <- ing |>
-    dplyr::left_join(sun, by = "Substance_Id") #|>
-    #dplyr::select(MedicinalProd_Id, Substance.name) |>
-   # dplyr::distinct()
+ check_mp(mp_data)
 
+ check_drug <-
+   function(.data,
+            arg = rlang::caller_arg(.data),
+            drug_arg = ".data",
+            call = rlang::caller_env()){
+     if (!all(c("DrecNo",
+                "MedicinalProd_Id",
+                "UMCReportId",
+                "Drug_Id") %in% names(.data))) {
+       cli::cli_abort(
+         cli::cli_bullets(c(
+           "x" = "{.arg {arg}} is not a {.arg drug} table.",
+           ">" = "Supply a `drug` table to {.arg {drug_arg}}. See ?drug_."
+         )),
+         call = call
+         )
+     }
+   }
 
-  # Ensure matching data types for MedicinalProd_Id
-  .data <- .data |> dplyr::mutate(MedicinalProd_Id = as.integer(MedicinalProd_Id))
-  drug_mapping <- drug_mapping |> dplyr::mutate(MedicinalProd_Id = as.integer(MedicinalProd_Id))
+ check_drug_data(.data)
 
+ # prepare mp
 
-  # Merge the .data with the drug mapping
-  merged_data <- .data |>
-    dplyr::left_join(drug_mapping, by = "MedicinalProd_Id", relationship = "many-to-many") |>
+ mp_distinct <-
+   mp_data |>
+   dplyr::filter(.data$Sequence.number.1 == "01" &
+                   .data$Sequence.number.2 == "001") |>
+   dplyr::select(dplyr::all_of(c("DrecNo", "drug_name_t"))) |>
+   dplyr::distinct(.data$DrecNo, .data$drug_name_t)
 
-    # Merge with the mp table to get drug_name_t
-    dplyr::left_join(mp, by = "MedicinalProd_Id")
+ # Synthetize .data
 
-  # Replace NA in Substance.name with the corresponding drug_name_t from mp
-  merged_data <- merged_data |>
-    dplyr::mutate(Substance.name = dplyr::coalesce(Substance.name, drug_name_t))
+ drecno_count <-
+   .data |>
+   # count at case level
+   dplyr::distinct(.data$DrecNo, .data$UMCReportId) |>
+   dplyr::group_by(.data$DrecNo) |>
+   dplyr::count() |>
+   dplyr::ungroup()
 
-
-  # Count the number of distinct reports for each substance
-  substance_counts <- merged_data |>
-    dplyr::distinct(UMCReportId, Substance.name) |>  # Unique UMCReportId and Substance.name combinations
-    dplyr::count(Substance.name, name = "n")  # Count the number of distinct reports for each substance
+ drug_count <-
+   drecno_count |>
+   dplyr::left_join(
+     mp_distinct,
+     by = c("DrecNo" = "DrecNo")
+   ) |>
+   dplyr::arrange(dplyr::desc(.data$n))
 
   # Calculate the percentage per report
-  total_reports <- dplyr::n_distinct(.data$UMCReportId)  # Total unique reports
-  substance_counts <- substance_counts |>
-    dplyr::mutate(percentage = (n / total_reports) * 100) |>  # Calculate percentage based on unique reports
-    dplyr::arrange(dplyr::desc(percentage))  # Arrange substances by percentage
+  total_reports <-
+    dplyr::n_distinct(.data$UMCReportId)
+
+  # compute percentage and arrange columns
+  output <-
+    drug_count |>
+    dplyr::mutate(percentage = (n / total_reports) * 100) |>
+    dplyr::rename("Drug name" = "drug_name_t", "N" = "n") |>
+    dplyr::relocate("Drug name")
 
   # Filter substances based on the frequency threshold if specified
   if (!is.null(freq_threshold)) {
-    substance_counts <- substance_counts |>
-      dplyr::filter(percentage >= freq_threshold * 100)  # Apply the frequency threshold
+    output <- output |>
+      dplyr::filter(percentage >= freq_threshold * 100)
   }
 
   # Keep only the top_n most frequent substances if specified
   if (!is.null(top_n)) {
-    substance_counts <- substance_counts |>
-      dplyr::slice_head(n = top_n)  # Select the top_n most frequent substances
+    output <- output |>
+      dplyr::slice_head(n = top_n)
   }
 
-  return(substance_counts)  # Return filtered counts with percentages
+  return(output)  # Return (filtered) counts with percentages
 }
