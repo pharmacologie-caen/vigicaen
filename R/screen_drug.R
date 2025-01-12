@@ -38,17 +38,17 @@
 #'
 #' @export
 #' @examples
-#' # Example 1: Filter substances appearing in at least 5% of reports
+#' # Filter drugs appearing in at least 10% of reports
 #' screen_drug(
 #'   .data = drug_,
-#'   mp_data = mp_
-#'   freq_threshold = 0.05
+#'   mp_data = mp_,
+#'   freq_threshold = 0.10
 #' )
 #'
-#' # Example 2: Get the top 5 most frequent substances
+#' # Get the top 5 most reported drugs
 #' screen_drug(
-#'   .data = drug_data,
-#'   mp_data = mp_
+#'   .data = drug_,
+#'   mp_data = mp_,
 #'   top_n = 5
 #' )
 #'
@@ -57,14 +57,14 @@
 
 
 screen_drug <-
-  function (.data,
+  function(.data,
             mp_data,
             freq_threshold = NULL,
             top_n = NULL) {
 
   # Check if both freq_threshold and top_n are provided, and issue a warning
   if (!is.null(freq_threshold) && !is.null(top_n)) {
-    rlang::warn(c(
+    cli::cli_warn(c(
       "Both 'freq_threshold' and 'top_n' are specified.",
       "i" = "Only 'top_n' will be applied.",
       ">" = "Specify only one for precise control."
@@ -73,44 +73,9 @@ screen_drug <-
     freq_threshold <- NULL  # Ignore freq_threshold if both are provided
   }
 
- check_data_mp <-
-   function(mp_data,
-            arg = rlang::caller_arg(mp_data),
-            call = rlang::caller_env()){
-     if (!all(c("DrecNo", "drug_name_t") %in% names(mp_data))) {
-       cli::cli_abort(
-         cli::cli_bullets(c(
-           "x" = "{.arg {arg}} is invalid.",
-           "!" = "Either {.arg DrecNo} or {.arg drug_name_t} columns are missing.",
-           ">" = "Supply an {.arg mp} table to {.arg mp_data}. See ?mp_."
-         )),
-         call = call
-         )
-     }
-   }
+ check_data_drug(.data, ".data")
 
- check_mp(mp_data)
-
- check_drug <-
-   function(.data,
-            arg = rlang::caller_arg(.data),
-            drug_arg = ".data",
-            call = rlang::caller_env()){
-     if (!all(c("DrecNo",
-                "MedicinalProd_Id",
-                "UMCReportId",
-                "Drug_Id") %in% names(.data))) {
-       cli::cli_abort(
-         cli::cli_bullets(c(
-           "x" = "{.arg {arg}} is not a {.arg drug} table.",
-           ">" = "Supply a `drug` table to {.arg {drug_arg}}. See ?drug_."
-         )),
-         call = call
-         )
-     }
-   }
-
- check_drug_data(.data)
+ check_data_mp(mp_data, "mp_data")
 
  # prepare mp
 

@@ -1,0 +1,108 @@
+#' Internal dataset type checkers
+#'
+#' Internal helpers to check argument values.
+#'
+#' @param .data The dataset to check.
+#' @param calling_arg A character string.
+#'   The name of the argument in the calling function (e.g. ".data" for "demo" in
+#'   `add_adr()`, etc.)
+#' @param arg Helper to format the error message.
+#' @param call Helper to format the error message.
+#'
+#' @return An error if the dataset is invalid. Nothing in other cases
+#'
+#' @examples
+#'
+#' drug_valid <- data.frame(
+#'   DrecNo = 1, UMCReportId = 1, MedicinalProd_Id = 1, Drug_Id = 1)
+#'
+#'  vigicaen:::check_data_drug(drug_valid, ".data")
+#'
+#' @name data_checkers
+
+NULL
+
+#' @describeIn data_checkers adr data checker
+
+check_data_adr <-
+  function(.data,
+           arg = rlang::caller_arg(.data),
+           call = rlang::caller_env()){
+
+    adr_cols <-
+      c("UMCReportId",
+        "Adr_Id",
+        "MedDRA_Id",
+        "Outcome")
+
+    if (!all(adr_cols %in% names(.data))) {
+
+      missing_cols <-
+        adr_cols[!adr_cols %in% names(.data)]
+
+      cli::cli_abort(
+        c(
+          "{.arg {arg}} is not an {.arg adr} table.",
+          "x" = "Missing columns: {missing_cols}",
+          ">" = "Supply an {.arg adr} table to {.arg {arg}}. See ?adr_."
+        ),
+        call = call
+      )
+    }
+  }
+
+#' @describeIn data_checkers drug data checker
+
+check_data_drug <-
+  function(.data,
+           arg = rlang::caller_arg(.data),
+           call = rlang::caller_env()){
+
+    drug_cols <-
+      c("DrecNo",
+        "MedicinalProd_Id",
+        "UMCReportId",
+        "Drug_Id")
+
+    if (!all(drug_cols %in% names(.data))) {
+
+      missing_cols <-
+        drug_cols[!drug_cols %in% names(.data)]
+
+      cli::cli_abort(
+        c(
+          "{.arg {arg}} is not a {.arg drug} table.",
+          "x" = "Missing columns: {missing_cols}",
+            ">" = "Supply a {.arg drug} table to {.arg {arg}}. See ?drug_."
+        ),
+        call = call
+      )
+    }
+  }
+
+#' @describeIn data_checkers mp checker
+
+check_data_mp <-
+  function(.data,
+           arg = rlang::caller_arg(.data),
+           call = rlang::caller_env()){
+
+    mp_cols <-
+      c("DrecNo", "drug_name_t")
+
+    if (!all(mp_cols %in% names(.data))) {
+
+      missing_cols <-
+        mp_cols[!mp_cols %in% names(.data)]
+
+
+      cli::cli_abort(
+        c(
+          "{.arg {arg}} is not an {.arg mp} table.",
+          "x" = "Missing columns: {missing_cols}",
+          ">" = "Supply an {.arg mp} table to {.arg {arg}}. See ?mp_."
+        ),
+        call = call
+      )
+    }
+  }

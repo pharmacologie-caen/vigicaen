@@ -84,12 +84,15 @@ test_that("checkers of mp_data and .data are ok", {
       DrecNo = 1
     )
 
-  expect_snapshot(error = TRUE, {
+  cli::test_that_cli(
+    "error in mp_data",{
+    expect_snapshot(error = TRUE, {
     screen_drug(
       drug_true,
       mp_data = mp_false
-    )
-  })
+      )
+      })
+    })
 
   expect_snapshot(error = TRUE, {
     screen_drug(
