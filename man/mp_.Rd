@@ -12,7 +12,10 @@
 \item \code{Sequence.number.1} and \code{2} Characters. Complement to DrecNo.
 \item \code{DrecNo} Character. Drug Record Number, pivotal to identify drugs
 with \code{\link[=get_drecno]{get_drecno()}}.
-\item \code{drug_name_t} Character. The name of the drug.
+\item \code{drug_name_t} Character. The name of the drug. Compared to the
+original \code{drug_name} variable in \code{mp} table,
+this variable is trimmed for white spaces, and names
+are in lowercase.
 \item \code{Create.date} Character. The date the record was created.
 \item \code{Date.changed} Character. The date the record was last changed.
 \item \code{Country} Character. The country where the record was created.
