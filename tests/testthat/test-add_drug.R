@@ -21,25 +21,29 @@ test_that("works with drecnos, regular names for demo and drug", {
       mp = mp_
     )
 
-  demo_n <-
-    demo |>
-    add_drug(
-      d_code = d_drecno,
-      method = "DrecNo",
-      repbasis = "sci",
-      drug_data = drug
-    )
+  expect_snapshot({
+    demo_n <-
+      demo |>
+      add_drug(
+        d_code = d_drecno,
+        method = "DrecNo",
+        repbasis = "sci",
+        drug_data = drug
+      )
+  })
 
-  demo_a <-
-    demo |>
-    arrow::as_arrow_table() |>
-    add_drug(
-      d_code = d_drecno,
-      method = "DrecNo",
-      repbasis = "sci",
-      drug_data = arrow::as_arrow_table(drug)
-    ) |>
-    dplyr::collect()
+  expect_snapshot({
+    demo_a <-
+      demo |>
+      arrow::as_arrow_table() |>
+      add_drug(
+        d_code = d_drecno,
+        method = "DrecNo",
+        repbasis = "sci",
+        drug_data = arrow::as_arrow_table(drug)
+      ) |>
+      dplyr::collect()
+  })
 
   expect_equal(ncol(demo_n),
                ncol(demo_) + n_drug)
@@ -88,14 +92,16 @@ test_that("works with irregular names for demo and drug", {
       mp = mp_
     )
 
-  dema <-
-    dema |>
-    add_drug(
-      d_code = d_drecno,
-      method = "DrecNo",
-      repbasis = "sci",
-      drug_data = druga
-    )
+  expect_snapshot({
+    dema <-
+      dema |>
+      add_drug(
+        d_code = d_drecno,
+        method = "DrecNo",
+        repbasis = "sci",
+        drug_data = druga
+      )
+  })
 
   expect_equal(ncol(dema),
                ncol(demo_) + n_drug)
@@ -122,24 +128,28 @@ test_that("works with mpi_list", {
 
   n_drug <- length(mpi)
 
-  demo <-
-    demo_ |>
-    add_drug(
-      d_code = mpi,
-      method = "MedicinalProd_Id",
-      repbasis = "sci",
-      drug_data = drug_
-    )
+  expect_snapshot({
+    demo <-
+      demo_ |>
+      add_drug(
+        d_code = mpi,
+        method = "MedicinalProd_Id",
+        repbasis = "sci",
+        drug_data = drug_
+      )
+  })
 
-  demo_a <-
-    demo_ |>
-    arrow::as_arrow_table() |>
-    add_drug(
-      d_code = mpi,
-      method = "MedicinalProd_Id",
-      repbasis = "sci",
-      drug_data = arrow::as_arrow_table(drug_)
-    )
+  expect_snapshot({
+    demo_a <-
+      demo_ |>
+      arrow::as_arrow_table() |>
+      add_drug(
+        d_code = mpi,
+        method = "MedicinalProd_Id",
+        repbasis = "sci",
+        drug_data = arrow::as_arrow_table(drug_)
+      )
+  })
 
   expect_equal(ncol(demo),
                ncol(demo_) + n_drug)
@@ -171,47 +181,55 @@ test_that("selecting only s, c, i works and provide less cases than sci altogeth
 
   bas <- c("s", "c", "i")
 
-  res_each <-
-    purrr::map(bas, function(repbasis_)
+  expect_snapshot({
+    res_each <-
+      purrr::map(bas, function(repbasis_)
+        demo_ |>
+          add_drug(
+            d_code = d_drecno,
+            method = "DrecNo",
+            repbasis = repbasis_,
+            drug_data = drug_
+          ))
+  })
+
+  expect_snapshot({
+    res_each_a <-
+      purrr::map(bas, function(repbasis_)
+        arrow::as_arrow_table(demo_) |>
+          add_drug(
+            d_code = d_drecno,
+            method = "DrecNo",
+            repbasis = repbasis_,
+            drug_data = arrow::as_arrow_table(drug_)
+          ) |>
+          dplyr::collect())
+  })
+
+  expect_snapshot({
+    res_all <-
       demo_ |>
-        add_drug(
-          d_code = d_drecno,
-          method = "DrecNo",
-          repbasis = repbasis_,
-          drug_data = drug_
-        ))
+      add_drug(
+        d_code = d_drecno,
+        method = "DrecNo",
+        repbasis = "sci",
+        drug_data = drug_
+      )
+  })
 
-  res_each_a <-
-    purrr::map(bas, function(repbasis_)
+
+
+  expect_snapshot({
+    res_all_a <-
       arrow::as_arrow_table(demo_) |>
-        add_drug(
-          d_code = d_drecno,
-          method = "DrecNo",
-          repbasis = repbasis_,
-          drug_data = arrow::as_arrow_table(drug_)
-        ) |>
-        dplyr::collect()
-    )
-
-  res_all <-
-    demo_ |>
-    add_drug(
-      d_code = d_drecno,
-      method = "DrecNo",
-      repbasis = "sci",
-      drug_data = drug_
-    )
-
-
-  res_all_a <-
-    arrow::as_arrow_table(demo_) |>
-    add_drug(
-      d_code = d_drecno,
-      method = "DrecNo",
-      repbasis = "sci",
-      drug_data = arrow::as_arrow_table(drug_)
-    ) |>
-    dplyr::collect()
+      add_drug(
+        d_code = d_drecno,
+        method = "DrecNo",
+        repbasis = "sci",
+        drug_data = arrow::as_arrow_table(drug_)
+      ) |>
+      dplyr::collect()
+  })
 
 
   res_each_nivo_sum <-
@@ -286,97 +304,8 @@ test_that("selecting only s, c, i works and provide less cases than sci altogeth
 
 })
 
-test_that("a dataset with either Drug_Id or Adr_Id columns (like link, adr) breaks the function if data_type is set to demo", {
-  d_drecno_test <-
-    rlang::list2(
-      ici1 = "ici1",
-      ici2 = "ici2",
-      ici3 = "ici3"
-    )
 
-  drug_test <-
-    data.table(
-      Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
-      DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
-      UMCReportId = c(1, 1, 2, 2, 3)
-    )
-
-  link_test <-
-    data.table(
-      Drug_Id =  c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
-      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
-      UMCReportId = c(1, 1, 2, 2, 3)
-    )
-
-  expect_error(
-    link_test |>
-      add_drug(
-        d_code = d_drecno_test,
-        method = "DrecNo",
-        repbasis = "sci",
-        drug_data = drug_test,
-        data_type = "demo"
-      ),
-    "The dataset has Drug_Id or Adr_Id columns"
-    )
-
-  adr_test <-
-    data.table(
-      UMCReportId = c(1, 1, 2, 2, 3),
-      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
-      MedDRA_Id = c(100000, 20000, 30000, 40000, 50000),
-      Outcome = c(1, 2, 3, 2, 2)
-    )
-
-  expect_error(
-    adr_test  |>
-      add_drug(
-        d_code = d_drecno_test,
-        method = "DrecNo",
-        repbasis = "sci",
-        drug_data = drug_test,
-        data_type = "demo"
-      ),
-    "The dataset has Drug_Id or Adr_Id columns"
-  )
-  }
-  )
-
-test_that("a dataset with no Drug_Id and Adr_Id columns (like demo) breaks the function if data_type is set to link", {
-  d_drecno_test <-
-    rlang::list2(
-      ici1 = "ici1",
-      ici2 = "ici2",
-      ici3 = "ici3"
-    )
-
-  drug_test <-
-    data.table(
-      Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
-      DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
-      UMCReportId = c(1, 1, 2, 2, 3)
-    )
-
-  demo_test <-
-    data.table(
-      UMCReportId = c(1, 2, 3, 4, 5)
-    )
-
-  expect_error(
-    demo_test |>
-      add_drug(
-        d_code = d_drecno_test,
-        method = "DrecNo",
-        repbasis = "sci",
-        drug_data = drug_test,
-        data_type = "link"
-      ),
-    "The dataset does not have Drug_Id and Adr_Id columns"
-  )
-}
-)
-
-test_that("works with link data, drug identification is Drug_Id wise, not UMCReportId wise", {
+test_that("works with link and drug data, drug identification is Drug_Id wise, not UMCReportId wise", {
   d_drecno_test <-
     rlang::list2(
       ici1 = "ici1",
@@ -389,107 +318,94 @@ test_that("works with link data, drug identification is Drug_Id wise, not UMCRep
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
+      MedicinalProd_Id = NA,
       UMCReportId = c(1, 1, 2, 2, 3)
     )
 
-  luda_test <-
-    data.table(
-      Drug_Id =  c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
-      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
-      UMCReportId = c(1, 1, 2, 2, 3)
-    ) |>
-    add_drug(d_code = d_drecno_test,
-             drug_data = drug_test,
-             data_type = "link")
+  expect_snapshot({
+    link_test <-
+      data.table(
+        Drug_Id =  c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
+        Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
+        UMCReportId = c(1, 1, 2, 2, 3),
+        Dechallenge1 = NA,
+        TimeToOnsetMin = NA
+      ) |>
+      add_drug(d_code = d_drecno_test,
+               drug_data = drug_test)
+  })
 
-  luda_test_a <-
-    data.table(
-      Drug_Id =  c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
-      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
-      UMCReportId = c(1, 1, 2, 2, 3)
-    ) |>
-    arrow::as_arrow_table() |>
-    add_drug(d_code = d_drecno_test,
-             drug_data = arrow::as_arrow_table(drug_test),
-             data_type = "link") |>
-    dplyr::collect()
+  expect_snapshot({
+    link_test_a <-
+      data.table(
+        Drug_Id =  c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
+        Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
+        UMCReportId = c(1, 1, 2, 2, 3),
+        Dechallenge1 = NA,
+        TimeToOnsetMin = NA
+      ) |>
+      arrow::as_arrow_table() |>
+      add_drug(
+        d_code = d_drecno_test,
+        drug_data = arrow::as_arrow_table(drug_test)
+      ) |>
+      dplyr::collect()
+  })
 
-  luda_correct <-
+  link_correct <-
     data.table(
       Drug_Id =  c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
       UMCReportId = c(1, 1, 2, 2, 3),
+      Dechallenge1 = NA,
+      TimeToOnsetMin = NA,
       ici1 = c(1, 0, 0, 1, 1),
       ici2 = c(0, 1, 0, 0, 0),
       ici3 = c(0, 0, 1, 0, 0)
     )
 
   expect_equal(
-    luda_test,
-    luda_correct
+    link_test,
+    link_correct
   )
 
   expect_equal(
-    luda_test_a,
-    luda_correct
+    link_test_a,
+    link_correct
   )
-}
-)
 
+  expect_snapshot({
+    drug_output_test <-
+      drug_test |>
+      add_drug(d_code = d_drecno_test,
+               drug_data = drug_test)
+  })
 
-test_that("a dataset with no Adr_Id, MedDRA_Id, and Outcome brekas the function if data_type is set to adr", {
-  d_drecno_test <-
-    rlang::list2(
-      ici1 = "ici1",
-      ici2 = "ici2",
-      ici3 = "ici3"
-    )
+  expect_snapshot({
+    drug_output_test_a <-
+      arrow::as_arrow_table(drug_test) |>
+      add_drug(
+        d_code = d_drecno_test,
+        drug_data = arrow::as_arrow_table(drug_test)
+      ) |>
+      dplyr::collect()
+  })
 
-  drug_test <-
+  drug_output_correct <-
     data.table(
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
-      UMCReportId = c(1, 1, 2, 2, 3)
+      MedicinalProd_Id = NA,
+      UMCReportId = c(1, 1, 2, 2, 3),
+      ici1 = c(1, 0, 0, 1, 1),
+      ici2 = c(0, 1, 0, 0, 0),
+      ici3 = c(0, 0, 1, 0, 0)
     )
 
+  expect_equal(drug_output_test, drug_output_correct)
 
-  demo_test <-
-    data.table(
-      UMCReportId = c(1, 2, 3, 4, 5)
-    )
-
-  expect_error(
-    demo_test  |>
-      add_drug(
-        d_code = d_drecno_test,
-        method = "DrecNo",
-        repbasis = "sci",
-        drug_data = drug_test,
-        data_type = "adr"
-      ),
-    "The dataset does not have Adr_Id, MedDRA_Id, and/or Outcome columns"
-  )
-
-  luda_test <-
-    data.table(
-      Drug_Id =  c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
-      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
-      UMCReportId = c(1, 1, 2, 2, 3)
-    )
-
-  expect_error(
-    luda_test  |>
-      add_drug(
-        d_code = d_drecno_test,
-        method = "DrecNo",
-        repbasis = "sci",
-        drug_data = drug_test,
-        data_type = "adr"
-      ),
-    "The dataset does not have Adr_Id, MedDRA_Id, and/or Outcome columns"
-  )
-
+  expect_equal(drug_output_test_a, drug_output_correct)
 }
 )
 
@@ -506,32 +422,37 @@ test_that("works with adr data, drug identification is UMCReportId wise", {
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
-      UMCReportId = c(1, 1, 2, 2, 3)
+      UMCReportId = c(1, 1, 2, 2, 3),
+      MedicinalProd_Id = NA
     )
 
-  adr_test <-
-    data.table(
-      UMCReportId = c(1, 1, 2, 2, 3),
-      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
-      MedDRA_Id = c(100000, 20000, 30000, 40000, 50000),
-      Outcome = c(1, 2, 3, 2, 2)
-    ) |>
-    add_drug(d_code = d_drecno_test,
-             drug_data = drug_test,
-             data_type = "adr")
+  expect_snapshot({
+    adr_test <-
+      data.table(
+        UMCReportId = c(1, 1, 2, 2, 3),
+        Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
+        MedDRA_Id = c(100000, 20000, 30000, 40000, 50000),
+        Outcome = c(1, 2, 3, 2, 2)
+      ) |>
+      add_drug(d_code = d_drecno_test,
+               drug_data = drug_test)
+  })
 
-  adr_test_a <-
-    data.table(
-      UMCReportId = c(1, 1, 2, 2, 3),
-      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
-      MedDRA_Id = c(100000, 20000, 30000, 40000, 50000),
-      Outcome = c(1, 2, 3, 2, 2)
-    ) |>
-    arrow::as_arrow_table() |>
-    add_drug(d_code = d_drecno_test,
-             drug_data = arrow::as_arrow_table(drug_test),
-             data_type = "adr") |>
-    dplyr::collect()
+  expect_snapshot({
+    adr_test_a <-
+      data.table(
+        UMCReportId = c(1, 1, 2, 2, 3),
+        Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
+        MedDRA_Id = c(100000, 20000, 30000, 40000, 50000),
+        Outcome = c(1, 2, 3, 2, 2)
+      ) |>
+      arrow::as_arrow_table() |>
+      add_drug(
+        d_code = d_drecno_test,
+        drug_data = arrow::as_arrow_table(drug_test)
+      ) |>
+      dplyr::collect()
+  })
 
   adr_correct <-
     data.table(
@@ -569,37 +490,43 @@ test_that("handle ambiguous names in .data", {
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
-      UMCReportId = c(1, 1, 2, 2, 3)
+      UMCReportId = c(1, 1, 2, 2, 3),
+      MedicinalProd_Id = NA
     )
 
   demo_test <-
     data.table(
       UMCReportId = c(1, 2, 3, 4, 5),
+      Region = NA,
+      DateDatabase = NA,
+      Type = NA,
 
       # ambiguous column name
       drug_test = c(0, 0, 0, 0, 1)
     )
 
-  res <-
+  expect_snapshot({
+    res <-
     demo_test |>
     add_drug(
       d_code = d_drecno_test,
       method = "DrecNo",
       repbasis = "sci",
-      drug_data = drug_test,
-      data_type = "demo"
+      drug_data = drug_test
     )
+  })
 
-  res_a <-
-    arrow::as_arrow_table(demo_test)  |>
-    add_drug(
-      d_code = d_drecno_test,
-      method = "DrecNo",
-      repbasis = "sci",
-      drug_data = arrow::as_arrow_table(drug_test) ,
-      data_type = "demo"
-    ) |>
-    dplyr::collect()
+  expect_snapshot({
+    res_a <-
+      arrow::as_arrow_table(demo_test)  |>
+      add_drug(
+        d_code = d_drecno_test,
+        method = "DrecNo",
+        repbasis = "sci",
+        drug_data = arrow::as_arrow_table(drug_test)
+      ) |>
+      dplyr::collect()
+  })
 
   expect_equal(
     res$ici1,
@@ -635,13 +562,16 @@ test_that("you can choose output column names with d_names", {
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
-      UMCReportId = c(1, 1, 2, 2, 3)
+      UMCReportId = c(1, 1, 2, 2, 3),
+      MedicinalProd_Id = NA
     )
 
   demo_test <-
     data.table(
       UMCReportId = c(1, 2, 3, 4, 5),
-
+      Region = NA,
+      DateDatabase = NA,
+      Type = NA,
       # ambiguous column name
       drug_test = c(0, 0, 0, 0, 1)
     )
@@ -649,32 +579,34 @@ test_that("you can choose output column names with d_names", {
   changed_names <-
     c("t1", "t2", "t3")
 
-  res <-
-    demo_test |>
-    add_drug(
-      d_code = d_drecno_test,
-      d_names = changed_names,
-      method = "DrecNo",
-      repbasis = "sci",
-      drug_data = drug_test,
-      data_type = "demo"
-    )
+  expect_snapshot({
+    res <-
+      demo_test |>
+      add_drug(
+        d_code = d_drecno_test,
+        d_names = changed_names,
+        method = "DrecNo",
+        repbasis = "sci",
+        drug_data = drug_test
+      )
+  })
 
   expect_equal(
     all(changed_names %in% names(res)),
     TRUE
   )
 
-  res_a <-
-    arrow::as_arrow_table(demo_test) |>
-    add_drug(
-      d_code = d_drecno_test,
-      d_names = changed_names,
-      method = "DrecNo",
-      repbasis = "sci",
-      drug_data = arrow::as_arrow_table(drug_test),
-      data_type = "demo"
-    )
+  expect_snapshot({
+    res_a <-
+      arrow::as_arrow_table(demo_test) |>
+      add_drug(
+        d_code = d_drecno_test,
+        d_names = changed_names,
+        method = "DrecNo",
+        repbasis = "sci",
+        drug_data = arrow::as_arrow_table(drug_test)
+      )
+  })
 
   expect_equal(
     all(changed_names %in% names(res_a)),
@@ -696,13 +628,16 @@ test_that("you can use arrow/parquet format", {
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
-      UMCReportId = c(1, 1, 2, 2, 3)
+      UMCReportId = c(1, 1, 2, 2, 3),
+      MedicinalProd_Id = NA
     )
 
   demo_test <-
     data.table(
       UMCReportId = c(1, 2, 3, 4, 5),
-
+      Region = NA,
+      DateDatabase = NA,
+      Type = NA,
       # ambiguous column name
       drug_test = c(0, 0, 0, 0, 1)
     )
@@ -717,27 +652,56 @@ test_that("you can use arrow/parquet format", {
   demo_parquet <- arrow::read_parquet(paste0(tmp_folder, "\\demo.parquet"))
   drug_parquet <- arrow::read_parquet(paste0(tmp_folder, "\\drug.parquet"))
 
-  res <-
-    demo_parquet |>
-    add_drug(
-      d_code = d_drecno_test,
-      method = "DrecNo",
-      repbasis = "sci",
-      drug_data = drug_parquet,
-      data_type = "demo"
-    )
+  expect_snapshot({
+    res <-
+      demo_parquet |>
+      add_drug(
+        d_code = d_drecno_test,
+        method = "DrecNo",
+        repbasis = "sci",
+        drug_data = drug_parquet
+      )
+  })
 
-  res_a <-
-    demo_test |>
-    add_drug(
-      d_code = d_drecno_test,
-      method = "DrecNo",
-      repbasis = "sci",
-      drug_data = drug_test,
-      data_type = "demo"
-    )
+  expect_snapshot({
+    res_a <-
+      demo_test |>
+      add_drug(
+        d_code = d_drecno_test,
+        method = "DrecNo",
+        repbasis = "sci",
+        drug_data = drug_test
+      )
+  })
 
   expect_equal(res, res_a)
 
 
+})
+
+test_that("Providing data_type arg raises deprecation warn", {
+
+  expect_snapshot({
+  r1 <-
+    demo_ |>
+    add_drug(
+      d_code = ex_$d_drecno,
+      method = "DrecNo",
+      drug_data = drug_,
+      data_type = "demo"
+    )
+  })
+})
+
+test_that("drug_data should be a valid drug type data", {
+  expect_snapshot(error = TRUE,
+                  {
+      demo_ |>
+      add_drug(
+        d_code = ex_$d_drecno,
+        method = "DrecNo",
+        drug_data = adr_,
+        data_type = "demo"
+      )
+  })
 })
