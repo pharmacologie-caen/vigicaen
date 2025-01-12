@@ -25,8 +25,8 @@ LazyData: true
 LazyDataCompression: xz
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-URL: https://github.com/pharmacologie-caen/pharmacocaen
-BugReports: https://github.com/pharmacologie-caen/pharmacocaen/issues
+URL: https://github.com/pharmacologie-caen/vigicaen
+BugReports: https://github.com/pharmacologie-caen/vigicaen/issues
 Suggests: 
     knitr,
     rmarkdown,
