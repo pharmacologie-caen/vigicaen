@@ -36,6 +36,7 @@ Suggests:
 Config/testthat/edition: 3
 Imports: 
     arrow,
+    cli,
     dplyr,
     data.table,
     fst,
