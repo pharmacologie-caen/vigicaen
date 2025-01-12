@@ -12,7 +12,8 @@ test_that("gives proper counts", {
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c("ici1", "ici2", "ici1", "ici1", "ici1"),
-      UMCReportId = c(1, 1, 2, 2, 3)
+      UMCReportId = c(1, 1, 2, 2, 3),
+      MedicinalProd_Id = NA
     )
 
   adr_list_test <-
@@ -31,18 +32,12 @@ test_that("gives proper counts", {
       Outcome = c(1, 2, 3, 2, 2)
     )
 
-  adr_test <-
-    adr_test %>%
-    add_drug(
-      d_code = d_drecno_test,
-      drug_data = drug_test,
-      data_type = "adr"
-    ) %>%
-    add_adr(
-      a_code = adr_list_test,
-      adr_data = adr_test,
-      data_type = "adr"
-    )
+  expect_snapshot({
+    adr_test <-
+      adr_test %>%
+      add_drug(d_code = d_drecno_test, drug_data = drug_test) %>%
+      add_adr(a_code = adr_list_test, adr_data = adr_test)
+  })
 
 
   d_out_test <-

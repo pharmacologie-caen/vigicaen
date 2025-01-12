@@ -1,14 +1,10 @@
 test_that("accurate results", {
-  demo <-
-    demo_ %>%
-    add_drug(
-      d_code = ex_$d_drecno,
-      drug_data = drug_
-    ) %>%
-    add_adr(
-      a_code = ex_$a_llt,
-      adr_data = adr_
-    )
+  expect_snapshot({
+    demo <-
+      demo_ %>%
+      add_drug(d_code = ex_$d_drecno, drug_data = drug_) %>%
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  })
 
   # Compute the model
   mod <- glm(a_colitis ~ nivolumab, data = demo, family = "binomial")
@@ -45,16 +41,12 @@ test_that("accurate results", {
 })
 
 test_that("works with and without p_val arg", {
-  demo <-
-    demo_ %>%
-    add_drug(
-      d_code = ex_$d_drecno,
-      drug_data = drug_
-    ) %>%
-    add_adr(
-      a_code = ex_$a_llt,
-      adr_data = adr_
-    )
+  expect_snapshot({
+    demo <-
+      demo_ %>%
+      add_drug(d_code = ex_$d_drecno, drug_data = drug_) %>%
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  })
 
   # Compute the model
   mod <- glm(a_colitis ~ nivolumab, data = demo, family = "binomial")

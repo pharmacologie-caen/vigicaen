@@ -193,15 +193,12 @@ vigi_routine <-
 
     # ---- build demo ----
 
-    demo_data <- demo_data |>
-      add_drug(
-        d_code,
-        drug_data = drug_data
-      ) |>
-      add_adr(
-        a_code,
-        adr_data = adr_data
-      )
+    suppressMessages(
+      # messages from add_drug and add_adr
+      demo_data <- demo_data |>
+        add_drug(d_code, drug_data = drug_data) |>
+        add_adr(a_code, adr_data = adr_data)
+    )
 
     # ---- compute ic ----
 
@@ -214,19 +211,13 @@ vigi_routine <-
 
     # ---- build link ----
 
-    link_data <-
-      link_data |>
-      add_drug(
-        d_code,
-        drug_data = drug_data,
-        data_type = "link",
-        repbasis = "s" # Only suspect cases
-      ) |>
-      add_adr(
-        a_code,
-        adr_data = adr_data,
-        data_type = "link"
-      )
+    suppressMessages(
+      link_data <-
+        link_data |>
+        add_drug(d_code, drug_data = drug_data, repbasis = "s") |>
+                 # Only suspect cases
+        add_adr(a_code, adr_data = adr_data)
+        )
 
     # ---- extract and summarize ttos ----
 

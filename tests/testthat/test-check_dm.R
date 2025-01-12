@@ -2,13 +2,13 @@ test_that("returns proper counts", {
 
   a_names <- paste0("adr_", names(ex_$a_llt))
 
-  demo <-
-   demo_ %>%
-     add_adr(
-       a_code = ex_$a_llt,
-       a_names = a_names,
-       adr = adr_
-     )
+  expect_snapshot({
+    demo <-
+      demo_ %>%
+      add_adr(a_code = ex_$a_llt,
+              a_names = a_names,
+              adr = adr_)
+  })
 
   res <- check_dm(demo, a_names)
 
