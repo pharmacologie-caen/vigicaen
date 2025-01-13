@@ -56,18 +56,15 @@
 #'   nivo_ipi = c("nivolumab", "ipilimumab")
 #'   )
 #'
-#' # Read mp with get_drecno, to identify drugs without combinations
+#' # Read mp with get_drecno(), to identify drugs without combinations
 #'
-#' # First, you shall **always** inspect mp reading before getting the codes
+#' # Take the time to read the matching drugs. Did you forget a drug?
 #'
 #' get_drecno(d_sel_names,
 #'            mp = mp_,
 #'            allow_combination = FALSE,
-#'            method = "drug_name",
-#'            inspect = TRUE)
+#'            method = "drug_name")
 #'
-#'
-#' # If this matches your needs, then extract (inspect = FALSE, by default)
 #'
 #' d_drecno <-
 #'   get_drecno(d_sel_names,
@@ -91,11 +88,23 @@ get_drecno <- function(
     mp,
     allow_combination = TRUE,
     method = c("drug_name", "mpi_list"),
-    inspect = FALSE,
-    show_all = FALSE
+    verbose = TRUE,
+    show_all = FALSE,
+    inspect = deprecated()
     ){
 
   method <- match.arg(method)
+
+  # Check if user has supplied `inspect`.
+  if (lifecycle::is_present(inspect)) {
+
+    # Signal the deprecation to the user
+    lifecycle::deprecate_soft(
+      when = "0.14.1",
+      what = "get_drecno(inspect)",
+      with = "get_drecno(verbose)"
+    )
+  }
 
   if("Table"  %in% class(mp)){
     # automatically collect mp if out of memory
@@ -251,28 +260,54 @@ get_drecno <- function(
 
   } else {
 
-    if(inspect == TRUE) {
-      purrr::map(res_list, function(r_l)
+    if(verbose == TRUE) {
+      lines <-
+        purrr::map(res_list, function(r_l)
        r_l |>
          dplyr::filter(
            .data$Sequence.number.1 == "01" &
              .data$Sequence.number.2 == "001"
          ) |>
-         dplyr::distinct(.data$drug, .data$DrecNo, .keep_all = TRUE)
+         dplyr::pull(.data$drug_name_t) |>
+         unique() # when requesting drugs with several nonproprietary names
       )
-    } else {
-      purrr::map(res_list, function(r_l,
-                                    DrecNo = {{ DrecNo }})
+
+      drug_match_printer <-
+        function(d_sel,
+                 arg = rlang::caller_arg(d_sel),
+                 call = rlang::caller_env()){
+
+      cli::cli_alert_info(
+        "Matching drugs in {.arg {arg}}"
+      )
+        }
+
+      drug_match_printer(d_sel)
+
+      lines_cli <-
+        lines |> purrr::imap(function(l_, n_)
+          cli::cli_inform(
+            c(">" = "{.code {n_}}: {l_}")
+      )
+        )
+
+      cli::cli_alert_info(
+        "Set {.arg verbose} to FALSE to suppress this message."
+      )
+
+    }
+
+    output <-
+      purrr::map(res_list, function(r_l, DrecNo = {{ DrecNo }})
         r_l |>
           dplyr::filter(
             .data$Sequence.number.1 == "01" &
               .data$Sequence.number.2 == "001"
           ) |>
           dplyr::pull(.data$DrecNo) |>
-          unique()
-        )
-    }
+          unique())
 
+    return(output)
 
   }
 }
