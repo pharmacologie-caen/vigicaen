@@ -11,7 +11,7 @@ add_drug(
   repbasis = "sci",
   method = c("DrecNo", "MedicinalProd_Id"),
   drug_data,
-  data_type = c("demo", "link", "adr")
+  data_type = deprecated()
 )
 }
 \arguments{
@@ -27,7 +27,8 @@ add_drug(
 
 \item{drug_data}{A data.frame containing the drug data (usually, it is \code{drug})}
 
-\item{data_type}{A character string. The type of data to add columns to. Either \code{demo} or \code{link} (default to \code{demo})}
+\item{data_type}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}. Data_type is now detected
+internally.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} add_drug() creates drug columns.
@@ -56,8 +57,7 @@ demo_ <-
     d_code = d_drecno,
     method = "DrecNo",
     repbasis = "sci",
-    drug_data = drug_,
-    data_type = c("demo")
+    drug_data = drug_
   )
 
 # remember to assign the result to your actual demo dataset
@@ -72,8 +72,7 @@ demo_ <-
     d_names = "nivolumab_suspected",
     method = "DrecNo",
     repbasis = "s",
-    drug_data = drug_,
-    data_type = c("demo")
+    drug_data = drug_
   )
 
 check_dm(demo_, cols = c("nivolumab", "nivolumab_suspected"))

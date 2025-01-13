@@ -1,4 +1,3 @@
-
 ## Breaking changes
 
 * `mp` replaces `mp_short` throughout the package (#110). 
@@ -18,11 +17,16 @@ Users will have to change existing code to replace calls to `mp_short` with `mp`
 
 ## New features  
 
+* `screen_drug()` let you screen most reported drugs in `drug` (#103).
+
 * New `top_n` argument added to `screen_adr()` (#86).
 
 ## Minor and bug Fixes  
 
 * `screen_adr()` now counts effects at the case level (#86).  
+
+* arg `data_type` of `add_*` functions is now deprecated.
+Data_type is internally detected.
 
 # vigicaen 0.14.0
 

@@ -1,17 +1,10 @@
 test_that("find proper ttos on a known dataset", {
-
-  link_ <-
-    link_ |>
-    add_drug(
-      d_code = ex_$d_groups_drecno,
-      drug_data = drug_,
-      data_type = "link"
-    ) |>
-    add_adr(
-      a_code = ex_$a_llt,
-      adr_data = adr_,
-      data_type = "link"
-    )
+  expect_snapshot({
+    link_ <-
+      link_ |>
+      add_drug(d_code = ex_$d_groups_drecno, drug_data = drug_) |>
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  })
 
   tto_test <-
     extract_tto(.data = link_,
@@ -35,18 +28,12 @@ test_that("find proper ttos on a known dataset", {
 })
 
 test_that("works with vectorized adrs and drugs", {
-  link_ <-
-    link_ |>
-    add_drug(
-      d_code = ex_$d_groups_drecno,
-      drug_data = drug_,
-      data_type = "link"
-    ) |>
-    add_adr(
-      a_code = ex_$a_llt,
-      adr_data = adr_,
-      data_type = "link"
-    )
+  expect_snapshot({
+    link_ <-
+      link_ |>
+      add_drug(d_code = ex_$d_groups_drecno, drug_data = drug_) |>
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  })
 
   tto_many_adr <-
     extract_tto(.data = link_,
@@ -118,18 +105,12 @@ test_that("works with vectorized adrs and drugs", {
 })
 
 test_that("output type is consistent in presence or absence of tto data", {
-  link_ <-
-    link_ |>
-    add_drug(
-      d_code = ex_$d_groups_drecno,
-      drug_data = drug_,
-      data_type = "link"
-    ) |>
-    add_adr(
-      a_code = ex_$a_llt,
-      adr_data = adr_,
-      data_type = "link"
-    )
+  expect_snapshot({
+    link_ <-
+      link_ |>
+      add_drug(d_code = ex_$d_groups_drecno, drug_data = drug_) |>
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  })
 
   tto_a1 <- # adr with some tto data
     extract_tto(.data = link_,
@@ -174,41 +155,31 @@ test_that("output type is consistent in presence or absence of tto data", {
 })
 
 test_that("breaks if tto_mean or range are missing", {
-  wrong_link <-
-    link_ |>
-    dplyr::select(-tto_mean) |>
-    add_drug(
-      d_code = ex_$d_groups_drecno,
-      drug_data = drug_,
-      data_type = "link"
-    )  |>
-    add_adr(
-      a_code = ex_$a_llt,
-      adr_data = adr_,
-      data_type = "link"
-    )
+  expect_snapshot({
+    wrong_link <-
+      link_ |>
+      dplyr::select(-tto_mean) |>
+      add_drug(d_code = ex_$d_groups_drecno, drug_data = drug_)  |>
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
 
-  expect_error(
-    extract_tto(.data = wrong_link,
-                adr_s = "a_colitis",
-                drug_s = "pd1"),
-    "Either tto_mean or range columns are missing. See ?link_",
-    fixed = TRUE
-  )
-
-  wrong_luda2 <-
-    link_ |>
-    dplyr::select(-range) |>
-    add_drug(
-      d_code = ex_$d_groups_drecno,
-      drug_data = drug_,
-      data_type = "link"
-    )  |>
-    add_adr(
-      a_code = ex_$a_llt,
-      adr_data = adr_,
-      data_type = "link"
+    expect_error(
+      extract_tto(
+        .data = wrong_link,
+        adr_s = "a_colitis",
+        drug_s = "pd1"
+      ),
+      "Either tto_mean or range columns are missing. See ?link_",
+      fixed = TRUE
     )
+  })
+
+  expect_snapshot({
+    wrong_luda2 <-
+      link_ |>
+      dplyr::select(-range) |>
+      add_drug(d_code = ex_$d_groups_drecno, drug_data = drug_)  |>
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  })
 
   expect_error(
     extract_tto(.data = wrong_luda2,
@@ -220,19 +191,13 @@ test_that("breaks if tto_mean or range are missing", {
 })
 
 test_that("works with link as Table (out of memory)", {
-  link_ <-
-    link_ |>
-    add_drug(
-      d_code = ex_$d_groups_drecno,
-      drug_data = drug_,
-      data_type = "link"
-    ) |>
-    add_adr(
-      a_code = ex_$a_llt,
-      adr_data = adr_,
-      data_type = "link"
-    ) |>
-    arrow::as_arrow_table()
+  expect_snapshot({
+    link_ <-
+      link_ |>
+      add_drug(d_code = ex_$d_groups_drecno, drug_data = drug_) |>
+      add_adr(a_code = ex_$a_llt, adr_data = adr_) |>
+      arrow::as_arrow_table()
+  })
 
   tto_test <-
     extract_tto(.data = link_,

@@ -9,7 +9,7 @@ add_adr(
   a_code,
   a_names = names(a_code),
   adr_data,
-  data_type = c("demo", "link", "adr")
+  data_type = deprecated()
 )
 }
 \arguments{
@@ -21,7 +21,8 @@ add_adr(
 
 \item{adr_data}{A data.frame containing the adr data (usually, it is \code{adr})}
 
-\item{data_type}{A character string. The type of data to add columns to. Either \code{demo} or \code{link} (default to \code{demo})}
+\item{data_type}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}. Data_type is now detected
+internally.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} add_adr() creates adr columns.

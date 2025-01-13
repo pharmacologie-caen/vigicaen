@@ -1,5 +1,5 @@
 test_that("finds appropriate counts on a known dataset", {
-  luda_dch <- data.table(
+  link_dch <- data.table(
    UMCReportId = 1:13,
    Drug_Id = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13),
    Adr_Id = c(101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113),
@@ -13,7 +13,7 @@ test_that("finds appropriate counts on a known dataset", {
    as.character(c(  1, 2, 1, 1, 3, 2, 4, 1, "-", 3, 2, 2, 3))
   )
 
-  r1 <- desc_dch(luda_dch,
+  r1 <- desc_dch(link_dch,
           adr_s = "adr1",
           drug_s = "drug1")
 
@@ -33,7 +33,7 @@ test_that("finds appropriate counts on a known dataset", {
 })
 
 test_that("works with named arguments and lists", {
-  luda_dch <- data.table(
+  link_dch <- data.table(
     UMCReportId = 1:13,
     Drug_Id = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13),
     Adr_Id = c(101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113),
@@ -53,15 +53,15 @@ test_that("works with named arguments and lists", {
   drug_list <-
     list(d1 = "drug1")
 
-  r1_named <- desc_dch(luda_dch,
+  r1_named <- desc_dch(link_dch,
                  adr_s = "adr1",
                  drug_s = drug_choice)
 
-  r1_list <- desc_dch(luda_dch,
+  r1_list <- desc_dch(link_dch,
                        adr_s = "adr1",
                        drug_s = drug_list)
 
-  r1 <- desc_dch(luda_dch,
+  r1 <- desc_dch(link_dch,
                  adr_s = "adr1",
                  drug_s = "drug1")
 
@@ -79,7 +79,7 @@ test_that("works with named arguments and lists", {
 })
 
 test_that("works with vectorization", {
-  luda_dch <- data.table(
+  link_dch <- data.table(
     UMCReportId = 1:13,
     Drug_Id = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13),
     Adr_Id = c(101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113),
@@ -93,7 +93,7 @@ test_that("works with vectorization", {
       as.character(c(  1, 2, 1, 1, 3, 2, 4, 1, "-", 3, 2, 2, 3))
   )
 
-  r1 <- desc_dch(luda_dch,
+  r1 <- desc_dch(link_dch,
                  adr_s = c("adr1", "adr2"),
                  drug_s = c("drug1")
   )
@@ -110,7 +110,7 @@ test_that("works with vectorization", {
     true_r1
   )
 
-  r2 <- desc_dch(luda_dch,
+  r2 <- desc_dch(link_dch,
                  adr_s = c("adr1"),
                  drug_s = c("drug1", "drug2")
   )

@@ -1,17 +1,11 @@
 test_that("find proper counts on a known dataset", {
 
-  link_ <-
-    link_ %>%
-    add_drug(
-      d_code = ex_$d_groups_drecno,
-      drug_data = drug_,
-      data_type = "link"
-    ) %>%
-    add_adr(
-      a_code = ex_$a_llt,
-      adr_data = adr_,
-      data_type = "link"
-    )
+  expect_snapshot({
+    link_ <-
+      link_ %>%
+      add_drug(d_code = ex_$d_groups_drecno, drug_data = drug_) %>%
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  })
 
   rch_test <-
     desc_rch(.data = link_,
@@ -52,18 +46,13 @@ test_that("find proper counts on a known dataset", {
 
 test_that("can be vectorized", {
 
-  link_ <-
-    link_ %>%
-    add_drug(
-      d_code = ex_$d_groups_drecno,
-      drug_data = drug_,
-      data_type = "link"
-    ) %>%
-    add_adr(
-      a_code = ex_$a_llt,
-      adr_data = adr_,
-      data_type = "link"
-    )
+
+  expect_snapshot({
+    link_ <-
+      link_ %>%
+      add_drug(d_code = ex_$d_groups_drecno, drug_data = drug_) %>%
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  })
 
   rch_test <-
     desc_rch(.data = link_,

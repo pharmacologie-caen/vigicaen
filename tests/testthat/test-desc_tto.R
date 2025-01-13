@@ -1,17 +1,11 @@
 test_that("find proper ttos on a known dataset", {
 
-  link_ <-
-    link_ %>%
-    add_drug(
-      d_code = ex_$d_groups_drecno,
-      drug_data = drug_,
-      data_type = "link"
-    ) %>%
-    add_adr(
-      a_code = ex_$a_llt,
-      adr_data = adr_,
-      data_type = "link"
-    )
+  expect_snapshot({
+    link_ <-
+      link_ %>%
+      add_drug(d_code = ex_$d_groups_drecno, drug_data = drug_) %>%
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  })
 
 
    tto_test <-
@@ -28,18 +22,12 @@ test_that("find proper ttos on a known dataset", {
 
 test_that("works with vectorization", {
 
-  link_ <-
-    link_ %>%
-    add_drug(
-      d_code = ex_$d_groups_drecno,
-      drug_data = drug_,
-      data_type = "link"
-    ) %>%
-    add_adr(
-      a_code = ex_$a_llt,
-      adr_data = adr_,
-      data_type = "link"
-    )
+  expect_snapshot({
+    link_ <-
+      link_ %>%
+      add_drug(d_code = ex_$d_groups_drecno, drug_data = drug_) %>%
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  })
 
   tto_test <-
     desc_tto(.data = link_,
@@ -80,18 +68,13 @@ test_that("works with vectorization", {
 
 test_that("format is appropriately passed to desc_cont", {
 
-  link_ <-
-    link_ %>%
-    add_drug(
-      d_code = ex_$d_groups_drecno,
-      drug_data = drug_,
-      data_type = "link"
-    ) %>%
-    add_adr(
-      a_code = ex_$a_llt,
-      adr_data = adr_,
-      data_type = "link"
-    )
+
+  expect_snapshot({
+    link_ <-
+      link_ %>%
+      add_drug(d_code = ex_$d_groups_drecno, drug_data = drug_) %>%
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  })
 
 
   tto_test <-
@@ -109,18 +92,12 @@ test_that("format is appropriately passed to desc_cont", {
 
 test_that("digits are appropriately passed to desc_cont", {
 
-  link_ <-
-    link_ %>%
-    add_drug(
-      d_code = ex_$d_groups_drecno,
-      drug_data = drug_,
-      data_type = "link"
-    ) %>%
-    add_adr(
-      a_code = ex_$a_llt,
-      adr_data = adr_,
-      data_type = "link"
-    )
+  expect_snapshot({
+    link_ <-
+      link_ %>%
+      add_drug(d_code = ex_$d_groups_drecno, drug_data = drug_) %>%
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  })
 
 
   tto_test <-

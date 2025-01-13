@@ -13,8 +13,8 @@ vigicaen provides a set of tools to facilitate the analysis of the VigiBase Extr
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/pharmacologie-caen/pharmacocaen}
-  \item Report bugs at \url{https://github.com/pharmacologie-caen/pharmacocaen/issues}
+  \item \url{https://github.com/pharmacologie-caen/vigicaen}
+  \item Report bugs at \url{https://github.com/pharmacologie-caen/vigicaen/issues}
 }
 
 }

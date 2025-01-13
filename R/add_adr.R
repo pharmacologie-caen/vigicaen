@@ -12,7 +12,8 @@
 #' @param a_code A named list of low level terms codes (llt_codes).
 #' @param a_names A character vector. Names for adr columns (must be the same length as adr_list), default to `names(adr_list)`
 #' @param adr_data A data.frame containing the adr data (usually, it is `adr`)
-#' @param data_type A character string. The type of data to add columns to. Either `demo` or `link` (default to `demo`)
+#' @param data_type `r lifecycle::badge('deprecated')`. Data_type is now detected
+#' internally.
 #' @export
 #' @importFrom rlang .data
 #' @importFrom rlang .env
@@ -53,24 +54,24 @@ add_adr <-
 
            adr_data,
 
-           data_type = c("demo", "link", "adr")
+           data_type = deprecated()
            ){
 
-    data_type <- match.arg(data_type)
+    # Check if user has supplied `data_type`.
+    if (lifecycle::is_present(data_type)) {
 
-    # use duplicates in UMCReportId to identify a link dataset versus a demo dataset.
-    # and check that data_type is set correctly
-    if(data_type == "demo" &&
-       any(c("Drug_Id", "Adr_Id") %in% names(.data))){
-      stop("The dataset has Drug_Id or Adr_Id columns (like a `link` dataset). Yet data_type is set to `demo`. Please set data_type to `link` or use a `demo` dataset")
-    } else if(data_type == "link" &&
-              !all(c("Drug_Id", "Adr_Id") %in% names(.data))){
-      stop("The dataset does not have Drug_Id and Adr_Id columns, (as a `link` dataset would). Yet data_type is set to `link`. Please set data_type to `demo` or use a `link` dataset")
-    } else if(data_type == "adr" &&
-              !all(c("Adr_Id", "MedDRA_Id", "Outcome") %in% names(.data))){
-      stop("The dataset does not have Adr_Id, MedDRA_Id, and/or Outcome columns, (as an `adr` dataset would). Yet data_type is set to `adr`. Please set data_type accordingly.")
+      # Signal the deprecation to the user
+      lifecycle::deprecate_soft(
+        when = "0.14.1",
+        what = "add_adr(data_type)",
+        details = c("i" = "data_type is now internally detected")
+      )
     }
 
+    data_type <-
+      query_data_type(.data, ".data")
+
+    check_data_adr(adr_data)
 
     # identify table_ids to collect
 
@@ -78,7 +79,8 @@ add_adr <-
       switch(data_type,
              demo = "UMCReportId",
              adr  = "Adr_Id",
-             link = "Adr_Id"
+             link = "Adr_Id",
+             drug = "UMCReportId"
       )
 
 

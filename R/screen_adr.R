@@ -26,24 +26,24 @@
 #' level (`soc`, `hlgt`, `hlt`, `pt`, or `llt`).
 #'
 #' @param .data A `data.table` containing ADR data,
-#' including a column `MedDRA_Id` for MedDRA terms
-#' and `UMCReportId` for unique report
-#' identifiers. (Works with data.frames but slower)
+#'   including a column `MedDRA_Id` for MedDRA terms
+#'   and `UMCReportId` for unique report
+#'   identifiers. (Works with data.frames but slower)
 #' @param meddra A `data.table` containing the MedDRA hierarchy,
-#' with mappings between `llt_code` and terms at the
-#' specified `term_level`.(Works with data.frames but slower)
+#'   with mappings between `llt_code` and terms at the
+#'   specified `term_level`.(Works with data.frames but slower)
 #' @param term_level A character string specifying the
-#' MedDRA hierarchy level. Must be one
-#' of `"soc"`, `"hlgt"`, `"hlt"`, `"pt"`, or `"llt"`.
+#'   MedDRA hierarchy level. Must be one
+#'   of `"soc"`, `"hlgt"`, `"hlt"`, `"pt"`, or `"llt"`.
 #' @param freq_threshold A numeric value indicating
-#' the minimum frequency (as a proportion) of cases
-#' where a term must appear to be included in the results.
-#' For example, `0.05` means 5%. Defaults to `NULL`,
-#' meaning no threshold is applied unless `top_n`
-#' is different from `NULL`.
+#'   the minimum frequency (as a proportion) of cases
+#'   where a term must appear to be included in the results.
+#'   For example, `0.05` means 5%. Defaults to `NULL`,
+#'   meaning no threshold is applied unless `top_n`
+#'   is different from `NULL`.
 #' @param top_n An integer specifying the number of most
-#' frequently occurring terms to return.
-#' Defaults to `NULL`. Overrides `freq_threshold` if both are provided.
+#'   frequently occurring terms to return.
+#'   Defaults to `NULL`. Overrides `freq_threshold` if both are provided.
 #'
 #' @returns A `data.frame` with the following columns:
 #' \itemize{

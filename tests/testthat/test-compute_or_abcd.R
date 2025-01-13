@@ -1,14 +1,10 @@
 test_that("computation is accurate", {
-  demo <-
-    demo_ %>%
-    add_drug(
-      d_code = ex_$d_drecno,
-      drug_data = drug_
-    ) %>%
-    add_adr(
-      a_code = ex_$a_llt,
-      adr_data = adr_
-    )
+  expect_snapshot({
+    demo <-
+      demo_ %>%
+      add_drug(d_code = ex_$d_drecno, drug_data = drug_) %>%
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  })
 
   res <-
     demo %>%
@@ -163,16 +159,12 @@ test_that("handles 0 cases in y/x combination", {
 })
 
 test_that("vectorization works inside and outside the function", {
-  demo <-
-    demo_  |>
-    add_drug(
-      d_code = ex_$d_drecno,
-      drug_data = drug_
-    )  |>
-    add_adr(
-      a_code = ex_$a_llt,
-      adr_data = adr_
-    )
+  expect_snapshot({
+    demo <-
+      demo_  |>
+      add_drug(d_code = ex_$d_drecno, drug_data = drug_)  |>
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  })
 
   many_drugs <-
     c("nivolumab",

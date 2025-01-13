@@ -410,7 +410,38 @@ desc_facvar(
 )
 ```
 
-# Adr data: evolution of adverse events
+# Drug data: drug screening
+
+
+
+# Adr data: adr screening and evolution of adverse events
+
+`screen_drug()` let you screen the most drugs reported in a
+`drug` dataset, sorted by frequency.
+
+```{r screen_drug}
+screen_drug(drug_, mp_data = mp_, top_n = 5)
+```
+Most of the time, you will have filtered the `drug` data upstream, with some
+`add_*` function, allowing to
+focus on a subset of cases (of a specific drug, adr, or any set of these)
+
+## Adr screening
+
+`screen_adr()` let you screen the most frequent reactions reported in an
+`adr` dataset, sorted by frequency.
+
+```{r screen_adr}
+screen_adr(adr_, meddra = meddra_)
+```
+
+Different term levels can be used, according to meddra, with argument `term_level`.
+
+Most of the time, you will have filtered the `adr` data upstream, with some
+`add_*` function, allowing to
+focus on a subset of cases (of a specific drug, adr, or any set of these).
+
+## Outcome
 
 The adr table contains information on the evolution of adverse events.
 
