@@ -148,7 +148,7 @@ add_dose <-
             FrequencyU == "801" ~ 1 / 365.25,
             TRUE ~ NA_real_
           ),
-          daily_dose_in_mg = Amount * multiplicator_amount * Frequency * multiplicator_frequency
+          daily_dose_in_mg = (Amount * multiplicator_amount * multiplicator_frequency) / Frequency
         ) |>
         dplyr::filter(!is.na(daily_dose_in_mg)) |>
         dplyr::group_by(t_id) |>
