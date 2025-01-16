@@ -127,6 +127,7 @@ add_dose <-
         dplyr::filter(trimws(AmountU) %in% c("1", "2", "3", "4", "5", "6")) |>
         dplyr::filter(Frequency != "-") |>
         dplyr::filter(trimws(FrequencyU) %in% c("801", "802", "803", "804", "805", "806")) |>
+        dplyr::filter(Frequency != 0) |>
         dplyr::mutate(
           Amount = as.numeric(Amount),
           Frequency = as.numeric(Frequency),
