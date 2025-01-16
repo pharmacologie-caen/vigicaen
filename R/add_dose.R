@@ -158,14 +158,16 @@ add_dose <-
     })
 
     # Add dynamic dose columns to .data
+    # Add dynamic dose columns to .data
     for (i in seq_along(d_code)) {
       drug_data_t <- t_ids[[i]]
       drug_name <- paste0("daily_doses_", names(d_code)[i], "_in_mg")
       .data <- .data |>
         dplyr::left_join(drug_data_t, by = c("UMCReportId" = "t_id")) |>
-        dplyr::mutate(!!drug_name := coalesce(daily_dose_in_mg, 0)) |>
+        dplyr::mutate(!!drug_name := ifelse(is.na(daily_dose_in_mg), NA_real_, daily_dose_in_mg)) |>
         dplyr::select(-daily_dose_in_mg) # Remove intermediate column
     }
+
 
     # Return final data
     .data
