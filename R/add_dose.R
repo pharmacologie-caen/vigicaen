@@ -1,63 +1,67 @@
-#' Add DRUG column(s) to a dataset (tidyverse syntax)
+#' Add Dose Information to a Dataset (Tidyverse Syntax)
 #'
-#' @description `r lifecycle::badge('stable')` add_drug() creates drug columns.
+#' @description `r lifecycle::badge('stable')`
+#' `add_dose()` creates dynamic columns representing drug doses (in mg)
+#' for specified drugs in a dataset. It calculates daily dose values
+#' based on dose amount, frequency, and their corresponding units.
 #'
-#' @details d_code is a named list containing drug codes.
-#' Either medicinalprod_ids (e.g., from `tb_custom`), or drug record numbers
-#' (e.g., from `get_drecno`). Default method is to DrecNos.
-#' Drugs can be reported according to one of three reputation bases:
-#' suspect, concomitant or interacting in the occurrence of the adverse drug
-#' reaction. You may want to study only reports with a specific reputation basis.
-#' You can add drug identification to a `demo`, a `link`, or an `adr` dataset.
-#' Remember to set to the `data_type` argument to the appropriate value.
+#' @details
+#' The function identifies drug doses in a dataset by cross-referencing
+#' with a drug data table. Drug codes can be specified using either
+#' DrecNos or MedicinalProd_Id. Doses are filtered based on reputation
+#' bases (suspect, concomitant, or interacting). The function is
+#' compatible with `demo`, `link`, and `adr` datasets.
 #'
-#' @param .data The dataset used to identify individual reports (usually, it is `demo`)
-#' @param d_code A named list of drug codes (DrecNos or MPI). See Details.
-#' @param d_names A character vector. Names for drug columns (must be the same length as d_code), default to `names(d_code)`
-#' @param method A character string. The type of drug code (DrecNo or MedicinalProd_Id). See details.
-#' @param repbasis Suspect, interacting and/or concomitant. Type initial of those you wish to select (s for suspect, c for concomitant and i for interacting ; default to all)
-#' @param drug_data A data.frame containing the drug data (usually, it is `drug`)
-#' @param data_type A character string. The type of data to add columns to. Either `demo` or `link` (default to `demo`)
-#' @keywords data_management drug
+#' **Important:** Ensure the dataset's structure aligns with the `data_type`
+#' argument to avoid errors.
+#'
+#' @param .data A dataset used to identify individual reports (typically `demo`).
+#' @param d_code A named list of drug codes (DrecNos or MedicinalProd_Id).
+#' Each list element should correspond to a drug.
+#' @param d_names A character vector of names for the drug columns
+#' (defaults to `names(d_code)`).
+#' @param repbasis A character string indicating the reputation bases to include:
+#' - "s" for suspect
+#' - "c" for concomitant
+#' - "i" for interacting
+#' Defaults to "sci" (all reputation bases).
+#' @param method The type of drug code provided. Either "DrecNo" or
+#' "MedicinalProd_Id".
+#' @param drug_data A data frame containing drug data (typically `drug`).
+#' @param data_type A character string indicating the dataset type:
+#' - "demo" for a demographics dataset
+#' - "link" for a linkage dataset
+#' - "adr" for an adverse drug reaction dataset
+#'
+#' Defaults to "demo".
+#'
+#' @keywords data_management drug doses
 #' @export
-#' @importFrom rlang .data
-#' @importFrom rlang .env
-#' @seealso [add_adr()], [get_drecno()], [get_atc_code()]
+#' @importFrom rlang .data .env
+#' @seealso [add_drug()], [get_drecno()], [get_atc_code()]
 #' @examples
-#' # create a nivolumab column in demo_
+#' # Example: Adding doses for paracetamol
+#' d_code <- list(paracetamol = c("DRECNO_001", "DRECNO_002"))
+#' demo_updated <- add_dose(
+#'   .data = demo,
+#'   d_code = d_code,
+#'   d_names = "paracetamol",
+#'   repbasis = "sci",
+#'   method = "DrecNo",
+#'   drug_data = drug,
+#'   data_type = "demo"
+#' )
 #'
-#' d_sel_names <- rlang::list2(nivolumab = "nivolumab")
-#'
-#' d_drecno <- get_drecno(d_sel_names,
-#'                         mp_short = mp_short_)
-#'
-#' demo_ <-
-#'   add_drug(
-#'     .data = demo_,
-#'     d_code = d_drecno,
-#'     method = "DrecNo",
-#'     repbasis = "sci",
-#'     drug_data = drug_,
-#'     data_type = c("demo")
-#'   )
-#'
-#' # remember to assign the result to your actual demo dataset
-#'
-#' # do you want to work only with cases where nivolumab was a "suspected" drug?
-#' # change argument repbasis to "s"
-#'
-#' demo_ <-
-#'   add_drug(
-#'     .data = demo_,
-#'     d_code = d_drecno,
-#'     d_names = "nivolumab_suspected",
-#'     method = "DrecNo",
-#'     repbasis = "s",
-#'     drug_data = drug_,
-#'     data_type = c("demo")
-#'   )
-#'
-#' check_dm(demo_, cols = c("nivolumab", "nivolumab_suspected"))
+#' # Example: Restricting to "suspect" reputation base
+#' demo_suspect <- add_dose(
+#'   .data = demo,
+#'   d_code = d_code,
+#'   d_names = "paracetamol_suspected",
+#'   repbasis = "s",
+#'   method = "DrecNo",
+#'   drug_data = drug,
+#'   data_type = "demo"
+#' )
 
 
 ###########
@@ -73,11 +77,9 @@ add_dose <-
   )
   {
     method <- match.arg(method)
-
     data_type <- match.arg(data_type)
 
-    # use duplicates in UMCReportId to identify a link dataset versus a demo dataset.
-    # and check that data_type is set correctly
+    # Validate data type and dataset structure
     if(data_type == "demo" &&
        any(c("Drug_Id", "Adr_Id") %in% names(.data))){
       stop("The dataset has Drug_Id or Adr_Id columns (like a `link` dataset). Yet data_type is set to `demo`. Please set data_type to `link` or use a `demo` dataset")
@@ -89,63 +91,45 @@ add_dose <-
       stop("The dataset does not have Adr_Id, MedDRA_Id, and/or Outcome columns, (as an `adr` dataset would). Yet data_type is set to `adr`. Please set data_type accordingly.")
     }
 
-    basis_sel <-
-      c(
-        if(grepl("s", repbasis)){ 1 },
-        # subsidiary_files / Repbasis_Lx
-        if(grepl("c", repbasis)){ 2 },
-        if(grepl("i", repbasis)){ 3 }
-      )
+    basis_sel <- c(
+      if (grepl("s", repbasis)) { 1 },
+      if (grepl("c", repbasis)) { 2 },
+      if (grepl("i", repbasis)) { 3 }
+    )
 
-    dd_rb <-
-      drug_data |>
+    dd_rb <- drug_data |>
       dplyr::filter(.data$Basis %in% basis_sel)
 
-    # match id_col to method
-
     renamer_did <- c("did_col" = method)
+    dd_rb <- dd_rb |> dplyr::rename(dplyr::all_of(renamer_did))
 
-    dd_rb <-
-      dd_rb |>
-      dplyr::rename(dplyr::all_of(renamer_did))
+    t_id <- switch(data_type,
+                   demo = "UMCReportId",
+                   adr  = "UMCReportId",
+                   link = "Drug_Id"
+    )
 
-    # identify table_ids to collect
+    renamer_tid <- c("t_id" = t_id)
+    dd_rb <- dd_rb |> dplyr::rename(dplyr::all_of(renamer_tid))
 
-    t_id <-
-      switch(data_type,
-             demo = "UMCReportId",
-             adr  = "UMCReportId",
-             link = "Drug_Id"
-      )
-
-    renamer_tid <-
-      c("t_id" = t_id)
-
-    dd_rb <-
-      dd_rb |>
-      dplyr::rename(dplyr::all_of(renamer_tid))
-
-    # collect table_ids with doses
+    # Collect table_ids with doses
     t_ids <- purrr::map(d_code, function(d_code_batch) {
       dd_rb |>
         dplyr::filter(.data$did_col %in% d_code_batch) |>
         dplyr::select(t_id, Amount, AmountU, Frequency, FrequencyU) |>
         dplyr::mutate(
-          # Clean up leading/trailing whitespace in AmountU and FrequencyU
           AmountU = gsub("\\s+", "", AmountU),
           FrequencyU = gsub("\\s+", "", FrequencyU),
           Amount = gsub("\\s+", "", Amount),
-          Frequency = gsub("\\s+", "", Frequency),
+          Frequency = gsub("\\s+", "", Frequency)
         ) |>
         dplyr::filter(Amount != "-") |>
         dplyr::filter(trimws(AmountU) %in% c("1", "2", "3", "4", "5", "6")) |>
         dplyr::filter(Frequency != "-") |>
         dplyr::filter(trimws(FrequencyU) %in% c("801", "802", "803", "804", "805", "806")) |>
         dplyr::mutate(
-          # Convert Amount and Frequency to numeric
           Amount = as.numeric(Amount),
           Frequency = as.numeric(Frequency),
-          # Define multiplicator_amount based on cleaned AmountU
           multiplicator_amount = dplyr::case_when(
             AmountU == "1" ~ 1000000,
             AmountU == "2" ~ 1000,
@@ -155,7 +139,6 @@ add_dose <-
             AmountU == "6" ~ 1 / 1000000000,
             TRUE ~ NA_real_
           ),
-          # Define multiplicator_frequency based on cleaned FrequencyU
           multiplicator_frequency = dplyr::case_when(
             FrequencyU == "806" ~ 1440,
             FrequencyU == "805" ~ 24,
@@ -165,110 +148,25 @@ add_dose <-
             FrequencyU == "801" ~ 1 / 365.25,
             TRUE ~ NA_real_
           ),
-          # Calculate daily_dose_in_mg
           daily_dose_in_mg = Amount * multiplicator_amount * Frequency * multiplicator_frequency
         ) |>
-        # Remove rows with invalid daily_dose_in_mg
         dplyr::filter(!is.na(daily_dose_in_mg)) |>
-        # Keep only the highest daily_dose_in_mg per t_id
         dplyr::group_by(t_id) |>
         dplyr::slice_max(daily_dose_in_mg, with_ties = FALSE) |>
-        dplyr::ungroup()
-          })
+        dplyr::ungroup()|>
+        dplyr::select(t_id, daily_dose_in_mg) # Only keep relevant columns
+    })
 
-
-
-    ### I am on it ###
-    # Step 2: Create a dynamic column for each drug and merge it into .data
+    # Add dynamic dose columns to .data
     for (i in seq_along(d_code)) {
-      # Get the processed data for the current drug
       drug_data_t <- t_ids[[i]]
-
-      # Get the drug name (d_code_batch) from d_code list
-      drug_name <- paste0("doses_", as.character(d_code[i]))  # Construct the dynamic column name
-
-      # Merge this drug's data into .data by t_id
+      drug_name <- paste0("doses_", names(d_code)[i], "_in_mg")
       .data <- .data |>
-        dplyr::left_join(drug_data_t %>% dplyr::select(t_id, daily_dose_in_mg), by = c("UMCReportId" = "t_id")) |>
+        dplyr::left_join(drug_data_t, by = c("UMCReportId" = "t_id")) |>
         dplyr::mutate(!!drug_name := coalesce(daily_dose_in_mg, 0)) |>
-        dplyr::select(-daily_dose_in_mg)  # Optionally remove the daily_dose_in_mg column after adding
+        dplyr::select(-daily_dose_in_mg) # Remove intermediate column
     }
 
-
-### The step above and the step below are the same, but the step above gives weird variable names
-
-    ### I am on it ### Works well but if I run it twice I got an error message that I have to erase.
-    # Step 2: Create a dynamic column for each drug and merge it into .data
-    for (i in seq_along(d_code)) {
-      # Get the processed data for the current drug
-      drug_data_t <- t_ids[[i]]
-
-      # Get the drug name (d_code_batch) from d_code list
-      drug_name <- paste0("doses_", names(t_ids)[i], "in_mg")  # Construct the dynamic column name
-
-      # Merge this drug's data into .data by t_id
-      .data <- .data |>
-        dplyr::left_join(drug_data %>% dplyr::select(t_id, daily_dose_in_mg), by = c("UMCReportId" = "t_id")) |>
-        dplyr::rename(!!drug_name := daily_dose_in_mg)# Dynamically rename the column
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    e_l <-
-      t_ids |>
-      purrr::map(function(t_id_subset){
-
-        rlang::quo(ifelse(
-          .data$t_id %in% t_id_subset,
-          1, 0
-        ))
-      }
-      ) |>
-      rlang::set_names(d_names)
-
-    # prepare destination table
-
-    dest_data <-
-      .data |>
-      dplyr::rename(dplyr::all_of(renamer_tid))
-
-    # add_cols
-
-    dest_data_withcols <-
-      dest_data |>
-      dplyr::mutate(
-        !!!e_l
-      )
-
-    # back rename table id to original name
-
-    back_renamer <-
-      c("t_id") |>
-      rlang::set_names(t_id)
-
-    final_data <-
-      dest_data_withcols |>
-      dplyr::rename(dplyr::all_of(back_renamer))
-
-    # compute everything (this is strictly required only for arrow objects)
-
-    if(any(c("Table", "Dataset") %in% class(.data))){
-      final_data |>
-        dplyr::compute()
-    } else {
-      final_data
-    }
-
-
+    # Return final data
+    .data
   }
