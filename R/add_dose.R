@@ -15,6 +15,10 @@
 #' **Important:** Ensure the dataset's structure aligns with the `data_type`
 #' argument to avoid errors.
 #'
+#' **Note:** It is very important to check the results obtained, as coding problems
+#' are very frequent for posology data. Some results might appear unbelievable due
+#' to these issues and should be carefully reviewed and trimmed accordingly.
+#'
 #' @param .data A dataset used to identify individual reports (typically `demo`).
 #' @param d_code A named list of drug codes (DrecNos or MedicinalProd_Id).
 #' Each list element should correspond to a drug.
@@ -168,6 +172,9 @@ add_dose <-
         dplyr::mutate(!!drug_name := ifelse(is.na(daily_dose_in_mg), NA_real_, daily_dose_in_mg)) |>
         dplyr::select(-daily_dose_in_mg) # Remove intermediate column
     }
+
+    # Display a message about checking results and trimming
+    message("Important: Please check the results for posology, as coding issues are common. Some results may seem unbelievable and should be carefully reviewed and trimmed.")
 
 
     # Return final data
