@@ -68,7 +68,12 @@ add_drug <-
            data_type = deprecated()
   )
   {
-    method <- match.arg(method)
+
+    check_id_list(d_code)
+
+    method <- rlang::arg_match(method)
+
+    check_data_drug(drug_data, "drug_data")
 
     # Check if user has supplied `data_type`.
     if (lifecycle::is_present(data_type)) {
@@ -83,8 +88,6 @@ add_drug <-
 
     data_type <-
       query_data_type(.data, ".data")
-
-    check_data_drug(drug_data, "drug_data")
 
     basis_sel <-
       c(

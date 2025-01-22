@@ -51,11 +51,14 @@ add_adr <-
   function(.data,
            a_code,
            a_names = names(a_code),
-
            adr_data,
 
            data_type = deprecated()
            ){
+
+    check_id_list(a_code)
+
+    check_data_adr(adr_data)
 
     # Check if user has supplied `data_type`.
     if (lifecycle::is_present(data_type)) {
@@ -70,8 +73,6 @@ add_adr <-
 
     data_type <-
       query_data_type(.data, ".data")
-
-    check_data_adr(adr_data)
 
     # identify table_ids to collect
 
