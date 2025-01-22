@@ -44,3 +44,52 @@ test_that("cli format and basic use work", {
   })
 
 })
+
+test_that("smq_list is distinguished of smq_list_content", {
+
+  smq_list <- list(
+    smq_name = 1,
+    smq_level = 1,
+    smq_description = 1,
+    smq_source = 1,
+    smq_note = 1,
+    MedDRA_version = 1,
+    status = 1,
+    smq_algorithm = 1
+  )
+
+  smq_list_content <- list(
+    smq_name = 1,
+    smq_level = 1,
+    smq_description = 1,
+    smq_source = 1,
+    smq_note = 1,
+    MedDRA_version = 1,
+    status = 1,
+    smq_algorithm = 1,
+    term_code = 1,
+    term_level = 1,
+    term_scope = 1,
+    term_category = 1,
+    term_weight = 1,
+    term_status = 1,
+    term_addition_version = 1,
+    term_last_modified_version = 1
+  )
+
+  r1 <-
+    vigicaen:::check_data_smqlist(smq_list, ".data")
+
+
+
+  expect_null(r1)
+  expect_snapshot(error = TRUE, {
+    vigicaen:::check_data_smqlist(smq_list_content, arg = "x")
+  })
+
+  cli::test_that_cli("format is ok", {
+    expect_snapshot(error = TRUE, {
+      vigicaen:::check_data_smqlist(smq_list_content, arg = "x")
+    })
+  })
+})

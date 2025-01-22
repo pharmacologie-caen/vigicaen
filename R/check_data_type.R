@@ -106,3 +106,49 @@ check_data_mp <-
       )
     }
   }
+
+#' @describeIn data_checkers smq_list data checker
+
+check_data_smqlist <-
+  function(.data,
+           arg = rlang::caller_arg(.data),
+           call = rlang::caller_env()){
+
+    smqlist_cols <-
+      c( # except smq_code, which is in both smq_content and list.
+        "smq_name",
+        "smq_level",
+        "smq_description",
+        "smq_source",
+        "smq_note",
+        "MedDRA_version",
+        "status",
+        "smq_algorithm"
+      )
+
+    smqcontent_cols <-
+      c(
+        "term_code",
+        "term_level",
+        "term_scope",
+        "term_category",
+        "term_weight",
+        "term_status",
+        "term_addition_version",
+        "term_last_modified_version"
+      )
+
+    if (!all(smqlist_cols %in% names(.data)) |
+        any(smqcontent_cols %in% names(.data))) {
+
+      cli::cli_abort(
+        c(
+          "{.arg {arg}} is not an {.arg smq_list} table.",
+          "x" = "Invalid/missing columns detected",
+          ">" = "Did you provide an {.arg smq_list_content}, instead of an {.arg smq_list} dataset?.",
+          ">" = "See ?smq_list_."
+        ),
+        call = call
+      )
+    }
+  }

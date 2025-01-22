@@ -162,7 +162,8 @@
 #' Anonymized data from MedDRA, used to illustrate the package examples and vignettes.
 #' You can find term codes related to colitis, pneumonitis, hepatitis, a SMQ of
 #' embolisms.
-#' Compounds are `meddra_` and `smq_list_content_`.
+#' Compounds are `meddra_`, `smq_list_`, `smq_content_` and `smq_list_content_`.
+#' Create dedicated .parquet files using [tb_meddra()].
 #' See examples in \code{\link{get_llt_soc}} and \code{\link{get_llt_smq}}
 #'
 #' @docType data
@@ -179,6 +180,35 @@
 #'  \item `pt_soc_code` Integer. The preferred term code of the SOC itself.
 #'  \item `primary_soc_fg` Character. Whether the SOC is primary for this code.
 #'  "Y" or "N", Yes or No.
+#'  \item `empty_col` Logical. Empty column.
+#'  }
+#' `smq_list_` is a data.table with 9 variables and 11 rows.
+#' It is the list of SMQ.
+#' \itemize{
+#'  \item `smq_code` Integer. The code of the SMQ.
+#'  \item `smq_name` Character. The name of the SMQ.
+#'  \item `smq_level` Integer. The hierarchical level of the SMQ.
+#'  \item `smq_description` Character. The description of the SMQ.
+#'  \item `smq_source` Character. The source of the SMQ.
+#'  \item `smq_note` Character. Additional note on the SMQ.
+#'  \item `MedDRA_version` Numeric. The version of MedDRA.
+#'  \item `status` Character. The status of the SMQ (active or not)
+#'  \item `smq_algorithm` Character. Whether the SMQ is algorithmic or not.
+#'  \item `empty_col` Logical. Empty column.
+#'  }
+#' `smq_content_` is a data.table with 9 variables and 3386 rows.
+#' It is the content of each SMQ.
+#' \itemize{
+#'  \item `smq_code` Integer. The code of the SMQ.
+#'  \item `term_code` Integer. The low-level term code.
+#'  \item `term_level` Integer. The hierarchical level of the term.
+#'  \item `term_scope` Integer. The scope of the term (narrow 2 or broad 1)
+#'  \item `term_category` Character. In algorithmic SMQs, the category of the term.
+#'  \item `term_weight` Integer. The weight of the term (algorithmic SMQs).
+#'  \item `term_status` Integer. The status of the term (active or not)
+#'  \item `term_addition_version` Numeric. The version of the term addition.
+#'  \item `term_last_modified_version` Numeric. The last MedDRA version
+#'  the term was modified.
 #'  \item `empty_col` Logical. Empty column.
 #'  }
 #' `smq_list_content_` is a data.table with 19 variables and 3386 rows.
@@ -220,6 +250,14 @@
 #' @rdname meddra_
 
 "smq_list_content_"
+
+#' @rdname meddra_
+
+"smq_list_"
+
+#' @rdname meddra_
+
+"smq_content_"
 
 #' Sample of WHODrug
 #'

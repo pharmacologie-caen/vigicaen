@@ -5,6 +5,7 @@
 \alias{check_data_adr}
 \alias{check_data_drug}
 \alias{check_data_mp}
+\alias{check_data_smqlist}
 \alias{query_data_type}
 \title{Internal dataset type checkers}
 \usage{
@@ -21,6 +22,12 @@ check_data_drug(
 )
 
 check_data_mp(
+  .data,
+  arg = rlang::caller_arg(.data),
+  call = rlang::caller_env()
+)
+
+check_data_smqlist(
   .data,
   arg = rlang::caller_arg(.data),
   call = rlang::caller_env()
@@ -61,6 +68,8 @@ Find the matching data type, according to column names.
 \item \code{check_data_drug()}: drug data checker
 
 \item \code{check_data_mp()}: mp checker
+
+\item \code{check_data_smqlist()}: smq_list data checker
 
 \item \code{query_data_type()}: drug data checker
 
