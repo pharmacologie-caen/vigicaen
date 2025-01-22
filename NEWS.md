@@ -17,9 +17,13 @@ Users will have to change existing code to replace calls to `mp_short` with `mp`
 
 ## New features  
 
-* `screen_drug()` let you screen most reported drugs in `drug` (#103).
+* Args `inspect` and `show_all` of `get_drecno()` are replaced by `verbose` (#102).
+
+* `get_drecno()` messages are cleaner and written with the `cli` package.
 
 * New `top_n` argument added to `screen_adr()` (#86).
+
+* `screen_drug()` let you screen most reported drugs in `drug` (#103).
 
 ## Minor and bug Fixes  
 

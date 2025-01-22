@@ -114,20 +114,23 @@ get_atc_code <-
     # vigilyze is FALSE : return result ----
 
     if (vigilyze) {
-      message("vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)")
+      cli::cli_alert_info(
+        "vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)"
+        )
 
       get_drecno(
         d_sel = atc_sel_mpi,
         mp = mp,
         allow_combination = FALSE,
         method = "mpi_list",
-        inspect = FALSE,
-        show_all = FALSE
+        verbose = FALSE
       )
 
     } else {
 
-      message("vigilyze set to FALSE, extracting MedicinalProd_ids (?get_atc_code for details)")
+      cli::cli_alert_info(
+        "vigilyze set to FALSE, extracting MedicinalProd_ids (?get_atc_code for details)"
+        )
 
       atc_sel_mpi
     }

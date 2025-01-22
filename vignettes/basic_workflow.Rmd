@@ -129,15 +129,15 @@ It takes several arguments, two of which must be filled in:
 the selection of drugs and the table containing the
 correspondence between the name and the code (here, `mp`).
 
-You should **always** proceed in two steps.
+You should **always** look carefully at the printed message.
 
-1.  First, use `get_drecno()` with the `inspect = TRUE` argument
+1.  Use `get_drecno()` with argument `verbose = TRUE` (default).
 
-```{r inspect_with_get_drecno}
+```{r verbose_with_get_drecno}
 d_sel |> 
   get_drecno(
     mp = mp_,
-    inspect = TRUE
+    verbose = TRUE
   )
 ```
 
@@ -148,14 +148,14 @@ We see that `get_drecno()` finds two entries containing the drug "nivolumab" in 
 -   The entry for the ipilimumab;nivolumab combination
 
 This second entry was identified because the `allow_combination`
-argument is set to TRUE by default. 
+argument is set to `TRUE` by default. 
 This allows for a broader identification of all specialties
 containing nivolumab. In this situation, this behavior is
 desirable because we want to be sure to identify all cases
 reporting the drug.
 
 2.  Since these are actually the codes we were looking for, 
-we set the inspect argument to FALSE and keep the result 
+we can (optionally) set the `verbose` argument to FALSE and keep the result 
 in an R object called `d_drecno`.
 
 ```{r d_drecno}
@@ -163,7 +163,7 @@ d_drecno <-
   d_sel |> 
   get_drecno(
     mp = mp_,
-    inspect = FALSE
+    verbose = FALSE
   )
 ```
 
