@@ -441,11 +441,6 @@ find_combination <- function(x_drug_name){
   # negative lookahead: x is not followed by a space or an alphabetic character.
 }
 
-# find_isolated <- function(x_drug_name,
-#                           env = mp,
-#                           drug_name_t = {{ drug_name_t }})
-#   eval(rlang::expr(drug_name_t == x_drug_name), envir = env) # exact match
-
 find_isolated <- function(x_drug_name){
   rlang::expr(.data$drug_name_t == !!x_drug_name)
 }
@@ -456,8 +451,6 @@ find_mpi <- function(x_mpi_list)
 
 msg_getdrecno_no_match <-
   function(res_list_no_match
-           # gathered get_drecno() output from
-           # find_drug_and_check_drecno double map
            ){
 
     res_list_no_match_compact <-
@@ -492,8 +485,6 @@ msg_getdrecno_no_match <-
 
 msg_get_drecno_not_who <-
   function(res_list_not_who
-           # gathered get_drecno() output from
-           # find_drug_and_check_drecno double map
            ){
     res_list_not_who_compact <-
       purrr::compact(res_list_not_who)
