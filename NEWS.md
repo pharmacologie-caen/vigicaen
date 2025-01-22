@@ -17,7 +17,9 @@ Users will have to change existing code to replace calls to `mp_short` with `mp`
 
 ## New features  
 
-* Arg `inspect` of `get_drecno()` is replaced by `verbose` (#102).
+* Args `inspect` and `show_all` of `get_drecno()` are replaced by `verbose` (#102).
+
+* `get_drecno()` messages are cleaner and written with the `cli` package.
 
 * New `top_n` argument added to `screen_adr()` (#86).
 
