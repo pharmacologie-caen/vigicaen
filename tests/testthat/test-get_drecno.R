@@ -1,4 +1,4 @@
-test_that("get drecno of a single drug, no combination allowed", {
+test_that("get drecno of single drug, or combination allowed", {
 
   nivo_drecno <- 111841511
 
@@ -43,14 +43,6 @@ test_that("get drecno of a single drug, no combination allowed", {
     d_drecno_nocomb
   )
 
-  get_drecno(d_sel = d_sel_names,
-             mp = mp_,
-             allow_combination = FALSE,
-             method = "drug_name",
-             show_all = FALSE,
-             verbose = FALSE
-  )
-
   expect_snapshot({
     d_drecno_res_comb <-
       get_drecno(
@@ -68,6 +60,16 @@ test_that("get drecno of a single drug, no combination allowed", {
     d_drecno_comb
   )
 
+  # long list of matchings are truncated
+
+  expect_snapshot(
+    r1 <-
+      get_drecno(list(a = "paracetamol"),
+             allow_combination = TRUE,
+             mp = mp_,
+             verbose = TRUE)
+  )
+
 
 })
 
@@ -80,14 +82,16 @@ test_that("d_sel has inappropriate structure", {
     )
   )
 
-  expect_error(
+  # internally running check_id_list
+
+  expect_snapshot(error = TRUE, {
     get_drecno(drug1, mp_,
-               verbose = FALSE),
-    "Function is meant to be used for a single drug at a time. Check `d_sel` structure.")
+               verbose = FALSE)
+    })
 
 })
 
-test_that("show_all works", {
+test_that("show_all is deprecated", {
 
   # list in list
 
@@ -95,23 +99,13 @@ test_that("show_all works", {
     nivo = "nivolumab")
 
 r1 <-
-  get_drecno(drug1, mp_,
+  expect_snapshot(
+    r1 <-
+      expect_warning(get_drecno(drug1, mp_,
              show_all = TRUE,
-             verbose = FALSE)
-
-  expect_equal(
-    class(r1),
-    "list")
-
-  expect_equal(
-    class(r1$nivo),
-    c("data.table", "data.frame")
-  )
-
-  expect_equal(
-    r1$nivo$drug_name_t,
-    c("nivolumab", "ipilimumab;nivolumab")
-  )
+             verbose = FALSE),
+             "deprecated"
+      ))
 
 })
 
@@ -128,25 +122,85 @@ test_that("non WHO names raise appropriate warnings", {
 
   drug5 <- rlang::list2(att = "antithrombin") # correct name would be antithrombine iii
 
-  expect_warning(get_drecno(drug1, mp_,
-                            verbose = FALSE),
-                 "NOT a WHO name")
+  drug6 <- rlang::list2(
+    medi = c("medicament", "medicament2"),
+    medi2 = c("autremedic")
+  )
 
-  expect_warning(get_drecno(drug2, mp_,
-                            verbose = FALSE),
-                 "NOT a WHO name")
+  drug7 <- rlang::list2(
+    notwho = c("all-trans retinoic acid", "doliprane", "paracetamol"),
+    notwho2 = c("doliprane"),
+    who = "nivolumab"
+  )
 
-  expect_warning(get_drecno(drug3, mp_,
-                            verbose = FALSE),
-                 "there is no match")
+  drug8 <- rlang::list2(
+    Medi = c("medicament", "medicament2", "enalapril"),
+    mix = c("all-trans retinoic acid", "enalaprilat", "renitec", "enalapril"),
+    notwho2 = c("doliprane"),
+    who = "nivolumab"
+  )
 
-  expect_warning(get_drecno(drug4, mp_,
-                            verbose = FALSE),
-                 "there is no match")
 
-  expect_warning(get_drecno(drug5, mp_,
-                            verbose = FALSE),
-                 "there is no match")
+  expect_snapshot(
+    expect_warning(
+      r1 <- get_drecno(drug1, mp_,
+                       verbose = FALSE),
+      "Switch to .* WHO names.")
+  )
+
+  expect_snapshot(
+    expect_warning(
+      r1 <- get_drecno(drug2, mp_,
+                       verbose = FALSE),
+      "Switch to .* WHO names.")
+  )
+
+  expect_snapshot(r1 <- get_drecno(drug3, mp_,
+                            verbose = FALSE))
+
+  expect_snapshot(r1 <- get_drecno(drug4, mp_,
+                            verbose = FALSE))
+
+  expect_snapshot(r1 <- get_drecno(drug5, mp_,
+                            verbose = FALSE))
+
+  # complex output structure
+
+  expect_snapshot(r1 <- get_drecno(drug6, mp_,
+                            verbose = FALSE))
+
+  # with both matchings, non who names
+  expect_snapshot(
+    expect_warning(
+      r1 <- get_drecno(drug7, mp_,
+                       allow_combination = TRUE,
+                       verbose = FALSE),
+      "Switch to .* WHO names.")
+  )
+
+  expect_snapshot(
+      r1 <- get_drecno(drug7, mp_,
+                       allow_combination = FALSE,
+                       verbose = FALSE)
+  )
+
+  # with both matchings, non matching, non who names
+  # in combination or not
+
+  expect_snapshot(
+    r1 <- get_drecno(drug8, mp_, verbose = FALSE)
+  )
+
+  expect_snapshot(
+    r1 <- get_drecno(drug8, mp_, allow_combination = FALSE, verbose = TRUE)
+  )
+
+  expect_snapshot(
+    expect_warning(
+      r1 <- get_drecno(drug8, mp_, allow_combination = TRUE, verbose = TRUE),
+      "Switch to .* WHO names."
+    )
+  )
 })
 
 test_that("works for drugs, which is the default setting", {
@@ -192,7 +246,6 @@ test_that("works for drugs, which is the default setting", {
 
 })
 
-
 test_that("works for mpi_list as well", {
 
   mpi <- rlang::list2(
@@ -202,22 +255,32 @@ test_that("works for mpi_list as well", {
   res_mpi <- get_drecno(mpi,
                          mp_,
                          method = "mpi_list",
-                         show_all = FALSE,
+                         # show_all = FALSE,
                          allow_combination = FALSE,
                         verbose = FALSE)
+
+  expect_snapshot(
+    r1 <- get_drecno(
+      mpi,
+      mp_,
+      method = "mpi_list",
+      allow_combination = FALSE,
+      verbose = TRUE
+    )
+  )
+
 
   expect_equal(length(res_mpi[["para"]]),
                1)
 
   expect_equal(res_mpi[["para"]], 42225260)
 
-  expect_warning(get_drecno(mpi,
+  expect_message(r1 <- get_drecno(mpi,
                              mp_,
                              method = "mpi_list",
-                             show_all = FALSE,
                              allow_combination = TRUE,
                             verbose = FALSE),
-                 "allow_combination set to TRUE but mpi requested")
+                 "allow_combination.* is ignored")
 
 })
 
@@ -226,7 +289,7 @@ test_that("verbose works", {
 
   d_one <-
     list(
-      set1 = c("paracetamol")
+      set1 = c("enalapril")
     )
 
   expect_snapshot({
@@ -258,14 +321,16 @@ test_that("verbose works", {
 
   })
 
-    r_silent <-
-      get_drecno(
+   expect_no_message(
+     r_silent <-
+       get_drecno(
         d_one,
         mp = mp_,
         method = "drug_name",
         allow_combination = TRUE,
         verbose = FALSE
       )
+   )
 
   expect_equal(
     r_verbose_2,
@@ -292,14 +357,13 @@ test_that("verbose works", {
   # with method = mpi_list
 
   mpi <- rlang::list2(
-    set1 = mp_[DrecNo == 42225260, MedicinalProd_Id]
+    set1 = mp_[DrecNo == 740486, MedicinalProd_Id]
   )
 
   expect_snapshot({
     r_insp3 <- get_drecno(mpi,
                         mp_,
                         method = "mpi_list",
-                        show_all = FALSE,
                         verbose = TRUE,
                         allow_combination = FALSE)
   })
@@ -311,7 +375,7 @@ test_that("verbose works", {
   )
 })
 
-test_that("inspect is deprecated", {
+test_that("inspect and show_all are deprecated", {
   d_one <-
     list(
       thrombophilia = c("tramadol")
@@ -330,6 +394,19 @@ test_that("inspect is deprecated", {
                       ),
                       "deprecated"
                     ))
+
+  expect_snapshot(r_inspect <-
+                    expect_warning(
+                      get_drecno(
+                        d_one,
+                        mp = mp_,
+                        method = "drug_name",
+                        allow_combination = FALSE,
+                        show_all = TRUE,
+                        verbose = FALSE
+                      ),
+                      "deprecated"
+                    ))
 })
 
 test_that("names of d_sel were tolower-ed and trimed warning", {
@@ -339,15 +416,49 @@ test_that("names of d_sel were tolower-ed and trimed warning", {
     Nivo_ipi = c("nivolumab", "ipilimumab")
   )
 
-    expect_warning(
-    get_drecno(
+  d_sel_long <- rlang::list2(
+    Drug1 = "nivolumab",
+    Drug2 = "nivolumab",
+    Drug3 = "nivolumab",
+    Drug4 = "nivolumab",
+    Drug5 = "nivolumab",
+    Drug6 = "nivolumab"
+  )
+
+  d_sel_mix <- rlang::list2(
+    drug1 = "nivolumab",
+    Drug2 = "nivolumab"
+  )
+
+
+  expect_snapshot(
+    r1 <- get_drecno(
       d_sel = d_sel_names,
       mp = mp_,
       allow_combination = TRUE,
       method = "drug_name",
       verbose = FALSE
-    ),
-    "names of d_sel were tolower-ed and trimed"
+    )
+  )
+
+  expect_snapshot(
+    r1 <- get_drecno(
+      d_sel = d_sel_long,
+      mp = mp_,
+      allow_combination = TRUE,
+      method = "drug_name",
+      verbose = FALSE
+    )
+  )
+
+  expect_snapshot(
+    r1 <- get_drecno(
+      d_sel = d_sel_mix,
+      mp = mp_,
+      allow_combination = TRUE,
+      method = "drug_name",
+      verbose = FALSE
+    )
   )
 })
 
@@ -387,9 +498,149 @@ test_that("works with mp as Table (out of memory)", {
                mp = mp_,
                allow_combination = FALSE,
                method = "drug_name",
-               show_all = FALSE,
                verbose = FALSE
     ),
     d_drecno_nocomb
   )
+})
+
+test_that("find_drug_and_check_exist returns correct output", {
+
+  # --- with find_isolated
+
+  # with a who name
+
+  r1 <-
+    find_drug_and_check_exist("paracetamol",
+                              vigicaen:::find_isolated,
+                              mp = mp_)
+
+  r_true <-
+    list(
+      drecno_table =
+        data.table::data.table(
+          DrecNo = 42225260,
+          drug_name_t = "paracetamol",
+          who = TRUE),
+      d_no_match = NULL,
+      d_not_who = NULL
+    )
+
+  expect_equal(r1, r_true)
+
+
+  # with an incorrect name
+
+  r_not_match <-
+    find_drug_and_check_exist(
+    "prace",
+    vigicaen:::find_isolated,
+    mp = mp_
+  )
+
+  r_not_match_true <-
+    list(
+      drecno_table =
+        data.table::data.table(
+          DrecNo = numeric(0),
+          drug_name_t = character(0),
+          who = logical(0)),
+      d_no_match = "prace",
+      d_not_who = NULL
+    )
+
+  expect_equal(
+    r_not_match,
+    r_not_match_true
+  )
+
+  # with a non who name
+
+  r_not_who <-
+    find_drug_and_check_exist(
+      "doliprane",
+      vigicaen:::find_isolated,
+      mp = mp_
+    )
+
+  r_not_who_true <-
+    list(
+      drecno_table =
+        data.table::data.table(
+          DrecNo = 42225260,
+          drug_name_t = "doliprane",
+          who = FALSE),
+      d_no_match = NULL,
+      d_not_who = c("paracetamol" = "doliprane")
+    )
+
+  expect_equal(
+    r_not_who,
+    r_not_who_true
+  )
+
+
+  # with a combination of the previous cases
+
+  # with find_combination too
+
+  r_comb <-
+    find_drug_and_check_exist(
+    "nivolumab",
+    vigicaen:::find_combination,
+    mp = mp_
+  )
+
+  r_comb_true <-
+    list(
+      drecno_table =
+        data.table::data.table(
+          DrecNo = c(111841511, 98742214),
+          drug_name_t = c("nivolumab", "ipilimumab;nivolumab"),
+          who = c(TRUE, TRUE)),
+      d_no_match = NULL,
+      d_not_who = NULL
+    )
+
+  expect_equal(
+    r_comb,
+    r_comb_true
+  )
+
+  r_comb_not_who <-
+    find_drug_and_check_exist(
+    "doliprane",
+    vigicaen:::find_combination,
+    mp = mp_
+  )
+
+  expect_equal(
+    r_comb_not_who,
+    r_not_who_true
+  )
+
+  r_comb_no_match <-
+    find_drug_and_check_exist(
+    "prace",
+    vigicaen:::find_combination,
+    mp = mp_
+  )
+
+  expect_equal(
+    r_comb_no_match,
+    r_not_match_true
+  )
+
+  # d_sel structure
+  drug1 <- rlang::list2(atra = rlang::list2(
+    nivo_ipi = c("nivolumab", "ipilimumab")
+  )
+  )
+
+  # internal error
+  expect_error(find_drug_and_check_exist(
+    drug1[[1]][[1]],
+    vigicaen:::find_isolated,
+    mp_
+  ))
 })

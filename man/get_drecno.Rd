@@ -9,8 +9,9 @@ get_drecno(
   mp,
   allow_combination = TRUE,
   method = c("drug_name", "mpi_list"),
-  inspect = FALSE,
-  show_all = FALSE
+  verbose = TRUE,
+  show_all = deprecated(),
+  inspect = deprecated()
 )
 }
 \arguments{
@@ -22,9 +23,12 @@ get_drecno(
 
 \item{method}{Should DrecNo be found from drug names or from MedicinalProd_Id?}
 
-\item{inspect}{Instead of providing a list of drecnos, do you wish to see a larger data.frame with additional data? See details.}
+\item{verbose}{A logical. Allows you to see matching drug names in the console.
+Turn to FALSE once you've checked the matching.}
 
-\item{show_all}{Do you wish to see all MP_Ids entries from \code{mp} when working with drug names, or just one entry per DrecNo? Default to FALSE}
+\item{show_all}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
+
+\item{inspect}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{verbose} instead.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{get_drecno()} collects
@@ -73,18 +77,15 @@ d_sel_names <- rlang::list2(
   nivo_ipi = c("nivolumab", "ipilimumab")
   )
 
-# Read mp with get_drecno, to identify drugs without combinations
+# Read mp with get_drecno(), to identify drugs without combinations
 
-# First, you shall **always** inspect mp reading before getting the codes
+# Take the time to read the matching drugs. Did you forget a drug?
 
 get_drecno(d_sel_names,
            mp = mp_,
            allow_combination = FALSE,
-           method = "drug_name",
-           inspect = TRUE)
+           method = "drug_name")
 
-
-# If this matches your needs, then extract (inspect = FALSE, by default)
 
 d_drecno <-
   get_drecno(d_sel_names,

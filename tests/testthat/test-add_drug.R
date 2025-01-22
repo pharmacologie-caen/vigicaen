@@ -18,7 +18,8 @@ test_that("works with drecnos, regular names for demo and drug", {
   d_drecno <-
     d_names |>
     get_drecno(
-      mp = mp_
+      mp = mp_,
+      verbose = FALSE
     )
 
   expect_snapshot({
@@ -89,7 +90,8 @@ test_that("works with irregular names for demo and drug", {
   d_drecno <-
     d_names |>
     get_drecno(
-      mp = mp_
+      mp = mp_,
+      verbose = FALSE
     )
 
   expect_snapshot({
@@ -176,7 +178,8 @@ test_that("selecting only s, c, i works and provide less cases than sci altogeth
   d_drecno <-
     d_names |>
     get_drecno(
-      mp = mp_
+      mp = mp_,
+      verbose = FALSE
     )
 
   bas <- c("s", "c", "i")
