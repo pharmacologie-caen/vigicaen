@@ -200,12 +200,6 @@
       add_drug(demo_, d_code = ex_$d_drecno, method = "DrecNo", drug_data = adr_,
       data_type = "demo")
     Condition
-      Warning:
-      The `data_type` argument of `add_drug()` is deprecated as of vigicaen 0.14.1.
-      i data_type is now internally detected
-    Message
-      i `.data` detected as `demo` table.
-    Condition
       Error in `add_drug()`:
       ! `drug_data` is not a `drug` table.
       x Missing columns: DrecNo, MedicinalProd_Id, and Drug_Id

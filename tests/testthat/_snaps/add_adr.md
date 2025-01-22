@@ -109,8 +109,6 @@
 
     Code
       add_adr(demo_, a_code = ex_$a_llt, adr_data = drug_)
-    Message
-      i `.data` detected as `demo` table.
     Condition
       Error in `add_adr()`:
       ! `adr_data` is not an `adr` table.
