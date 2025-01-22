@@ -17,10 +17,6 @@ check_id_list(
 \item{arg}{Helper to format the error message.}
 
 \item{call}{Helper to format the error message.}
-
-\item{calling_arg}{A character string.
-The name of the argument in the calling function (e.g. ".data" for "demo" in
-\code{add_adr()}, etc.)}
 }
 \value{
 An error if the dataset is invalid. Nothing in other cases

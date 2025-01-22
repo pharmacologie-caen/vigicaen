@@ -227,11 +227,11 @@ get_drecno <- function(
       purrr::map(d_sel_renamed, function(d_n)
         mp |>
           dplyr::filter(
-            find_mpi(d_n, env = mp)
+            !!find_mpi(d_n)
             ) |>
-          dplyr::mutate(who = Sequence.number.1 == "01" &
-                          Sequence.number.2 == "001") |>
-          dplyr::distinct(DrecNo, drug_name_t, who)
+          dplyr::mutate(who = .data$Sequence.number.1 == "01" &
+                          .data$Sequence.number.2 == "001") |>
+          dplyr::distinct(.data$DrecNo, .data$drug_name_t, .data$who)
           # dplyr::mutate(drug = 1) # for compatibility with inspect instructions
       )
 
@@ -280,7 +280,7 @@ get_drecno <- function(
     cli_h2("{.arg d_sel}: Matching drugs")
 
     if (verbose == TRUE)
-      msg_getdrecno_match(res_list_dt)
+      msg_getdrecno_match(d_sel, res_list_dt)
 
     if (method == "drug_name" && any_no_match == TRUE)
       msg_getdrecno_no_match(res_list_no_match)
@@ -361,15 +361,21 @@ find_drug_and_check_exist <-
     drecno_list <-
       mp |>
       dplyr::filter(
-        finder(one_drug_name, env = mp)
+        !!finder(one_drug_name
+               # , env = mp)
+        )
       ) |>
-      dplyr::mutate(who = Sequence.number.1 == "01" &
-                 Sequence.number.2 == "001") |>
-      dplyr::distinct(DrecNo, drug_name_t, who)
+      dplyr::mutate(
+        who = .data$Sequence.number.1 == "01" &
+          .data$Sequence.number.2 == "001") |>
+      dplyr::distinct(
+        .data$DrecNo,
+        .data$drug_name_t,
+        .data$who)
 
     who_match <-
       drecno_list |>
-      dplyr::filter(who == TRUE) |>
+      dplyr::filter(.data$who == TRUE) |>
       dplyr::summarise(is_who = dplyr::n() > 0) |>
       dplyr::pull(.data$is_who)
     # in case of combination, find_combination may find both who and non-who names
@@ -390,7 +396,7 @@ find_drug_and_check_exist <-
       drecno <-
         drecno_list |>
         dplyr::filter(
-          find_isolated(one_drug_name, env = drecno_list)
+          !!find_isolated(one_drug_name)
           # there can be combinations and there can be multiple MP_Ids
           ) |>
         dplyr::pull(.data$DrecNo) |>
@@ -421,30 +427,31 @@ find_drug_and_check_exist <-
 
   }
 
-find_combination <- function(x_drug_name, env = mp,
-                             drug_name_t = {{ drug_name_t }}){
+find_combination <- function(x_drug_name){
   x_drug_name <-
     gsub("\\(", "\\\\(", x_drug_name)
 
   x_drug_name <- # so that parenthesis are appropriately escaped
     gsub("\\)", "\\\\)", x_drug_name)
 
-  eval(rlang::expr(grepl(paste0("(?<![[:alpha:]])", x_drug_name, "(?![\\s[:alpha:]])"),
-                         drug_name_t,
-                         perl = TRUE)),
-       envir = env)
+  rlang::expr(grepl(paste0("(?<![[:alpha:]])", !!x_drug_name, "(?![\\s[:alpha:]])"),
+                         .data$drug_name_t,
+                         perl = TRUE))
   # negative lookbehind: x is not preceeded by alphabetic characters
   # negative lookahead: x is not followed by a space or an alphabetic character.
 }
 
-find_isolated <- function(x_drug_name,
-                          env = mp,
-                          drug_name_t = {{ drug_name_t }})
-  eval(rlang::expr(drug_name_t == x_drug_name), envir = env) # exact match
+# find_isolated <- function(x_drug_name,
+#                           env = mp,
+#                           drug_name_t = {{ drug_name_t }})
+#   eval(rlang::expr(drug_name_t == x_drug_name), envir = env) # exact match
 
-find_mpi <- function(x_mpi_list, env = mp,
-                     MedicinalProd_Id = {{ MedicinalProd_Id }})
-  eval(rlang::expr(MedicinalProd_Id %in% x_mpi_list), envir = env)
+find_isolated <- function(x_drug_name){
+  rlang::expr(.data$drug_name_t == !!x_drug_name)
+}
+
+find_mpi <- function(x_mpi_list)
+  rlang::expr(.data$MedicinalProd_Id %in% !!x_mpi_list)
 
 
 msg_getdrecno_no_match <-
@@ -572,7 +579,7 @@ msg_getdrecno_renaming <-
   }
 
 msg_getdrecno_match <-
-  function(res_list_dt){
+  function(d_sel, res_list_dt){
     msg_match <- function() {
       lines <-
         purrr::map(res_list_dt, function(r_l)
