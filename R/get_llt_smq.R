@@ -13,7 +13,9 @@
 #'
 #' @param smq A named list of character vector of length 1.
 #' @param smq_scope A character vector. One of "narrow" or "broad".
-#' @param smq_list_content A data.table. A joint of smq_list and smq_content
+#' @param smq_list A data.table. A list of SMQs.
+#' @param smq_content A data.table. A list of SMQs content.
+#' @param smq_list_content  `r lifecycle::badge('deprecated')`
 #' @keywords data_management meddra smq llt
 #' @seealso [get_llt_soc()]
 #' @export
@@ -25,15 +27,37 @@
 #'  )
 #' get_llt_smq(smq_sel,
 #'                 smq_scope = "narrow",
-#'                 smq_list_content = smq_list_content_
+#'                 smq_list = smq_list_,
+#'                 smq_content = smq_content_
 #'                 )
+#'
+#' # You can query multiple SMQs in one item, and query high level SMQs
+#' smq_sel2 <-
+#'   rlang::list2(
+#'     sepsis = c("Sepsis (SMQ)","Toxic-septic shock conditions (SMQ)"),
+#'     ischemic_heart_disease = c("Ischaemic heart disease (SMQ)"),
+#'   )
+#'
+#' get_llt_smq(smq_sel2,
+#'             smq_scope = "narrow",
+#'             smq_list = smq_list_,
+#'             smq_content = smq_content_
+#'             )
 
 get_llt_smq <-
   function(
     smq,
     smq_scope = c("narrow", "broad"),
-    smq_list_content
+    smq_list,
+    smq_content,
+    smq_list_content = deprecated()
   ){
+
+    check_id_list(smq)
+
+    # prevent error from old version written scripts (<v0.14.1)
+    check_data_smqlist(smq_list)
+
     smq <-
       purrr::map(smq, function(s_)
       ifelse(
@@ -43,7 +67,7 @@ get_llt_smq <-
       )
       )
 
-    smq_scope <- match.arg(smq_scope)
+    smq_scope <- rlang::arg_match(smq_scope)
 
     smq_scope_code <-
       dplyr::case_when(
@@ -52,122 +76,348 @@ get_llt_smq <-
         TRUE ~ "this is an error"
       )
 
-    if("Table"  %in% class(smq_list_content)){
-      # automatically collect smq_list_content if out of memory
-      # since it's a small table
-      smq_list_content <-
-        dplyr::collect(smq_list_content)
+    if("Table"  %in% class(smq_list)){
+      # automatically collect smq_list and smq_content if out of memory
+      # since they are small tables
+      smq_list <-
+        dplyr::collect(smq_list)
     }
 
-    get_one_smq_batch_llt <- function(one_smq,
-                                smq_name = {{ smq_name }},
-                                term_scope = {{ term_scope }},
-                                term_status = {{ term_status }},
-                                smq_algorithm = {{ smq_algorithm }},
-                                term_code = {{ term_code }}){
-      smq_list_content[smq_name == one_smq &
-                         term_scope %in% smq_scope_code &
-                         term_status == "A" &
-                         # A pour terme actif
-                         smq_algorithm == "N",
-                       # N : not algorithmic
 
-                       unique(term_code)
-                       ]
+    if("Table"  %in% class(smq_content)){
+      smq_content <-
+        dplyr::collect(smq_content)
     }
 
-    llt_list <- purrr::map(smq, get_one_smq_batch_llt)
+    # Check if user has supplied smq_list_content.
+    if (lifecycle::is_present(smq_list_content)) {
 
-    length_llt_list_element <-
-      purrr::map(llt_list, length)
+      # Signal the deprecation to the user
+      lifecycle::deprecate_soft(
+        when = "0.14.1",
+        what = "get_llt_smq(smq_list_content)",
+        with = "get_llt_smq(smq_list)",
+        details = "and `smq_content`"
+        )
 
-    # Handling 0 results issues ----
-
-    if(any(length_llt_list_element == 0)){
-
-      # debugging steps
-
-      zero_llt_element <-
-        length_llt_list_element |>
-        purrr::keep(~ .x == 0)
-
-      zero_llt_element_names <-
-        names(zero_llt_element)
-
-      # step 1 : are there high level SMQs ?
-
-      high_level_smq <-
-        smq[zero_llt_element_names] |>
-        purrr::map(function(zero_s,
-                            smq_name = {{ smq_name }},
-                            smq_algorithm = {{ smq_algorithm }}){
-          # if you find zero_s in the list of smqs
-          zero_s %in% unique(smq_list_content$smq_name) &&
-            # and those smqs are not algorithmic
-            smq_list_content[smq_name == zero_s, all(smq_algorithm == "N")]
-        }) |>
-        purrr::keep(isTRUE)
-
-       if(length(high_level_smq) > 0)
-        warning(paste0("In '",
-                       names(high_level_smq),
-                       "', at least one of '",
-                       paste0(smq[names(high_level_smq)], collapse = ", "),
-                       "' is/are high level smq(s), you need to query lower level smq(s)"))
-
-      # step 2 : are there algorithmic smq?
-
-      non_hls_zerollt_element <-
-        zero_llt_element_names[!zero_llt_element_names %in%
-                                 names(high_level_smq)]
-
-
-      smq_algorithm_not_n <-
-        smq[non_hls_zerollt_element] |>
-        purrr::map(function(s_,
-                            smq_name = {{ smq_name }},
-                            term_status = {{ term_status }},
-                            smq_algorithm = {{ smq_algorithm }})
-          s_ %in% unique(smq_list_content$smq_name) &&
-          smq_list_content[smq_name == s_ &
-                             term_status == "A",
-                           all(!(smq_algorithm == "N"))
-          ]
-        ) |>
-        purrr::keep(isTRUE)
-
-      if(length(smq_algorithm_not_n) > 0)
-        # this should be an error, as it is out of the function scope
-        stop(paste0("smq '",
-
-                    paste0(names(smq_algorithm_not_n), collapse = ", "),
-                    "' is/are algorithmic, they are not handled by get_llt_smq."))
     }
 
-    # check for unmatched terms (its smarter than the previous, since is does
-    # capture an unmatched term in the middle of good ones)
+    # ---- Collect and flag smq codes ----
 
-    get_unmatched_terms <- function(one_smq,
-                                    smq_name = {{ smq_name }}){
-      unmatch_request <-
-        rlang::expr(one_smq[!(!!one_smq %in% smq_list_content[, unique(smq_name)]
-        )])
+    smq_codes <-
+      purrr::map(
+        smq,
+        function(one_smq){
+          one_smq_codes <-
+            purrr::map(one_smq, function(one_smq_name)
+              find_smq(one_smq_name, smq_list)
+              )
 
-      unmatch <- eval(unmatch_request)
+          # gather all correct matchs
+          all_smq_item_codes <-
+            one_smq_codes |>
+            purrr::map(
+              function(x)
+                c(x[["match_exact"]],
+                  x[["match_sub"]])
+            ) |>
+            purrr::list_c()
 
-      unmatch
+          # gather sub smq matchs
+          all_smq_item_submatchs <-
+            one_smq_codes |>
+            purrr::map(
+              function(x){
+
+                name_for_sub <-
+                  if(length(names(x[["match_exact"]])) > 0)
+                    names(x[["match_exact"]])
+                  else
+                    "No exact match"
+
+                list(v1 = names(x[["match_sub"]])) |>
+                  # v1 temporary, overwritten right next
+                rlang::set_names(
+                  name_for_sub
+                )
+              }
+            ) |>
+            unlist(recursive = FALSE)
+
+          # gather failures
+          all_smq_item_failures <-
+            one_smq_codes |>
+            purrr::map(
+              function(x)
+                x[["match_failed"]]
+            ) |> unlist()
+
+          return(
+            list(
+              all_smq_codes = all_smq_item_codes,
+              all_smq_submatchs = all_smq_item_submatchs,
+              all_smq_failures = all_smq_item_failures
+            )
+          )
+        }
+      )
+
+    # collect smq codes
+    res_list_codes <-
+      smq_codes |> purrr::map(function(x)
+        x[["all_smq_codes"]])
+
+    # collect submatchs
+    res_list_submatchs <-
+      smq_codes |> purrr::map(function(x)
+        x[["all_smq_submatchs"]])
+
+    # collect failures
+    res_list_failures <-
+      smq_codes |> purrr::map(function(x)
+        x[["all_smq_failures"]])
+
+    # extract llt_codes from smq_codes
+
+    llt_list <-
+      purrr::map(smq_codes, function(one_smq) {
+        smq_content |>
+          dplyr::filter(
+            .data$smq_code %in% one_smq$all_smq_codes &
+              .data$term_scope %in% smq_scope_code &
+              # according to scope
+              .data$term_status == "A"
+            # only active terms
+          ) |>
+          dplyr::pull(.data$term_code) |>
+          unique()
+      })
+
+    # ---- Prepare messages and warning triggers ----
+
+    # all sub smq matchs
+
+    any_sub <-
+      smq_codes |>
+      purrr::map(function(one_smq) {
+        one_smq[["all_smq_submatchs"]] |>
+          purrr::map(# double map... because submatches are still nested.
+            function(one_smq_sub)
+              length(one_smq_sub) > 0)
+      }) |>
+      purrr::list_c() |>
+      purrr::list_c() |>
+      any()
+
+    # any failure
+
+    any_failure <-
+      smq_codes |>
+      purrr::map(function(one_smq)
+        length(one_smq[["all_smq_failures"]]) > 0) |>
+      purrr::list_c() |>
+      any()
+
+    # ---- Render get_llt_smq() messages ----
+
+    if (any_sub | any_failure)
+      cli_h1("get_llt_smq()")
+
+    if (any_sub == TRUE) {
+      msg_getlltsmq_sub(res_list_submatchs)
     }
 
-    um_term <- purrr::map(smq, get_unmatched_terms) |>
+    if (any_failure == TRUE) {
+      msg_getlltsmq_failure(res_list_failures)
+    }
+
+    if (any_sub | any_failure)
+      cli_rule()
+
+
+    return(llt_list)
+
+  }
+
+# Helpers ---------------------------------
+
+find_smq <- function(
+    one_smq_name,
+    smq_list
+){
+  check_length <-
+    function(x,
+             arg = rlang::caller_arg(x),
+             call = rlang::caller_env()){
+
+
+      if (length(x) > 1) {
+
+        cli::cli_abort(
+          c(
+            "{.arg {arg}} has length > 1.",
+            "x" = "{.arg smq} structure is probably incorrect."
+          ),
+          call = call,
+          .internal = TRUE
+
+        )
+      }
+    }
+
+  # Function is meant to be used for a single smq at a time.
+  check_length(one_smq_name)
+
+  # check for any match
+
+  exact_match <-
+    smq_list |>
+    dplyr::filter(
+      .data$smq_name == one_smq_name
+    ) |>
+    dplyr::select(
+      dplyr::all_of(c("smq_code", "smq_algorithm"))
+    )
+
+  no_match <-
+    if(nrow(exact_match) == 0){
+      one_smq_name
+    }
+
+  # Should do a few things:
+
+  # check for sub SMQs
+
+  prep_osn <-
+    gsub("\\(", "\\\\(", one_smq_name)
+
+  prep_osn <- # so that parenthesis are appropriately escaped
+    gsub("\\)", "\\\\)", prep_osn)
+
+  sub_smqs_match <-
+    smq_list |>
+    dplyr::filter(
+      grepl(prep_osn, .data$smq_description)
+    ) |>
+    dplyr::select(
+      dplyr::all_of(c("smq_code", "smq_name", "smq_algorithm"))
+    )
+
+  # check that it's not an algorithmic one
+
+  any_algorithmic <-
+    any(exact_match$smq_algorithm != "N") |
+    any(sub_smqs_match$smq_algorithm != "N")
+
+  if(any_algorithmic){
+    cli::cli_abort(
+      c(
+        "SMQ {.val {one_smq_name}} or one of its Sub-SMQs is/are algorithmic",
+        "x" = "Algorithmic SMQs are not handled by {.code get_llt_smq()}."
+      ),
+      call = rlang::caller_env()
+    )
+  }
+
+  # return the corresponding codes
+
+  output <-
+    list(match_exact  = exact_match$smq_code |>
+           rlang::set_names(one_smq_name),
+         match_sub    = sub_smqs_match$smq_code |>
+           rlang::set_names(sub_smqs_match$smq_name),
+         match_failed = no_match)
+
+  return(output)
+
+}
+
+msg_getlltsmq_sub <-
+  function(res_list_submatchs
+
+  ){
+
+    res_list_submatchs_compact <-
+      purrr::map(
+        res_list_submatchs,
+        function(r_l){
+          r_l |>
+            purrr::keep(
+              function(x) length(x) > 0
+            )
+        }
+          ) |>
       purrr::compact()
 
-    if(length(um_term) > 0)
-      warning(paste0("In '",
-                     paste0(names(um_term), collapse = ", "),
-                     "', the following elements were not found: ",
-                     paste0(unlist(um_term), collapse = ", "),
-                     ". Check spelling."))
 
-    llt_list
+    msg_sub <-
+      function() {
 
+        cli_par()
+
+        cli_h3(paste0(col_cyan("{symbol$info}"), " Sub-SMQs found"))
+
+        cli_end()
+
+        cli_par()
+        cli_text(paste( col_green('{symbol$info}'), "High SMQ   | ",
+                        col_cyan("{symbol$tick}"),"   Sub SMQ(s)"))
+        cli_end()
+
+        cli_par()
+
+        lid <- cli_ul()
+        for (i in seq_along(res_list_submatchs_compact)) {
+          cli_li(paste0(
+            'In {.code {names(res_list_submatchs_compact)[i]}}:'))
+          ulid <- cli_ul()
+
+          for(j in seq_along(res_list_submatchs_compact[[i]])) {
+            cli_li(
+              paste0(
+                     col_green("{symbol$info}"),
+                     " {.val {names(res_list_submatchs_compact[[i]][j])}} | ",
+                     col_cyan("{symbol$tick}"),
+                     "  {res_list_submatchs_compact[[i]][[j]]}")
+            )
+          }
+          cli_end(ulid)
+
+        }
+
+        cli_end(lid)
+      }
+
+    msg_sub()
+  }
+
+msg_getlltsmq_failure <-
+  function(res_list_failures){
+
+    res_list_failures_compact <-
+      purrr::compact(res_list_failures)
+
+
+    msg_fail <-
+      function() {
+
+        cli_par()
+
+        cli_h3(paste0(col_red("{symbol$cross}"), " Unmatched SMQs"))
+
+        cli_end()
+
+        cli_par()
+
+        lid <- cli_ul()
+        for (i in seq_along(res_list_failures_compact)) {
+          cli_li(paste0(
+            'In {.code {names(res_list_failures_compact)[i]}}:',
+            " {.val {res_list_failures_compact[[i]]}}"))
+        }
+
+        cli_end(lid)
+      }
+
+    msg_fail()
   }

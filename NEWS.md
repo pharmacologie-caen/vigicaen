@@ -14,16 +14,46 @@ Users will have to change existing code to replace calls to `mp_short` with `mp`
   d_names <- list(drug1 = "paracetamol")
   d_drecno <- get_drecno(d_names, mp = mp)
   ```
+  
+* In `get_llt_smq()`, `smq_list` and `smq_content` replace `smq_list_content`(#74).
+Users will have to change existing code to replace calls 
+to `smq_list_content` with `smq_list` and `smq_content`.
+Example tables `smq_list_` and `smq_content_` are added to the package. This 
+change was made to streamline the process of querying sub-SMQs.
+  
+  ```R
+  # the old way
+  smq_list_content <- dt_parquet(path_meddra, "smq_list_content")
+  
+  smq_llt <- 
+    get_llt_smq(
+      list(ihd = "Ischaemic heart disease (SMQ)"),
+      smq_list_content)
+  
+  # the new way
+  smq_list <- dt_parquet(path_meddra, "smq_list")
+  smq_content <- dt_parquet(path_meddra, "smq_content")
+  
+  smq_llt <- 
+    get_llt_smq(
+       list(ihd = "Ischaemic heart disease (SMQ)"),
+       smq_list = smq_list,
+       smq_content = smq_content)
+  ```
 
 ## New features  
 
-* Args `inspect` and `show_all` of `get_drecno()` are replaced by `verbose` (#102).
+* Args `inspect` and `show_all` of `get_drecno()` 
+are replaced by `verbose` (#102).
 
-* `get_drecno()` messages are cleaner and written with the `cli` package.
+* `get_drecno()` and `get_llt_smq()` messages are cleaner and 
+written with the `cli` package.
 
 * New `top_n` argument added to `screen_adr()` (#86).
 
 * `screen_drug()` let you screen most reported drugs in `drug` (#103).
+
+* `get_llt_smq()` now queries sub-SMQs and return all relevant codes (#74).
 
 ## Minor and bug Fixes  
 
