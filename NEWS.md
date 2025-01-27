@@ -1,3 +1,5 @@
+# vigicaen 0.15.0
+
 ## Breaking changes
 
 * `mp` replaces `mp_short` throughout the package (#110). 
@@ -40,6 +42,9 @@ change was made to streamline the process of querying sub-SMQs.
        smq_list = smq_list,
        smq_content = smq_content)
   ```
+  
+* `compute_dispro()` is the new name of `compute_or_abcd()`, to reflect that
+other disproportionality measures are available.
 
 ## New features  
 
@@ -55,12 +60,20 @@ written with the `cli` package.
 
 * `get_llt_smq()` now queries sub-SMQs and return all relevant codes (#74).
 
+* Order of output columns in `compute_dispro()` has changed, to allow easier
+access to formatted values. Also new arguments `min_n_obs` and `export_raw_values`
+(#101).
+
 ## Minor and bug Fixes  
 
 * `screen_adr()` now counts effects at the case level (#86).  
 
 * arg `data_type` of `add_*` functions is now deprecated.
 Data_type is internally detected.
+
+## Documenting
+
+* Several documenting issues were adressed (#64)
 
 # vigicaen 0.14.0
 
@@ -147,7 +160,7 @@ Increased code coverage back to 100%.
 #60 add table builders to arrow format (`tb_*` functions). This is supposed to overwrite the
 current fst and dt_fst process, which is being deprecated as of this release.
 
-New `build_tables` vignette shows the process.
+New `getting_started` vignette shows the process.
 
 `dt_parquet` function is to replace `dt_fst` in the workflow.
 
@@ -212,7 +225,7 @@ Patches:
 
 #50 Experimental `screen_adr` function to identify main adverse drug reactions in an adr dataset.
 
-#28 documentation of `desc_*` functions is now available in vignettes descriptive, generic_main and generic_dictionary.
+#28 documentation of `desc_*` functions is now available in vignettes descriptive, template_main and template_dictionary.
 
 ## Miscellaneous but very important
 

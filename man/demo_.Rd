@@ -154,7 +154,7 @@ All data shown in these example data are \strong{FAKE}, which means
 you shouldn't consider the counts and computations as accurate.
 Immune checkpoint inhibitors drugs can include
 "Ipilimumab", "Atezolizumab", "Durvalumab", "Nivolumab", "Pembrolizumab",
-"Avelumab", "Cemiplimab","REGN 2810", "Tremelimumab"\verb{in these tables. More details on how to use vigibase tables can be found in the vignettes.}vignette("basic_workflow")\verb{, }vignette("descriptive")\verb{. To build your own tables, use [tb_vigibase()]. See }vignette("build_tables")`.
+"Avelumab", "Cemiplimab","REGN 2810", "Tremelimumab"\verb{in these tables. More details on how to use vigibase tables can be found in the vignettes.}vignette("basic_workflow")\verb{, }vignette("descriptive")\verb{. To build your own tables, use [tb_vigibase()]. See }vignette("getting_started")`.
 }
 \examples{
 data(demo_)

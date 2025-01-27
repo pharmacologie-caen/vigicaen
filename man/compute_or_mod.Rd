@@ -78,6 +78,6 @@ coef_table |>
   std_er = Std..Error)
 }
 \seealso{
-\code{\link[=compute_or_abcd]{compute_or_abcd()}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}
+\code{\link[=compute_dispro]{compute_dispro()}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}
 }
 \keyword{disproportionality}

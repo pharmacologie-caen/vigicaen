@@ -76,7 +76,7 @@ demo <-
   )
 
 demo |>
-  compute_dispro(
+  compute_interaction(
     y = "a_colitis",
     x = "nivolumab",
     z = "ipilimumab"
