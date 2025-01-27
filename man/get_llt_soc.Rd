@@ -18,12 +18,11 @@ get_llt_soc(
 \item{meddra}{A data.table. Built from meddra_builders functions}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{get_llt_soc()}
-extracts a list of llt codes from a \code{meddra} data.table, given another term
-of the MedDRA SOC Hierarchy.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Collect llt codes from a \code{meddra}
+data.table, given another term of the MedDRA SOC Hierarchy.
 }
 \details{
-The function extracts low level term codes.
+\code{get_llt_soc()} is an \emph{ID collector} function. The function extracts low level term codes.
 \code{get_llt_soc()} is \strong{case-sensitive}, and MedDRA terms always begin with a capital letter,
 in their native version.
 In \code{term_sel}, all terms should come from the same hierarchical level,

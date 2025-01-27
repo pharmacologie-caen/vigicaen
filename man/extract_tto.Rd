@@ -7,7 +7,7 @@
 extract_tto(.data, adr_s, drug_s, tto_time_range = 1)
 }
 \arguments{
-\item{.data}{A \code{\link{link_}} style data.table.}
+\item{.data}{A \code{link} data.table. See \code{\link{link_}}.}
 
 \item{adr_s}{A character string. The name of the adr column. (see details)}
 
@@ -16,9 +16,11 @@ extract_tto(.data, adr_s, drug_s, tto_time_range = 1)
 \item{tto_time_range}{Incertitude range of Time to onset, in days. Defaults to 1 as recommended by umc}
 }
 \value{
-A data.table with
+A data.frame with
 \itemize{
 \item All available time to onsets for this combination (column \code{tto_max}).
+\item \code{adr_s} and \code{drug_s}, same as input.
+\item \code{UMCReportId}, the unique identifier of the case.
 }
 }
 \description{

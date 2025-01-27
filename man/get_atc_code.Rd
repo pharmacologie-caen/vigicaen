@@ -20,11 +20,11 @@ A list of \strong{DreNos} if \code{vigilyze} is set to \code{TRUE},
 or a list of \strong{MedicinalProd_Ids} if \code{vigilyze} is set to \code{FALSE}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{get_atc_code()} collects
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Collect
 Drug Record Numbers or MedicinalProd_Ids associated to one or more ATC classes.
 }
 \details{
-Provide \code{atc_sel} in the same way as \code{d_sel} in \code{\link[=add_drug]{add_drug()}},
+\code{get_atc_code()} is an \emph{ID collector} function. Provide \code{atc_sel} in the same way as \code{d_sel} in \code{\link[=add_drug]{add_drug()}},
 but remember to specify its method arg as \code{MedicinalProd_Id} if
 \code{vigilyze} is set to \code{FALSE}.
 Vigilyze style means all conditioning of drugs will be retrieved after

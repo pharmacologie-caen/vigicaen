@@ -24,15 +24,14 @@ get_llt_smq(
 \item{smq_list_content}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{get_llt_smq()}
-extracts a list of llts from an \code{smq_list_content} data.table, given an SMQ.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Collect llts from \code{smq_list}
+and \code{smq_content} data.tables, given an SMQ.
 }
 \details{
-SMQ stands for Standardized MedDRA query.
+\code{get_llt_smq()} is an \emph{ID collector} function. SMQ stands for Standardized MedDRA query.
 \code{get_llt_smq()}only works with NON-algorithmic SMQs
 (this status is given in the smq_list table).
-The \code{smq_list_content} data.table is obtained by joining \code{smq_list} and \code{smq_content}.
-An example is provided here \code{\link{smq_list_content_}}. You can choose
+See \code{\link{smq_list_}} and \code{\link{smq_content_}}. You can choose
 between the narrow and the broad scope of the SMQ.
 If you want to work with the SOC hierarchy, use \code{\link[=get_llt_soc]{get_llt_soc()}}.
 }

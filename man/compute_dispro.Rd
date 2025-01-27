@@ -47,23 +47,23 @@ A data.table with columns
 \item \code{or_ci} the formatted confidence interval
 \item \code{ic} the Information Component
 \item \code{ic_tail} the tail probability of the IC
+\item \code{ci_level} the confidence interval level
 \item Additional columns, if \code{export_raw_values} is \code{TRUE}:
 \item \code{a}, \code{b}, \code{c}, \code{d} the counts in the contingency table
 \item \code{std_er} the standard error of the log(OR)
 \item \code{or} the Odds-Ratio
 \item \code{low_ci} the lower bound of the confidence interval
 \item \code{up_ci} the upper bound of the confidence interval
-\item \code{ci_level} the confidence interval level
 \item \code{signif_or} the significance of the Odds-Ratio
 \item \code{signif_ic} the significance of the Information Component
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} compute_dispro() computes
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Computes
 bivariate (reporting) Odds-Ratio and Information Component for a drug-adr pair.
 }
 \details{
-Beware that input should be a data.table. Significance in pharmacovigilance
+Significance in pharmacovigilance
 analysis is only defined if the lower bound of the confidence/credibility
 interval is above 1 (i.e. \code{low_ci > 1}, or \code{ic_tail > 0}).
 Actually, the function computes an Odds-Ratio,

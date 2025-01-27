@@ -52,11 +52,14 @@ A data.table with columns
 \item Additional columns, if \code{export_raw_values} is \code{TRUE}:
 \item \code{a}, \code{b}, \code{c}, \code{d} the counts in the contingency table
 \item \code{signif_ic} the significance of the Information Component
+\item Additional columns, if \code{export_raw_values} is \code{TRUE}:
+\item \verb{n_*} the counts of each setting
+\item \code{signif_ic} the significance of the Information Component
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} compute_interaction()
-returns the information component of interaction for a set of 3 variables,
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} Returns the information
+component of interaction for a set of 3 variables,
 usually 2 drugs and an adr.
 }
 \details{

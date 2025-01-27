@@ -3,7 +3,7 @@
 #' @title Screening of Adverse Drug Reactions
 #'
 #' @description `r lifecycle::badge('experimental')`
-#' The `screen_adr()` function identifies and ranks the
+#' Identify and rank the
 #' most frequently reported adverse drug reaction (ADR) terms
 #' in a dataset, based on a specified MedDRA term level.
 #' It allows users to filter terms by a frequency
@@ -25,13 +25,8 @@
 #' that are linked to a specific MedDRA hierarchy
 #' level (`soc`, `hlgt`, `hlt`, `pt`, or `llt`).
 #'
-#' @param .data A `data.table` containing ADR data,
-#'   including a column `MedDRA_Id` for MedDRA terms
-#'   and `UMCReportId` for unique report
-#'   identifiers. (Works with data.frames but slower)
-#' @param meddra A `data.table` containing the MedDRA hierarchy,
-#'   with mappings between `llt_code` and terms at the
-#'   specified `term_level`.(Works with data.frames but slower)
+#' @param .data, An `adr` data.table. See \code{\link{adr_}}
+#' @param meddra A `meddra` data.table. See \code{\link{meddra_}}
 #' @param term_level A character string specifying the
 #'   MedDRA hierarchy level. Must be one
 #'   of `"soc"`, `"hlgt"`, `"hlt"`, `"pt"`, or `"llt"`.

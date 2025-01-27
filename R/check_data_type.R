@@ -3,13 +3,10 @@
 #' Internal helpers to check argument values.
 #'
 #' @param .data The dataset to check.
-#' @param calling_arg A character string.
-#'   The name of the argument in the calling function (e.g. ".data" for "demo" in
-#'   `add_adr()`, etc.)
 #' @param arg Helper to format the error message.
 #' @param call Helper to format the error message.
 #'
-#' @return An error if the dataset is invalid. Nothing in other cases
+#' @returns An error if the dataset is invalid. Nothing in other cases
 #'
 #' @examples
 #'

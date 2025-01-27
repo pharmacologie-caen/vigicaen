@@ -159,7 +159,7 @@ compute_or_mod(
 )
 ```
 
-### Bayesian Information Component
+### Bayesian Information Component, `compute_interaction()`
 
 The formula for the interaction between 3 variables 
 ($y$, the event of interest, $x1$ and $x2$,
@@ -183,4 +183,17 @@ The parameters are read as follows
 
 The credibility interval is calculated as for the usual IC.
 
-The `ic_tail()` function can be used as a shortcut.
+`compute_interaction()` produces this interaction statistic.
+
+```{r compute_int}
+
+demo |>
+  compute_interaction(
+    y = "a_colitis",
+    x = "ipilimumab",
+    z = "nivolumab"
+  )
+
+```
+
+

@@ -1,8 +1,9 @@
-#' Create main VigiBase ECL tables
+#' Create main WHO tables
 #'
-#' @description `r lifecycle::badge('stable')` `tb_who()` transform .txt files to .parquet files
+#' @description `r lifecycle::badge('stable')` Transform Vigibase WHO .txt files
+#' to .parquet files
 #'
-#' WHODrug is delivered as zipped text files, that you should
+#' WHODrug is delivered as zipped text files folder, that you should
 #' transform to a more efficient format. Parquet format from arrow has many advantages:
 #' It can work with out-of-memory data, which makes it possible to process tables on
 #' a computer with not-so-much RAM. It is also lightweighted and standard across different

@@ -12,7 +12,7 @@ nice_p(p_val, print_zero = FALSE)
 \item{print_zero}{A logical. Should leading zero be printed? (see Details)}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{nice_p} is a formatting function
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Formatting function
 for consistent p-value reporting.
 
 You can choose to print the leading zero (e.g. \code{0.01}) or not

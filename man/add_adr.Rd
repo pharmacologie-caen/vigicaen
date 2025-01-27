@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_adr.R
 \name{add_adr}
 \alias{add_adr}
-\title{Add ADR column(s) to a dataset (tidyverse syntax)}
+\title{Add ADR column(s) to a dataset}
 \usage{
 add_adr(
   .data,
@@ -13,26 +13,34 @@ add_adr(
 )
 }
 \arguments{
-\item{.data}{The dataset used to identify individual reports (usually, it is \code{demo})}
+\item{.data}{The dataset to update (demo, link, drug, adr).}
 
 \item{a_code}{A named list of low level terms codes (llt_codes).}
 
-\item{a_names}{A character vector. Names for adr columns (must be the same length as adr_list), default to \code{names(adr_list)}}
+\item{a_names}{A character vector. Names for adr columns (must be the
+same length as adr_list), default to \code{names(a_code)}}
 
 \item{adr_data}{A data.frame containing the adr data (usually, it is \code{adr})}
 
 \item{data_type}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}. Data_type is now detected
 internally.}
 }
+\value{
+A dataset with the new adr columns.
+Each value of \code{a_names} will add a column with the same name in \code{.data}.
+}
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} add_adr() creates adr columns.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}Creates adr columns
+in vigibase datasets (demo, link, drug, but also adr).
 }
 \details{
 Low-level term codes are the preferred level of requesting in
 Vigibase extract case level since they capture all possible codes for a given
-Preferred Term. Case identifiers should be standardized (e.g. \code{UMCReportId}, \code{Adr_Id}).
-You can add adr identification to a \code{demo}, a \code{link}, or and \code{adr} dataset.
-Remember to set to the \code{data_type} argument to the appropriate value.
+Preferred Term. Collect low-level terms with \code{\link[=get_llt_soc]{get_llt_soc()}} and
+\code{\link[=get_llt_smq]{get_llt_smq()}}. You can add adr identification to a \code{demo}, a \code{link}, \code{drug}
+or even an \code{adr} dataset (in this latter case, you must provide \code{adr} twice,
+as \code{.data} and \code{adr_data}). Column names of these dataset should not have been
+modified from the original vigibase dataset (as created with \code{\link[=tb_vigibase]{tb_vigibase()}}).
 }
 \examples{
 # create adr_colitis, adr_embolism and adr_pneumonitis columns in demo

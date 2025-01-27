@@ -1,9 +1,9 @@
 #' Get ATC codes (DrecNos or MPIs)
 #'
-#' @description `r lifecycle::badge('stable')` `get_atc_code()` collects
+#' @description `r lifecycle::badge('stable')` Collect
 #' Drug Record Numbers or MedicinalProd_Ids associated to one or more ATC classes.
 #'
-#' @details Provide `atc_sel` in the same way as `d_sel` in [add_drug()],
+#' @details `get_atc_code()` is an *ID collector* function. Provide `atc_sel` in the same way as `d_sel` in [add_drug()],
 #' but remember to specify its method arg as `MedicinalProd_Id` if
 #' `vigilyze` is set to `FALSE`.
 #' Vigilyze style means all conditioning of drugs will be retrieved after

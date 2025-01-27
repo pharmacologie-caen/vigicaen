@@ -22,8 +22,8 @@ A data.table with OR, confidence intervals (at \code{1 - alpha}),
 significance (\code{low_ci > 1}) and (optionally) p-value.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} compute_or_mod() computes
-and formats Odds-Ratio from a model summary.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Compute and format Odds-Ratio
+from a model summary.
 }
 \details{
 Helper to compute and format Odds-Ratio based on

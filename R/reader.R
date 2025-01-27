@@ -1,6 +1,6 @@
 #' Internal arrow reader
 #'
-#' Used in tb_main, tb_who, tb_sub
+#' Used in [tb_vigibase()], [tb_who()], [tb_meddra()]
 #'
 #' @param file_name Character string
 #' @param folder Character string

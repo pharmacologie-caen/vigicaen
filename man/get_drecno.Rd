@@ -15,7 +15,7 @@ get_drecno(
 )
 }
 \arguments{
-\item{d_sel}{A named list of character vectors. Selection of drug names or medicinalprod_id. See details}
+\item{d_sel}{A named list. Selection of drug names or medicinalprod_id. See details}
 
 \item{mp}{A modified MP data.table. See \code{\link{mp_}}}
 
@@ -26,12 +26,12 @@ get_drecno(
 \item{verbose}{A logical. Allows you to see matching drug names in the console.
 Turn to FALSE once you've checked the matching.}
 
-\item{show_all}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
+\item{show_all}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}  Use \code{verbose} instead.}
 
 \item{inspect}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{verbose} instead.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{get_drecno()} collects
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Collect
 Drug Record Numbers associated to one or more drugs.
 }
 \details{
@@ -63,7 +63,7 @@ With "drug_name" method, either exact match or perl regex
 match can be used. The latter
 is built upon lookarounds to ensure that a string does not match to
 composite drug names including the string,
-i.e. \verb{trastuzumab emtasine}, or close names
+i.e. \verb{trastuzumab emtasine} for \code{trastuzumab}, or close names
 like \code{alitretinoin} when looking for \code{tretinoin}.
 
 Exact match is used for "mpi_list" method.
@@ -73,7 +73,7 @@ Exact match is used for "mpi_list" method.
 
 
 "drug_name" let you work with drug names. It's likely to be
-to appropriate method in most of the cases.
+the appropriate method in most of the cases.
 
 "mpi_list" is used when you have a list of MedicinalProd_Ids.
 A drug can have multiple MedicinalProd_Ids, corresponding to

@@ -29,8 +29,8 @@ vigibase ECL main folder are returned subsetted
 (including suspectedduplicates).
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{tb_subset()} creates
-subsets of the VigiBase ECL dataset
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Create a subset of the VigiBase
+ECL datasets
 }
 \details{
 You must select a subset variable with \code{subset_var} and provide

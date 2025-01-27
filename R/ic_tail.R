@@ -1,6 +1,6 @@
 #' Credibility interval limits for the information component
 #'
-#' @description `r lifecycle::badge('stable')` `ic_tail` computes
+#' @description `r lifecycle::badge('stable')` Compute
 #' the Information Component credibility interval, typically the lower end of
 #' the 95% CI, also known as the IC025.
 #'

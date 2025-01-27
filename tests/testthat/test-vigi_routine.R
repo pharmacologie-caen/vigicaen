@@ -189,7 +189,7 @@ test_that("checkers of d_code and a_code work", {
 
 })
 
-test_that("export_to ends with proper extension", {
+test_that("export_to ends with proper extension and check svglite", {
   d_drecno <-
     ex_$d_drecno["nivolumab"]
 
@@ -216,6 +216,7 @@ test_that("export_to ends with proper extension", {
   )
 
   # insufficient checker
+
 })
 
 test_that("formatting IC025 with out of bound value works", {

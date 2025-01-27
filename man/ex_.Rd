@@ -14,7 +14,7 @@ VigiBase Extract Case Level
 data(ex_)
 }
 \description{
-These are a set of data to provide examples on how my library works.
+These are a set of data to provide examples on the package.
 \itemize{
 \item \code{smq_sel} is a named list of smq names
 \item \code{pt_sel} is a named list of pt names

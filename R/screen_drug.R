@@ -17,10 +17,8 @@
 #' reports (cases) where a drug is mentioned, rather than the total
 #' mentions across all reports.
 #'
-#' @param .data A `data.table` containing drug data,
-#' including columns `DrecNo` for drug identifiers and `UMCReportId`
-#' for unique report identifiers.
-#' @param mp_data An MP `data.table` containing `DrecNo` and `drug_name` mappings.
+#' @param .data, An `drug` data.table. See \code{\link{drug_}}
+#' @param mp_data An `MP` data.table. See \code{\link{mp_}}
 #' @param freq_threshold A numeric value indicating the minimum
 #' frequency (as a proportion) of cases where a drug must appear
 #' to be included in the results. Defaults to `NULL`.

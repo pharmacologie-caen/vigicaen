@@ -1,13 +1,12 @@
 #' Extract low level terms from SMQs
 #'
-#' @description `r lifecycle::badge('stable')` `get_llt_smq()`
-#' extracts a list of llts from an `smq_list_content` data.table, given an SMQ.
+#' @description `r lifecycle::badge('stable')` Collect llts from `smq_list`
+#' and `smq_content` data.tables, given an SMQ.
 #'
-#' @details SMQ stands for Standardized MedDRA query.
+#' @details `get_llt_smq()` is an *ID collector* function. SMQ stands for Standardized MedDRA query.
 #' `get_llt_smq()`only works with NON-algorithmic SMQs
 #' (this status is given in the smq_list table).
-#' The `smq_list_content` data.table is obtained by joining `smq_list` and `smq_content`.
-#' An example is provided here \code{\link{smq_list_content_}}. You can choose
+#' See \code{\link{smq_list_}} and \code{\link{smq_content_}}. You can choose
 #' between the narrow and the broad scope of the SMQ.
 #' If you want to work with the SOC hierarchy, use [get_llt_soc()].
 #'

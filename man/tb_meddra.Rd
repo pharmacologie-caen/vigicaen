@@ -17,7 +17,7 @@ Some columns are returned as \code{integer} (all \verb{*_code} columns).
 All other columns are \code{character}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{tb_meddra()} transforms .ascii
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Transform MedDRA .ascii
 files to .parquet files
 
 MedDRA is delivered as ascii files, that you should

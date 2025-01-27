@@ -14,7 +14,7 @@ VigiBase is the World Health Organization’s (WHO) global
 pharmacovigilance database of individual case safety reports. It is
 maintained by the Uppsala Monitoring Centre in Sweden.
 
-> This package is **NOT** supported nor reflect the opinion of the WHO,
+> This package is **NOT** supported nor reflects the opinion of the WHO,
 > or the Uppsala Monitoring Centre.
 
 ## Prerequisites
@@ -160,7 +160,7 @@ vigi_routine(
 )
 ```
 
-<img src="../../../../../Users/dolladi231/AppData/Local/Temp/RtmpioWL2F/vg.svg" alt="Example of vigi_routine with case data." width="100%" />
+<img src="../../../../../Users/dolladi231/AppData/Local/Temp/RtmpaaVPRO/vg.svg" alt="Example of vigi_routine with case data." width="100%" />
 
 ## Example ![PV - Advanced](https://img.shields.io/static/v1?label=PV&message=Advanced&color=43b284)
 
@@ -187,12 +187,10 @@ demo |>
     y = "a_colitis",
     x = "nivolumab"
   )
-#> # A tibble: 1 × 18
-#>   y         x          a     b     c     d n_exp std_er    or low_ci up_ci orl  
-#>   <chr>     <chr>  <dbl> <dbl> <dbl> <dbl> <dbl>  <dbl> <dbl>  <dbl> <dbl> <chr>
-#> 1 a_colitis nivol…    44    60   181   465  31.2  0.217  1.88   1.23  2.88 1.88 
-#> # ℹ 6 more variables: or_ci <chr>, ic <dbl>, ic_tail <dbl>, ci_level <chr>,
-#> #   signif_or <dbl>, signif_ic <dbl>
+#> # A tibble: 1 × 9
+#>   y         x         n_obs n_exp or    or_ci          ic ic_tail ci_level
+#>   <chr>     <chr>     <dbl> <dbl> <chr> <chr>       <dbl>   <dbl> <chr>   
+#> 1 a_colitis nivolumab    44  31.2 1.88  (1.23-2.88) 0.489  0.0314 95%
 ```
 
 <!-- Footnote for myself

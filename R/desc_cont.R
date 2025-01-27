@@ -1,7 +1,7 @@
 #' Summarize continuous variables
 #'
-#' @description `r lifecycle::badge('experimental')`
-#' `desc_cont` will summarize continuous data and let you handled output format.
+#' @description `r lifecycle::badge('stable')` Summarize continuous data and
+#' handle output format.
 #'
 #' @details Many other packages provide tools to summarize data. This one is just
 #' the package author's favorite.
@@ -18,7 +18,7 @@
 #' }
 #' The analogous for categorical variables is [desc_facvar()].
 #'
-#' @param .data A data.frame, where vc are column names of continuous variables
+#' @param .data A data.frame, where `vc` are column names of continuous variables
 #' @param vc A character vector, list of column names. Should only contain continuous variables
 #' @param format A character string. How would you like the output? See details.
 #' @param digits A numeric. How many digits? This argument calls internal formatting function

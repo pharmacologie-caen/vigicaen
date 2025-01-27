@@ -1,6 +1,6 @@
 #' Check binary variables
 #'
-#' @description `r lifecycle::badge('stable')` check_dm() let you quick check
+#' @description `r lifecycle::badge('stable')` Quick check
 #' that your data management steps through \code{\link{add_adr}}
 #' or \code{\link{add_drug}} found cases.
 #'

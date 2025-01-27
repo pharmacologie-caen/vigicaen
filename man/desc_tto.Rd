@@ -7,7 +7,7 @@
 desc_tto(.data, adr_s, drug_s, tto_time_range = 1, ...)
 }
 \arguments{
-\item{.data}{A \code{\link{link_}} style data.table.}
+\item{.data}{A \code{link} data.table. See \code{\link{link_}}.}
 
 \item{adr_s}{A character string. The name of the adr column. (see details)}
 
@@ -18,7 +18,7 @@ desc_tto(.data, adr_s, drug_s, tto_time_range = 1, ...)
 \item{...}{Additional parameters to be passed to \code{\link[=desc_cont]{desc_cont()}}. E.g. \code{format}, \code{digits}...}
 }
 \value{
-A one row data.table with
+A data.table with one row per drug-adr pair
 \itemize{
 \item A descriptive of time to onsets for this combination (column \code{tto_max}).
 }

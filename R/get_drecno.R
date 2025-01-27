@@ -1,6 +1,6 @@
 #' Get DrecNo from drug names or MedicinalProd_Id
 #'
-#' @description `r lifecycle::badge('stable')` `get_drecno()` collects
+#' @description `r lifecycle::badge('stable')` Collect
 #'  Drug Record Numbers associated to one or more drugs.
 #'
 #' @details `get_drecno()` is an *ID collector* function.
@@ -26,7 +26,7 @@
 #' match can be used. The latter
 #' is built upon lookarounds to ensure that a string does not match to
 #' composite drug names including the string,
-#' i.e. `trastuzumab emtasine`, or close names
+#' i.e. `trastuzumab emtasine` for `trastuzumab`, or close names
 #' like `alitretinoin` when looking for `tretinoin`.
 #'
 #' Exact match is used for "mpi_list" method.
@@ -34,7 +34,7 @@
 #' @section Choosing a method:
 #'
 #' "drug_name" let you work with drug names. It's likely to be
-#' to appropriate method in most of the cases.
+#' the appropriate method in most of the cases.
 #'
 #' "mpi_list" is used when you have a list of MedicinalProd_Ids.
 #' A drug can have multiple MedicinalProd_Ids, corresponding to
@@ -65,14 +65,14 @@
 #' Importantly, when retrieving fixed-association drugs, the non-of-interest
 #' drug alone drecno is not found, hence the cases related to this drug will not be added to those of the drug of interest.
 #'
-#' @param d_sel A named list of character vectors. Selection of drug names or medicinalprod_id. See details
+#' @param d_sel A named list. Selection of drug names or medicinalprod_id. See details
 #' @param mp A modified MP data.table. See \code{\link{mp_}}
 #' @param allow_combination A logical. Should fixed associations including the drug of interest be retrieved? See details.
 #' @param method Should DrecNo be found from drug names or from MedicinalProd_Id?
 #' @param verbose A logical. Allows you to see matching drug names in the console.
 #' Turn to FALSE once you've checked the matching.
 #' @param inspect `r lifecycle::badge('deprecated')` Use `verbose` instead.
-#' @param show_all `r lifecycle::badge('deprecated')`
+#' @param show_all `r lifecycle::badge('deprecated')`  Use `verbose` instead.
 #' @keywords data_management drug atc
 #' @export
 #' @importFrom rlang .data

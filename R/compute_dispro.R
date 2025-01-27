@@ -1,9 +1,9 @@
 #' Compute disproportionality
 #'
-#' @description `r lifecycle::badge('stable')` compute_dispro() computes
+#' @description `r lifecycle::badge('stable')` Computes
 #' bivariate (reporting) Odds-Ratio and Information Component for a drug-adr pair.
 #'
-#' @details Beware that input should be a data.table. Significance in pharmacovigilance
+#' @details Significance in pharmacovigilance
 #' analysis is only defined if the lower bound of the confidence/credibility
 #'  interval is above 1 (i.e. `low_ci > 1`, or `ic_tail > 0`).
 #' Actually, the function computes an Odds-Ratio,
@@ -31,13 +31,13 @@
 #' \item `or_ci` the formatted confidence interval
 #' \item `ic` the Information Component
 #' \item `ic_tail` the tail probability of the IC
+#' \item `ci_level` the confidence interval level
 #' \item Additional columns, if `export_raw_values` is `TRUE`:
 #' \item `a`, `b`, `c`, `d` the counts in the contingency table
 #' \item `std_er` the standard error of the log(OR)
 #' \item `or` the Odds-Ratio
 #' \item `low_ci` the lower bound of the confidence interval
 #' \item `up_ci` the upper bound of the confidence interval
-#' \item `ci_level` the confidence interval level
 #' \item `signif_or` the significance of the Odds-Ratio
 #' \item `signif_ic` the significance of the Information Component
 #' }

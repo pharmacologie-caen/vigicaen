@@ -1,7 +1,7 @@
 #' Extract of subset of Vigibase
 #'
-#' @description `r lifecycle::badge('stable')` `tb_subset()` creates
-#' subsets of the VigiBase ECL dataset
+#' @description `r lifecycle::badge('stable')` Create a subset of the VigiBase
+#' ECL datasets
 #'
 #' @details You must select a subset variable with `subset_var` and provide
 #' an appropriate list according to this variable in `sv_selection`.

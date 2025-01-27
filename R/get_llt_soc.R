@@ -1,10 +1,9 @@
 #' Extract low level terms from soc classification
 #'
-#' @description `r lifecycle::badge('stable')` `get_llt_soc()`
-#' extracts a list of llt codes from a `meddra` data.table, given another term
-#' of the MedDRA SOC Hierarchy.
+#' @description `r lifecycle::badge('stable')` Collect llt codes from a `meddra`
+#' data.table, given another term of the MedDRA SOC Hierarchy.
 #'
-#' @details The function extracts low level term codes.
+#' @details `get_llt_soc()` is an *ID collector* function. The function extracts low level term codes.
 #' `get_llt_soc()` is **case-sensitive**, and MedDRA terms always begin with a capital letter,
 #' in their native version.
 #' In `term_sel`, all terms should come from the same hierarchical level,

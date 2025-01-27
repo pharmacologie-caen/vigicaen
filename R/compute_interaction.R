@@ -1,7 +1,7 @@
 #' Compute interaction disproportionality
 #'
-#' @description `r lifecycle::badge('experimental')` compute_interaction()
-#' returns the information component of interaction for a set of 3 variables,
+#' @description `r lifecycle::badge('experimental')` Returns the information
+#' component of interaction for a set of 3 variables,
 #' usually 2 drugs and an adr.
 #'
 #' @details Significance is similar to usual disproportionality (see [compute_dispro()]).
@@ -30,6 +30,9 @@
 #' \item `ci_level` the confidence interval level
 #' \item Additional columns, if `export_raw_values` is `TRUE`:
 #' \item `a`, `b`, `c`, `d` the counts in the contingency table
+#' \item `signif_ic` the significance of the Information Component
+#' \item Additional columns, if `export_raw_values` is `TRUE`:
+#' \item `n_*` the counts of each setting
 #' \item `signif_ic` the significance of the Information Component
 #' }
 #' @export

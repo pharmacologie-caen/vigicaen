@@ -4,14 +4,9 @@
 \alias{screen_adr}
 \title{Screening of Adverse Drug Reactions}
 \arguments{
-\item{.data}{A \code{data.table} containing ADR data,
-including a column \code{MedDRA_Id} for MedDRA terms
-and \code{UMCReportId} for unique report
-identifiers. (Works with data.frames but slower)}
+\item{.data, }{An \code{adr} data.table. See \code{\link{adr_}}}
 
-\item{meddra}{A \code{data.table} containing the MedDRA hierarchy,
-with mappings between \code{llt_code} and terms at the
-specified \code{term_level}.(Works with data.frames but slower)}
+\item{meddra}{A \code{meddra} data.table. See \code{\link{meddra_}}}
 
 \item{term_level}{A character string specifying the
 MedDRA hierarchy level. Must be one
@@ -41,7 +36,7 @@ The results are sorted in descending order of \code{percentage}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-The \code{screen_adr()} function identifies and ranks the
+Identify and rank the
 most frequently reported adverse drug reaction (ADR) terms
 in a dataset, based on a specified MedDRA term level.
 It allows users to filter terms by a frequency

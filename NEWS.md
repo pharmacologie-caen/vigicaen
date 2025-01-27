@@ -64,6 +64,9 @@ written with the `cli` package.
 access to formatted values. Also new arguments `min_n_obs` and `export_raw_values`
 (#101).
 
+* `tb_subset()` handles ID code lists as input, instead of numeric vectors,
+to make workflow more consistent with other processes like `add_*`. (#112)
+
 ## Minor and bug Fixes  
 
 * `screen_adr()` now counts effects at the case level (#86).  
@@ -71,9 +74,12 @@ access to formatted values. Also new arguments `min_n_obs` and `export_raw_value
 * arg `data_type` of `add_*` functions is now deprecated.
 Data_type is internally detected.
 
+* `add_drug()` and `add_adr()` have informative error if id code list is
+incorrect (#88).
+
 ## Documenting
 
-* Several documenting issues were adressed (#64)
+* Several documenting issues were adressed (#64, #77, #82, #106, #108, #109, #111)
 
 # vigicaen 0.14.0
 

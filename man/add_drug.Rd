@@ -21,7 +21,9 @@ add_drug(
 
 \item{d_names}{A character vector. Names for drug columns (must be the same length as d_code), default to \code{names(d_code)}}
 
-\item{repbasis}{Suspect, interacting and/or concomitant. Type initial of those you wish to select (s for suspect, c for concomitant and i for interacting ; default to all)}
+\item{repbasis}{Suspect, interacting and/or concomitant.
+Type initial of those you wish to select ("s" for suspect, "c" for concomitant
+and "i" for interacting ; default to all, e.g. "sci").}
 
 \item{method}{A character string. The type of drug code (DrecNo or MedicinalProd_Id). See details.}
 
@@ -31,26 +33,38 @@ add_drug(
 internally.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} add_drug() creates drug columns.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Creates drug columns.
+in vigibase datasets (demo, link, adr, but also drug).
 }
 \details{
-d_code is a named list containing drug codes.
-Either medicinalprod_ids (e.g., from \code{tb_subset}), or drug record numbers
-(e.g., from \code{get_drecno}). Default method is to DrecNos.
-Drugs can be reported according to one of three reputation bases:
-suspect, concomitant or interacting in the occurrence of the adverse drug
-reaction. You may want to study only reports with a specific reputation basis.
-You can add drug identification to a \code{demo}, a \code{link}, or an \code{adr} dataset.
-Remember to set to the \code{data_type} argument to the appropriate value.
+\code{d_code} is a named list containing drug codes.
+Either drug record numbers (e.g., from \code{\link[=get_drecno]{get_drecno()}}), or
+medicinalprod_ids (e.g., from \code{\link[=get_atc_code]{get_atc_code()}}). Default method is to DrecNos.
 }
+\section{Argument \code{repbasis}}{
+
+Drugs can be reported according to one of three reputation bases:
+\itemize{
+\item \code{s} for suspect
+\item \code{c} for concomitant
+\item \code{i} for interacting
+}
+in the occurrence of the adverse drug reaction. To study only one of these
+reputation basis, type only the corresponding letter in \code{repbasis},
+e.g. "s" for suspects, or "si" for suspect \strong{or} interacting.
+
+You can add drug identification to a \code{demo}, \code{link}, \code{adr} or even \code{drug}
+dataset.(in this latter case, you must provide \code{adr} twice,
+as \code{.data} and \code{drug_data})
+}
+
 \examples{
 # create a nivolumab column in demo_
 
-d_sel_names <- rlang::list2(nivolumab = "nivolumab")
+d_sel_names <- list(nivolumab = "nivolumab")
 
 d_drecno <- get_drecno(d_sel_names,
                         mp = mp_)
-
 demo_ <-
   add_drug(
     .data = demo_,

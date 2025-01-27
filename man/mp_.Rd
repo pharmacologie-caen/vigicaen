@@ -36,7 +36,7 @@ An object of class \code{data.table} (inherits from \code{data.frame}) with 4079
 None
 }
 \usage{
-data(meddra_)
+data(mp_)
 
 thg_
 }

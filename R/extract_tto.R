@@ -13,14 +13,16 @@
 #' time to onset, but `extract_tto()` is useful to get the raw data and plot it,
 #' for instance with `ggplot2`.
 #'
-#' @param .data A \code{\link{link_}} style data.table.
+#' @param .data A `link` data.table. See \code{\link{link_}}.
 #' @param adr_s A character string. The name of the adr column. (see details)
 #' @param drug_s A character string. The name of the drug column. (see details)
 #' @param tto_time_range Incertitude range of Time to onset, in days. Defaults to 1 as recommended by umc
 #'
-#' @return A data.table with
+#' @return A data.frame with
 #' \itemize{
 #'   \item All available time to onsets for this combination (column `tto_max`).
+#'   \item `adr_s` and `drug_s`, same as input.
+#'   \item `UMCReportId`, the unique identifier of the case.
 #' }
 #' @keywords drug-adr pair, descriptive
 #' @export

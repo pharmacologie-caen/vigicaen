@@ -1,13 +1,11 @@
 #' Outcome descriptive
 #'
-#' @description `r lifecycle::badge('experimental')` `desc_outcome()`
-#' Compute outcome description over a set of adr and drugs.
-#'
+#' @description `r lifecycle::badge('experimental')` Compute
+#' outcome description over a set of adr and drugs.
 #'
 #' @details You need an `adr` data.table.
 #' Be careful that you cannot directly filter `adr` data.table on drugs!
 #' You first have to add drug columns to `adr`, with [add_drug()].
-#' See \code{\link{adr_}}.
 #' The function reports the worst outcome into consideration for a given case,
 #' if many are reported.
 #' Outcomes, from best to worst are:
@@ -20,11 +18,18 @@
 #'   \item Died- unrelated to reaction
 #'   \item Died- reaction may be contributory
 #' }
+#' See `vignette("descriptive")` for more details.
 #' @keywords drug-adr pair, descriptive
-#' @param .data, An \code{\link{adr_}} style data.table.
+#' @param .data, An `adr` data.table. See \code{\link{adr_}}
 #' @param drug_s A character vector, the drug column(s)
 #' @param adr_s A character vector, the adverse drug reaction column(s).
+#'
 #' @return A data.table with one row per drug-adr pair.
+#' \itemize{
+#' \item `drug_s` and `adr_s`, same as input
+#' \item `n_cas`, number of cases for each category
+#' \item `out_label`, the worst outcome for this drug-adr pair
+#'}
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #' @seealso \code{\link{adr_}}, [add_drug()], [add_adr()]
