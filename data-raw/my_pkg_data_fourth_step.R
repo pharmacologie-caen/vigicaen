@@ -1,7 +1,4 @@
 
-
-
-  <-
   smq_list_content_ |>
   dplyr::distinct(
     smq_code,
@@ -34,3 +31,21 @@ smq_content_ <-
 
 usethis::use_data(smq_list_        , compress = "xz", overwrite = TRUE)
 usethis::use_data(smq_content_     , compress = "xz", overwrite = TRUE)
+
+# set ex_$d_drecno to integer
+
+ex_$d_drecno <-
+  ex_$d_drecno |>
+  purrr::map(
+    function(x)
+      as.integer(x)
+  )
+
+ex_$d_groups_drecno <-
+  ex_$d_groups_drecno |>
+  purrr::map(
+    function(x)
+      as.integer(x)
+  )
+
+usethis::use_data(ex_     , compress = "xz", overwrite = TRUE)
