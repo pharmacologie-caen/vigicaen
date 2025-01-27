@@ -4,6 +4,7 @@
 \alias{data_checkers}
 \alias{check_data_adr}
 \alias{check_data_drug}
+\alias{check_data_link}
 \alias{check_data_mp}
 \alias{check_data_smqlist}
 \alias{query_data_type}
@@ -16,6 +17,12 @@ check_data_adr(
 )
 
 check_data_drug(
+  .data,
+  arg = rlang::caller_arg(.data),
+  call = rlang::caller_env()
+)
+
+check_data_link(
   .data,
   arg = rlang::caller_arg(.data),
   call = rlang::caller_env()
@@ -66,6 +73,8 @@ Find the matching data type, according to column names.
 \item \code{check_data_adr()}: adr data checker
 
 \item \code{check_data_drug()}: drug data checker
+
+\item \code{check_data_link()}: link checker
 
 \item \code{check_data_mp()}: mp checker
 

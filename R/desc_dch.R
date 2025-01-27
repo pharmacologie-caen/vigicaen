@@ -52,6 +52,8 @@ desc_dch <-
            adr_s = "adr1"
            ) {
 
+    check_data_link(.data)
+
     # dechallenge1_label <- data.frame(
     #   Dechallenge1 = as.character(1:6),
     #   drug_action = factor(c(

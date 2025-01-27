@@ -66,6 +66,8 @@ desc_rch <- function(.data,
                      adr_s = "adr1"
 ){
 
+  check_data_link(.data)
+
   core_desc_rch <-
     function(one_drug,
              one_adr,

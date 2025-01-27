@@ -44,4 +44,33 @@ test_that("id list checker works for both character and numeric inputs", {
     error = TRUE, {
     check_id_list(wrong_list2)
       })
+
+  expect_invisible(check_id_list_numeric(good_list_num))
+
+  expect_snapshot(
+    error = TRUE, {
+    check_id_list_numeric(good_list)
+    })
+
+  expect_snapshot(
+    error = TRUE, {
+      check_id_list_numeric(wrong_list)
+    })
+
+  expect_snapshot(
+    error = TRUE, {
+      check_id_list_numeric(wrong_list2)
+    })
+
+  cli::test_that_cli("format is ok", {
+    expect_snapshot(error = TRUE, {
+      check_id_list(wrong_list, arg = "x")
+    })
+  })
+
+  cli::test_that_cli("format is ok", {
+    expect_snapshot(error = TRUE, {
+      check_id_list_numeric(good_list, arg = "x")
+    })
+  })
 })

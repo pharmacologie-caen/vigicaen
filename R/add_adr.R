@@ -56,7 +56,7 @@ add_adr <-
            data_type = deprecated()
            ){
 
-    check_id_list(a_code)
+    check_id_list_numeric(a_code)
 
     check_data_adr(adr_data)
 

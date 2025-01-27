@@ -69,7 +69,7 @@ add_drug <-
   )
   {
 
-    check_id_list(d_code)
+    check_id_list_numeric(d_code)
 
     method <- rlang::arg_match(method)
 

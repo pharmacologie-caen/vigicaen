@@ -13,7 +13,9 @@ test_that("cli format and basic use work", {
 
   link_valid <- data.frame(
     UMCReportId = 1, Drug_Id = 1, Adr_Id = 1,
-    Dechallenge1 = 1, TimeToOnsetMin = 1
+    Dechallenge1 = 1, TimeToOnsetMin = 1,
+    tto_mean = 1,
+    range = 1
   )
 
   data_invalid <-
@@ -22,26 +24,55 @@ test_that("cli format and basic use work", {
     )
 
   r1 <-
-    vigicaen:::check_data_drug(drug_valid, ".data")
+    check_data_drug(drug_valid, ".data")
 
   r2 <-
-    vigicaen:::check_data_adr(adr_valid, ".data")
+    check_data_adr(adr_valid, ".data")
 
   expect_null(r1)
   expect_null(r2)
 
+  expect_invisible(
+    check_data_link(link_valid, ".data")
+  )
+
+  expect_snapshot(
+    error = TRUE, {
+      check_data_link(drug_valid, ".data")
+    }
+  )
+
+  expect_snapshot(
+    error = TRUE, {
+      check_data_link(adr_valid, ".data")
+    }
+  )
+
+  expect_snapshot(
+    error = TRUE, {
+      check_data_link(demo_valid, ".data")
+    }
+  )
+
 
   cli::test_that_cli("format is ok", {
     expect_snapshot(error = TRUE, {
-      vigicaen:::check_data_drug(data_invalid, arg = "x")
+      check_data_drug(data_invalid, arg = "x")
     })
   })
 
   cli::test_that_cli("format is ok", {
     expect_snapshot(error = TRUE, {
-      vigicaen:::check_data_adr(data_invalid, arg = "x")
+      check_data_adr(data_invalid, arg = "x")
     })
   })
+
+  cli::test_that_cli("format is ok", {
+    expect_snapshot(error = TRUE, {
+      check_data_link(data_invalid, arg = "x")
+    })
+  })
+
 
 })
 
