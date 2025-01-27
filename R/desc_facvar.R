@@ -90,6 +90,17 @@ desc_facvar <-
 
     # ---- number of levels checker ----
 
+    # lev_check <- function(one_var){
+    #   n_lev <-
+    #     length(unique(.data[[one_var]]))
+    #
+    #   if(n_lev > ncat_max){
+    #     stop(paste0("too many levels detected in ", one_var, ", see details."))
+    #   }
+    # }
+    #
+    # purrr::map(vf, lev_check)
+
     lev_check <- function(one_var){
       n_lev <-
         length(unique(.data[[one_var]]))
@@ -99,7 +110,29 @@ desc_facvar <-
       }
     }
 
-    purrr::map(vf, lev_check)
+    lev_length <-
+      vf |>
+      purrr::map(function(one_var)
+        length(unique(.data[[one_var]]))
+        ) |>
+      purrr::list_c() |>
+      rlang::set_names(vf)
+
+    if(any(lev_length > ncat_max)){
+
+      oob_vars <-
+        lev_length[lev_length > ncat_max]
+
+      cli_abort(
+        c("Too many levels detected in: {names(oob_vars)}",
+          "x" = paste0(
+            "Number of levels: {oob_vars} ",
+            "exceeded {.arg ncat_max}({ncat_max})"),
+          "i" = "Did you pass a continuous variable to {.code desc_facvar()}?",
+          ">" = "Set {.arg ncat_max} to suppress this error."
+      )
+      )
+    }
 
     # ---- formatting arguments ----
 

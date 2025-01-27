@@ -204,9 +204,10 @@ vigi_routine <-
 
     res_ic <-
       demo_data |>
-      compute_or_abcd(
+      compute_dispro(
         y = a_name,
-        x = d_name
+        x = d_name,
+        export_raw_values = TRUE
       )
 
     # ---- build link ----

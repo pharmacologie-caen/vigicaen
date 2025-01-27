@@ -24,7 +24,7 @@ principles. Some useful resources can be found
 [here](https://doi.org/10.1016/j.therap.2020.02.022) (English) or
 [here](https://doi.org/10.1016/j.therap.2019.01.006) (French).
 
-vigicaen is a R package, so you need to have R installed on your
+vigicaen is an R package, so you need to have R installed on your
 computer, and optionally RStudio.
 
 Use of VigiBase Extract Case Level and the subsequent WHODrug data
@@ -36,24 +36,43 @@ Use of MedDRA requires a license from [MedDRA](https://www.meddra.org/).
 Of note, academic researchers are provided with accommodations for these
 licenses.
 
+### Technical requisites
+
+Vigibase ECL tables are very large, your computer must meet the
+following requirements:
+
+- Free disk space of at least 50GB
+
+- At least 16GB of RAM
+
+- A not too old processor (partial tests conducted on 2019 Intel 7, and
+  more recent 2023 AMD Ryzen 3)
+
 ## Target users
 
 There are 2 types of users this package is aimed at:
 
-- Routine pharmacovigilance practitioners. These users may not be very
+- ![PV -
+  Routine](https://img.shields.io/static/v1?label=PV&message=Routine&color=0f7ba2)
+  Routine pharmacovigilance practitioners. These users may not be very
   familiar with R, or statistics in general. They would like to collect
   additional data, when writing pharmacovigilance reports, or working on
-  a reported case. These users will be interested in the “Routine
-  pharmacovigilance” vignette, `vignette("routine_pharmacovigilance")`.
+  a reported case (**information component, reaction time to onset**).
+  These users will be interested in the “Routine pharmacovigilance”
+  vignette, `vignette("routine_pharmacovigilance")`.
 
-- Advanced pharmacovigilance researchers. These users must be familiar
+- ![PV -
+  Advanced](https://img.shields.io/static/v1?label=PV&message=Advanced&color=43b284)
+  Advanced pharmacovigilance researchers. These users must be familiar
   with R and (a bit of) statistics. The will find tools to load tables,
   perform usual data management, identify drug and reaction IDs,
-  describe complexe features, perform disproportionality, and get
-  ready-to-use datasets to apply any regression or machine learning
-  algorithm.
+  describe complexe features (**dechallenge, rechallenge**), perform
+  disproportionality, and get ready-to-use datasets to apply any
+  regression or machine learning algorithm.
 
 ## Installation
+
+### Solution 1
 
 You can install the development version of vigicaen from
 [GitHub](https://github.com/) with:
@@ -62,10 +81,8 @@ You can install the development version of vigicaen from
 
 ### Solution 2
 
-Look at the **Releases** panel on the right of the Github page. You may
-find “vX.XX.X (Latest)”.
-
-Click on the version you want to install.
+Find the latest Released version
+[here](https://github.com/pharmacologie-caen/vigicaen/releases/latest)
 
 Download source code as a tar.gz file.
 
@@ -81,11 +98,75 @@ Alternatively, you can use the following command in R:
 > Visit the [package
 > website](https://pharmacologie-caen.github.io/vigicaen/)
 
-## Example
+Good places to start your journey:
 
-Say you want to perform a disproportionality analysis between nivolumab
-exposure and colitis reporting. You may want to use `add_drug()`,
-`add_adr()`, and `compute_or_abcd()`.
+- Set the stage with `vignette("getting_started")`
+
+- ![PV -
+  Routine](https://img.shields.io/static/v1?label=PV&message=Routine&color=0f7ba2)
+  Explore vigibase `vignette("routine_pharmacovigilance")`
+
+- ![PV -
+  Advanced](https://img.shields.io/static/v1?label=PV&message=Advanced&color=43b284)
+  Dive into advanced features `vignette("basic_workflow")`
+
+## Example ![PV - Routine](https://img.shields.io/static/v1?label=PV&message=Routine&color=0f7ba2)
+
+You are working on a colitis case reported 150 days after nivolumab
+initiation.
+
+You would like to know the information component (possibly restricted to
+a specific population, e.g. older adults), and the time to onset
+reported for this reaction.
+
+``` r
+library(vigicaen)
+
+# Step 1: Load datasets (or use example sets
+# as shown below)
+
+demo   <- demo_
+adr    <- adr_
+drug   <- drug_
+link   <- link_
+mp     <- mp_
+meddra <- meddra_
+
+# Step 2: Pick a drug and a reaction
+
+d_code <- 
+  list(
+    nivolumab = "nivolumab"
+  ) |> 
+  get_drecno(mp = mp)
+
+a_code <-
+  list(
+    colitis = "Colitis (excl infective)"
+  ) |> 
+  get_llt_soc(term_level = "hlt", meddra = meddra)
+
+# Step 3: Plot results
+
+vigi_routine(
+  case_tto  = 150, # your case
+  demo_data = demo,
+  drug_data = drug,
+  adr_data  = adr,
+  link_data = link,
+  d_code    = d_code,
+  a_code    = a_code,
+  vigibase_version = "September 2024"
+)
+```
+
+<img src="../../../../../Users/dolladi231/AppData/Local/Temp/RtmpioWL2F/vg.svg" alt="Example of vigi_routine with case data." width="100%" />
+
+## Example ![PV - Advanced](https://img.shields.io/static/v1?label=PV&message=Advanced&color=43b284)
+
+You want to perform a disproportionality analysis between nivolumab
+exposure and colitis reporting (reporting odds-ratio `or` and
+information component `ic`).
 
 ``` r
 library(vigicaen)
@@ -102,7 +183,7 @@ demo <-
   )
 
 demo |> 
-  compute_or_abcd(
+  compute_dispro(
     y = "a_colitis",
     x = "nivolumab"
   )

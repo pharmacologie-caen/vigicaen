@@ -12,7 +12,7 @@
 #'   \item `meddra_id` will use MedDRA_Id, subset from `adr`. (see [get_llt_soc()] or See [get_llt_smq()]).
 #'   \item `age` will use AgeGroup from `demo`. See below.
 #' }
-#' Age groups are as follows:
+#' Age groups ids are as follows:
 #' \itemize{
 #'   \item 1 0 - 27 days
 #'   \item 2 28 days to 23 months
@@ -24,15 +24,20 @@
 #'   \item 8 >= 75 years
 #'   \item 9 Unknown
 #' }
+#' Example: To work with patients aged 18 to 74, provide `c(5, 6, 7)`
+#' as `sv_selection`.
+#'
 #' Use [dt_parquet()] to load the tables afterward.
 #'
 #' @param wd_in Source directory pathway (character)
 #' @param wd_out Output directory pathway (character)
 #' @param subset_var One of `"drecno"`, `"medprod_id"`, `"meddra_id"`, `"age"`
-#' @param sv_selection A vector containing the appropriate type of data (according to the method, see details)
+#' @param sv_selection A named list or a vector containing the appropriate ids (according to the method, see details)
 #' @param rm_suspdup A logical. Should suspected duplicates be removed? TRUE by default
-#' @returns Parquet files in the output directory. All files from Vigibase ECL
-#' are returned and subset-ed.
+#' @returns Parquet files in the output directory. All files from a
+#' vigibase ECL main folder are returned subsetted
+#' (including suspectedduplicates).
+#'
 #' @keywords dataset subset custom
 #' @export
 #' @seealso [get_drecno()], [get_atc_code()], [get_llt_soc()], [get_llt_smq()], [dt_parquet()]
@@ -40,9 +45,9 @@
 #' ## Extract all colitis cases
 #'
 #' # Locate your input directory
-#' # wd_in <- "/your_main_vigibase_files/"
+#' # wd_in <- "../vigibase_ecl/main/"
 #' # Choose a (close) directory to export to (it doesnt have to exist before you call it)
-#' # wd_out <- "/your_main_vigibase_files/this_place_is_fine/"
+#' # wd_out <- "../vigibase_ecl/main/subset/"
 #'
 #' # For the example, we create tables in a directory that should be replaced by
 #' # your own directory containing the entire database.
@@ -63,14 +68,14 @@
 #'     data.table(
 #'       UMCReportId = c(1, 2, 3, 4),
 #'       Drug_Id = c("d1", "d2", "d3", "d4"),
-#'       DrecNo = c("dr1", "dr2", "dr3", "dr4"),
-#'       MedicinalProd_Id = c("mp1", "mp2", "mp3", "mp4")
+#'       DrecNo = c(133138448, 133138448, 111841511, 111841511),
+#'       MedicinalProd_Id = c(25027716, 97354576, 104264760, 37484408)
 #'     ),
 #'   adr  =
 #'     data.table(
 #'       UMCReportId = c(1, 2, 3, 4),
 #'       Adr_Id = c("a1", "a2", "a3", "a4"),
-#'       MedDRA_Id = c("m1", "m2", "m3", "m4")
+#'       MedDRA_Id = c(110049083, 31672047, 146319904, 72535511)
 #'     ),
 #'   link =
 #'     data.table(
@@ -110,34 +115,36 @@
 #'       )
 #'
 #'   )
-
+#'
 #' # back to tb_subset, you should select a subset_var and corresponding data
 #'
 #' # Subset on adr colitis codes
-#' sv_selection <-
-#'   c("m1", "m2")
 #'
-#' # You can imagine "m1", and "m2" are colitis IDs,
-#' # obtained from get_llt_soc().
+#' adr_llt <-
+#'  list(
+#'    colitis = "Colitis"
+#'    ) |>
+#'    get_llt_soc(term_level = "pt", meddra_)
+#'
 #'
 #' wd_out <- paste0(wd_in, "/", "colitis_subset", "/")
 #'
 #' tb_subset(wd_in, wd_out,
 #'           subset_var = "meddra_id",
-#'           sv_selection = sv_selection)
+#'           sv_selection = adr_llt)
 #'
 #' # Subset on drug codes
 #'
-#'  sv_selection <-
-#'     c("dr3", "dr4")
-#'
-#' # Same here, obtained from get_drecno()
+#'  d_drecno <-
+#'    list(
+#'     ipi = "ipilimumab") |>
+#'     get_drecno(mp = mp_)
 #'
 #' wd_out <- paste0(wd_in, "/", "nivolumab_subset", "/")
 #'
 #' tb_subset(wd_in, wd_out,
 #'           subset_var = "drecno",
-#'           sv_selection = sv_selection)
+#'           sv_selection = d_drecno)
 #'
 #'  # Subset on age > 65 year-old
 #'
@@ -164,12 +171,23 @@ tb_subset <-
     UMCReportId <- NULL
     Drug_Id <- NULL
 
-    subset_var <- match.arg(subset_var)
+    subset_var <- rlang::arg_match(subset_var)
+
+    # check integer lists for meddra_id, medprod_id, and drecno
+
+    if(subset_var %in% c("drecno", "medprod_id", "meddra_id")){
+      check_id_list(sv_selection)
+
+      check_id_list_numeric(sv_selection)
+    }
+
+    # in all cases, flatten the list
+    sv_selection <-
+      sv_selection |> unlist()
 
     if(!dir.exists(wd_in)){
       stop(paste0(wd_in, " was not found, check spelling and availability."))
     }
-
 
     if(!dir.exists(wd_out)){
       dir.create(wd_out)

@@ -24,7 +24,7 @@
 #' "Avelumab", "Cemiplimab","REGN 2810", "Tremelimumab"` in these tables.
 #' More details on how to use vigibase tables can be found in the vignettes.
 #' `vignette("basic_workflow")`, `vignette("descriptive")`.
-#' To build your own tables, use [tb_vigibase()]. See `vignette("build_tables")`.
+#' To build your own tables, use [tb_vigibase()]. See `vignette("getting_started")`.
 #'
 #' @docType data
 #'

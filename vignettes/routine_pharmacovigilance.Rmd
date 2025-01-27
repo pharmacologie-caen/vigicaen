@@ -64,7 +64,7 @@ colitis and nivolumab is not well established.
 
 If you haven't already, you should build tables in an R compatible format,
 using the `tb_vigibase()` and `tb_who()` functions. More information
-can be found in  `vignette("build_tables")`.
+can be found in  `vignette("getting_started")`.
 
 This rather long step must only be done once per database version.
 
@@ -175,6 +175,9 @@ in the graph legend. You can use anything, such as "September 2024".
 Just remember to write _something_.
 
 ```{r vigi_routine, fig.height=6.7, fig.width=4}
+#| fig.alt: >
+#|   Example of vigi_routine.
+
 vigi_routine(
   demo_data = demo,
   drug_data = drug,
@@ -210,6 +213,9 @@ We can add this information to the graph, using the `case_tto` argument.
 
 
 ```{r vigi_routine_case, fig.height=6.7, fig.width=4}
+#| fig.alt: >
+#|   Example of vigi_routine with case data.
+
 vigi_routine(
   case_tto  = 150,
   demo_data = demo,
