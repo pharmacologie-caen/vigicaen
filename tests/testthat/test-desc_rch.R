@@ -118,7 +118,9 @@ test_that("works with few data", {
      Rechallenge1 =
      as.character(c(  1, 1, 1, 1, 1, 1, 0, 0, 0,   0)),
      Rechallenge2 =
-     as.character(c(  3, 3, 3, 3, 3, 3, 0, 0, 0,   0))
+     as.character(c(  3, 3, 3, 3, 3, 3, 0, 0, 0,   0)),
+     tto_mean = 1,
+     range = 1
    )
 
    demo_rch_test <- data.table(

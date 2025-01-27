@@ -87,16 +87,16 @@ test_that("works with irregular names for demo and adr", {
 test_that("works with link data, adr identification is Adr_Id wise, not UMCReportId wise", {
   adr_list_test <-
     rlang::list2(
-      adr1 = "adr1",
-      adr2 = "adr2",
-      adr3 = "adr3",
-      adr4 = "adr4"
+      adr1 = 12,
+      adr2 = 13,
+      adr3 = 14,
+      adr4 = 15
     )
 
   adr_test <-
     data.table(
       Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
-      MedDRA_Id = c("adr1", "adr4", "adr2", "adr4", "adr2"),
+      MedDRA_Id = c(12, 15, 13,  15, 13),
       UMCReportId = c(1, 1, 2, 2, 3),
       Outcome = NA
     )
@@ -156,17 +156,17 @@ test_that("works with link data, adr identification is Adr_Id wise, not UMCRepor
 test_that("works with adr data as the .data argument", {
   adr_list_test <-
     rlang::list2(
-      adr1 = "adr1",
-      adr2 = "adr2",
-      adr3 = "adr3",
-      adr4 = "adr4"
+      adr1 = 12,
+      adr2 = 13,
+      adr3 = 14,
+      adr4 = 15
     )
 
   adr_test <-
     data.table(
       UMCReportId = c(1, 1, 2, 2, 3),
       Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
-      MedDRA_Id = c("adr1", "adr4", "adr2", "adr4", "adr2"),
+      MedDRA_Id = c(12, 15, 13,  15, 13),
       Outcome = c(1, 2, 3, 2, 2)
     )
 
@@ -194,7 +194,7 @@ test_that("works with adr data as the .data argument", {
     data.table(
       UMCReportId = c(1, 1, 2, 2, 3),
       Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
-      MedDRA_Id = c("adr1", "adr4", "adr2", "adr4", "adr2"),
+      MedDRA_Id = c(12, 15, 13,  15, 13),
       Outcome = c(1, 2, 3, 2, 2),
       adr1 = c(1, 0, 0, 0, 0),
       adr2 = c(0, 0 ,1, 0, 1),
@@ -218,10 +218,10 @@ test_that("works with adr data as the .data argument", {
 test_that("works with drug data as the .data argument", {
   adr_list_test <-
     rlang::list2(
-      adr1 = "adr1",
-      adr2 = "adr2",
-      adr3 = "adr3",
-      adr4 = "adr4"
+      adr1 = 12,
+      adr2 = 13,
+      adr3 = 14,
+      adr4 = 15
     )
 
   drug_test <-
@@ -237,7 +237,7 @@ test_that("works with drug data as the .data argument", {
     data.table(
       UMCReportId = c(1, 1, 2, 2, 3),
       Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
-      MedDRA_Id = c("adr1", "adr4", "adr2", "adr4", "adr2"),
+      MedDRA_Id = c(12, 15, 13,  15, 13),
       Outcome = c(1, 2, 3, 2, 2)
     )
 
@@ -286,16 +286,16 @@ test_that("works with drug data as the .data argument", {
 test_that("handle ambiguous names in .data", {
   adr_list_test <-
     rlang::list2(
-      adr1 = "adr1",
-      adr2 = "adr2",
-      adr3 = "adr3",
-      adr4 = "adr4"
+      adr1 = 12,
+      adr2 = 13,
+      adr3 = 14,
+      adr4 = 15
     )
 
   adr_test <-
     data.table(
       Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
-      MedDRA_Id = c("adr1", "adr4", "adr2", "adr4", "adr2"),
+      MedDRA_Id = c(12, 15, 13,  15, 13),
       UMCReportId = c(1, 1, 2, 2, 3),
       Outcome = NA
     )

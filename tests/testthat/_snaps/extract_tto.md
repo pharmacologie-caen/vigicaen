@@ -35,7 +35,7 @@
       i `.data` detected as `link` table.
     Code
       expect_error(extract_tto(.data = wrong_link, adr_s = "a_colitis", drug_s = "pd1"),
-      "Either tto_mean or range columns are missing. See ?link_", fixed = TRUE)
+      "`.data` is not a `link` table", fixed = TRUE)
 
 ---
 

@@ -4,14 +4,14 @@
       tb_subset(wd_in = paste0(wd_in, "/"), wd_out = paste0(wd_in, "/",
         "subset_drecno", "/"), subset_var = "drecno", sv_selection = sv_selection_drecno)
     Output
-      demo.parquet subset has 1 rows.
-      adr.parquet subset has 1 rows.
-      out.parquet subset has 1 rows.
-      srce.parquet subset has 1 rows.
-      followup.parquet subset has 1 rows.
-      drug.parquet subset has 1 rows.
-      link.parquet subset has 1 rows.
-      ind.parquet subset has 1 rows.
+      demo.parquet subset has 2 rows.
+      adr.parquet subset has 2 rows.
+      out.parquet subset has 2 rows.
+      srce.parquet subset has 2 rows.
+      followup.parquet subset has 2 rows.
+      drug.parquet subset has 2 rows.
+      link.parquet subset has 2 rows.
+      ind.parquet subset has 2 rows.
 
 ---
 

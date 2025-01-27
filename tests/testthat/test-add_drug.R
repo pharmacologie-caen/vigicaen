@@ -311,16 +311,16 @@ test_that("selecting only s, c, i works and provide less cases than sci altogeth
 test_that("works with link and drug data, drug identification is Drug_Id wise, not UMCReportId wise", {
   d_drecno_test <-
     rlang::list2(
-      ici1 = "ici1",
-      ici2 = "ici2",
-      ici3 = "ici3"
+      ici1 = 21,
+      ici2 = 22,
+      ici3 = 23
     )
 
   drug_test <-
     data.table(
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
-      DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
+      DrecNo  = c(21, 22, 23, 21, 21),
       MedicinalProd_Id = NA,
       UMCReportId = c(1, 1, 2, 2, 3)
     )
@@ -398,7 +398,7 @@ test_that("works with link and drug data, drug identification is Drug_Id wise, n
     data.table(
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
-      DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
+      DrecNo  = c(21, 22, 23, 21, 21),
       MedicinalProd_Id = NA,
       UMCReportId = c(1, 1, 2, 2, 3),
       ici1 = c(1, 0, 0, 1, 1),
@@ -415,16 +415,16 @@ test_that("works with link and drug data, drug identification is Drug_Id wise, n
 test_that("works with adr data, drug identification is UMCReportId wise", {
   d_drecno_test <-
     rlang::list2(
-      ici1 = "ici1",
-      ici2 = "ici2",
-      ici3 = "ici3"
+      ici1 = 21,
+      ici2 = 22,
+      ici3 = 23
     )
 
   drug_test <-
     data.table(
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
-      DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
+      DrecNo  = c(21, 22, 23, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
       MedicinalProd_Id = NA
     )
@@ -483,16 +483,16 @@ test_that("works with adr data, drug identification is UMCReportId wise", {
 test_that("handle ambiguous names in .data", {
   d_drecno_test <-
     rlang::list2(
-      ici1 = "ici1",
-      ici2 = "ici2",
-      ici3 = "ici3"
+      ici1 = 21,
+      ici2 = 22,
+      ici3 = 23
     )
 
   drug_test <-
     data.table(
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
-      DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
+      DrecNo  = c(21, 22, 23, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
       MedicinalProd_Id = NA
     )
@@ -555,16 +555,16 @@ test_that("handle ambiguous names in .data", {
 test_that("you can choose output column names with d_names", {
   d_drecno_test <-
     rlang::list2(
-      ici1 = "ici1",
-      ici2 = "ici2",
-      ici3 = "ici3"
+      ici1 = 21,
+      ici2 = 22,
+      ici3 = 23
     )
 
   drug_test <-
     data.table(
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
-      DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
+      DrecNo  = c(21, 22, 23, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
       MedicinalProd_Id = NA
     )
@@ -621,16 +621,16 @@ test_that("you can choose output column names with d_names", {
 test_that("you can use arrow/parquet format", {
   d_drecno_test <-
     rlang::list2(
-      ici1 = "ici1",
-      ici2 = "ici2",
-      ici3 = "ici3"
+      ici1 = 21,
+      ici2 = 22,
+      ici3 = 23
     )
 
   drug_test <-
     data.table(
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
-      DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
+      DrecNo  = c(21, 22, 23, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
       MedicinalProd_Id = NA
     )
