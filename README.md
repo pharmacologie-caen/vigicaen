@@ -102,12 +102,12 @@ Good places to start your journey:
 
 - Set the stage with `vignette("getting_started")`
 
-- ![PV -
-  Routine](https://img.shields.io/static/v1?label=PV&message=Routine&color=0f7ba2)
+- [![PV -
+  Routine](https://img.shields.io/badge/PV-Routine-0f7ba2)](https://pharmacologie-caen.github.io/vigicaen/articles/routine_pharmacovigilance.html)
   Explore vigibase `vignette("routine_pharmacovigilance")`
 
-- ![PV -
-  Advanced](https://img.shields.io/static/v1?label=PV&message=Advanced&color=43b284)
+- [![PV -
+  Advanced](https://img.shields.io/badge/PV-Advanced-43b284)](https://pharmacologie-caen.github.io/vigicaen/articles/basic_workflow.html)
   Dive into advanced features `vignette("basic_workflow")`
 
 ## Example ![PV - Routine](https://img.shields.io/static/v1?label=PV&message=Routine&color=0f7ba2)
