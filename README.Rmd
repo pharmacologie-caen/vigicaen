@@ -188,14 +188,14 @@ vigi_routine(
 
 td <- tempdir()
 
-ggplot2::ggsave(here::here(td, "vg.svg"), plot = g1, height = 6.7, width = 4)
+ggplot2::ggsave(here::here("man", "figures", "vg.svg"), plot = g1, height = 6.7, width = 4)
 ```
 
 ```{r include_graph, echo = FALSE}
 #| fig.alt: >
 #|   Example of vigi_routine with case data.
 
-knitr::include_graphics(here::here(td, "vg.svg"))
+knitr::include_graphics(here::here("man", "figures", "vg.svg"))
 ```
 
 ## Example ![PV - Advanced](https://img.shields.io/static/v1?label=PV&message=Advanced&color=43b284)

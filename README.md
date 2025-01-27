@@ -160,7 +160,7 @@ vigi_routine(
 )
 ```
 
-<img src="../../../../../Users/dolladi231/AppData/Local/Temp/RtmpaaVPRO/vg.svg" alt="Example of vigi_routine with case data." width="100%" />
+<img src="man/figures/vg.svg" alt="Example of vigi_routine with case data." width="100%" />
 
 ## Example ![PV - Advanced](https://img.shields.io/static/v1?label=PV&message=Advanced&color=43b284)
 
