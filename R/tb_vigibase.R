@@ -1,6 +1,6 @@
 #' Create main VigiBase ECL tables
 #'
-#' @description `r lifecycle::badge('stable')` `tb_vigibase()` transforms .txt
+#' @description `r lifecycle::badge('stable')` Transform VigiBase .txt
 #' files to .parquet files.
 #'
 #' @details Vigibase Extract Case Level is delivered as zipped text files, that you should
@@ -25,6 +25,8 @@
 #'   directory: demo, adr, drug, link, ind, out, srce,
 #'   followup, and the suspdup (suspected duplicates) table.
 #'   Check `?demo_` for more information on the tables.
+#'   \item The link table is augmented with `tto_mean` and `range`, to analyze
+#'   time to onset according to WHo's recommendations (see `vignette("descriptive")`.
 #'   \item .parquet files of all other subsidiary tables into the `path_sub`
 #'   directory: AgeGroup, Dechallenge, Dechallenge2, Frequency,
 #'   Gender, Notifier, Outcome, Rechallenge, Rechallenge2, Region,

@@ -13,19 +13,19 @@ test_that("you can subset on drecno, age, meddra_id", {
         UMCReportId = c(1, 2, 3, 4),
         AgeGroup = c(1, 2, 7, 9)
       ),
-    drug =
-      data.table(
-        UMCReportId = c(1, 2, 3, 4),
-        Drug_Id = c("d1", "d2", "d3", "d4"),
-        DrecNo = c("dr1", "dr2", "dr3", "dr4"),
-        MedicinalProd_Id = c("mp1", "mp2", "mp3", "mp4")
-      ),
-    adr  =
-      data.table(
-        UMCReportId = c(1, 2, 3, 4),
-        Adr_Id = c("a1", "a2", "a3", "a4"),
-        MedDRA_Id = c("m1", "m2", "m3", "m4")
-      ),
+       drug =
+         data.table(
+           UMCReportId = c(1, 2, 3, 4),
+           Drug_Id = c("d1", "d2", "d3", "d4"),
+           DrecNo = c(133138448, 133138448, 111841511, 111841511),
+           MedicinalProd_Id = c(25027716, 97354576, 104264760, 37484408)
+         ),
+       adr  =
+         data.table(
+           UMCReportId = c(1, 2, 3, 4),
+           Adr_Id = c("a1", "a2", "a3", "a4"),
+           MedDRA_Id = c(110049083, 146319904, 146319904, 72535511)
+         ),
     link =
       data.table(
         Drug_Id = c("d1", "d2", "d3", "d4"),
@@ -67,8 +67,8 @@ test_that("you can subset on drecno, age, meddra_id", {
 
   # ---- drecno
 
-  sv_selection_drecno <- # spurious paracetamol drecnos
-    c("dr3", "dr4")
+  sv_selection_drecno <-
+    list(ipi = c(133138448, 133138448))
 
   expect_snapshot(
     tb_subset(
@@ -95,7 +95,7 @@ test_that("you can subset on drecno, age, meddra_id", {
     drug_sub %>%
     dplyr::group_by(UMCReportId) %>%
     dplyr::summarise(
-      has_para = max(DrecNo %in% sv_selection_drecno)
+      has_para = max(DrecNo %in% sv_selection_drecno$ipi)
     )
 
   expect_equal(
@@ -136,8 +136,8 @@ test_that("you can subset on drecno, age, meddra_id", {
 
   # ---- adr
 
-  sv_selection_mid <- # spurious colitis codes
-    c("m1", "m2")
+  sv_selection_mid <-
+    list(colitis = c(146319904, 72535511))
 
   wd_out <- paste0(wd_in, "/", "subset_meddraid", "/")
 
@@ -163,7 +163,7 @@ test_that("you can subset on drecno, age, meddra_id", {
     adr_sub %>%
     dplyr::group_by(UMCReportId) %>%
     dplyr::summarise(
-      has_colitis = max(MedDRA_Id %in% sv_selection_mid)
+      has_colitis = max(MedDRA_Id %in% sv_selection_mid$colitis)
     )
 
   expect_equal(
@@ -178,7 +178,8 @@ test_that("you can subset on drecno, age, meddra_id", {
 test_that("wd_in exists", {
   expect_error(
     tb_subset(
-      wd_in = "that_dir_doesnt_exists"
+      wd_in = "that_dir_doesnt_exists",
+      sv_selection = list(a = c(1, 2))
       ),
     "that_dir_doesnt_exists was not found, check spelling and availability."
   )
@@ -202,14 +203,14 @@ test_that("you can keep suspdup", {
       data.table(
         UMCReportId = c(1, 2, 3, 4),
         Drug_Id = c("d1", "d2", "d3", "d4"),
-        DrecNo = c("dr1", "dr2", "dr3", "dr4"),
-        MedicinalProd_Id = c("mp1", "mp2", "mp3", "mp4")
+        DrecNo = c(133138448, 133138448, 111841511, 111841511),
+        MedicinalProd_Id = c(25027716, 97354576, 104264760, 37484408)
       ),
     adr  =
       data.table(
         UMCReportId = c(1, 2, 3, 4),
         Adr_Id = c("a1", "a2", "a3", "a4"),
-        MedDRA_Id = c("m1", "m2", "m3", "m4")
+        MedDRA_Id = c(110049083, 31672047, 146319904, 72535511)
       ),
     link =
       data.table(
@@ -321,14 +322,14 @@ test_that("alternative syntaxes work", {
       data.table(
         UMCReportId = c(1, 2, 3, 4),
         Drug_Id = c("d1", "d2", "d3", "d4"),
-        DrecNo = c("dr1", "dr2", "dr3", "dr4"),
-        MedicinalProd_Id = c("mp1", "mp2", "mp3", "mp4")
+        DrecNo = c(133138448, 133138448, 111841511, 111841511),
+        MedicinalProd_Id = c(25027716, 97354576, 104264760, 37484408)
       ),
     adr  =
       data.table(
         UMCReportId = c(1, 2, 3, 4),
         Adr_Id = c("a1", "a2", "a3", "a4"),
-        MedDRA_Id = c("m1", "m2", "m3", "m4")
+        MedDRA_Id = c(110049083, 31672047, 146319904, 72535511)
       ),
     link =
       data.table(

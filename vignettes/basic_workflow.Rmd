@@ -22,20 +22,21 @@ knitr::opts_chunk$set(
 
 ## Objectives
 
+-   Collect drug and adverse drug reaction **IDs**
+
 -   Perform standard data management in VigiBase ECL
+
 -   Conduct disproportionality analysis (both univariate and multivariate)
 
-A summary of all data management steps can be found in vignettes
+If you want to access script templates for these steps, see
 
-\code{vignette("generic_dictionary", package = "vigicaen")}
+-   `vignette("template_dictionary")` and 
 
-and
-
-\code{vignette("generic_main", package = "vigicaen")}
+-   `vignette("template_main")`
 
 ## Reminder of Database Structure
 
-Each table has a unique identifying key and other keys for performing joins.
+Each table has a unique identifying key and other keys to perform joins.
 
 | Table  | Key           | Other keys |
 |--------|---------------|------------------|
@@ -48,14 +49,14 @@ Each table has a unique identifying key and other keys for performing joins.
 ## Step 0: Load Packages
 
 ```{r library, warning=FALSE, message=FALSE}
-library(rlang)
 library(vigicaen)
+library(rlang)
 library(dplyr)
 ```
 
-# Build tables from source files
+# Build tables from source files {#building_tables}
 
-This process should be done once per database version.
+This process should be done **once per database version**.
 
 You don't have to do it to follow this tutorial, since
 we will use the package built-in example tables.
@@ -63,24 +64,61 @@ we will use the package built-in example tables.
 However, when working on real analyses, you will need
 to process this step first.
 
-See the vignette here \code{vignette("build_tables", package = "vigicaen")}.
+See the vignette here `vignette("getting_started")`.
+
+# Collecting IDs
+
+The whole package relies on defining a dictionary of drugs
+and adrs of interest.
+
+Those collection of terms should be stored in **named lists**.
+
+```{r named_lists}
+# drug selection
+d_sel <-
+  list(
+    nivolumab   = "nivolumab",
+    ipilimumab  = "ipilimumab",
+    nivo_or_ipi = c("nivolumab", "ipilimumab")
+  )
+
+# adverse drug reaction selection
+
+a_sel <- 
+  list(
+    colitis     = "Colitis",
+    pneumonitis = "Pneumonitis"
+  )
+```
+
+As we see, the `d_sel` list contains three named vectors: nivolumab, ipilimumab, and nivo_or_ipi. Each of these vectors can contain one or
+more names of drugs.
+
+> The names of the vectors don't have to be the same as the drug names.
+> They will be used to created columns later in the process.
+
+We will pass these named list selections to *ID collector* functions:
+The **`get_*`** family.
+
+-   `get_drecno()` for drugs
+
+-   `get_llt_soc()` or `get_llt_smq()` for adverse drug reactions
 
 # Data management
 
-## Drugs {drug_workflow}
+## Drugs {#drug_workflow}
 
 ### Principle
 
 1.  Load the `demo`, `drug`, and `mp` tables.
 2.  Select one or more medications of interest.
 3.  Identify the drug codes (e.g., the `DrecNo(s)`)
-associated with these drug using the `mp` (or `mp`)
-table.
+associated with these drug using the `mp` table.
 4.  Search for cases exposed to these medications using the codes in the `drug` table.
 5.  Update the `demo` table: code 1 if the case reports the medication of interest, 0 otherwise.
 6.  Check your data management
 
-Step 1 is performed with `dt_parquet()` if you have your own tables, or using the built-in example tables for this tutorial.
+Step 1 is performed with `dt_parquet()` if you have [your own tables](#building_tables), or using the built-in example tables for this tutorial.
 
 Step 2 and 3 can be referred as "dictionary" steps.
 
@@ -207,7 +245,7 @@ in the construction of a dataset.
 
 There are many ways to check that the code has worked.
 Here, the `check_dm()` function will count the number of rows
-in the dataset where the desired column is 1.
+in the dataset where the desired column is equal to 1.
 
 ```{r check_dm}
 demo |> 
@@ -310,7 +348,7 @@ demo |>
 ### Create multiple drug columns
 
 To work with multiple drugs, 
-you need to update the initial in `d_sel` list.
+you need to update the initial `d_sel` list.
 
 ```{r many_drugs}
 d_sel <- 
@@ -349,7 +387,8 @@ d_sel <-
 
 d_drecno <-
   d_sel |> 
-  get_drecno(mp = mp)
+  get_drecno(mp = mp,
+             allow_combination = FALSE)
 
 demo <- 
   demo |> 
@@ -417,7 +456,7 @@ a_sel_pt <-
 ```
 
 We start with a list of adverse events of interest, grouped
-altogther under the name "a_colitis".
+altogether under the name "a_colitis".
 
 Be sure all selected terms belong to the same hierarchical level
 (preferred term, high level term...) in MedDRA.
@@ -541,9 +580,15 @@ out <- out_
 demo <- 
   demo |> 
   mutate(
-    serious = ifelse(UMCReportId %in% out[, UMCReportId],
-                      UMCReportId %in% out[Serious == "Y", UMCReportId],
-                      NA)
+    serious = 
+      ifelse(
+        UMCReportId %in% out$UMCReportId,
+        UMCReportId %in% 
+          (out |> 
+          filter(Serious == "Y") |> 
+          pull(UMCReportId)
+          ),
+        NA)
     )
 
 # ---- Death + outcome availability ---- ####
@@ -551,9 +596,12 @@ demo <-
 demo <- 
   demo |> 
   mutate(death = 
-           ifelse(UMCReportId %in% out[, UMCReportId],
-                  UMCReportId %in% out[Seriousness == "1",
-                                       UMCReportId],
+           ifelse(UMCReportId %in% out$UMCReportId,
+                  UMCReportId %in% 
+                    (out |> 
+                    filter(Seriousness == "1") |> 
+                    pull(UMCReportId)
+                    ),
                   NA)
          )
 
@@ -571,7 +619,7 @@ codes. It is just a matter of preference.
 Our `demo` dataset now has a drug column for nivolumab, 
 and an adr column for colitis.
 
-We can now perform a disproportionality analysis between these
+We can perform a disproportionality analysis between these
 two variables.
 
 
@@ -591,7 +639,7 @@ We just need to find a, b, c, and d to get their estimation.
 | a_colitis == 1  | a           | c           |
 | a_colitis == 0  | b           | d           |
 
-### Counts, compute_or_abcd()
+### Counts, compute_dispro()
 
 #### Doing it by hand
 
@@ -602,28 +650,28 @@ a <-
   demo |> 
   filter(nivolumab == 1 & 
            a_colitis == 1) |> 
-  summarise(n()) |> 
+  count() |> 
   pull()
 
 b <- 
   demo |> 
   filter(nivolumab == 1 & 
            a_colitis == 0) |> 
-  summarise(n()) |> 
+  count() |> 
   pull()
 
 c <- 
   demo |> 
   filter(nivolumab == 0 & 
            a_colitis == 1) |> 
-  summarise(n()) |> 
+  count() |> 
   pull()
 
 d <- 
   demo |> 
   filter(nivolumab == 0 & 
            a_colitis == 0) |> 
-  summarise(n()) |> 
+  count() |> 
   pull()
 ```
 
@@ -633,12 +681,12 @@ and the confidence interval boundaries at 95% being $± ~1.96 * \text{se}$.
 
 We could also calculate the Information Component.
 
-The `compute_or_abcd()` function does it for us.
+The `compute_dispro()` function does it for us.
 (both ROR and IC)
 
-```{r compute_or_abcd}
+```{r compute_dispro}
 demo |> 
-  compute_or_abcd(
+  compute_dispro(
     y = "a_colitis",
     x = "nivolumab"
     )
@@ -652,7 +700,7 @@ such as age and sex. For example, one could wish to perform
 a multivariate logistic regression on the reporting of colitis
 and nivolumab, adjusted on age and sex.
 
-The `glm()` function from the `stats` package can be use for this
+The `glm()` function from the `stats` package can be used for this
 purpose.
 
 
@@ -697,164 +745,16 @@ mod_or <-
 mod_or
 ```
 
-# Interactions
+# Conclusion
 
-## Introduction
+You're now all set to create drugs and adrs columns into a
+`demo` dataset. This is the first step to many modelling possibilities!
 
-It is possible to explore interactions between drugs on
-an adr reporting.
+Where do you want to go next?
 
-This tutorial does not aim at covering the concepts underlying
-interactions in pharmacovigilance.
+-    Dive into descriptive features, such as time to onset, 
+dechallenge, rechallenge, screening of drugs and adrs.
+`vignette("descriptive")`
 
-We use a cleaned dataset, from the example tables.
-
-```{r interaction_dm}
-
-# ---- Tables ---- ####
-
-demo <- demo_
-drug <- drug_
-
-# ---- Dictionary step ---- ####
-
-d_drecno <- ex_$d_drecno
-a_llt <- ex_$a_llt
-
-# #### Data management #### ####
-
-# ---- Drugs ---- ####
-
-demo <-
-    demo |>
-    add_drug(
-      d_code = d_drecno,
-      drug_data = drug_
-    ) 
-
-# ---- Adrs ---- ####
-
-demo <- 
-  demo |>
-    add_adr(
-      a_code = a_llt,
-      adr_data = adr_
-    )
-
-# ---- Sex ---- ####
-
-demo <- 
-  demo |> 
-  mutate(
-    sex = case_when(Gender == "1" ~ 1,
-                    Gender == "2" ~ 2,
-                    TRUE ~ NA_real_)
-    )
-```
-
-## Additive interactions
-
-### Multivariate analysis
-
-Additive effect of two covariates can be obtained by multiplying 
-the Odds-Ratio of each.
-
-```{r mod_inter}
-mod3 <- glm(a_colitis ~ ipilimumab + sex,
-            data = demo,
-            family = "binomial")
-
-mod_or <- 
-  compute_or_mod(
-  summary(mod3)$coefficients,
-      estimate = Estimate,
-    std_er = Std..Error
-  ) |> select(rn, orl, ci, up_ci)
-
-mod_or
-```
-
-```{r echo=FALSE}
-ror_ipi <- mod_or[rn == "ipilimumab", orl]
-ror_sex <- mod_or[rn == "sex", orl]
-```
-With reporting Odds-Ratio of ipilimumab being `r ror_ipi`
-and the reporting Odds-Ratio of sex being `r ror_sex`, 
-the additive effect of both is `r ror_ipi` * `r ror_sex`.
-
-### Subgroup comparisons
-
-Some way to approach multiplicative interactions is to compare
-the disproportionality signal in subgroups.
-
-The `compute_or_abcd()` function can be used for these analyses,
-assuming the initial dataset is filtered on the appropriate
-subgroup.
-
-Say we want to investigate the interaction between ipilimumab
-and nivolumab and colitis reporting.
-
-```{r}
-demo |> 
-  filter(nivolumab == 1) |> 
-  compute_or_abcd(
-    y = "a_colitis",
-    x = "ipilimumab"
-    )
-```
-The overall analysis implies to perform additional analysis in
-different settings.
-
-In our example:
-
--   If ipilimumab alone leads to an overreporting of colitis
--   If nivolumab, among ipilimumab cases, leads to an overreporting of colitis
--   If the combination ipilimumab + nivolumab versus any control
-(or the whole dataset) increases the notifications of colitis.
-
-Both IC and ROR can be used here.
-
-## Statistical interactions {#inter_stat}
-
-### Logistic regression model
-
-The true statistical interaction is obtained with the following
-model
-
-```{r}
-mod4 <- glm(a_colitis ~ ipilimumab + sex + ipilimumab * sex,
-            data = demo,
-            family = "binomial")
-
-compute_or_mod(
-  summary(mod4)$coefficients,
-  estimate = Estimate,
-  std_er = Std..Error
-)
-```
-
-### Bayesian Information Component
-
-The formula for the interaction between 3 variables 
-(y, the event of interest, x1 and x2,
-two potential explanatory factors) 
-in information component is
-
-$log_2\frac{n_{y, x1, x2}}{n.expected_{interaction}}$
-
-with $n.expected_{interaction}$ equal to
-
-$\frac{n_{x1, x2} * n_{y, x1} * n_{y, x2} * n.total}{n_{x1} * n_{x2} * n_y}$
-
-The parameters are read as follows
-
-| Parameter       | Case                                                                      |
-|-----------------|-------------------------------------------------------|
-| $n_{x1}$        | number of cases reporting x1                                              |
-| $n_{x1, x2}$    | number of cases reporting x1 **AND** x2                                    |
-| $n_{y, x1, x2}$ | number of cases reporting x1 **AND** x2 **AND** y                           |
-| $n.total$       | total number of cases in the study population  |
-
-The credibility interval is calculated as for the usual IC.
-
-The `ic_tail()` function can be used as a shortcut.
+-   Learn on interactions in pharmacovigilance database
+`vignette("interactions")`

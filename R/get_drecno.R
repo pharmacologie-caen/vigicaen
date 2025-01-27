@@ -1,48 +1,78 @@
-#' Get DrecNo from drug names
+#' Get DrecNo from drug names or MedicinalProd_Id
 #'
-#' @description `r lifecycle::badge('stable')` `get_drecno()` collects
+#' @description `r lifecycle::badge('stable')` Collect
 #'  Drug Record Numbers associated to one or more drugs.
 #'
-#' @details `get_drecno()` is part of the "create a drug column" workflow.
-#' Use `inspect = TRUE` whenever you use this function for the first time on a
-#' new set of drug names. It is a **critical** checkpoint to your data analysis.
-#' This function uses perl style regex to find drug names in generic names OR
-#' exact matching to MedicinalProd_Id, from the WHO shortened MP tables \code{\link{mp_}}.
-#' A drug can have multiple MedicinalProd_Ids, corresponding to different packagings.
-#' The MedicinalProd_Id matching is typically used to identify DrecNo(s)
-#' contained in an ATC class (extracted from `thg`), since not all MPI of drugs are present in `thg`.
-#' (explanations in [get_atc_code()]).
-#' WHO names are attributed to drugs by... the WHO. There is only one WHO name,
-#' when there can be multiple international nonproprietary names
-#' (e.g. tretinoin and all-trans retinoic acid).
-#' You should use WHO names to ensure proper identification of drugs and DrecNos.
-#' Negative lookarounds are used to ensure that a string does not match to
-#' composite drug names including the string, i.e. `trastuzumab emtasine`
-#' is not retrieved when looking for `trastuzumab` and `alitretinoin` is not
-#' found when looking for `tretinoin`.
-#' Fixed associations of drugs refers to specialty containing more than one
-#' active ingredient (for example, acetylsalicylic acid and clopidogrel).
-#' In VigiLyze, the default is NOT to account for these fixed associations.
-#' For example, when you call "acetylsalicylic acid" in VigiLyze, you don't
-#' have the cases reported with the fixed-association "acetylsalicylic acid; clopidogrel"
-#'  **unless the substances were distinctly coded by the reporter.**
-#'  Here, the default is to find a drug even if it is prescribed in a fixed association.
-#' Importantly, when retrieving fixed-association drugs, the non-of-interest
-#' drug alone drecno is not found, hence the cases related to this drug will
-#' not be added to those of the drug of interest.
-#' Drug names are automatically `str_trim`-ed and `str_to_lower`-ed in the function.
-#' `d_sel` must be a named list of character vectors.
-#' The goal is to be able to group drugs in a list if needed and to add them in
-#' demo as a single class in a single column.
+#' @details `get_drecno()` is an *ID collector* function.
+#' Collected IDs can be used to create drug columns in datasets
+#' like `demo`, `link`, etc. (see `vignette("basic_workflow")`)
 #'
-#' @param d_sel A named list of character vectors. Selection of drug names or medicinalprod_id. See details
+#' @section Argument `verbose`:
+#'
+#' The `verbose` argument is here to let you check
+#' the result of `get_drecno()`. This is an important step in your
+#' project setup: You must ensure that the drugs you are looking for
+#' are correctly matched.
+#'
+#' @section Argument `d_sel`:
+#'
+#' `d_sel` must be a named list of character vectors.
+#' To learn why, see `vignette("basic_workflow")`.
+#' Names of `d_sel` are automatically lowered and trimed.
+#'
+#' @section Matching drugs:
+#'
+#' With "drug_name" method, either exact match or perl regex
+#' match can be used. The latter
+#' is built upon lookarounds to ensure that a string does not match to
+#' composite drug names including the string,
+#' i.e. `trastuzumab emtasine` for `trastuzumab`, or close names
+#' like `alitretinoin` when looking for `tretinoin`.
+#'
+#' Exact match is used for "mpi_list" method.
+#'
+#' @section Choosing a method:
+#'
+#' "drug_name" let you work with drug names. It's likely to be
+#' the appropriate method in most of the cases.
+#'
+#' "mpi_list" is used when you have a list of MedicinalProd_Ids.
+#' A drug can have multiple MedicinalProd_Ids, corresponding to
+#' different packagings. The MedicinalProd_Id matching is typically used to identify DrecNo(s)
+#' contained in an ATC class (extracted from `thg`), since not all MPI of drugs are present in `thg` (explanations in [get_atc_code()]).
+#'
+#' @section WHO names:
+#'
+#' WHO names are attributed to drugs by... the WHO.
+#' A drug only has one WHO name, but can have multiple
+#' international nonproprietary names (e.g. "tretinoin" and
+#' "all-trans retinoic acid").
+#'
+#' You should use WHO names to ensure proper identification of
+#' drugs and DrecNos, especially if you work with combinations.
+#'
+#' @section Argument `allow_combination`:
+#'
+#' Fixed associations of drugs refers to specialty containing
+#' more than one active ingredient (for example,
+#' acetylsalicylic acid and clopidogrel).
+#' In VigiLyze, the default is **NOT** to account for
+#' these fixed associations. For example, when you
+#' call "acetylsalicylic acid" in VigiLyze, you don't have the cases
+#' reported with the fixed-association "acetylsalicylic acid; clopidogrel"
+#'  **unless the substances were distinctly coded by the reporter.**
+#' Here, the default is to find a drug even if it is prescribed in a fixed association.
+#' Importantly, when retrieving fixed-association drugs, the non-of-interest
+#' drug alone drecno is not found, hence the cases related to this drug will not be added to those of the drug of interest.
+#'
+#' @param d_sel A named list. Selection of drug names or medicinalprod_id. See details
 #' @param mp A modified MP data.table. See \code{\link{mp_}}
 #' @param allow_combination A logical. Should fixed associations including the drug of interest be retrieved? See details.
 #' @param method Should DrecNo be found from drug names or from MedicinalProd_Id?
 #' @param verbose A logical. Allows you to see matching drug names in the console.
 #' Turn to FALSE once you've checked the matching.
 #' @param inspect `r lifecycle::badge('deprecated')` Use `verbose` instead.
-#' @param show_all `r lifecycle::badge('deprecated')`
+#' @param show_all `r lifecycle::badge('deprecated')`  Use `verbose` instead.
 #' @keywords data_management drug atc
 #' @export
 #' @importFrom rlang .data
@@ -51,9 +81,9 @@
 #' @seealso [add_drug()], [get_atc_code()]
 #' @examples
 #'
-#' # ## Get drecnos for a list a drugs. Check spelling and/or use WHO name. Usually in lowercase
+#' # ## Get drecnos for a list a drugs. Check spelling and use WHO name, #' in lowercase
 #'
-#' d_sel_names <- rlang::list2(
+#' d_sel_names <- list(
 #'   nivolumab = "nivolumab",
 #'   ipilimumab = "ipilimumab",
 #'   nivo_ipi = c("nivolumab", "ipilimumab")
@@ -62,12 +92,6 @@
 #' # Read mp with get_drecno(), to identify drugs without combinations
 #'
 #' # Take the time to read the matching drugs. Did you forget a drug?
-#'
-#' get_drecno(d_sel_names,
-#'            mp = mp_,
-#'            allow_combination = FALSE,
-#'            method = "drug_name")
-#'
 #'
 #' d_drecno <-
 #'   get_drecno(d_sel_names,
@@ -79,11 +103,10 @@
 #' # And DrecNos of drugs allowing for combinations
 #'
 #' d_drecno <-
-#' get_drecno(d_sel = d_sel_names,
-#'             mp = mp_,
-#'             allow_combination = TRUE,
-#'             method = "drug_name"
-#'             )
+#'   get_drecno(d_sel = d_sel_names,
+#'              mp = mp_,
+#'              allow_combination = TRUE,
+#'              method = "drug_name")
 #' d_drecno
 
 get_drecno <- function(

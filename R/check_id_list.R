@@ -19,7 +19,7 @@
 
 NULL
 
-#' @describeIn id_list_checkers drug list id checker
+#' @describeIn id_list_checkers named list checker
 
 check_id_list <-
   function(id_list,
@@ -72,4 +72,33 @@ check_id_list <-
       )
     }
   }
+
+#' @describeIn id_list_checkers numeric list id checker
+
+check_id_list_numeric <-
+function(id_list,
+         arg = rlang::caller_arg(id_list),
+         call = rlang::caller_env()){
+
+  check_id_list(id_list, arg = arg, call = call)
+
+  its_numeric <-
+    id_list |>
+    purrr::map(
+      function(item) {
+        rlang::is_integer(item) |
+        rlang::is_double(item)
+      }
+    ) |>
+    purrr::list_c() |> all()
+
+  if (!its_numeric) {
+    cli::cli_abort(
+      c("Type of {.arg {arg}} is not numeric or integer",
+        "i" = "Did you provide a list of drug or adr {.strong names}, instead of {.strong ids}?",
+        ">" = "Use {.code get_*} functions to collect {.strong ids}."),
+      call = call
+    )
+  }
+}
 

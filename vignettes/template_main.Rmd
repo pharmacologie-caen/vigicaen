@@ -1,11 +1,11 @@
 ---
-title: "generic_main"
+title: "Script template: main"
 output: 
   rmarkdown::html_vignette:
     toc: true
     keep_md: true
 vignette: >
-  %\VignetteIndexEntry{generic_main}
+  %\VignetteIndexEntry{template_main}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 
@@ -22,101 +22,70 @@ knitr::opts_chunk$set(
 )
 ```
 
-WELCOME to the generic process to perform a disproportionality analysis
-using VigiBase ECL!
+# Main script template
 
-Please follow the steps in this script.
+You may want to organize your research folder using small scripts,
+each designed for a part of your analysis plan.
 
-## Libraries
+Inspired by [Reproducible Research in R](https://mjrolland.github.io/reproducibility-checklist/cheatsheet.html)
+
+-    /folder
+-    ../data
+-    ../scripts
+-    ../etc.
+
+The main script might be located in scripts, under the name "main.R".
+
+-    ../scripts/01_main.R
+
+If you haven't, visit `vignette("getting_started")`, `vignette("basic_workflow")` and `vignette("descriptive")` 
+for details on what this template does.
+
+## Paths
+
+You may create a separate script with paths, that you would call at the beginning of your main script.
 
 ```{r libraries}
 library(vigicaen)
 library(rlang)
 library(here) # if you like the here syntax for file paths
 library(dplyr)
-library(arrow)
 ```
-
-## Imports
-
-You may create a separate script with paths, that you would call at the beginning
-of your main script.
-
-Set paths to your Vigibase ECL folder,
-to your dictionnaire if you have one,
-to where you want the results to be saved
-and to your meddra files.
-
-### From sample
 
 ```{r path_classic, eval = FALSE}
+# #### PATHS #### ####
+
+path_base   <- "../vigibase_ecl/main"
+
 # #### IMPORT #### ####
 
-# ---- Paths sample ---- ####
-path_base   <- "~/Database/sample/"
-path_who    <- "~/Database/who/"
-
-path_dic    <- "~/my_project/generic_dictionnaire.R"
-# alternative with the here syntax
-path_dic    <- here("generic_dicitionnaire.R")
-
-path_res    <- "~/my_project/my_res/"
-# alternative
-path_res    <- here("my_res")
-
-path_meddra <- "~/Database/meddra_25_1/meddra_25_1/english/MedAscii/"
-```
-### From serveur files
-
-If you're using the Caen CHU server, you paths might look like this
-
-```{r path_server, eval = FALSE}
-path_base   <- "/work/pharma/vigibase_2021_sep/main/"
-path_who    <- "/work/pharma/vigibase_2021_sep/who/"
-path_dic    <- "/home/dolladille-c/sclerodermia/03_dictionnaire.R"
-path_res    <- "/home/dolladille-c/sclerodermia/"
-path_meddra <- "/home/dolladille-c/meddra_24_0/english/medascii/"
-
-```
-
-### Load datasets
-
-```{r classic_datasets, eval = FALSE}
 demo     <- dt_parquet(path_base, "demo", in_memory = FALSE)
 adr      <- dt_parquet(path_base, "adr",  in_memory = FALSE)
 drug     <- dt_parquet(path_base, "drug", in_memory = FALSE)
 link     <- dt_parquet(path_base, "link", in_memory = FALSE)
 out      <- dt_parquet(path_base, "out",  in_memory = FALSE)
 srce     <- dt_parquet(path_base, "srce", in_memory = FALSE)
-followup <- dt_parquet(path_base, "srce", in_memory = FALSE)
+followup <- dt_parquet(path_base, "followup", in_memory = FALSE)
 
 suspdup  <- dt_parquet(path_base, "suspdup", in_memory = FALSE)
 
-thg      <- dt_parquet(path_who, "thg")
-mp <- dt_parquet(path_who, "mp")
+source("00_dict.R") # from template_dictionary
 ```
 
-You can work IN or OUT of memory, depending on the in_memory argument.
-
-### Work with preloaded test tables
-
-Si vous n'avez pas de base pre-construite, servez vous des tables prechargees. 
-(cf infra) Dans cette vignette, c'est ce que nous allons faire.
-
-```{r test_datasets}
+```{r test_datasets, include = FALSE}
 demo     <- demo_
 adr      <- adr_
 drug     <- drug_
 link     <- link_
 out      <- out_
 followup <- followup_
-
 srce     <- srce_
 
 thg      <- thg_
-mp <- mp_
+mp       <- mp_
 meddra   <- meddra_
-smq_list_content <- smq_list_content_
+smq_list <- smq_list_
+smq_content <- smq_content_
 
 suspdup <- 
   data.table::data.table(
@@ -125,34 +94,11 @@ suspdup <-
   )
 ```
 
-## Dictionary
-
-> !! Wait a minute!
-
-Now you will "source" your dictionary...
-
-Do you have one? There's a dedicated vignette here 
-\code{vignette("generic_dictionary", package = "vigicaen")}.
-
-If its the first time you write this script, you may want
-to **STOP** here and create one.
-
-That's even most interesting as this vignette will use items created from the
-dictionary, and you may get lost if you haven't seen them before.
-
-Once you're done in generic_dictionnaire.R, move back here.
-
-```{r dict, eval=FALSE}
-source(path_dict)
-```
-
-### Don't have a dictionary yet or working with test sets?
-
-```{r codes, eval=TRUE}
+```{r codes, include = FALSE, eval=TRUE, message = FALSE}
 d_drecno <- ex_$d_drecno
 
 atc_drecno <-
-  get_atc_code(atc_sel =  rlang::list2(l03_j01 = c("L03AA", "J01CA")),
+  get_atc_code(atc_sel =  rlang::list2(l03 = c("L03AA")),
                mp = mp_,
                thg_data = thg_,
                vigilyze = TRUE)
@@ -160,12 +106,13 @@ atc_drecno <-
 a_llt <- ex_$a_llt
 ```
 
-## DEMO data management
+## Demo
 
-```{r demo_dm}
+```{r demo_dm, eval = TRUE}
 # ---- Deduplicating ---- ####
 
-demo <- demo[!(UMCReportId %in% suspdup[, SuspectedduplicateReportId]),]
+demo <- demo |> 
+  filter(!(UMCReportId %in% suspdup$SuspectedduplicateReportId))
 
 # ---- Drugs ---- ####
 
@@ -216,34 +163,50 @@ demo <-
 
 # Death + outcome availability
 
-demo <-
-  demo |>
-  mutate(death =
-           if_else(UMCReportId %in% out[, UMCReportId],
-                   UMCReportId %in% out[Seriousness == "1", UMCReportId],
-                   NA)
-  )
+demo <- 
+  demo |> 
+  mutate(death = 
+           ifelse(UMCReportId %in% out$UMCReportId,
+                  UMCReportId %in% 
+                    (out |> 
+                    filter(Seriousness == "1") |> 
+                    pull(UMCReportId)
+                    ),
+                  NA)
+         )
 
 # follow-up, seriousness
 
 demo <-
   demo |>
   mutate(
-    fup = if_else(UMCReportId %in% followup[,UMCReportId], 1, 0),
-    serious = if_else(UMCReportId %in% out[, UMCReportId],
-                     UMCReportId %in% out[Serious == "Y", UMCReportId],
-                     NA)
+    fup = if_else(UMCReportId %in% followup$UMCReportId, 1, 0),
+    serious = 
+      ifelse(
+        UMCReportId %in% out$UMCReportId,
+        UMCReportId %in% 
+          (out |> 
+          filter(Serious == "Y") |> 
+          pull(UMCReportId)
+          ),
+        NA)
   )
 
 # year
-demo[, `:=` (year = as.numeric(substr(FirstDateDatabase, start = 1, stop = 4)))]
+
+demo <- 
+  demo |> 
+  mutate(
+    year = as.numeric(substr(FirstDateDatabase, start = 1, stop = 4))
+    )
 
 # type of reporter
+
 demo <-
   demo |>
-  left_join(srce[, .(UMCReportId, type_reporter = Type)], 
-            by = "UMCReportId") |> 
-  data.table::data.table()
+  left_join(
+    srce |> transmute(UMCReportId, type_reporter = Type),
+    by = "UMCReportId")
 
 # explicit multi-level vars
 
@@ -279,31 +242,24 @@ levels(demo$Region) <-
     "Western Pacific Region"  
   )
 
-```
+# ---- Check ---- ####
 
-### Check your data management in demo
-
-```{r demo_check, eval = FALSE}
 demo |>
   check_dm(cols = c(names(d_drecno), names(a_llt), "fup"))
 ```
 
-## LINK 
-
-### Data managed LINK
+## Link 
 
 ```{r link_drug_adr}
 link <-
   link |> 
     add_drug(
-    d_code = d_drecno,
-    drug_data = drug,
-    data_type = "link"
+      d_code = d_drecno,
+      drug_data = drug
     ) |> 
     add_adr(
-    a_code = a_llt,
-    adr_data = adr,
-    data_type = "link"
+      a_code = a_llt,
+      adr_data = adr
     )
 ```
 
@@ -314,13 +270,13 @@ link <-
 
 rb <- 
   demo |> 
-  compute_or_abcd(
+  compute_dispro(
     y = names(a_llt),
     x = names(d_drecno)
   )
 
 # remove the hashes to save your results
-## write.csv2(rb, paste0(path_res, "rb.csv"), row.names = FALSE)
+## write.csv2(rb, here("outputs", "rb.csv"), row.names = FALSE)
 
 # ---- Multivariate ---- ####
 
@@ -337,12 +293,14 @@ rm <-
     )
 
 # remove the hashes to save your results
-## write.csv2(rm, paste0(path_res, "rm.csv"), row.names = FALSE)
+## write.csv2(rm, here("outputs", "rm.csv"), row.names = FALSE)
 ```
 
 ## Basic descriptive
 
 ```{r desc_demo}
+# ---- General description ---- ####
+
 r_desc <- 
   demo |> 
   desc_facvar(
@@ -355,27 +313,27 @@ r_desc <-
            "serious", "death"),
     ncat_max = 20
   )
-```
 
-```{r desc_tto}
+# ---- Time to onset ---- ####
+
 r_tto <-
   desc_tto(
     link,
     adr_s = names(a_llt),
     drug_s = names(d_drecno)
     ) 
-```
 
-```{r desc_dch}
+# ---- Dechallenge ---- ####
+
 r_dch <-
   desc_dch(
     link,
     adr_s = names(a_llt),
     drug_s = names(d_drecno)
     )
-```
 
-```{r desc_rch}
+# ---- Rechallenge ---- ####
+
 r_rch <-
   desc_rch(
     link,

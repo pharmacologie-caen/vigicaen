@@ -1,21 +1,34 @@
 #' Add DRUG column(s) to a dataset (tidyverse syntax)
 #'
-#' @description `r lifecycle::badge('stable')` add_drug() creates drug columns.
+#' @description `r lifecycle::badge('stable')` Creates drug columns.
+#' in vigibase datasets (demo, link, adr, but also drug).
 #'
-#' @details d_code is a named list containing drug codes.
-#' Either medicinalprod_ids (e.g., from `tb_subset`), or drug record numbers
-#' (e.g., from `get_drecno`). Default method is to DrecNos.
+#' @details `d_code` is a named list containing drug codes.
+#' Either drug record numbers (e.g., from [get_drecno()]), or
+#' medicinalprod_ids (e.g., from [get_atc_code()]). Default method is to DrecNos.
+#'
+#' @section Argument `repbasis`:
 #' Drugs can be reported according to one of three reputation bases:
-#' suspect, concomitant or interacting in the occurrence of the adverse drug
-#' reaction. You may want to study only reports with a specific reputation basis.
-#' You can add drug identification to a `demo`, a `link`, or an `adr` dataset.
-#' Remember to set to the `data_type` argument to the appropriate value.
+#' \itemize{
+#'  \item `s` for suspect
+#'  \item `c` for concomitant
+#'  \item `i` for interacting
+#'  }
+#' in the occurrence of the adverse drug reaction. To study only one of these
+#' reputation basis, type only the corresponding letter in `repbasis`,
+#' e.g. "s" for suspects, or "si" for suspect **or** interacting.
+#'
+#' You can add drug identification to a `demo`, `link`, `adr` or even `drug`
+#' dataset.(in this latter case, you must provide `adr` twice,
+#' as `.data` and `drug_data`)
 #'
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
 #' @param d_code A named list of drug codes (DrecNos or MPI). See Details.
 #' @param d_names A character vector. Names for drug columns (must be the same length as d_code), default to `names(d_code)`
 #' @param method A character string. The type of drug code (DrecNo or MedicinalProd_Id). See details.
-#' @param repbasis Suspect, interacting and/or concomitant. Type initial of those you wish to select (s for suspect, c for concomitant and i for interacting ; default to all)
+#' @param repbasis Suspect, interacting and/or concomitant.
+#' Type initial of those you wish to select ("s" for suspect, "c" for concomitant
+#' and "i" for interacting ; default to all, e.g. "sci").
 #' @param drug_data A data.frame containing the drug data (usually, it is `drug`)
 #' @param data_type `r lifecycle::badge('deprecated')`. Data_type is now detected
 #' internally.
@@ -27,11 +40,10 @@
 #' @examples
 #' # create a nivolumab column in demo_
 #'
-#' d_sel_names <- rlang::list2(nivolumab = "nivolumab")
+#' d_sel_names <- list(nivolumab = "nivolumab")
 #'
 #' d_drecno <- get_drecno(d_sel_names,
 #'                         mp = mp_)
-#'
 #' demo_ <-
 #'   add_drug(
 #'     .data = demo_,
@@ -69,7 +81,7 @@ add_drug <-
   )
   {
 
-    check_id_list(d_code)
+    check_id_list_numeric(d_code)
 
     method <- rlang::arg_match(method)
 

@@ -486,7 +486,7 @@ demo_small %>% check_dm(cols = c(names(ex_$a_llt),
 
 
 demo_small %>%
-  compute_or_abcd(
+  compute_dispro(
     y = "a_colitis",
     x = "pd1"
   )

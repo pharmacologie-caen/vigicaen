@@ -1,7 +1,7 @@
 #' Rechallenge descriptive
 #'
-#' @description `r lifecycle::badge('stable')` `desc_rch()`
-#' computes counts of rechallenge cases, over a set of adr and drug pairs.
+#' @description `r lifecycle::badge('stable')` Computes counts of rechallenge cases,
+#' over a set of adr and drug pairs.
 #'
 #' @details Counts are provided at the **case** level (not the drug-adr pair level).
 #' Description span from number of rechallenge cases
@@ -15,16 +15,15 @@
 #'   \item Among `inf`, `rec` (recurring) as opposed to `non_rec` (`rec` + `non_rec` = `inf`)
 #' }
 #'
-#' @param .data A \code{\link{link_}} style data.table.
+#' @param .data A `link` data.table. See \code{\link{link_}}.
 #' @param demo_data A demo data.table.
-#' @param drug_s A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a link table.
-#' @param adr_s A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a link table.
+#' @param drug_s A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}}.
+#' @param adr_s A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}}.
 #'
-#' @return A one-row data.table with
+#' @return A data.table with one row per drug-adr pair
 #' \itemize{
+#'   \item `drug_s` and `adr_s`, same as input.
 #'   \item Counts of __overall__, __rch__, __inf__, and __rec__ cases (see details).
-#'   \item Number of cases with a time to onset `tto` available in all settings.
-#'   \item Median (interquartile range) time to onset in all settings.
 #' }
 #' @export
 #' @keywords drug-adr pair, descriptive
@@ -65,6 +64,8 @@ desc_rch <- function(.data,
                      drug_s = "drug1",
                      adr_s = "adr1"
 ){
+
+  check_data_link(.data)
 
   core_desc_rch <-
     function(one_drug,

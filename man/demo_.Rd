@@ -4,10 +4,10 @@
 \name{demo_}
 \alias{demo_}
 \alias{drug_}
-\alias{followup_}
-\alias{ind_}
 \alias{adr_}
 \alias{link_}
+\alias{followup_}
+\alias{ind_}
 \alias{out_}
 \alias{srce_}
 \title{Data of immune checkpoint inhibitors.}
@@ -100,13 +100,13 @@ which is no longer available in \code{demo_}.
 
 An object of class \code{data.table} (inherits from \code{data.frame}) with 3514 rows and 12 columns.
 
-An object of class \code{data.table} (inherits from \code{data.frame}) with 902 rows and 2 columns.
-
-An object of class \code{data.table} (inherits from \code{data.frame}) with 2426 rows and 2 columns.
-
 An object of class \code{data.table} (inherits from \code{data.frame}) with 2133 rows and 4 columns.
 
 An object of class \code{data.table} (inherits from \code{data.frame}) with 5136 rows and 11 columns.
+
+An object of class \code{data.table} (inherits from \code{data.frame}) with 902 rows and 2 columns.
+
+An object of class \code{data.table} (inherits from \code{data.frame}) with 2426 rows and 2 columns.
 
 An object of class \code{data.table} (inherits from \code{data.frame}) with 747 rows and 3 columns.
 
@@ -120,13 +120,13 @@ data(demo_)
 
 drug_
 
-followup_
-
-ind_
-
 adr_
 
 link_
+
+followup_
+
+ind_
 
 out_
 
@@ -152,13 +152,16 @@ These tables are subsets of the original ones, with some of the
 immune checkpoint inhibitor cases or immune-related adverse events.
 All data shown in these example data are \strong{FAKE}, which means
 you shouldn't consider the counts and computations as accurate.
-Immune checkpoint inhibitors drugs can include
+Immune checkpoint inhibitors drugs include
 "Ipilimumab", "Atezolizumab", "Durvalumab", "Nivolumab", "Pembrolizumab",
-"Avelumab", "Cemiplimab","REGN 2810", "Tremelimumab"\verb{in these tables. More details on how to use vigibase tables can be found in the vignettes.}vignette("basic_workflow")\verb{, }vignette("descriptive")\verb{. To build your own tables, use [tb_vigibase()]. See }vignette("build_tables")`.
+"Avelumab", "Cemiplimab","REGN 2810", "Tremelimumab".
+More details on how to use vigibase tables can be found in the vignettes.
+\code{vignette("basic_workflow")}, \code{vignette("descriptive")}.
+To build your own tables, use \code{\link[=tb_vigibase]{tb_vigibase()}}. See \code{vignette("getting_started")}.
 }
 \examples{
 data(demo_)
-demo_[, .N, by = AgeGroup]
+demo_ |> dplyr::count(AgeGroup)
 }
 \references{
 There is none

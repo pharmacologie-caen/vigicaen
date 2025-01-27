@@ -2,7 +2,7 @@
 % Please edit documentation in R/tb_who.R
 \name{tb_who}
 \alias{tb_who}
-\title{Create main VigiBase ECL tables}
+\title{Create main WHO tables}
 \usage{
 tb_who(path_who)
 }
@@ -18,9 +18,10 @@ and some columns as \code{numeric} (Quantity from ingredient table)
 All other columns are \code{character}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{tb_who()} transform .txt files to .parquet files
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Transform Vigibase WHO .txt files
+to .parquet files
 
-WHODrug is delivered as zipped text files, that you should
+WHODrug is delivered as zipped text files folder, that you should
 transform to a more efficient format. Parquet format from arrow has many advantages:
 It can work with out-of-memory data, which makes it possible to process tables on
 a computer with not-so-much RAM. It is also lightweighted and standard across different

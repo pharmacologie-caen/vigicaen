@@ -19,12 +19,12 @@
 #' immune checkpoint inhibitor cases or immune-related adverse events.
 #' All data shown in these example data are **FAKE**, which means
 #' you shouldn't consider the counts and computations as accurate.
-#' Immune checkpoint inhibitors drugs can include
+#' Immune checkpoint inhibitors drugs include
 #' "Ipilimumab", "Atezolizumab", "Durvalumab", "Nivolumab", "Pembrolizumab",
-#' "Avelumab", "Cemiplimab","REGN 2810", "Tremelimumab"` in these tables.
+#' "Avelumab", "Cemiplimab","REGN 2810", "Tremelimumab".
 #' More details on how to use vigibase tables can be found in the vignettes.
 #' `vignette("basic_workflow")`, `vignette("descriptive")`.
-#' To build your own tables, use [tb_vigibase()]. See `vignette("build_tables")`.
+#' To build your own tables, use [tb_vigibase()]. See `vignette("getting_started")`.
 #'
 #' @docType data
 #'
@@ -125,7 +125,7 @@
 #'
 #' @examples
 #' data(demo_)
-#' demo_[, .N, by = AgeGroup]
+#' demo_ |> dplyr::count(AgeGroup)
 
 "demo_"
 
@@ -135,19 +135,19 @@
 
 #' @rdname demo_
 
-"followup_"
-
-#' @rdname demo_
-
-"ind_"
-
-#' @rdname demo_
-
 "adr_"
 
 #' @rdname demo_
 
 "link_"
+
+#' @rdname demo_
+
+"followup_"
+
+#' @rdname demo_
+
+"ind_"
 
 #' @rdname demo_
 
@@ -271,7 +271,7 @@
 #'
 #' @docType data
 #'
-#' @usage data(meddra_)
+#' @usage data(mp_)
 #'
 #' @format
 #' `mp_` is a data.table with 8 variables and 14146 rows.
@@ -315,7 +315,7 @@
 
 #' Data for the immune checkpoint inhibitors example
 #'
-#' These are a set of data to provide examples on how my library works.
+#' These are a set of data to provide examples on the package.
 #' \itemize{
 #'   \item `smq_sel` is a named list of smq names
 #'   \item `pt_sel` is a named list of pt names

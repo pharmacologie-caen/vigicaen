@@ -1,6 +1,6 @@
 #' Credibility interval limits for the information component
 #'
-#' @description `r lifecycle::badge('stable')` `ic_tail` computes
+#' @description `r lifecycle::badge('stable')` Compute
 #' the Information Component credibility interval, typically the lower end of
 #' the 95% CI, also known as the IC025.
 #'
@@ -10,13 +10,13 @@
 #' (formula is different for interactions)
 #' Do not add `+.5` to `n_obs` and `n_exp` as it is automatically done in the function.
 #' By default, IC025 is computed. Change `p` for different ends.
-#' It may be easier to use [compute_or_abcd()], which internally calls this function.
+#' It may be easier to use [compute_dispro()], which internally calls this function.
 #'
 #' @param n_obs Number of observed cases
 #' @param n_exp Number of expected cases (see Details)
 #' @param p End of chosen credibility interval
 #' @keywords disproportionality ic
-#' @seealso [compute_or_abcd()]
+#' @seealso [compute_dispro()]
 #' @export
 #' @examples
 #'

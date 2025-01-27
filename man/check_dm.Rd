@@ -12,7 +12,7 @@ check_dm(.data, cols)
 \item{cols}{A character vector, name of columns to look at (usually will be \code{d_names}, \code{a_names})}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} check_dm() let you quick check
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Quick check
 that your data management steps through \code{\link{add_adr}}
 or \code{\link{add_drug}} found cases.
 }

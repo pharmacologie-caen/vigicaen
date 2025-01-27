@@ -10,7 +10,9 @@ test_that("finds appropriate counts on a known dataset", {
    Dechallenge1 =
    as.character(c(  1, 4, 2, 1, 2, 2, 1, 3, 2,   4, 1, 1, 2)),
    Dechallenge2 =
-   as.character(c(  1, 2, 1, 1, 3, 2, 4, 1, "-", 3, 2, 2, 3))
+   as.character(c(  1, 2, 1, 1, 3, 2, 4, 1, "-", 3, 2, 2, 3)),
+   tto_mean = 1,
+   range = 1
   )
 
   r1 <- desc_dch(link_dch,
@@ -44,7 +46,9 @@ test_that("works with named arguments and lists", {
     Dechallenge1 =
       as.character(c(  1, 4, 2, 1, 2, 2, 1, 3, 2,   4, 1, 1, 2)),
     Dechallenge2 =
-      as.character(c(  1, 2, 1, 1, 3, 2, 4, 1, "-", 3, 2, 2, 3))
+      as.character(c(  1, 2, 1, 1, 3, 2, 4, 1, "-", 3, 2, 2, 3)),
+    tto_mean = 1,
+    range = 1
   )
 
   drug_choice <-
@@ -90,7 +94,9 @@ test_that("works with vectorization", {
     Dechallenge1 =
       as.character(c(  1, 4, 2, 1, 2, 2, 1, 3, 2,   4, 1, 1, 2)),
     Dechallenge2 =
-      as.character(c(  1, 2, 1, 1, 3, 2, 4, 1, "-", 3, 2, 2, 3))
+      as.character(c(  1, 2, 1, 1, 3, 2, 4, 1, "-", 3, 2, 2, 3)),
+    tto_mean = 1,
+    range = 1
   )
 
   r1 <- desc_dch(link_dch,

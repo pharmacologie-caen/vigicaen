@@ -7,25 +7,24 @@
 desc_rch(.data, demo_data, drug_s = "drug1", adr_s = "adr1")
 }
 \arguments{
-\item{.data}{A \code{\link{link_}} style data.table.}
+\item{.data}{A \code{link} data.table. See \code{\link{link_}}.}
 
 \item{demo_data}{A demo data.table.}
 
-\item{drug_s}{A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}} in a link table.}
+\item{drug_s}{A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}}.}
 
-\item{adr_s}{A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}} in a link table.}
+\item{adr_s}{A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}}.}
 }
 \value{
-A one-row data.table with
+A data.table with one row per drug-adr pair
 \itemize{
+\item \code{drug_s} and \code{adr_s}, same as input.
 \item Counts of \strong{overall}, \strong{rch}, \strong{inf}, and \strong{rec} cases (see details).
-\item Number of cases with a time to onset \code{tto} available in all settings.
-\item Median (interquartile range) time to onset in all settings.
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{desc_rch()}
-computes counts of rechallenge cases, over a set of adr and drug pairs.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Computes counts of rechallenge cases,
+over a set of adr and drug pairs.
 }
 \details{
 Counts are provided at the \strong{case} level (not the drug-adr pair level).

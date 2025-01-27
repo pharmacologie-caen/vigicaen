@@ -12,7 +12,7 @@ reader(file_name, folder)
 \item{folder}{Character string}
 }
 \description{
-Used in tb_main, tb_who, tb_sub
+Used in \code{\link[=tb_vigibase]{tb_vigibase()}}, \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_meddra]{tb_meddra()}}
 }
 \examples{
 

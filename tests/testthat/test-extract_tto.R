@@ -168,7 +168,7 @@ test_that("breaks if tto_mean or range are missing", {
         adr_s = "a_colitis",
         drug_s = "pd1"
       ),
-      "Either tto_mean or range columns are missing. See ?link_",
+      "`.data` is not a `link` table",
       fixed = TRUE
     )
   })
@@ -185,7 +185,7 @@ test_that("breaks if tto_mean or range are missing", {
     extract_tto(.data = wrong_luda2,
                 adr_s = "a_colitis",
                 drug_s = "pd1"),
-    "Either tto_mean or range columns are missing. See ?link_",
+    "`.data` is not a `link` table",
     fixed = TRUE
   )
 })

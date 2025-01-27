@@ -3,13 +3,10 @@
 #' Internal helpers to check argument values.
 #'
 #' @param .data The dataset to check.
-#' @param calling_arg A character string.
-#'   The name of the argument in the calling function (e.g. ".data" for "demo" in
-#'   `add_adr()`, etc.)
 #' @param arg Helper to format the error message.
 #' @param call Helper to format the error message.
 #'
-#' @return An error if the dataset is invalid. Nothing in other cases
+#' @returns An error if the dataset is invalid. Nothing in other cases
 #'
 #' @examples
 #'
@@ -74,6 +71,30 @@ check_data_drug <-
           "{.arg {arg}} is not a {.arg drug} table.",
           "x" = "Missing columns: {missing_cols}",
             ">" = "Supply a {.arg drug} table to {.arg {arg}}. See ?drug_."
+        ),
+        call = call
+      )
+    }
+  }
+
+#' @describeIn data_checkers link checker
+
+check_data_link <-
+  function(.data,
+           arg = rlang::caller_arg(.data),
+           call = rlang::caller_env()) {
+    link_cols <-
+      c("Drug_Id", "Adr_Id", "Dechallenge1", "tto_mean", "range")
+
+    if (!all(link_cols %in% names(.data))) {
+      missing_cols <-
+        link_cols[!link_cols %in% names(.data)]
+
+      cli::cli_abort(
+        c(
+          "{.arg {arg}} is not a {.arg link} table.",
+          "x" = "Missing columns: {missing_cols}",
+          ">" = "Supply a {.arg link} table to {.arg {arg}}. See ?link_."
         ),
         call = call
       )

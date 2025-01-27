@@ -1,6 +1,6 @@
 #' Nice printing of p-values
 #'
-#' @description `r lifecycle::badge('stable')` `nice_p` is a formatting function
+#' @description `r lifecycle::badge('stable')` Formatting function
 #' for consistent p-value reporting.
 #'
 #' You can choose to print the leading zero (e.g. `0.01`) or not

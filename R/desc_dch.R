@@ -1,7 +1,7 @@
 #' Dechallenge descriptive
 #'
-#' @description `r lifecycle::badge('stable')` `desc_dch()`
-#' computes positive dechallenge counts over a set of adr and drug pairs.
+#' @description `r lifecycle::badge('stable')` Computes positive
+#' dechallenge counts over a set of adr and drug pairs.
 #'
 #' @details Counts are provided at the **case** level (not the drug-adr pair level).
 #' Positive dechallenge refers to cases where drug was withdrawn or
@@ -9,10 +9,14 @@
 #' You will need a `link` data.table, see \code{\link{link_}}, on which
 #' you have added drugs and adrs with [add_drug()] and [add_adr()].
 #'
-#' @param .data A \code{\link{link_}} style data.table.
+#' @param .data A `link` data.table.
 #' @param drug_s A character vector, the drug column(s)
 #' @param adr_s A character vector, the adverse drug reaction column(s).
 #' @return A data.table with one row per drug-adr pair.
+#' \itemize{
+#'  \item `drug_s` and `adr_s`, same as input
+#'  \item `pos_dch`, number of positive dechallenge cases
+#'  }
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #' @keywords drug-adr pair, descriptive
@@ -24,13 +28,11 @@
 #'   link_ |>
 #'   add_drug(
 #'     d_code = ex_$d_groups_drecno,
-#'     drug_data = drug_,
-#'     data_type = "link"
+#'     drug_data = drug_
 #'   ) |>
 #'   add_adr(
 #'     a_code = ex_$a_llt,
-#'     adr_data = adr_,
-#'     data_type = "link"
+#'     adr_data = adr_
 #'   )
 #'
 #'
@@ -51,6 +53,8 @@ desc_dch <-
            drug_s = "drug1",
            adr_s = "adr1"
            ) {
+
+    check_data_link(.data)
 
     # dechallenge1_label <- data.frame(
     #   Dechallenge1 = as.character(1:6),

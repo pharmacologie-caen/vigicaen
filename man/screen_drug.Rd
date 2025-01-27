@@ -7,11 +7,9 @@
 screen_drug(.data, mp_data, freq_threshold = NULL, top_n = NULL)
 }
 \arguments{
-\item{.data}{A \code{data.table} containing drug data,
-including columns \code{DrecNo} for drug identifiers and \code{UMCReportId}
-for unique report identifiers.}
+\item{.data, }{An \code{drug} data.table. See \code{\link{drug_}}}
 
-\item{mp_data}{An MP \code{data.table} containing \code{DrecNo} and \code{drug_name} mappings.}
+\item{mp_data}{An \code{MP} data.table. See \code{\link{mp_}}}
 
 \item{freq_threshold}{A numeric value indicating the minimum
 frequency (as a proportion) of cases where a drug must appear

@@ -1,21 +1,24 @@
 #' Summarise categorical variables
 #'
-#' @description `r lifecycle::badge('experimental')`
-#' `desc_facvar()` will summarize categorical data and let you handle output format.
+#' @description `r lifecycle::badge('stable')` Summarize categorical data and
+#' handle output format.
 #'
 #' @details Many other packages provide tools to summarize data. This one is just
 #' the package author's favorite.
-#' Valid format options should include `n_` (number of patients with the
-#' categorical variable at said level), `N_` (number of patients with an
-#' available value for this variable), and `pc_`, percentage between n and N.
-#' The format argument should contain at least the words "n", and "N",
-#' and optionally the word "pc".
+#' Important `format` inputs are
+#' \itemize{
+#' \item `n_` number of patients with the categorical variable at said level
+#' \item `N_` the first quartile number of patients with an available value for this variable
+#' \item `pc_` percentage of n / N
+#' }
+#' The format argument should contain at least the words "n_", "N_",
+#' and optionally "pc_".
 #' `ncat_max` ensures that you didn't provided a continuous
-#' variable to `desc_facvar()`. If you have many levels for one of your variables,
+#' variable to [desc_facvar()]. If you have many levels for one of your variables,
 #' set to `Inf` or high value.
 #' Equivalent for continuous data is [desc_cont()].
 #'
-#' @param .data A data.frame, where vf are column names of categorical variables
+#' @param .data A data.frame, where `vf` are column names of categorical variables
 #' @param vf A character vector
 #' @param format A character string, formatting options.
 #' @param digits A numeric. Number of digits for the percentage (passed to interval formatting function).
@@ -90,6 +93,17 @@ desc_facvar <-
 
     # ---- number of levels checker ----
 
+    # lev_check <- function(one_var){
+    #   n_lev <-
+    #     length(unique(.data[[one_var]]))
+    #
+    #   if(n_lev > ncat_max){
+    #     stop(paste0("too many levels detected in ", one_var, ", see details."))
+    #   }
+    # }
+    #
+    # purrr::map(vf, lev_check)
+
     lev_check <- function(one_var){
       n_lev <-
         length(unique(.data[[one_var]]))
@@ -99,7 +113,29 @@ desc_facvar <-
       }
     }
 
-    purrr::map(vf, lev_check)
+    lev_length <-
+      vf |>
+      purrr::map(function(one_var)
+        length(unique(.data[[one_var]]))
+        ) |>
+      purrr::list_c() |>
+      rlang::set_names(vf)
+
+    if(any(lev_length > ncat_max)){
+
+      oob_vars <-
+        lev_length[lev_length > ncat_max]
+
+      cli_abort(
+        c("Too many levels detected in: {names(oob_vars)}",
+          "x" = paste0(
+            "Number of levels: {oob_vars} ",
+            "exceeded {.arg ncat_max}({ncat_max})"),
+          "i" = "Did you pass a continuous variable to {.code desc_facvar()}?",
+          ">" = "Set {.arg ncat_max} to suppress this error."
+      )
+      )
+    }
 
     # ---- formatting arguments ----
 

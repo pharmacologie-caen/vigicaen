@@ -4,13 +4,14 @@
 #' an Information Component plot and
 #' a Time to Onset plot for a given drug-adr pair.
 #'
-#' @details The output can be exported. Time to onset data are bounded between
+#' @details See `vignette("routine_pharmacovigilance")` for examples.
+#' The output can be exported. Time to onset data are bounded between
 #' 1 day and 10 years. Data outside this range are reassigned a 1 day and 10
 #' years value, respectively.
 #' The function only works if there is one item in `d_code` and `a_code`.
 #' If you are working on a specific case, you can provide a `case_tto` value.
 #' This value will be displayed on the Time to Onset plot.
-#' If you're demo table was filtered on speicfic cases (e.g. older adults,
+#' If you're demo table was filtered on specific cases (e.g. older adults,
 #' a subset of all drugs), then you may want to indicate this setting on the
 #' plot legend, with arg `analysis_setting`.
 #'
@@ -204,9 +205,10 @@ vigi_routine <-
 
     res_ic <-
       demo_data |>
-      compute_or_abcd(
+      compute_dispro(
         y = a_name,
-        x = d_name
+        x = d_name,
+        export_raw_values = TRUE
       )
 
     # ---- build link ----

@@ -1,7 +1,7 @@
 #' Compute (r)OR from a model summary
 #'
-#' @description `r lifecycle::badge('stable')` compute_or_mod() computes
-#' and formats Odds-Ratio from a model summary.
+#' @description `r lifecycle::badge('stable')` Compute and format Odds-Ratio
+#' from a model summary.
 #'
 #' @details Helper to compute and format Odds-Ratio based on
 #' `summary(glm)$coefficients`, or any equivalent in other modelling packages.
@@ -22,7 +22,7 @@
 #' @returns A data.table with OR, confidence intervals (at `1 - alpha`),
 #' significance (`low_ci > 1`) and (optionally) p-value.
 #' @keywords disproportionality
-#' @seealso [compute_or_abcd()], [add_drug()], [add_adr()]
+#' @seealso [compute_dispro()], [add_drug()], [add_adr()]
 #' @export
 #' @examples
 #'

@@ -19,17 +19,18 @@ tb_subset(
 
 \item{subset_var}{One of \code{"drecno"}, \code{"medprod_id"}, \code{"meddra_id"}, \code{"age"}}
 
-\item{sv_selection}{A vector containing the appropriate type of data (according to the method, see details)}
+\item{sv_selection}{A named list or a vector containing the appropriate ids (according to the method, see details)}
 
 \item{rm_suspdup}{A logical. Should suspected duplicates be removed? TRUE by default}
 }
 \value{
-Parquet files in the output directory. All files from Vigibase ECL
-are returned and subset-ed.
+Parquet files in the output directory. All files from a
+vigibase ECL main folder are returned subsetted
+(including suspectedduplicates).
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{tb_subset()} creates
-subsets of the VigiBase ECL dataset
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Create a subset of the VigiBase
+ECL datasets
 }
 \details{
 You must select a subset variable with \code{subset_var} and provide
@@ -41,7 +42,7 @@ Available \code{subset_var} :
 \item \code{meddra_id} will use MedDRA_Id, subset from \code{adr}. (see \code{\link[=get_llt_soc]{get_llt_soc()}} or See \code{\link[=get_llt_smq]{get_llt_smq()}}).
 \item \code{age} will use AgeGroup from \code{demo}. See below.
 }
-Age groups are as follows:
+Age groups ids are as follows:
 \itemize{
 \item 1 0 - 27 days
 \item 2 28 days to 23 months
@@ -53,15 +54,18 @@ Age groups are as follows:
 \item 8 >= 75 years
 \item 9 Unknown
 }
+Example: To work with patients aged 18 to 74, provide \code{c(5, 6, 7)}
+as \code{sv_selection}.
+
 Use \code{\link[=dt_parquet]{dt_parquet()}} to load the tables afterward.
 }
 \examples{
 ## Extract all colitis cases
 
 # Locate your input directory
-# wd_in <- "/your_main_vigibase_files/"
+# wd_in <- "../vigibase_ecl/main/"
 # Choose a (close) directory to export to (it doesnt have to exist before you call it)
-# wd_out <- "/your_main_vigibase_files/this_place_is_fine/"
+# wd_out <- "../vigibase_ecl/main/subset/"
 
 # For the example, we create tables in a directory that should be replaced by
 # your own directory containing the entire database.
@@ -82,14 +86,14 @@ mini_data <- rlang::list2(
     data.table(
       UMCReportId = c(1, 2, 3, 4),
       Drug_Id = c("d1", "d2", "d3", "d4"),
-      DrecNo = c("dr1", "dr2", "dr3", "dr4"),
-      MedicinalProd_Id = c("mp1", "mp2", "mp3", "mp4")
+      DrecNo = c(133138448, 133138448, 111841511, 111841511),
+      MedicinalProd_Id = c(25027716, 97354576, 104264760, 37484408)
     ),
   adr  =
     data.table(
       UMCReportId = c(1, 2, 3, 4),
       Adr_Id = c("a1", "a2", "a3", "a4"),
-      MedDRA_Id = c("m1", "m2", "m3", "m4")
+      MedDRA_Id = c(110049083, 31672047, 146319904, 72535511)
     ),
   link =
     data.table(
@@ -129,33 +133,36 @@ mini_data <- rlang::list2(
       )
 
   )
+
 # back to tb_subset, you should select a subset_var and corresponding data
 
 # Subset on adr colitis codes
-sv_selection <-
-  c("m1", "m2")
 
-# You can imagine "m1", and "m2" are colitis IDs,
-# obtained from get_llt_soc().
+adr_llt <-
+ list(
+   colitis = "Colitis"
+   ) |>
+   get_llt_soc(term_level = "pt", meddra_)
+
 
 wd_out <- paste0(wd_in, "/", "colitis_subset", "/")
 
 tb_subset(wd_in, wd_out,
           subset_var = "meddra_id",
-          sv_selection = sv_selection)
+          sv_selection = adr_llt)
 
 # Subset on drug codes
 
- sv_selection <-
-    c("dr3", "dr4")
-
-# Same here, obtained from get_drecno()
+ d_drecno <-
+   list(
+    ipi = "ipilimumab") |>
+    get_drecno(mp = mp_)
 
 wd_out <- paste0(wd_in, "/", "nivolumab_subset", "/")
 
 tb_subset(wd_in, wd_out,
           subset_var = "drecno",
-          sv_selection = sv_selection)
+          sv_selection = d_drecno)
 
  # Subset on age > 65 year-old
 

@@ -1,0 +1,199 @@
+---
+title: "Interactions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{interactions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+options(rmarkdown.html_vignette.check_title = FALSE)
+```
+
+```{r setup}
+library(vigicaen)
+library(rlang)
+library(dplyr)
+```
+
+
+# Interactions
+
+## Introduction
+
+It is possible to explore interactions between drugs on
+an adr reporting.
+
+This tutorial does not aim at covering the concepts underlying
+interactions in pharmacovigilance. It is about running them 
+in practice.
+
+We use built-in example dataset.
+
+```{r interaction_dm}
+
+# ---- Tables ---- ####
+
+demo <- demo_
+drug <- drug_
+
+# ---- Dictionary step ---- ####
+
+d_drecno <- ex_$d_drecno
+a_llt <- ex_$a_llt
+
+# #### Data management #### ####
+
+# ---- Drugs ---- ####
+
+demo <-
+    demo |>
+    add_drug(
+      d_code = d_drecno,
+      drug_data = drug_
+    ) 
+
+# ---- Adrs ---- ####
+
+demo <- 
+  demo |>
+    add_adr(
+      a_code = a_llt,
+      adr_data = adr_
+    )
+
+# ---- Sex ---- ####
+
+demo <- 
+  demo |> 
+  mutate(
+    sex = case_when(Gender == "1" ~ 1,
+                    Gender == "2" ~ 2,
+                    TRUE ~ NA_real_)
+    )
+```
+
+## Additive interactions
+
+### Multivariate analysis
+
+Additive effect of two covariates can be obtained by multiplying 
+the Odds-Ratio of each.
+
+```{r mod_inter}
+mod3 <- glm(a_colitis ~ ipilimumab + sex,
+            data = demo,
+            family = "binomial")
+
+mod_or <- 
+  compute_or_mod(
+  summary(mod3)$coefficients,
+      estimate = Estimate,
+    std_er = Std..Error
+  ) |> select(rn, orl, ci, up_ci)
+
+mod_or
+```
+
+```{r echo=FALSE}
+ror_ipi <- mod_or[rn == "ipilimumab", orl]
+ror_sex <- mod_or[rn == "sex", orl]
+```
+With reporting Odds-Ratio of ipilimumab being `r ror_ipi`
+and the reporting Odds-Ratio of sex being `r ror_sex`, 
+the additive effect of both is `r ror_ipi` * `r ror_sex`.
+
+### Subgroup comparisons
+
+Some way to approach multiplicative interactions is to compare
+the disproportionality signal in subgroups.
+
+The `compute_dispro()` function can be used for these analyses,
+assuming the initial dataset is filtered on the appropriate
+subgroup.
+
+Say we want to investigate the interaction between ipilimumab
+and nivolumab and colitis reporting.
+
+```{r}
+demo |> 
+  filter(nivolumab == 1) |> 
+  compute_dispro(
+    y = "a_colitis",
+    x = "ipilimumab"
+    )
+```
+The overall analysis implies to perform additional analysis in
+different settings.
+
+In our example:
+
+-   If ipilimumab alone leads to an overreporting of colitis
+-   If nivolumab, among ipilimumab cases, leads to an overreporting of colitis
+-   If the combination ipilimumab + nivolumab versus any control
+(or the whole dataset) increases the notifications of colitis.
+
+Both IC and ROR can be used here.
+
+## Statistical interactions {#inter_stat}
+
+### Logistic regression model
+
+The true statistical interaction is obtained with the following
+model
+
+```{r}
+mod4 <- glm(a_colitis ~ ipilimumab + sex + ipilimumab * sex,
+            data = demo,
+            family = "binomial")
+
+compute_or_mod(
+  summary(mod4)$coefficients,
+  estimate = Estimate,
+  std_er = Std..Error
+)
+```
+
+### Bayesian Information Component, `compute_interaction()`
+
+The formula for the interaction between 3 variables 
+($y$, the event of interest, $x1$ and $x2$,
+two potential explanatory factors) 
+in information component is
+
+$log_2\frac{n_{y, x1, x2}}{n.expected_{interaction}}$
+
+with $n.expected_{interaction}$ equal to
+
+$\frac{n_{x1, x2} * n_{y, x1} * n_{y, x2} * n.total}{n_{x1} * n_{x2} * n_y}$
+
+The parameters are read as follows
+
+| Parameter       | Case                                                                      |
+|-----------------|-------------------------------------------------------|
+| $n_{x1}$        | number of cases reporting x1                                              |
+| $n_{x1, x2}$    | number of cases reporting x1 **AND** x2                                    |
+| $n_{y, x1, x2}$ | number of cases reporting x1 **AND** x2 **AND** y                           |
+| $n.total$       | total number of cases in the study population  |
+
+The credibility interval is calculated as for the usual IC.
+
+`compute_interaction()` produces this interaction statistic.
+
+```{r compute_int}
+
+demo |>
+  compute_interaction(
+    y = "a_colitis",
+    x = "ipilimumab",
+    z = "nivolumab"
+  )
+
+```
+
+

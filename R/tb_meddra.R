@@ -1,6 +1,6 @@
 #' Create MedDRA tables
 #'
-#' @description `r lifecycle::badge('stable')` `tb_meddra()` transforms .ascii
+#' @description `r lifecycle::badge('stable')` Transform MedDRA .ascii
 #' files to .parquet files
 #'
 #' MedDRA is delivered as ascii files, that you should

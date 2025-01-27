@@ -9,15 +9,19 @@ dt_parquet(path_base, name = NULL, ext = ".parquet", in_memory = TRUE)
 \arguments{
 \item{path_base}{A character string, providing the path to read from.}
 
-\item{name}{A character string, the file name.}
+\item{name}{Optional. A character string. The file name (if absent from \code{path_base}).}
 
-\item{ext}{A character string, optional, specifying the file extension.}
+\item{ext}{Optional. A character string. The file extension.}
 
 \item{in_memory}{Logical, should data be loaded in memory?}
 }
+\value{
+A data.table if \code{in_memory} is set to \code{TRUE},
+a parquet Table if \code{in_memory} is set to \code{FALSE}.
+}
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \code{dt_parquet()} will
-load data IN- our OUT- of memory. File extension can be omitted.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Load data IN- our OUT- of memory.
+File extension can be omitted.
 }
 \details{
 Output is a data.table.
@@ -26,6 +30,9 @@ This function is wrapping \code{arrow::read_parquet()}, \code{dplyr::collect()} 
 \code{data.table::as.data.table()} altogether.
 If you want to load \strong{OUT} of memory, set arg \code{in_memory} to FALSE.
 \strong{Be careful that doing so will change the function output format}.
+For this latter case, the output is not a data.table, so there is no practical
+benefit as compared to using \code{arrow::read_parquet()} directly, with
+\code{as_data_frame} = FALSE.
 }
 \examples{
 

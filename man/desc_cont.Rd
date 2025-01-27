@@ -13,7 +13,7 @@ desc_cont(
 )
 }
 \arguments{
-\item{.data}{A data.frame, where vc are column names of continuous variables}
+\item{.data}{A data.frame, where \code{vc} are column names of continuous variables}
 
 \item{vc}{A character vector, list of column names. Should only contain continuous variables}
 
@@ -36,8 +36,8 @@ variable.
 }
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-\code{desc_cont} will summarize continuous data and let you handled output format.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Summarize continuous data and
+handle output format.
 }
 \details{
 Many other packages provide tools to summarize data. This one is just

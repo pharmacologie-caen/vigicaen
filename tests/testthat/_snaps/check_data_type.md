@@ -1,7 +1,37 @@
+# cli format and basic use work
+
+    Code
+      check_data_link(drug_valid, ".data")
+    Condition
+      Error:
+      ! `.data` is not a `link` table.
+      x Missing columns: Adr_Id, Dechallenge1, tto_mean, and range
+      > Supply a `link` table to `.data`. See ?link_.
+
+---
+
+    Code
+      check_data_link(adr_valid, ".data")
+    Condition
+      Error:
+      ! `.data` is not a `link` table.
+      x Missing columns: Drug_Id, Dechallenge1, tto_mean, and range
+      > Supply a `link` table to `.data`. See ?link_.
+
+---
+
+    Code
+      check_data_link(demo_valid, ".data")
+    Condition
+      Error:
+      ! `.data` is not a `link` table.
+      x Missing columns: Drug_Id, Adr_Id, Dechallenge1, tto_mean, and range
+      > Supply a `link` table to `.data`. See ?link_.
+
 # format is ok [plain]
 
     Code
-      vigicaen:::check_data_drug(data_invalid, arg = "x")
+      check_data_drug(data_invalid, arg = "x")
     Condition
       Error:
       ! `x` is not a `drug` table.
@@ -11,12 +41,22 @@
 ---
 
     Code
-      vigicaen:::check_data_adr(data_invalid, arg = "x")
+      check_data_adr(data_invalid, arg = "x")
     Condition
       Error:
       ! `x` is not an `adr` table.
       x Missing columns: Adr_Id, MedDRA_Id, and Outcome
       > Supply an `adr` table to `x`. See ?adr_.
+
+---
+
+    Code
+      check_data_link(data_invalid, arg = "x")
+    Condition
+      Error:
+      ! `x` is not a `link` table.
+      x Missing columns: Drug_Id, Adr_Id, Dechallenge1, tto_mean, and range
+      > Supply a `link` table to `x`. See ?link_.
 
 ---
 
@@ -32,7 +72,7 @@
 # format is ok [ansi]
 
     Code
-      vigicaen:::check_data_drug(data_invalid, arg = "x")
+      check_data_drug(data_invalid, arg = "x")
     Condition
       [1m[33mError[39m:[22m
       [1m[22m[33m![39m `x` is not a `drug` table.
@@ -42,12 +82,22 @@
 ---
 
     Code
-      vigicaen:::check_data_adr(data_invalid, arg = "x")
+      check_data_adr(data_invalid, arg = "x")
     Condition
       [1m[33mError[39m:[22m
       [1m[22m[33m![39m `x` is not an `adr` table.
       [31mx[39m Missing columns: Adr_Id, MedDRA_Id, and Outcome
       > Supply an `adr` table to `x`. See ?adr_.
+
+---
+
+    Code
+      check_data_link(data_invalid, arg = "x")
+    Condition
+      [1m[33mError[39m:[22m
+      [1m[22m[33m![39m `x` is not a `link` table.
+      [31mx[39m Missing columns: Drug_Id, Adr_Id, Dechallenge1, tto_mean, and range
+      > Supply a `link` table to `x`. See ?link_.
 
 ---
 
@@ -63,7 +113,7 @@
 # format is ok [unicode]
 
     Code
-      vigicaen:::check_data_drug(data_invalid, arg = "x")
+      check_data_drug(data_invalid, arg = "x")
     Condition
       Error:
       ! `x` is not a `drug` table.
@@ -73,12 +123,22 @@
 ---
 
     Code
-      vigicaen:::check_data_adr(data_invalid, arg = "x")
+      check_data_adr(data_invalid, arg = "x")
     Condition
       Error:
       ! `x` is not an `adr` table.
       ✖ Missing columns: Adr_Id, MedDRA_Id, and Outcome
       → Supply an `adr` table to `x`. See ?adr_.
+
+---
+
+    Code
+      check_data_link(data_invalid, arg = "x")
+    Condition
+      Error:
+      ! `x` is not a `link` table.
+      ✖ Missing columns: Drug_Id, Adr_Id, Dechallenge1, tto_mean, and range
+      → Supply a `link` table to `x`. See ?link_.
 
 ---
 
@@ -94,7 +154,7 @@
 # format is ok [fancy]
 
     Code
-      vigicaen:::check_data_drug(data_invalid, arg = "x")
+      check_data_drug(data_invalid, arg = "x")
     Condition
       [1m[33mError[39m:[22m
       [1m[22m[33m![39m `x` is not a `drug` table.
@@ -104,12 +164,22 @@
 ---
 
     Code
-      vigicaen:::check_data_adr(data_invalid, arg = "x")
+      check_data_adr(data_invalid, arg = "x")
     Condition
       [1m[33mError[39m:[22m
       [1m[22m[33m![39m `x` is not an `adr` table.
       [31m✖[39m Missing columns: Adr_Id, MedDRA_Id, and Outcome
       → Supply an `adr` table to `x`. See ?adr_.
+
+---
+
+    Code
+      check_data_link(data_invalid, arg = "x")
+    Condition
+      [1m[33mError[39m:[22m
+      [1m[22m[33m![39m `x` is not a `link` table.
+      [31m✖[39m Missing columns: Drug_Id, Adr_Id, Dechallenge1, tto_mean, and range
+      → Supply a `link` table to `x`. See ?link_.
 
 ---
 

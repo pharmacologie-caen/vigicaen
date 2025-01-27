@@ -1,5 +1,3 @@
-library(testthat)
-
 test_that(
   "result is accurate", {
     df <-
@@ -276,16 +274,14 @@ test_that(
         age = c(60, 50, 56, 49, 75, 69, 85)
       )
 
-    expect_error(
+    expect_snapshot(error = TRUE, {
       desc_facvar(vf = c("age"),
                  .data = df,
                  format = "n_/N_ (pc_%)",
                  dig = 0,
                  pad_width = 0,
                  ncat_max = 3)
-      ,
-      "too many levels detected"
-    )
+    })
 
 
   }

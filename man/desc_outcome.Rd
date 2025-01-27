@@ -7,7 +7,7 @@
 desc_outcome(.data, drug_s = "drug1", adr_s = "adr1")
 }
 \arguments{
-\item{.data, }{An \code{\link{adr_}} style data.table.}
+\item{.data, }{An \code{adr} data.table. See \code{\link{adr_}}}
 
 \item{drug_s}{A character vector, the drug column(s)}
 
@@ -15,16 +15,20 @@ desc_outcome(.data, drug_s = "drug1", adr_s = "adr1")
 }
 \value{
 A data.table with one row per drug-adr pair.
+\itemize{
+\item \code{drug_s} and \code{adr_s}, same as input
+\item \code{n_cas}, number of cases for each category
+\item \code{out_label}, the worst outcome for this drug-adr pair
+}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \code{desc_outcome()}
-Compute outcome description over a set of adr and drugs.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} Compute
+outcome description over a set of adr and drugs.
 }
 \details{
 You need an \code{adr} data.table.
 Be careful that you cannot directly filter \code{adr} data.table on drugs!
 You first have to add drug columns to \code{adr}, with \code{\link[=add_drug]{add_drug()}}.
-See \code{\link{adr_}}.
 The function reports the worst outcome into consideration for a given case,
 if many are reported.
 Outcomes, from best to worst are:
@@ -37,6 +41,7 @@ Outcomes, from best to worst are:
 \item Died- unrelated to reaction
 \item Died- reaction may be contributory
 }
+See \code{vignette("descriptive")} for more details.
 }
 \examples{
 

@@ -7,7 +7,7 @@
 desc_dch(.data, drug_s = "drug1", adr_s = "adr1")
 }
 \arguments{
-\item{.data}{A \code{\link{link_}} style data.table.}
+\item{.data}{A \code{link} data.table.}
 
 \item{drug_s}{A character vector, the drug column(s)}
 
@@ -15,10 +15,14 @@ desc_dch(.data, drug_s = "drug1", adr_s = "adr1")
 }
 \value{
 A data.table with one row per drug-adr pair.
+\itemize{
+\item \code{drug_s} and \code{adr_s}, same as input
+\item \code{pos_dch}, number of positive dechallenge cases
+}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{desc_dch()}
-computes positive dechallenge counts over a set of adr and drug pairs.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Computes positive
+dechallenge counts over a set of adr and drug pairs.
 }
 \details{
 Counts are provided at the \strong{case} level (not the drug-adr pair level).
@@ -33,13 +37,11 @@ link_ <-
   link_ |>
   add_drug(
     d_code = ex_$d_groups_drecno,
-    drug_data = drug_,
-    data_type = "link"
+    drug_data = drug_
   ) |>
   add_adr(
     a_code = ex_$a_llt,
-    adr_data = adr_,
-    data_type = "link"
+    adr_data = adr_
   )
 
 

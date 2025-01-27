@@ -9,7 +9,7 @@
 #' @param arg Helper to format the error message.
 #' @param call Helper to format the error message.
 #'
-#' @return An error if the dataset is invalid. Nothing in other cases
+#' @return A character vector with corresponding data type. An error in other cases
 #'
 #' @examples
 #'
@@ -18,11 +18,11 @@
 #'
 #'  vigicaen:::query_data_type(drug_valid, ".data")
 #'
-#' @name data_checkers
+#' @name data_query
 
 NULL
 
-#' @describeIn data_checkers drug data checker
+#' @describeIn data_query drug data checker
 
 query_data_type <-
   function(.data,

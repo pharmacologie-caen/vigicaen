@@ -3,9 +3,16 @@
 \name{id_list_checkers}
 \alias{id_list_checkers}
 \alias{check_id_list}
+\alias{check_id_list_numeric}
 \title{Internal id list checkers}
 \usage{
 check_id_list(
+  id_list,
+  arg = rlang::caller_arg(id_list),
+  call = rlang::caller_env()
+)
+
+check_id_list_numeric(
   id_list,
   arg = rlang::caller_arg(id_list),
   call = rlang::caller_env()
@@ -26,7 +33,9 @@ Internal helpers to check id list are appropriate named lists.
 }
 \section{Functions}{
 \itemize{
-\item \code{check_id_list()}: drug list id checker
+\item \code{check_id_list()}: named list checker
+
+\item \code{check_id_list_numeric()}: numeric list id checker
 
 }}
 \examples{

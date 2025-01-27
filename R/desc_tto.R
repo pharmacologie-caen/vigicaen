@@ -12,13 +12,13 @@
 #' Uppsala Monitoring Centre recommends to use only cases where the incertitude
 #' on time to onset is less than **1 day**. You can change this with `tto_time_range`.
 #'
-#' @param .data A \code{\link{link_}} style data.table.
+#' @param .data A `link` data.table. See \code{\link{link_}}.
 #' @param adr_s A character string. The name of the adr column. (see details)
 #' @param drug_s A character string. The name of the drug column. (see details)
 #' @param tto_time_range Incertitude range of Time to onset, in days. Defaults to 1 as recommended by umc
 #' @param ... Additional parameters to be passed to [desc_cont()]. E.g. `format`, `digits`...
 #'
-#' @return A one row data.table with
+#' @return A data.table with one row per drug-adr pair
 #' \itemize{
 #'   \item A descriptive of time to onsets for this combination (column `tto_max`).
 #' }

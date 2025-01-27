@@ -18,6 +18,8 @@ output directory.}
 directory: demo, adr, drug, link, ind, out, srce,
 followup, and the suspdup (suspected duplicates) table.
 Check \code{?demo_} for more information on the tables.
+\item The link table is augmented with \code{tto_mean} and \code{range}, to analyze
+time to onset according to WHo's recommendations (see \code{vignette("descriptive")}.
 \item .parquet files of all other subsidiary tables into the \code{path_sub}
 directory: AgeGroup, Dechallenge, Dechallenge2, Frequency,
 Gender, Notifier, Outcome, Rechallenge, Rechallenge2, Region,
@@ -30,7 +32,7 @@ and some columns as \code{numeric} (TimeToOnsetMin, TimeToOnsetMax)
 All other columns are \code{character}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} \code{tb_vigibase()} transforms .txt
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Transform VigiBase .txt
 files to .parquet files.
 }
 \details{
