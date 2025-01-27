@@ -80,6 +80,30 @@ check_data_drug <-
     }
   }
 
+#' @describeIn data_checkers link checker
+
+check_data_link <-
+  function(.data,
+           arg = rlang::caller_arg(.data),
+           call = rlang::caller_env()) {
+    link_cols <-
+      c("Drug_Id", "Adr_Id", "Dechallenge1", "tto_mean", "range")
+
+    if (!all(link_cols %in% names(.data))) {
+      missing_cols <-
+        link_cols[!link_cols %in% names(.data)]
+
+      cli::cli_abort(
+        c(
+          "{.arg {arg}} is not a {.arg link} table.",
+          "x" = "Missing columns: {missing_cols}",
+          ">" = "Supply a {.arg link} table to {.arg {arg}}. See ?link_."
+        ),
+        call = call
+      )
+    }
+  }
+
 #' @describeIn data_checkers mp checker
 
 check_data_mp <-
