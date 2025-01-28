@@ -5,6 +5,7 @@
 
 [![R-CMD-check](https://github.com/pharmacologie-caen/vigicaen/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pharmacologie-caen/vigicaen/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](Redirect-URL)
+[![codecov](https://codecov.io/gh/pharmacologie-caen/vigicaen/graph/badge.svg?token=BQXVJEWDZG)](https://codecov.io/gh/pharmacologie-caen/vigicaen)
 <!-- badges: end -->
 
 The goal of vigicaen is to provide tools to analyze VigiBase Extract
