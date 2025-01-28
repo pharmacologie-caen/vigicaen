@@ -8,6 +8,9 @@
 [![codecov](https://codecov.io/gh/pharmacologie-caen/vigicaen/graph/badge.svg?token=BQXVJEWDZG)](https://codecov.io/gh/pharmacologie-caen/vigicaen)
 <!-- badges: end -->
 
+> Visit the [package
+> website](https://pharmacologie-caen.github.io/vigicaen/)
+
 The goal of vigicaen is to provide tools to analyze VigiBase Extract
 Case Level.
 
@@ -53,8 +56,8 @@ following requirements:
 
 There are 2 types of users this package is aimed at:
 
-- ![PV -
-  Routine](https://img.shields.io/static/v1?label=PV&message=Routine&color=0f7ba2)
+- [![PV -
+  Routine](https://img.shields.io/badge/PV-Routine-0f7ba2)](https://pharmacologie-caen.github.io/vigicaen/articles/routine_pharmacovigilance.html)
   Routine pharmacovigilance practitioners. These users may not be very
   familiar with R, or statistics in general. They would like to collect
   additional data, when writing pharmacovigilance reports, or working on
@@ -62,8 +65,8 @@ There are 2 types of users this package is aimed at:
   These users will be interested in the “Routine pharmacovigilance”
   vignette, `vignette("routine_pharmacovigilance")`.
 
-- ![PV -
-  Advanced](https://img.shields.io/static/v1?label=PV&message=Advanced&color=43b284)
+- [![PV -
+  Advanced](https://img.shields.io/badge/PV-Advanced-43b284)](https://pharmacologie-caen.github.io/vigicaen/articles/basic_workflow.html)
   Advanced pharmacovigilance researchers. These users must be familiar
   with R and (a bit of) statistics. The will find tools to load tables,
   perform usual data management, identify drug and reaction IDs,
@@ -111,7 +114,7 @@ Good places to start your journey:
   Advanced](https://img.shields.io/badge/PV-Advanced-43b284)](https://pharmacologie-caen.github.io/vigicaen/articles/basic_workflow.html)
   Dive into advanced features `vignette("basic_workflow")`
 
-## Example ![PV - Routine](https://img.shields.io/static/v1?label=PV&message=Routine&color=0f7ba2)
+## Example [![PV - Routine](https://img.shields.io/badge/PV-Routine-0f7ba2)](https://pharmacologie-caen.github.io/vigicaen/articles/routine_pharmacovigilance.html)
 
 You are working on a colitis case reported 150 days after nivolumab
 initiation.
@@ -163,7 +166,7 @@ vigi_routine(
 
 <img src="man/figures/vg.svg" alt="Example of vigi_routine with case data." width="100%" />
 
-## Example ![PV - Advanced](https://img.shields.io/static/v1?label=PV&message=Advanced&color=43b284)
+## Example [![PV - Advanced](https://img.shields.io/badge/PV-Advanced-43b284)](https://pharmacologie-caen.github.io/vigicaen/articles/basic_workflow.html)
 
 You want to perform a disproportionality analysis between nivolumab
 exposure and colitis reporting (reporting odds-ratio `or` and
