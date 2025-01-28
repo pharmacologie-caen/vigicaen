@@ -14,6 +14,7 @@ vigicaen provides a set of tools to facilitate the analysis of the VigiBase Extr
 Useful links:
 \itemize{
   \item \url{https://github.com/pharmacologie-caen/vigicaen}
+  \item \url{https://pharmacologie-caen.github.io/vigicaen/}
   \item Report bugs at \url{https://github.com/pharmacologie-caen/vigicaen/issues}
 }
 

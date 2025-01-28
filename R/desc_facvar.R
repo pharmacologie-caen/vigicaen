@@ -93,26 +93,6 @@ desc_facvar <-
 
     # ---- number of levels checker ----
 
-    # lev_check <- function(one_var){
-    #   n_lev <-
-    #     length(unique(.data[[one_var]]))
-    #
-    #   if(n_lev > ncat_max){
-    #     stop(paste0("too many levels detected in ", one_var, ", see details."))
-    #   }
-    # }
-    #
-    # purrr::map(vf, lev_check)
-
-    lev_check <- function(one_var){
-      n_lev <-
-        length(unique(.data[[one_var]]))
-
-      if(n_lev > ncat_max){
-        stop(paste0("too many levels detected in ", one_var, ", see details."))
-      }
-    }
-
     lev_length <-
       vf |>
       purrr::map(function(one_var)

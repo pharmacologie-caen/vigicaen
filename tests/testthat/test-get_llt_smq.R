@@ -350,4 +350,15 @@ test_that("find_smq works", {
     smq_nomatch$match_exact,
     integer(0) |> rlang::set_names()
   )
+
+  # invalid structure
+
+  smq_invalid <-
+    c("Embolic and thrombotic events, venous (SMQ)",
+      "Embolic and thrombotic events, venous (SMQ)")
+
+  expect_error(
+    find_smq(smq_invalid, smq_list_),
+    "smq.*structure is probably incorrect"
+  )
 })

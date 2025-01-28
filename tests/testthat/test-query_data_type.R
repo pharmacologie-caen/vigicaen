@@ -15,6 +15,14 @@ test_that("cli formatting", {
     Dechallenge1 = 1, TimeToOnsetMin = 1
   )
 
+  invalid_data <- data.frame(
+    UMCReportId = 1
+  )
+
+  expect_snapshot(error = TRUE, {
+    vigicaen:::query_data_type(invalid_data, ".data")
+  })
+
   cli::test_that_cli("format is ok", {
     dtype <- expect_snapshot(vigicaen:::query_data_type(drug_valid, ".data"))
   })
