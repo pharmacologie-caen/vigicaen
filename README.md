@@ -68,7 +68,7 @@ There are 2 types of users this package is aimed at:
 - [![PV -
   Advanced](https://img.shields.io/badge/PV-Advanced-43b284)](https://pharmacologie-caen.github.io/vigicaen/articles/basic_workflow.html)
   Advanced pharmacovigilance researchers. These users must be familiar
-  with R and (a bit of) statistics. The will find tools to load tables,
+  with R and (a bit of) statistics. They will find tools to load tables,
   perform usual data management, identify drug and reaction IDs,
   describe complexe features (**dechallenge, rechallenge**), perform
   disproportionality, and get ready-to-use datasets to apply any
