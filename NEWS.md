@@ -1,3 +1,14 @@
+# vigicaen 0.15.1, 
+
+## New features
+
+* Added a `add_dose()` function, according to tidyverse style
+`add_dose()` creates dynamic columns representing drug doses (in mg)
+#' for specified drugs in a dataset. It calculates daily dose values
+#' based on dose amount, frequency, and their corresponding units.
+#' The function is #' compatible with `demo`, `link`, and `adr` datasets.
+
+
 # vigicaen 0.15.0
 
 ## Breaking changes
