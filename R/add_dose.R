@@ -1,16 +1,19 @@
-#' Add Dose Information to a Dataset (Tidyverse Syntax)
+#' Add Dose in mg to a dataset
 #'
-#' @description `r lifecycle::badge('stable')`
+#' @description `r lifecycle::badge('experimental')`
 #' `add_dose()` creates dynamic columns representing drug doses (in mg)
 #' for specified drugs in a dataset. It calculates daily dose values
 #' based on dose amount, frequency, and their corresponding units.
+#' The function is #' compatible with `demo`, `link`, and `adr` datasets.
 #'
 #' @details
 #' The function identifies drug doses in a dataset by cross-referencing
 #' with a drug data table. Drug codes can be specified using either
 #' DrecNos or MedicinalProd_Id. Doses are filtered based on reputation
-#' bases (suspect, concomitant, or interacting). The function is
-#' compatible with `demo`, `link`, and `adr` datasets.
+#' bases (suspect, concomitant, or interacting).
+#' `d_code` is a named list containing drug codes.
+#' Either drug record numbers (e.g., from [get_drecno()]), or
+#' medicinalprod_ids (e.g., from [get_atc_code()]). Default method is to DrecNos.
 #'
 #' **Important:** Ensure the dataset's structure aligns with the `data_type`
 #' argument to avoid errors.
@@ -19,19 +22,14 @@
 #' are very frequent for posology data. Some results might appear unbelievable due
 #' to these issues and should be carefully reviewed and trimmed accordingly.
 #'
-#' @param .data A dataset used to identify individual reports (typically `demo`).
-#' @param d_code A named list of drug codes (DrecNos or MedicinalProd_Id).
-#' Each list element should correspond to a drug.
-#' @param d_names A character vector of names for the drug columns
-#' (defaults to `names(d_code)`).
-#' @param repbasis A character string indicating the reputation bases to include:
-#' - "s" for suspect
-#' - "c" for concomitant
-#' - "i" for interacting
-#' Defaults to "sci" (all reputation bases).
-#' @param method The type of drug code provided. Either "DrecNo" or
-#' "MedicinalProd_Id".
-#' @param drug_data A data frame containing drug data (typically `drug`).
+#' @param .data The dataset used to identify individual reports (usually, it is `demo`)
+#' @param d_code A named list of drug codes (DrecNos or MPI). See Details.
+#' @param d_names A character vector. Names for drug columns (must be the same length as d_code), default to `names(d_code)`
+#' @param repbasis Suspect, interacting and/or concomitant.
+#' Type initial of those you wish to select ("s" for suspect, "c" for concomitant
+#' and "i" for interacting ; default to all, e.g. "sci").
+#' @param method A character string. The type of drug code (DrecNo or MedicinalProd_Id). See details.
+#' @param drug_data A data.frame containing the drug data (usually, it is `drug`)
 #' @param data_type A character string indicating the dataset type:
 #' - "demo" for a demographics dataset
 #' - "link" for a linkage dataset
@@ -53,7 +51,6 @@
 #'   repbasis = "sci",
 #'   method = "DrecNo",
 #'   drug_data = drug,
-#'   data_type = "demo"
 #' )
 #'
 #' # Example: Restricting to "suspect" reputation base
@@ -64,7 +61,6 @@
 #'   repbasis = "s",
 #'   method = "DrecNo",
 #'   drug_data = drug,
-#'   data_type = "demo"
 #' )
 
 
@@ -76,24 +72,15 @@ add_dose <-
            d_names = names(d_code),
            repbasis = "sci",
            method = c("DrecNo", "MedicinalProd_Id"),
-           drug_data,
-           data_type = c("demo", "link", "adr")
+           drug_data
   )
   {
-    method <- match.arg(method)
-    data_type <- match.arg(data_type)
+    method <- rlang::arg_match(method)
 
-    # Validate data type and dataset structure
-    if(data_type == "demo" &&
-       any(c("Drug_Id", "Adr_Id") %in% names(.data))){
-      stop("The dataset has Drug_Id or Adr_Id columns (like a `link` dataset). Yet data_type is set to `demo`. Please set data_type to `link` or use a `demo` dataset")
-    } else if(data_type == "link" &&
-              !all(c("Drug_Id", "Adr_Id") %in% names(.data))){
-      stop("The dataset does not have Drug_Id and Adr_Id columns, (as a `link` dataset would). Yet data_type is set to `link`. Please set data_type to `demo` or use a `link` dataset")
-    } else if(data_type == "adr" &&
-              !all(c("Adr_Id", "MedDRA_Id", "Outcome") %in% names(.data))){
-      stop("The dataset does not have Adr_Id, MedDRA_Id, and/or Outcome columns, (as an `adr` dataset would). Yet data_type is set to `adr`. Please set data_type accordingly.")
-    }
+    check_data_drug(drug_data, "drug_data")
+
+    data_type <-
+      query_data_type(.data, ".data")
 
     basis_sel <- c(
       if (grepl("s", repbasis)) { 1 },
@@ -153,29 +140,55 @@ add_dose <-
             FrequencyU == "801" ~ 1 / 365.25,
             TRUE ~ NA_real_
           ),
-          daily_dose_in_mg = (Amount * multiplicator_amount * multiplicator_frequency * Frequency
-        )) |>
-        dplyr::filter(!is.na(daily_dose_in_mg)) |>
+          dose_mg_per_day = (Amount * multiplicator_amount * multiplicator_frequency * Frequency
+          )) |>
+        dplyr::filter(!is.na(dose_mg_per_day)) |>
         dplyr::group_by(t_id) |>
-        dplyr::slice_max(daily_dose_in_mg, with_ties = FALSE) |>
+        dplyr::slice_max(dose_mg_per_day, with_ties = FALSE) |>
         dplyr::ungroup()|>
-        dplyr::select(t_id, daily_dose_in_mg) # Only keep relevant columns
+        dplyr::select(t_id, dose_mg_per_day) # Only keep relevant columns
     })
 
-    # Add dynamic dose columns to .data
+
     # Add dynamic dose columns to .data
     for (i in seq_along(d_code)) {
       drug_data_t <- t_ids[[i]]
-      drug_name <- paste0("daily_doses_", names(d_code)[i], "_in_mg")
+      drug_name <- paste0(d_names[i], "_dose_mg_per_day")
       .data <- .data |>
         dplyr::left_join(drug_data_t, by = c("UMCReportId" = "t_id")) |>
-        dplyr::mutate(!!drug_name := ifelse(is.na(daily_dose_in_mg), NA_real_, daily_dose_in_mg)) |>
-        dplyr::select(-daily_dose_in_mg) # Remove intermediate column
+        dplyr::mutate(!!drug_name := ifelse(is.na(dose_mg_per_day), NA_real_, dose_mg_per_day)) |>
+        dplyr::select(-dose_mg_per_day) # Remove intermediate column
+    }
+
+    # Count the number of rows with a valid dose in mg/day for each drug
+    dose_counts <- purrr::map_dfr(d_names, ~ {
+      drug_col <- paste0( .x, "_dose_mg_per_day")
+      count <- sum(!is.na(.data[[drug_col]]))
+      data.frame(drug = .x, count = count)
+    })
+
+    # Display results
+    if (sum(dose_counts$count) == 0) {
+      cli::cli_alert_danger("No dose data in mg/day were found for any drug (other schemas not supported in add_dose()).")
+    } else {
+      cli::cli_alert_info("Number of lines with a posology in mg/day found per drug:")
+      # Display each drug with its corresponding count
+      purrr::walk(dose_counts$drug, ~{
+        count <- dose_counts$count[dose_counts$drug == .]
+        cli::cli_alert_info("{.x}: {count} lines with a posology in mg/day")
+      })
     }
 
     # Display a message about checking results and trimming
-    message("Important: Please check the results for posology, as coding issues are common. Some results may seem unbelievable and should be carefully reviewed and trimmed.")
+    cli::cli_alert_info("Important: Please check the results for posology, as coding issues are common. Some results may seem unbelievable and should be carefully reviewed and trimmed.")
 
+    dose_cols <- .data %>% dplyr::select(contains("dose_mg_per_day"))
+
+    # Check if any of the columns have non-NA values
+    if (any(purrr::map_lgl(dose_cols, ~ any(!is.na(.))))) {
+      cli::cli_alert_info("Summary of added dose columns:")
+      print(summary(dose_cols))
+    }
 
     # Return final data
     .data
