@@ -30,12 +30,7 @@
 #' and "i" for interacting ; default to all, e.g. "sci").
 #' @param method A character string. The type of drug code (DrecNo or MedicinalProd_Id). See details.
 #' @param drug_data A data.frame containing the drug data (usually, it is `drug`)
-#' @param data_type A character string indicating the dataset type:
-#' - "demo" for a demographics dataset
-#' - "link" for a linkage dataset
-#' - "adr" for an adverse drug reaction dataset
 #'
-#' Defaults to "demo".
 #'
 #' @keywords data_management drug doses
 #' @export
@@ -50,7 +45,7 @@
 #'   d_names = "paracetamol",
 #'   repbasis = "sci",
 #'   method = "DrecNo",
-#'   drug_data = drug,
+#'   drug_data = drug
 #' )
 #'
 #' # Example: Restricting to "suspect" reputation base
@@ -60,7 +55,7 @@
 #'   d_names = "paracetamol_suspected",
 #'   repbasis = "s",
 #'   method = "DrecNo",
-#'   drug_data = drug,
+#'   drug_data = drug
 #' )
 
 
