@@ -39,14 +39,18 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/basic_workflow.html">Basic Workflow</a></li>
-    <li><a class="dropdown-item" href="../articles/descriptive.html">Descriptive</a></li>
-    <li><a class="dropdown-item" href="../articles/getting_started.html">Getting started</a></li>
-    <li><a class="dropdown-item" href="../articles/interactions.html">Interactions</a></li>
+<li><a class="dropdown-item" href="../articles/getting_started.html">Getting started</a></li>
+    <li><a class="dropdown-item" href="../articles/basic_workflow.html">Basic Workflow</a></li>
     <li><a class="dropdown-item" href="../articles/routine_pharmacovigilance.html">Routine pharmacovigilance</a></li>
-    <li><a class="dropdown-item" href="../articles/routine_script.html">Routine Script</a></li>
-    <li><a class="dropdown-item" href="../articles/template_dictionary.html">Script template: dictionary</a></li>
-    <li><a class="dropdown-item" href="../articles/template_main.html">Script template: main</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Going further</h6></li>
+    <li><a class="dropdown-item" href="../articles/descriptive.html">Descriptive</a></li>
+    <li><a class="dropdown-item" href="../articles/interactions.html">Interactions</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Script templates</h6></li>
+    <li><a class="dropdown-item" href="../articles/template_dictionary.html">Dictionary</a></li>
+    <li><a class="dropdown-item" href="../articles/template_main.html">Data management and disproportionality</a></li>
+    <li><a class="dropdown-item" href="../articles/template_routine.html">Routine</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -77,13 +81,11 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/pharmacologie-caen/vigicaen" class="external-link">vigicaen</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="purpose">Purpose<a class="anchor" aria-label="anchor" href="#purpose"></a>
 </h2>
-<p>Have you subscribed to VigiBase Extract Case Level, WHODrug and
-MedDRA?</p>
+<p>Have you subscribed to <a href="https://who-umc.org/" class="external-link">VigiBase
+Extract Case Level, WHODrug</a> and <a href="https://www.meddra.org/" class="external-link">MedDRA</a>?</p>
 <p>Congratulations! You’ve made it half way to explore VigiBase.</p>
 <p>Now, you need to process those large text/ascii files into R readable
 files. This is the purpose of this vignette.</p>
@@ -131,20 +133,21 @@ need to unzip <strong>sub-folders</strong>, inside the main zip
 file).</p>
 <p>That will give you a folder structure like this:</p>
 <ul>
-<li>/vigibase_ecl</li>
+<li>/vigibase_month_year (replace with your version)</li>
 <li>…/main</li>
 <li>…/who</li>
 <li>…/sub</li>
 </ul>
 <p>Gather your meddra files into a single folder, ideally close to the
-vigibase_ecl one.</p>
+vigibase_month_year one.</p>
 <ul>
-<li>/meddra</li>
+<li>/meddra_vx (replace vx)</li>
 </ul>
-<p>Although the names can be longer (e.g. “main_sep_1_24”), we
-<strong>strongly</strong> suggest you shorten them to <code>main</code>,
-<code>who</code>, <code>sub</code> for Vigibase, and <code>meddra</code>
-for MedDRA.</p>
+<p>Although the names of the subfolders can be longer
+(e.g. “main_sep_1_24”), we <strong>strongly</strong> suggest you shorten
+them to <code>main</code>, <code>who</code>, <code>sub</code> for
+Vigibase, and <code>meddra_vx</code> for MedDRA.</p>
+<p>Short names will make your code easier to read and maintain.</p>
 </div>
 <div class="section level3">
 <h3 id="table-builders-tb_-functions">Table builders (<code>tb_*</code> functions)<a class="anchor" aria-label="anchor" href="#table-builders-tb_-functions"></a>
@@ -153,8 +156,9 @@ for MedDRA.</p>
 <p>We usually create <code>path_*</code> objects in R, then use them in
 functions. This is optional, you can also pass path directly to
 <code>tb_*</code> functions.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/pharmacologie-caen/vigicaen" class="external-link">vigicaen</a></span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># change for the correct paths on your computer</span></span>
 <span><span class="va">path_base</span>   <span class="op">&lt;-</span> <span class="st">"../vigibase_ecl/main"</span> </span>
 <span><span class="va">path_sub</span>    <span class="op">&lt;-</span> <span class="st">"../vigibase_ecl/sub"</span></span>
@@ -213,7 +217,7 @@ also been removed.</p>
 the <code><a href="../reference/dt_parquet.html">dt_parquet()</a></code> function from this package, which is a
 shorthand for
 <code>data.table::as.data.table(read_parquet())</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">demo</span>   <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dt_parquet.html">dt_parquet</a></span><span class="op">(</span><span class="va">path_main</span>, <span class="st">"demo"</span><span class="op">)</span></span>
 <span><span class="va">drug</span>   <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dt_parquet.html">dt_parquet</a></span><span class="op">(</span><span class="va">path_main</span>, <span class="st">"drug"</span><span class="op">)</span></span>
@@ -239,7 +243,7 @@ Vigibase tables at once in your session.</p>
 <p>In this case, you can use the <code>in_memory</code> argument of
 <code><a href="../reference/dt_parquet.html">dt_parquet()</a></code> to load tables <strong>OUT</strong> of
 memory.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demo</span>   <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dt_parquet.html">dt_parquet</a></span><span class="op">(</span><span class="va">path_main</span>, <span class="st">"demo"</span>, in_memory <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>This will allow you to go through most of the data management
 steps.</p>
@@ -263,7 +267,7 @@ dedicated subset with the <code><a href="../reference/tb_subset.html">tb_subset(
 <p>You will need to collect drug or reaction <strong>IDs</strong> if you
 want to subset on these. See
 <code><a href="../articles/basic_workflow.html">vignette("basic_workflow")</a></code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">sv_selection</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="co">#  65 - 74 years group</span></span>

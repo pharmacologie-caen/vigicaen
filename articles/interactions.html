@@ -39,14 +39,18 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/basic_workflow.html">Basic Workflow</a></li>
-    <li><a class="dropdown-item" href="../articles/descriptive.html">Descriptive</a></li>
-    <li><a class="dropdown-item" href="../articles/getting_started.html">Getting started</a></li>
-    <li><a class="dropdown-item" href="../articles/interactions.html">Interactions</a></li>
+<li><a class="dropdown-item" href="../articles/getting_started.html">Getting started</a></li>
+    <li><a class="dropdown-item" href="../articles/basic_workflow.html">Basic Workflow</a></li>
     <li><a class="dropdown-item" href="../articles/routine_pharmacovigilance.html">Routine pharmacovigilance</a></li>
-    <li><a class="dropdown-item" href="../articles/routine_script.html">Routine Script</a></li>
-    <li><a class="dropdown-item" href="../articles/template_dictionary.html">Script template: dictionary</a></li>
-    <li><a class="dropdown-item" href="../articles/template_main.html">Script template: main</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Going further</h6></li>
+    <li><a class="dropdown-item" href="../articles/descriptive.html">Descriptive</a></li>
+    <li><a class="dropdown-item" href="../articles/interactions.html">Interactions</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Script templates</h6></li>
+    <li><a class="dropdown-item" href="../articles/template_dictionary.html">Dictionary</a></li>
+    <li><a class="dropdown-item" href="../articles/template_main.html">Data management and disproportionality</a></li>
+    <li><a class="dropdown-item" href="../articles/template_routine.html">Routine</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -90,16 +94,16 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span></code></pre></div>
 <div class="section level2">
-<h2 id="interactions">Interactions<a class="anchor" aria-label="anchor" href="#interactions"></a>
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<div class="section level3">
-<h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h3>
 <p>It is possible to explore interactions between drugs on an adr
 reporting.</p>
 <p>This tutorial does not aim at covering the concepts underlying
 interactions in pharmacovigilance. It is about running them in
 practice.</p>
+<p>In particular, we will not cover the differences between additive
+interactions, statistical/synergistic interactions.</p>
+<p><code><a href="../reference/compute_interaction.html">compute_interaction()</a></code> use is shown <a href="#compute_int">at the end of the vignette</a>.</p>
 <p>We use built-in example dataset.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -145,12 +149,12 @@ practice.</p>
 <span>                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_real_</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="additive-interactions">Additive interactions<a class="anchor" aria-label="anchor" href="#additive-interactions"></a>
+</h2>
 <div class="section level3">
-<h3 id="additive-interactions">Additive interactions<a class="anchor" aria-label="anchor" href="#additive-interactions"></a>
+<h3 id="multivariate-analysis">Multivariate analysis<a class="anchor" aria-label="anchor" href="#multivariate-analysis"></a>
 </h3>
-<div class="section level4">
-<h4 id="multivariate-analysis">Multivariate analysis<a class="anchor" aria-label="anchor" href="#multivariate-analysis"></a>
-</h4>
 <p>Additive effect of two covariates can be obtained by multiplying the
 Odds-Ratio of each.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -175,9 +179,9 @@ Odds-Ratio of each.</p>
 Odds-Ratio of sex being 1.06, the additive effect of both is 2.00 *
 1.06.</p>
 </div>
-<div class="section level4">
-<h4 id="subgroup-comparisons">Subgroup comparisons<a class="anchor" aria-label="anchor" href="#subgroup-comparisons"></a>
-</h4>
+<div class="section level3">
+<h3 id="subgroup-comparisons">Subgroup comparisons<a class="anchor" aria-label="anchor" href="#subgroup-comparisons"></a>
+</h3>
 <p>Some way to approach multiplicative interactions is to compare the
 disproportionality signal in subgroups.</p>
 <p>The <code><a href="../reference/compute_dispro.html">compute_dispro()</a></code> function can be used for these
@@ -209,12 +213,12 @@ whole dataset) increases the notifications of colitis.</li>
 <p>Both IC and ROR can be used here.</p>
 </div>
 </div>
+<div class="section level2">
+<h2 id="inter_stat">Statistical interactions<a class="anchor" aria-label="anchor" href="#inter_stat"></a>
+</h2>
 <div class="section level3">
-<h3 id="inter_stat">Statistical interactions<a class="anchor" aria-label="anchor" href="#inter_stat"></a>
+<h3 id="logistic-regression-model">Logistic regression model<a class="anchor" aria-label="anchor" href="#logistic-regression-model"></a>
 </h3>
-<div class="section level4">
-<h4 id="logistic-regression-model">Logistic regression model<a class="anchor" aria-label="anchor" href="#logistic-regression-model"></a>
-</h4>
 <p>The true statistical interaction is obtained with the following
 model</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -240,10 +244,10 @@ model</p>
 <span><span class="co">#&gt; 3: 0.84183934  2.1261543   1.34  (0.84-2.13)      95%          0</span></span>
 <span><span class="co">#&gt; 4: 0.06565701  0.7726920   0.23  (0.07-0.77)      95%          0</span></span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="bayesian-information-component-compute_interaction">Bayesian Information Component,
-<code>compute_interaction()</code><a class="anchor" aria-label="anchor" href="#bayesian-information-component-compute_interaction"></a>
-</h4>
+<div class="section level3">
+<h3 id="compute_int">Bayesian Information Component,
+<code>compute_interaction()</code><a class="anchor" aria-label="anchor" href="#compute_int"></a>
+</h3>
 <p>The formula for the interaction between 3 variables
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>,
 the event of interest,
@@ -301,7 +305,6 @@ statistic.</p>
 <span><span class="co">#&gt;   y         x          z         n_obs n_exp    ic ic_tail ci_level</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> a_colitis ipilimumab nivolumab    18  7.88  1.14   0.400 95%</span></span></code></pre></div>
-</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

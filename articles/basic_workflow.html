@@ -39,14 +39,18 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/basic_workflow.html">Basic Workflow</a></li>
-    <li><a class="dropdown-item" href="../articles/descriptive.html">Descriptive</a></li>
-    <li><a class="dropdown-item" href="../articles/getting_started.html">Getting started</a></li>
-    <li><a class="dropdown-item" href="../articles/interactions.html">Interactions</a></li>
+<li><a class="dropdown-item" href="../articles/getting_started.html">Getting started</a></li>
+    <li><a class="dropdown-item" href="../articles/basic_workflow.html">Basic Workflow</a></li>
     <li><a class="dropdown-item" href="../articles/routine_pharmacovigilance.html">Routine pharmacovigilance</a></li>
-    <li><a class="dropdown-item" href="../articles/routine_script.html">Routine Script</a></li>
-    <li><a class="dropdown-item" href="../articles/template_dictionary.html">Script template: dictionary</a></li>
-    <li><a class="dropdown-item" href="../articles/template_main.html">Script template: main</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Going further</h6></li>
+    <li><a class="dropdown-item" href="../articles/descriptive.html">Descriptive</a></li>
+    <li><a class="dropdown-item" href="../articles/interactions.html">Interactions</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Script templates</h6></li>
+    <li><a class="dropdown-item" href="../articles/template_dictionary.html">Dictionary</a></li>
+    <li><a class="dropdown-item" href="../articles/template_main.html">Data management and disproportionality</a></li>
+    <li><a class="dropdown-item" href="../articles/template_routine.html">Routine</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -151,7 +155,7 @@ step first.</p>
 <p>See the vignette here <code><a href="../articles/getting_started.html">vignette("getting_started")</a></code>.</p>
 </div>
 <div class="section level2">
-<h2 id="collecting-ids">Collecting IDs<a class="anchor" aria-label="anchor" href="#collecting-ids"></a>
+<h2 id="collecting_ids">Collecting IDs<a class="anchor" aria-label="anchor" href="#collecting_ids"></a>
 </h2>
 <p>The whole package relies on defining a dictionary of drugs and adrs
 of interest.</p>
@@ -183,9 +187,24 @@ They will be used to created columns later in the process.</p>
 <p>We will pass these named list selections to <em>ID collector</em>
 functions: The <strong><code>get_*</code></strong> family.</p>
 <ul>
-<li><p><code><a href="../reference/get_drecno.html">get_drecno()</a></code> for drugs</p></li>
+<li><p><code><a href="../reference/get_drecno.html">get_drecno()</a></code> for drugs, <code><a href="../reference/get_atc_code.html">get_atc_code()</a></code>
+for ATC classes</p></li>
 <li><p><code><a href="../reference/get_llt_soc.html">get_llt_soc()</a></code> or <code><a href="../reference/get_llt_smq.html">get_llt_smq()</a></code> for
 adverse drug reactions</p></li>
+</ul>
+<p>These functions will allow to collect IDs (e.g. codes) matching our
+drugs and adrs in a specific dictionary.</p>
+<ul>
+<li><p>For drugs, we will use the WHODrug dictionary, and collect Drug
+Record Numbers (DrecNos) most of the time, or Medicinal Product Ids
+(MedicinalProd_Ids) in some specific scenarii.</p></li>
+<li><p>For adrs, we will use the Medical Dictionary for Regulatory
+Activities (MedDRA), and collect term codes (low-level term codes).
+Here, it is important to note that we can work with other terms (like
+Preferred Terms, High Level terms, etc.). The ID collector will just
+collect low-level term codes of all higher level terms, resulting in a
+pretty long list of codes, because VigiBase data is structured on
+low-level term codes.</p></li>
 </ul>
 </div>
 <div class="section level2">
@@ -247,6 +266,21 @@ list</strong> of character vectors.</p>
 <span><span class="va">d_sel</span></span>
 <span><span class="co">#&gt; $nivolumab</span></span>
 <span><span class="co">#&gt; [1] "nivolumab"</span></span></code></pre></div>
+<blockquote>
+<p>Remember to use lower case names in d_sel (no capital letters: Good:
+“nivolumab”, Wrong: “Nivolumab” or “NIVOLUMAB”)</p>
+</blockquote>
+<p>The ideal way of picking drugs is by using their <strong>WHO
+name</strong>.</p>
+<p>WHO name is an international non-proprietary name (INN) for the drug.
+A few drugs have more than one INN (e.g. paracetamol and acetaminophen),
+but they still have a unique WHO name (most of the time, one of the
+INN).</p>
+<p>The ID collector <code><a href="../reference/get_drecno.html">get_drecno()</a></code> will let you know if you
+missed the WHO name.</p>
+<p>Alternatively, you can work with Anatomical and Therapeutical
+Classification (ATC) codes to investigate a set of drug. This is
+explained in the <a href="#atc_classes">ATC section</a>.</p>
 </div>
 <div class="section level4">
 <h4 id="step-3-identify-drug-codes">Step 3: Identify drug codes<a class="anchor" aria-label="anchor" href="#step-3-identify-drug-codes"></a>
@@ -263,10 +297,10 @@ message.</p>
 <code>verbose = TRUE</code> (default).</li>
 </ol>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">d_sel</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="../reference/get_drecno.html">get_drecno</a></span><span class="op">(</span></span>
-<span>    mp <span class="op">=</span> <span class="va">mp_</span>,</span>
-<span>    verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/get_drecno.html">get_drecno</a></span><span class="op">(</span></span>
+<span>  d_sel <span class="op">=</span> <span class="va">d_sel</span>,</span>
+<span>  mp <span class="op">=</span> <span class="va">mp_</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">get_drecno()</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────</span></span></span>
@@ -303,11 +337,11 @@ result in an R object called <code>d_drecno</code>.</li>
 </ol>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_drecno</span> <span class="op">&lt;-</span></span>
-<span>  <span class="va">d_sel</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/get_drecno.html">get_drecno</a></span><span class="op">(</span></span>
+<span>    d_sel <span class="op">=</span> <span class="va">d_sel</span>,</span>
 <span>    mp <span class="op">=</span> <span class="va">mp_</span>,</span>
 <span>    verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<span>    <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="steps-4-and-5-add_drug-function">Steps 4 and 5: add_drug() function<a class="anchor" aria-label="anchor" href="#steps-4-and-5-add_drug-function"></a>
@@ -376,8 +410,7 @@ in the construction of a dataset.</p>
 <code><a href="../reference/check_dm.html">check_dm()</a></code> function will count the number of rows in the
 dataset where the desired column is equal to 1.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">demo</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="../reference/check_dm.html">check_dm</a></span><span class="op">(</span><span class="st">"nivolumab"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/check_dm.html">check_dm</a></span><span class="op">(</span><span class="va">demo</span>, <span class="st">"nivolumab"</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           [,1]</span></span>
 <span><span class="co">#&gt; nivolumab  225</span></span></code></pre></div>
 <p>It shows how many rows in <code>demo</code> have the value 1 in the
@@ -386,49 +419,7 @@ reporting on nivolumab reactions).</p>
 <p>Here, we see that 225 cases report nivolumab.</p>
 </div>
 <div class="section level4">
-<h4 id="step-4-and-5-variant-suspect-concomitant-interacting">Step 4 and 5 variant: Suspect, concomitant, interacting<a class="anchor" aria-label="anchor" href="#step-4-and-5-variant-suspect-concomitant-interacting"></a>
-</h4>
-<p>We can choose to work with drugs according to their “reputation
-basis”.</p>
-<p>This information is stored in the <code>Basis</code> column of the
-<code>drug</code> table.</p>
-<ul>
-<li><p>1 suspect</p></li>
-<li><p>2 concomitant</p></li>
-<li><p>3 interacting</p></li>
-</ul>
-<p>By using the <code><a href="../reference/add_drug.html">add_drug()</a></code> function, we can specify which
-type of status we are interested in, in the <code>repbasis</code>
-argument. By default, the value <code>"sci"</code> indicates that we
-consider the drug whether it is suspect, concomitant, or interacting. We
-can change the selection.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">demo</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="../reference/add_drug.html">add_drug</a></span><span class="op">(</span></span>
-<span>    d_code <span class="op">=</span> <span class="va">d_drecno</span>,</span>
-<span>    drug_data <span class="op">=</span> <span class="va">drug</span>,</span>
-<span>    repbasis <span class="op">=</span> <span class="st">"sci"</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="../reference/check_dm.html">check_dm</a></span><span class="op">(</span><span class="st">"nivolumab"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> `.data` detected as `demo` table.</span></span>
-<span><span class="co">#&gt;           [,1]</span></span>
-<span><span class="co">#&gt; nivolumab  225</span></span>
-<span></span>
-<span><span class="co"># suspected only</span></span>
-<span></span>
-<span><span class="va">demo</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="../reference/add_drug.html">add_drug</a></span><span class="op">(</span></span>
-<span>    d_code <span class="op">=</span> <span class="va">d_drecno</span>,</span>
-<span>    drug_data <span class="op">=</span> <span class="va">drug</span>,</span>
-<span>    repbasis <span class="op">=</span> <span class="st">"s"</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="../reference/check_dm.html">check_dm</a></span><span class="op">(</span><span class="st">"nivolumab"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> `.data` detected as `demo` table.</span></span>
-<span><span class="co">#&gt;           [,1]</span></span>
-<span><span class="co">#&gt; nivolumab  214</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="atc-classes">ATC classes<a class="anchor" aria-label="anchor" href="#atc-classes"></a>
+<h4 id="atc_classes">Step 2 and 3 variant: ATC classes<a class="anchor" aria-label="anchor" href="#atc_classes"></a>
 </h4>
 <p>The correspondence between ATC (Anatomical and Therapeutical
 Classification) classes and drug codes is found in the <code>thg</code>
@@ -439,30 +430,35 @@ second correspondence with <code>mp</code> to find
 <p>This can be done with the <code><a href="../reference/get_atc_code.html">get_atc_code()</a></code> function.</p>
 <p>As with drugs, we first need to identify the ATC class of interest
 (here, “L03”).</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">atc_sel</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://rlang.r-lib.org/reference/list2.html" class="external-link">list2</a></span><span class="op">(</span>l03 <span class="op">=</span> <span class="st">"L03"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">atc_drecno</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">atc_sel</span> <span class="op">|&gt;</span> </span>
-<span>    <span class="fu"><a href="../reference/get_atc_code.html">get_atc_code</a></span><span class="op">(</span></span>
-<span>      mp <span class="op">=</span> <span class="va">mp</span>,</span>
-<span>      thg_data <span class="op">=</span> <span class="va">thg_</span></span>
+<span>  <span class="fu"><a href="../reference/get_atc_code.html">get_atc_code</a></span><span class="op">(</span></span>
+<span>    atc_sel <span class="op">=</span> <span class="va">atc_sel</span>,</span>
+<span>    mp <span class="op">=</span> <span class="va">mp</span>,</span>
+<span>    thg_data <span class="op">=</span> <span class="va">thg_</span></span>
 <span>    <span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)</span></span></code></pre></div>
 <p>The <code><a href="../reference/get_atc_code.html">get_atc_code()</a></code> function requires the <code>mp</code>
 and <code>thg</code> tables, as well as the selection of ATC
 classes.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">atc_drecno</span><span class="op">)</span></span>
 <span><span class="co">#&gt; List of 1</span></span>
 <span><span class="co">#&gt;  $ l03: int [1:13] 22001499 140973512 101027183 124637140 39319101 87207610 121794236 68274950 95345772 88621728 ...</span></span></code></pre></div>
 <p>By default, this function retrieves DrecNos associated with an ATC
 class. It is possible to retrieve MedicinalProd_Ids instead by setting
 the <code>vigilyze</code> argument to <code>FALSE</code>.</p>
+<p>The interest of using MedicinalProd_Ids instead of DrecNos is to
+restrict the drug panel only to packages corresponding to a specific ATC
+class (e.g., you might not want to find all packages of corticosteroids
+if you work with the ATC class “S01BA”, which corresponds to ophtalmic
+steroids).</p>
 <p>Once DrecNos are identified, we can add them to the <code>demo</code>
 table, with the <code><a href="../reference/add_drug.html">add_drug()</a></code> function.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demo</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/add_drug.html">add_drug</a></span><span class="op">(</span></span>
 <span>    d_code <span class="op">=</span> <span class="va">atc_drecno</span>,</span>
@@ -495,6 +491,48 @@ table, with the <code><a href="../reference/add_drug.html">add_drug()</a></code>
 <span><span class="co">#&gt; 748:         0     0</span></span>
 <span><span class="co">#&gt; 749:         1     0</span></span>
 <span><span class="co">#&gt; 750:         0     0</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="step-4-and-5-variant-suspect-concomitant-interacting">Step 4 and 5 variant: Suspect, concomitant, interacting<a class="anchor" aria-label="anchor" href="#step-4-and-5-variant-suspect-concomitant-interacting"></a>
+</h4>
+<p>We can choose to work with drugs according to their “reputation
+basis”.</p>
+<p>This information is stored in the <code>Basis</code> column of the
+<code>drug</code> table.</p>
+<ul>
+<li><p>1 suspect</p></li>
+<li><p>2 concomitant</p></li>
+<li><p>3 interacting</p></li>
+</ul>
+<p>By using the <code><a href="../reference/add_drug.html">add_drug()</a></code> function, we can specify which
+type of status we are interested in, in the <code>repbasis</code>
+argument. By default, the value <code>"sci"</code> indicates that we
+consider the drug whether it is suspect, concomitant, or interacting. We
+can change the selection.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">demo</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/add_drug.html">add_drug</a></span><span class="op">(</span></span>
+<span>    d_code <span class="op">=</span> <span class="va">d_drecno</span>,</span>
+<span>    drug_data <span class="op">=</span> <span class="va">drug</span>,</span>
+<span>    repbasis <span class="op">=</span> <span class="st">"sci"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/check_dm.html">check_dm</a></span><span class="op">(</span><span class="st">"nivolumab"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> `.data` detected as `demo` table.</span></span>
+<span><span class="co">#&gt;           [,1]</span></span>
+<span><span class="co">#&gt; nivolumab  225</span></span>
+<span></span>
+<span><span class="co"># suspected only</span></span>
+<span></span>
+<span><span class="va">demo</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/add_drug.html">add_drug</a></span><span class="op">(</span></span>
+<span>    d_code <span class="op">=</span> <span class="va">d_drecno</span>,</span>
+<span>    drug_data <span class="op">=</span> <span class="va">drug</span>,</span>
+<span>    repbasis <span class="op">=</span> <span class="st">"s"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/check_dm.html">check_dm</a></span><span class="op">(</span><span class="st">"nivolumab"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> `.data` detected as `demo` table.</span></span>
+<span><span class="co">#&gt;           [,1]</span></span>
+<span><span class="co">#&gt; nivolumab  214</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="create-multiple-drug-columns">Create multiple drug columns<a class="anchor" aria-label="anchor" href="#create-multiple-drug-columns"></a>
@@ -551,7 +589,7 @@ classes do not match your needs perfectly, you can group them in the
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_sel</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="https://rlang.r-lib.org/reference/list2.html" class="external-link">list2</a></span><span class="op">(</span></span>
-<span>    antalgiques <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"paracetamol"</span>, <span class="st">"tramadol"</span><span class="op">)</span>,</span>
+<span>    analgesics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"paracetamol"</span>, <span class="st">"tramadol"</span><span class="op">)</span>,</span>
 <span>    ici <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nivolumab"</span>, <span class="st">"pembrolizumab"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
@@ -566,7 +604,7 @@ classes do not match your needs perfectly, you can group them in the
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="color: #00BB00;">✔</span> Matched drugs</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; → `antalgiques`: <span style="color: #0000BB;">"paracetamol"</span> and <span style="color: #0000BB;">"tramadol"</span></span></span>
+<span><span class="co">#&gt; → `analgesics`: <span style="color: #0000BB;">"paracetamol"</span> and <span style="color: #0000BB;">"tramadol"</span></span></span>
 <span><span class="co">#&gt; → `ici`: <span style="color: #0000BB;">"nivolumab"</span> and <span style="color: #0000BB;">"pembrolizumab"</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
@@ -586,9 +624,9 @@ classes do not match your needs perfectly, you can group them in the
 <span></span>
 <span><span class="va">demo</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/check_dm.html">check_dm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">d_sel</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;             [,1]</span></span>
-<span><span class="co">#&gt; antalgiques   68</span></span>
-<span><span class="co">#&gt; ici          519</span></span></code></pre></div>
+<span><span class="co">#&gt;            [,1]</span></span>
+<span><span class="co">#&gt; analgesics   68</span></span>
+<span><span class="co">#&gt; ici         519</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -645,6 +683,11 @@ workflow</a>.</p>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p>We start with a list of adverse events of interest, grouped
 altogether under the name “a_colitis”.</p>
+<blockquote>
+<p>MedDRA terms always start with a capital letter, be sure to provide
+the exact case, e.g. Good : “<strong>C</strong>olitis”, Wrong :
+“colitis” or “COLITIS”.</p>
+</blockquote>
 <p>Be sure all selected terms belong to the same hierarchical level
 (preferred term, high level term…) in MedDRA. Here, we use Preferred
 Terms.</p>
@@ -683,6 +726,11 @@ Terms.</p>
 <span><span class="co">#&gt; [113]  75848043  69329666  76219908 136185109 128230716 134273207</span></span></code></pre></div>
 <p>An alternative is to use the <code><a href="../reference/get_llt_smq.html">get_llt_smq()</a></code> function,
 which allows you to query the <code>smq</code> tables.</p>
+<p>Notice that you collect low level term codes, even if you work with
+higher level terms, like preferred terms, or high level terms. This is
+intentional: this list collects all low level term codes composing the
+higher level term. See <a href="#collecting_ids">Collecting ID
+section</a>.</p>
 </div>
 <div class="section level4">
 <h4 id="steps-4-and-5-add_adr-function">Steps 4 and 5: add_adr() function<a class="anchor" aria-label="anchor" href="#steps-4-and-5-add_adr-function"></a>
@@ -692,11 +740,10 @@ reporting the adverse event of interest and add the corresponding column
 to <code>demo</code>.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demo</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">demo</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/add_adr.html">add_adr</a></span><span class="op">(</span></span>
+<span>    .data <span class="op">=</span> <span class="va">demo</span>,</span>
 <span>    a_code <span class="op">=</span> <span class="va">a_llt</span>,</span>
-<span>    adr_data <span class="op">=</span> <span class="va">adr</span></span>
-<span>    <span class="op">)</span></span>
+<span>    adr_data <span class="op">=</span> <span class="va">adr</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> `.data` detected as `demo` table.</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -828,73 +875,15 @@ variables.</p>
 </h4>
 <p>Reporting Odds-Ratio (ROR) and Information Component essentially
 measure the same thing: the disproportionality.</p>
-<p>Both are calculated using a contingency table. We just need to find
-a, b, c, and d to get their estimation.</p>
-<table class="table">
-<thead><tr class="header">
-<th>Counts</th>
-<th>nivolumab == 1</th>
-<th>nivolumab == 0</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>a_colitis == 1</td>
-<td>a</td>
-<td>c</td>
-</tr>
-<tr class="even">
-<td>a_colitis == 0</td>
-<td>b</td>
-<td>d</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section level4">
-<h4 id="counts-compute_dispro">Counts, compute_dispro()<a class="anchor" aria-label="anchor" href="#counts-compute_dispro"></a>
-</h4>
-<div class="section level5">
-<h5 id="doing-it-by-hand">Doing it by hand<a class="anchor" aria-label="anchor" href="#doing-it-by-hand"></a>
-</h5>
-<p>Those four numbers could be retrieved “by hand”</p>
+<p><code><a href="../reference/compute_dispro.html">compute_dispro()</a></code> computes both of these.</p>
+<ul>
+<li><p><code>or</code> and <code>or_ci</code> are the reporting
+Odds-Ratio and its confidence interval (default: 95%CI).</p></li>
+<li><p><code>ic</code> and <code>ic_tail</code> are the Information
+Component, and its lower end of credibility interval (default:
+IC025).</p></li>
+</ul>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">a</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">demo</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">nivolumab</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">&amp;</span> </span>
-<span>           <span class="va">a_colitis</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">b</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">demo</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">nivolumab</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">&amp;</span> </span>
-<span>           <span class="va">a_colitis</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">c</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">demo</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">nivolumab</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;</span> </span>
-<span>           <span class="va">a_colitis</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">d</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">demo</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">nivolumab</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;</span> </span>
-<span>           <span class="va">a_colitis</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>With the Reporting Odds-Ratio being
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><mi>a</mi><mi>d</mi></mrow><mrow><mi>b</mi><mi>c</mi></mrow></mfrac><annotation encoding="application/x-tex">\frac{ad}{bc}</annotation></semantics></math>,
-its standard error
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mrow><mfrac><mn>1</mn><mi>a</mi></mfrac><mo>+</mo><mfrac><mn>1</mn><mi>b</mi></mfrac><mo>+</mo><mfrac><mn>1</mn><mi>c</mi></mfrac><mo>+</mo><mfrac><mn>1</mn><mi>d</mi></mfrac></mrow></msqrt><annotation encoding="application/x-tex">\sqrt{\frac{1}{a} + \frac{1}{b} + \frac{1}{c} + \frac{1}{d}}</annotation></semantics></math><br>
-and the confidence interval boundaries at 95% being
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>±</mo><mspace width="0.222em"></mspace><mn>1.96</mn><mo>*</mo><mtext mathvariant="normal">se</mtext></mrow><annotation encoding="application/x-tex">± ~1.96 * \text{se}</annotation></semantics></math>.</p>
-<p>We could also calculate the Information Component.</p>
-<p>The <code><a href="../reference/compute_dispro.html">compute_dispro()</a></code> function does it for us. (both ROR
-and IC)</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demo</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="../reference/compute_dispro.html">compute_dispro</a></span><span class="op">(</span></span>
 <span>    y <span class="op">=</span> <span class="st">"a_colitis"</span>,</span>
@@ -906,7 +895,6 @@ and IC)</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> a_colitis nivolumab    44  31.2 1.88  (1.23-2.88) 0.489  0.031<span style="text-decoration: underline;">4</span> 95%</span></span></code></pre></div>
 </div>
 </div>
-</div>
 <div class="section level3">
 <h3 id="advanced-modelling-multivariate-analysis">Advanced modelling, multivariate analysis<a class="anchor" aria-label="anchor" href="#advanced-modelling-multivariate-analysis"></a>
 </h3>
@@ -914,10 +902,10 @@ and IC)</p>
 including drug and adr parameters, but also potential other variables
 such as age and sex. For example, one could wish to perform a
 multivariate logistic regression on the reporting of colitis and
-nivolumab, adjusted on age and sex.</p>
+nivolumab, adjusted on age groups and sex.</p>
 <p>The <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code> function from the <code>stats</code> package
 can be used for this purpose.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">a_colitis</span> <span class="op">~</span> <span class="va">nivolumab</span>, </span>
 <span>           data <span class="op">=</span> <span class="va">demo</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
 <span></span>
@@ -942,7 +930,7 @@ can be used for this purpose.</p>
 <span><span class="co">#&gt; Number of Fisher Scoring iterations: 4</span></span></code></pre></div>
 <p>In a logistic regression models, estimates lead to (reporting) OR by
 the exponential.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span></span>
 <span><span class="co">#&gt;               Estimate Std. Error    z value     Pr(&gt;|z|)</span></span>
 <span><span class="co">#&gt; (Intercept) -2.0476928  0.1371736 -14.927752 2.174746e-50</span></span>
@@ -951,7 +939,7 @@ the exponential.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1.883978</span></span></code></pre></div>
 <p>Adding covariates is straightforward</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">a_colitis</span> <span class="op">~</span> <span class="va">nivolumab</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">age</span>,</span>
 <span>            data <span class="op">=</span> <span class="va">demo</span>,</span>
 <span>            family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
@@ -988,7 +976,7 @@ the exponential.</p>
 <p>There are several packages that can extract the OR from a model. The
 <code><a href="../reference/compute_or_mod.html">compute_or_mod()</a></code> function is just one of many ways to do
 it.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod_or</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="../reference/compute_or_mod.html">compute_or_mod</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mod2</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span>,</span>

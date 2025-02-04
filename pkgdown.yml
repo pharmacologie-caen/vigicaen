@@ -7,10 +7,10 @@ articles:
   getting_started: getting_started.html
   interactions: interactions.html
   routine_pharmacovigilance: routine_pharmacovigilance.html
-  routine_script: routine_script.html
   template_dictionary: template_dictionary.html
   template_main: template_main.html
-last_built: 2025-01-31T02:07Z
+  template_routine: template_routine.html
+last_built: 2025-02-04T10:05Z
 urls:
   reference: https://pharmacologie-caen.github.io/vigicaen/reference
   article: https://pharmacologie-caen.github.io/vigicaen/articles

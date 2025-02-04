@@ -39,14 +39,18 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/basic_workflow.html">Basic Workflow</a></li>
-    <li><a class="dropdown-item" href="../articles/descriptive.html">Descriptive</a></li>
-    <li><a class="dropdown-item" href="../articles/getting_started.html">Getting started</a></li>
-    <li><a class="dropdown-item" href="../articles/interactions.html">Interactions</a></li>
+<li><a class="dropdown-item" href="../articles/getting_started.html">Getting started</a></li>
+    <li><a class="dropdown-item" href="../articles/basic_workflow.html">Basic Workflow</a></li>
     <li><a class="dropdown-item" href="../articles/routine_pharmacovigilance.html">Routine pharmacovigilance</a></li>
-    <li><a class="dropdown-item" href="../articles/routine_script.html">Routine Script</a></li>
-    <li><a class="dropdown-item" href="../articles/template_dictionary.html">Script template: dictionary</a></li>
-    <li><a class="dropdown-item" href="../articles/template_main.html">Script template: main</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Going further</h6></li>
+    <li><a class="dropdown-item" href="../articles/descriptive.html">Descriptive</a></li>
+    <li><a class="dropdown-item" href="../articles/interactions.html">Interactions</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Script templates</h6></li>
+    <li><a class="dropdown-item" href="../articles/template_dictionary.html">Dictionary</a></li>
+    <li><a class="dropdown-item" href="../articles/template_main.html">Data management and disproportionality</a></li>
+    <li><a class="dropdown-item" href="../articles/template_routine.html">Routine</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -85,7 +89,7 @@
 <p>The aim of this vignette is to describe how to use vigicaen in the
 context of routine pharmacovigilance.</p>
 <p>In a hurry? Check the condensed script of this vignette at
-<code><a href="../articles/routine_script.html">vignette("routine_script")</a></code>.</p>
+<code><a href="../articles/template_routine.html">vignette("template_routine")</a></code>.</p>
 <p>The standard user of this vignette is:</p>
 <ul>
 <li>A pharmacovigilance practitioner</li>
@@ -166,8 +170,7 @@ RAM).</p>
 <p>First, create named lists of the drug and reaction of interest. This
 is exactly similar to the <code><a href="../articles/basic_workflow.html">vignette("basic_workflow")</a></code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">d_sel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">d_sel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  nivolumab <span class="op">=</span> <span class="st">"nivolumab"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -179,9 +182,16 @@ is exactly similar to the <code><a href="../articles/basic_workflow.html">vignet
 which reaction we are interested in. Here, we create the
 <code>d_sel</code> object, which is a list, with one item. The item name
 is nivolumab, and the content of this item is “nivolumab”. The same goes
-for <code>a_sel</code>. Mind the capital letter at the beginning of
-“<strong>C</strong>olitis”: It must match exactly to the MedDRA term of
-this reaction.</p>
+for <code>a_sel</code>.</p>
+<blockquote>
+<p>Use lower case for drugs: Good : “nivolumab”, Wrong : “Nivolumab”,
+“NIVOLUMAB”</p>
+</blockquote>
+<blockquote>
+<p>Mind the capital letter at the beginning of reactions
+(“<strong>C</strong>olitis”): It must match exactly to the MedDRA term
+of this reaction.</p>
+</blockquote>
 <p>The <code>d_sel</code> must contains an “active ingredient”, which is
 the same as the international non-proprietary name, in a majority of
 cases.</p>
