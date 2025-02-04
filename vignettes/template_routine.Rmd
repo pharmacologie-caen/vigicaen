@@ -1,8 +1,8 @@
 ---
-title: "Routine Script"
+title: "Routine"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{routine_script}
+  %\VignetteIndexEntry{template_routine}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

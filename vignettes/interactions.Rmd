@@ -21,10 +21,7 @@ library(rlang)
 library(dplyr)
 ```
 
-
-# Interactions
-
-## Introduction
+# Introduction
 
 It is possible to explore interactions between drugs on
 an adr reporting.
@@ -32,6 +29,11 @@ an adr reporting.
 This tutorial does not aim at covering the concepts underlying
 interactions in pharmacovigilance. It is about running them 
 in practice.
+
+In particular, we will not cover the differences between additive
+interactions, statistical/synergistic interactions.
+
+`compute_interaction()` use is shown [at the end of the vignette](#compute_int).
 
 We use built-in example dataset.
 
@@ -78,9 +80,9 @@ demo <-
     )
 ```
 
-## Additive interactions
+# Additive interactions
 
-### Multivariate analysis
+## Multivariate analysis
 
 Additive effect of two covariates can be obtained by multiplying 
 the Odds-Ratio of each.
@@ -108,7 +110,7 @@ With reporting Odds-Ratio of ipilimumab being `r ror_ipi`
 and the reporting Odds-Ratio of sex being `r ror_sex`, 
 the additive effect of both is `r ror_ipi` * `r ror_sex`.
 
-### Subgroup comparisons
+## Subgroup comparisons
 
 Some way to approach multiplicative interactions is to compare
 the disproportionality signal in subgroups.
@@ -140,9 +142,9 @@ In our example:
 
 Both IC and ROR can be used here.
 
-## Statistical interactions {#inter_stat}
+# Statistical interactions {#inter_stat}
 
-### Logistic regression model
+## Logistic regression model
 
 The true statistical interaction is obtained with the following
 model
@@ -159,7 +161,7 @@ compute_or_mod(
 )
 ```
 
-### Bayesian Information Component, `compute_interaction()`
+## Bayesian Information Component, `compute_interaction()` {#compute_int}
 
 The formula for the interaction between 3 variables 
 ($y$, the event of interest, $x1$ and $x2$,

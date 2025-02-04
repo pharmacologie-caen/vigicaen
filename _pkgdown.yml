@@ -2,3 +2,25 @@ url: https://pharmacologie-caen.github.io/vigicaen/
 template:
   bootstrap: 5
 
+articles:
+- title: Foundations
+  navbar: ~
+  contents:
+  - getting_started
+  - basic_workflow
+  - routine_pharmacovigilance
+
+- title: Going further
+  navbar: Going further
+  desc: Extract more data from VigiBase
+  contents:
+  - descriptive
+  - interactions
+
+- title: Script templates
+  navbar: Script templates
+  desc: Use these templates to create your own analysis
+  contents:
+  - template_dictionary
+  - template_main
+  - template_routine

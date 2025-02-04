@@ -1,5 +1,5 @@
 ---
-title: "Script template: main"
+title: "Data management and disproportionality"
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Main script template
+# Main (data management and disproportionality) script template
 
 You may want to organize your research folder using small scripts,
 each designed for a part of your analysis plan.

@@ -4,11 +4,11 @@
 \name{vigicaen-package}
 \alias{vigicaen}
 \alias{vigicaen-package}
-\title{vigicaen: VigiBase Extract Case Level toolbox}
+\title{vigicaen: VigiBase, pharmacovigilance database, toolbox}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-vigicaen provides a set of tools to facilitate the analysis of the VigiBase Extract Case Level dataset e.g., load data, perform data management, disproportionality analysis, and descriptive statistics. The package is designed to be used in the context of pharmacovigilance studies. VigiBase Extract Case Level is the World Health Organization (WHO) global individual case safety reports (ICSRs) database, maintained by the Uppsala Monitoring Centre, Sweden. This package is NOT supported nor reflect the opinion of the WHO, or the Uppsala Monitoring Centre.
+Tools to facilitate the analysis of the World Health Organization (WHO) Pharmacovigilance database VigiBase (Extract Case Level version), e.g., load data, perform data management, disproportionality analysis, and descriptive statistics. Intended for pharmacovigilance routine use or studies. This package is NOT supported nor reflect the opinion of the WHO, or the Uppsala Monitoring Centre.
 }
 \seealso{
 Useful links:

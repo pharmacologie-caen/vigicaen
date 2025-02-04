@@ -66,7 +66,7 @@ to process this step first.
 
 See the vignette here `vignette("getting_started")`.
 
-# Collecting IDs
+# Collecting IDs {#collecting_ids}
 
 The whole package relies on defining a dictionary of drugs
 and adrs of interest.
@@ -100,9 +100,23 @@ more names of drugs.
 We will pass these named list selections to *ID collector* functions:
 The **`get_*`** family.
 
--   `get_drecno()` for drugs
+-   `get_drecno()` for drugs, `get_atc_code()` for ATC classes
 
 -   `get_llt_soc()` or `get_llt_smq()` for adverse drug reactions
+
+These functions will allow to collect IDs (e.g. codes) matching our drugs
+and adrs in a specific dictionary. 
+
+-    For drugs, we will use the WHODrug dictionary, and collect Drug Record Numbers
+(DrecNos) most of the time, or Medicinal Product Ids (MedicinalProd_Ids) in some
+specific scenarii.
+
+-   For adrs, we will use the Medical Dictionary for Regulatory Activities (MedDRA),
+and collect term codes (low-level term codes). Here, it is 
+important to note that we can work with other terms (like Preferred Terms, High
+Level terms, etc.). The ID collector will just collect low-level term codes of all
+higher level terms, resulting in a pretty long list of codes, because VigiBase 
+data is structured on low-level term codes.
 
 # Data management
 
@@ -157,6 +171,21 @@ d_sel <- # drug selection
 
 d_sel
 ```
+> Remember to use lower case names in d_sel (no capital letters:
+> Good: "nivolumab", Wrong: "Nivolumab" or "NIVOLUMAB")
+
+The ideal way of picking drugs is by using their **WHO name**.
+
+WHO name is an international non-proprietary name (INN) for the drug. A few drugs
+have more than one INN (e.g. paracetamol and 
+acetaminophen), but they still have a unique WHO name (most of the time, one
+of the INN).
+
+The ID collector `get_drecno()` will let you know if you missed the WHO name.
+
+Alternatively, you can work with Anatomical and Therapeutical Classification (ATC)
+codes to investigate a set of drug. 
+This is explained in the [ATC section](#atc_classes).
 
 ### Step 3: Identify drug codes
 
@@ -172,10 +201,10 @@ You should **always** look carefully at the printed message.
 1.  Use `get_drecno()` with argument `verbose = TRUE` (default).
 
 ```{r verbose_with_get_drecno}
-d_sel |> 
-  get_drecno(
-    mp = mp_,
-    verbose = TRUE
+get_drecno(
+  d_sel = d_sel,
+  mp = mp_,
+  verbose = TRUE
   )
 ```
 
@@ -198,11 +227,11 @@ in an R object called `d_drecno`.
 
 ```{r d_drecno}
 d_drecno <-
-  d_sel |> 
   get_drecno(
+    d_sel = d_sel,
     mp = mp_,
     verbose = FALSE
-  )
+    )
 ```
 
 ### Steps 4 and 5: add_drug() function
@@ -248,8 +277,7 @@ Here, the `check_dm()` function will count the number of rows
 in the dataset where the desired column is equal to 1.
 
 ```{r check_dm}
-demo |> 
-  check_dm("nivolumab")
+check_dm(demo, "nivolumab")
 ```
 
 It shows how many rows in `demo` have the value 1 in the
@@ -257,6 +285,58 @@ It shows how many rows in `demo` have the value 1 in the
 as reporting on nivolumab reactions). 
 
 Here, we see that 225 cases report nivolumab.
+
+### Step 2 and 3 variant: ATC classes {#atc_classes}
+
+The correspondence between ATC (Anatomical and Therapeutical
+Classification) classes and drug codes is found in the `thg`
+table. In this table, drug codes are stored as
+`MedicinalProd_Id`. It is therefore necessary to make a second
+correspondence with `mp` to find `DrecNo`.
+
+This can be done with the `get_atc_code()` function.
+
+As with drugs, we first need to identify the ATC class of interest (here, "L03").
+
+```{r atc_drecno}
+atc_sel <-
+  list2(l03 = "L03")
+
+atc_drecno <- 
+  get_atc_code(
+    atc_sel = atc_sel,
+    mp = mp,
+    thg_data = thg_
+    )
+```
+
+The `get_atc_code()` function requires the `mp` 
+and `thg` tables, as well as the selection of ATC classes.
+
+```{r str_atc_drecno}
+str(atc_drecno)
+```
+
+By default, this function retrieves DrecNos associated with 
+an ATC class. It is possible to retrieve MedicinalProd_Ids
+instead by setting the `vigilyze` argument to `FALSE`.
+
+The interest of using MedicinalProd_Ids instead of DrecNos is to
+restrict the drug panel only to packages corresponding to a 
+specific ATC class (e.g., you might not want to find all packages
+of corticosteroids if you work with the ATC class "S01BA", which 
+corresponds to ophtalmic steroids).
+
+Once DrecNos are identified, we can add them to the `demo` table,
+with the `add_drug()` function.
+
+```{r add_atc}
+demo |> 
+  add_drug(
+    d_code = atc_drecno,
+    drug_data = drug
+  )
+```
 
 ### Step 4 and 5 variant: Suspect, concomitant, interacting
 
@@ -299,51 +379,6 @@ demo |>
 ```
 
 
-### ATC classes
-
-The correspondence between ATC (Anatomical and Therapeutical
-Classification) classes and drug codes is found in the `thg`
-table. In this table, drug codes are stored as
-`MedicinalProd_Id`. It is therefore necessary to make a second
-correspondence with `mp` to find `DrecNo`.
-
-This can be done with the `get_atc_code()` function.
-
-As with drugs, we first need to identify the ATC class of interest (here, "L03").
-
-```{r atc_drecno}
-atc_sel <-
-  list2(l03 = "L03")
-
-atc_drecno <- 
-  atc_sel |> 
-    get_atc_code(
-      mp = mp,
-      thg_data = thg_
-    )
-```
-
-The `get_atc_code()` function requires the `mp` 
-and `thg` tables, as well as the selection of ATC classes.
-
-```{r str_atc_drecno}
-str(atc_drecno)
-```
-
-By default, this function retrieves DrecNos associated with 
-an ATC class. It is possible to retrieve MedicinalProd_Ids
-instead by setting the `vigilyze` argument to `FALSE`.
-
-Once DrecNos are identified, we can add them to the `demo` table,
-with the `add_drug()` function.
-
-```{r add_atc}
-demo |> 
-  add_drug(
-    d_code = atc_drecno,
-    drug_data = drug
-  )
-```
 
 ### Create multiple drug columns
 
@@ -381,7 +416,7 @@ you can group them in the `d_sel` list.
 ```{r d_groups}
 d_sel <- 
   list2(
-    antalgiques = c("paracetamol", "tramadol"),
+    analgesics = c("paracetamol", "tramadol"),
     ici = c("nivolumab", "pembrolizumab")
   )
 
@@ -458,6 +493,9 @@ a_sel_pt <-
 We start with a list of adverse events of interest, grouped
 altogether under the name "a_colitis".
 
+> MedDRA terms always start with a capital letter, be sure to provide
+> the exact case, e.g. Good : "**C**olitis", Wrong : "colitis" or "COLITIS".
+
 Be sure all selected terms belong to the same hierarchical level
 (preferred term, high level term...) in MedDRA.
 Here, we use Preferred Terms.
@@ -480,6 +518,11 @@ a_llt
 An alternative is to use the `get_llt_smq()` function, which
 allows you to query the `smq` tables.
 
+Notice that you collect low level term codes, even if you work with
+higher level terms, like preferred terms, or high level terms.
+This is intentional: this list collects all low level term codes composing
+the higher level term. See [Collecting ID section](#collecting_ids).
+
 ### Steps 4 and 5: add_adr() function
 
 The `add_adr()` function allows you to identify cases reporting
@@ -488,11 +531,10 @@ to `demo`.
 
 ```{r add_adr}
 demo <- 
-  demo |> 
   add_adr(
+    .data = demo,
     a_code = a_llt,
-    adr_data = adr
-    )
+    adr_data = adr)
 ```
 
 ### Step 6: Check your data management
@@ -622,7 +664,6 @@ and an adr column for colitis.
 We can perform a disproportionality analysis between these
 two variables.
 
-
 ## Univariate analysis
 
 ### Disproportionality metrics
@@ -630,59 +671,13 @@ two variables.
 Reporting Odds-Ratio (ROR) and Information Component
 essentially measure the same thing: the disproportionality.
 
-Both are calculated using a contingency table. 
-We just need to find a, b, c, and d to get their estimation.
+`compute_dispro()` computes both of these.
 
+-    `or` and `or_ci` are the reporting Odds-Ratio and its confidence interval
+(default: 95%CI).
 
-| Counts | nivolumab == 1 | nivolumab == 0 |
-|-----------|-------------|-------------|
-| a_colitis == 1  | a           | c           |
-| a_colitis == 0  | b           | d           |
-
-### Counts, compute_dispro()
-
-#### Doing it by hand
-
-Those four numbers could be retrieved "by hand"
-
-```{r abcd}
-a <- 
-  demo |> 
-  filter(nivolumab == 1 & 
-           a_colitis == 1) |> 
-  count() |> 
-  pull()
-
-b <- 
-  demo |> 
-  filter(nivolumab == 1 & 
-           a_colitis == 0) |> 
-  count() |> 
-  pull()
-
-c <- 
-  demo |> 
-  filter(nivolumab == 0 & 
-           a_colitis == 1) |> 
-  count() |> 
-  pull()
-
-d <- 
-  demo |> 
-  filter(nivolumab == 0 & 
-           a_colitis == 0) |> 
-  count() |> 
-  pull()
-```
-
-With the Reporting Odds-Ratio being $\frac{ad}{bc}$\,
-its standard error $\sqrt{\frac{1}{a} + \frac{1}{b} + \frac{1}{c} + \frac{1}{d}}$\
-and the confidence interval boundaries at 95% being $± ~1.96 * \text{se}$.
-
-We could also calculate the Information Component.
-
-The `compute_dispro()` function does it for us.
-(both ROR and IC)
+-    `ic` and `ic_tail` are the Information Component, 
+and its lower end of credibility interval (default: IC025).
 
 ```{r compute_dispro}
 demo |> 
@@ -698,7 +693,7 @@ From this point, it is also possible to run any statistical model
 including drug and adr parameters, but also potential other variables
 such as age and sex. For example, one could wish to perform
 a multivariate logistic regression on the reporting of colitis
-and nivolumab, adjusted on age and sex.
+and nivolumab, adjusted on age groups and sex.
 
 The `glm()` function from the `stats` package can be used for this
 purpose.

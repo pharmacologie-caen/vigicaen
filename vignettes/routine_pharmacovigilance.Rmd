@@ -24,7 +24,7 @@ The aim of this vignette is to describe how to use vigicaen in the
 context of routine pharmacovigilance.
 
 In a hurry? Check the condensed script of this vignette at
-`vignette("routine_script")`.
+`vignette("template_routine")`.
 
 The standard user of this vignette is:
 
@@ -110,7 +110,6 @@ First, create named lists of the drug and reaction of interest. This is
 exactly similar to the `vignette("basic_workflow")`.
 
 ```{r a_sel_d_sel}
-
 d_sel <- list(
   nivolumab = "nivolumab"
 )
@@ -119,15 +118,18 @@ a_sel <- list(
   # this is a High Level Term
   colitis = "Colitis (excl infective)"
 )
-
 ```
 
 When working with vigicaen, we always need to tell R which drug and which
 reaction we are interested in. Here, we create the `d_sel` object, which is a 
 list, with one item. The item name is nivolumab, and the content of this item
-is "nivolumab". The same goes for `a_sel`. Mind the capital letter at the 
-beginning of "**C**olitis": It must match exactly to the MedDRA term of this
-reaction.
+is "nivolumab". The same goes for `a_sel`. 
+
+> Use lower case for drugs: Good : "nivolumab", Wrong : "Nivolumab", "NIVOLUMAB"
+
+> Mind the capital letter at the 
+> beginning of reactions ("**C**olitis"): 
+> It must match exactly to the MedDRA term of this reaction.
 
 The `d_sel` must contains an "active ingredient", which is the same as the
 international non-proprietary name, in a majority of cases.

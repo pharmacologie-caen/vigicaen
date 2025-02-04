@@ -20,13 +20,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(vigicaen)
-```
-
 # Purpose
 
-Have you subscribed to VigiBase Extract Case Level, WHODrug and MedDRA?
+Have you subscribed to 
+[VigiBase Extract Case Level, WHODrug](https://who-umc.org/) 
+and [MedDRA](https://www.meddra.org/)?
 
 Congratulations! You've made it half way to explore VigiBase.
 
@@ -52,19 +50,21 @@ to unzip **sub-folders**, inside the main zip file).
 
 That will give you a folder structure like this:
 
--   /vigibase_ecl
+-   /vigibase_month_year (replace with your version)
 -   .../main
 -   .../who
 -   .../sub
 
 Gather your meddra files into a single folder, ideally close to the
-vigibase_ecl one.
+vigibase_month_year one.
 
--   /meddra
+-   /meddra_vx (replace vx)
 
-Although the names can be longer (e.g. "main_sep_1_24"), 
+Although the names of the subfolders can be longer (e.g. "main_sep_1_24"), 
 we **strongly** suggest you shorten them
-to `main`, `who`, `sub` for Vigibase, and `meddra` for MedDRA.
+to `main`, `who`, `sub` for Vigibase, and `meddra_vx` for MedDRA.
+
+Short names will make your code easier to read and maintain.
 
 ## Table builders (`tb_*` functions)
 
@@ -75,6 +75,7 @@ This is optional, you can also pass path directly to `tb_*` functions.
 
 
 ```{r basic, eval = FALSE}
+library(vigicaen)
 
 # change for the correct paths on your computer
 path_base   <- "../vigibase_ecl/main" 
