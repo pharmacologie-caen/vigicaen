@@ -704,26 +704,38 @@ Terms.</p>
 <span>    term_level <span class="op">=</span> <span class="st">"pt"</span>,</span>
 <span>    meddra <span class="op">=</span> <span class="va">meddra_</span></span>
 <span>    <span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">get_llt_soc()</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="color: #00BB00; font-weight: bold;">✔</span><span style="font-weight: bold;"> Matched reactions at `pt` level (number of codes)</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; → `a_colitis`: <span style="color: #0000BB;">"Autoimmune colitis (1)"</span>, <span style="color: #0000BB;">"Colitis (25)"</span>, <span style="color: #0000BB;">"Colitis microscopic</span></span></span>
+<span><span class="co">#&gt;   <span style="color: #0000BB;">(3)"</span>, <span style="color: #0000BB;">"Diarrhoea (53)"</span>, <span style="color: #0000BB;">"Diarrhoea haemorrhagic (8)"</span>, <span style="color: #0000BB;">"Duodenitis (5)"</span>,</span></span>
+<span><span class="co">#&gt;   <span style="color: #0000BB;">"Enteritis (8)"</span>, <span style="color: #0000BB;">"Enterocolitis (4)"</span>, <span style="color: #0000BB;">"Enterocolitis haemorrhagic (10)"</span>, and</span></span>
+<span><span class="co">#&gt;   <span style="color: #0000BB;">"Ulcerative gastritis (1)"</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Set `verbose` to FALSE to suppress this section.</span></span>
 <span></span>
 <span><span class="va">a_llt</span></span>
 <span><span class="co">#&gt; $a_colitis</span></span>
-<span><span class="co">#&gt;   [1] 138014054  60161897 117694644   5029037 146319904  72535511 145048103</span></span>
-<span><span class="co">#&gt;   [8]  83961164  60502763  86999793  71417752  12508751  31902962  74358151</span></span>
-<span><span class="co">#&gt;  [15]  93223730  33268936  52457844  50188094   3588697  50677287  86522225</span></span>
-<span><span class="co">#&gt;  [22]  84444296  52090591 136071015 115452495  42212111  22136645  33346088</span></span>
-<span><span class="co">#&gt;  [29]  76736595  74249211 114942138 109131610 121557512  57673555  36505933</span></span>
-<span><span class="co">#&gt;  [36]  97974705 116341322 100087548  47872019   5144633  18989134  62896477</span></span>
-<span><span class="co">#&gt;  [43] 118819900  92141110  76778618   9787331 129074932  97183180 121450460</span></span>
-<span><span class="co">#&gt;  [50]  52582197  74911722  30822686 106700292  40062048  71614386  94663343</span></span>
-<span><span class="co">#&gt;  [57]  99951844  39107722  76243579  89785585  57421483  83801839  35994947</span></span>
-<span><span class="co">#&gt;  [64] 145921181  10796290  16785547 100720721 126960392  26400336  71857357</span></span>
-<span><span class="co">#&gt;  [71]  39085290  11580419 139876147  31994263  72565521   9581412 142354851</span></span>
-<span><span class="co">#&gt;  [78] 119711285  14275999 116525173  46785130   7485419  53464576 137272208</span></span>
-<span><span class="co">#&gt;  [85] 137544759  69158837  92034682  85459432  11303229  32580170 122765038</span></span>
-<span><span class="co">#&gt;  [92]  94746500  97136680  44792724  92371714 104194644  80678406  56928874</span></span>
-<span><span class="co">#&gt;  [99] 142989340  24470833  68617678 106618606 130746421   6544507  54366037</span></span>
-<span><span class="co">#&gt; [106]  11722654  23855288    996046  27038937 104846192  35477411  54746042</span></span>
-<span><span class="co">#&gt; [113]  75848043  69329666  76219908 136185109 128230716 134273207</span></span></code></pre></div>
+<span><span class="co">#&gt;   [1] 146319904  72535511 145048103  83961164  60502763  86999793  31902962</span></span>
+<span><span class="co">#&gt;   [8]  74358151  93223730  42212111  47872019   9787331  97183180  76243579</span></span>
+<span><span class="co">#&gt;  [15]  57421483  83801839  35994947 145921181 126960392 139876147   7485419</span></span>
+<span><span class="co">#&gt;  [22]  56928874 106618606 136185109 134273207  69329666  71614386  39085290</span></span>
+<span><span class="co">#&gt;  [29]  44792724  60161897 117694644  33268936  52457844   3588697  50677287</span></span>
+<span><span class="co">#&gt;  [36]  86522225  52090591 115452495  57673555  36505933  97974705 116341322</span></span>
+<span><span class="co">#&gt;  [43] 100087548  92141110  76778618 129074932  74911722  30822686 106700292</span></span>
+<span><span class="co">#&gt;  [50]  40062048  94663343  99951844  10796290  16785547 100720721  26400336</span></span>
+<span><span class="co">#&gt;  [57]  71857357   9581412 142354851 119711285  14275999 116525173  46785130</span></span>
+<span><span class="co">#&gt;  [64]  69158837  92034682  11303229  32580170 122765038  94746500  97136680</span></span>
+<span><span class="co">#&gt;  [71]  92371714 104194644  80678406 130746421   6544507  54366037  11722654</span></span>
+<span><span class="co">#&gt;  [78]  23855288    996046 104846192  35477411  75848043   5029037  50188094</span></span>
+<span><span class="co">#&gt;  [85]  84444296 136071015   5144633  62896477  85459432 142989340  22136645</span></span>
+<span><span class="co">#&gt;  [92]  33346088  89785585  72565521  53464576 138014054  76736595 121450460</span></span>
+<span><span class="co">#&gt;  [99]  52582197  39107722  31994263  68617678 128230716 114942138  24470833</span></span>
+<span><span class="co">#&gt; [106]  27038937  54746042  71417752  12508751  74249211 109131610 121557512</span></span>
+<span><span class="co">#&gt; [113]  18989134 118819900  11580419 137272208 137544759  76219908</span></span></code></pre></div>
 <p>An alternative is to use the <code><a href="../reference/get_llt_smq.html">get_llt_smq()</a></code> function,
 which allows you to query the <code>smq</code> tables.</p>
 <p>Notice that you collect low level term codes, even if you work with

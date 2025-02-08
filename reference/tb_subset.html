@@ -206,6 +206,15 @@ as <code>sv_selection</code>.</p>
 <span class="r-in"><span>   colitis <span class="op">=</span> <span class="st">"Colitis"</span></span></span>
 <span class="r-in"><span>   <span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>   <span class="fu"><a href="get_llt_soc.html">get_llt_soc</a></span><span class="op">(</span>term_level <span class="op">=</span> <span class="st">"pt"</span>, <span class="va">meddra_</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">get_llt_soc()</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #00BB00; font-weight: bold;">✔</span><span style="font-weight: bold;"> Matched reactions at `pt` level (number of codes)</span> ──</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → `colitis`: <span style="color: #0000BB;">"Colitis (25)"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Set `verbose` to FALSE to suppress this section.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">wd_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">wd_in</span>, <span class="st">"/"</span>, <span class="st">"colitis_subset"</span>, <span class="st">"/"</span><span class="op">)</span></span></span>
@@ -213,14 +222,27 @@ as <code>sv_selection</code>.</p>
 <span class="r-in"><span><span class="fu">tb_subset</span><span class="op">(</span><span class="va">wd_in</span>, <span class="va">wd_out</span>,</span></span>
 <span class="r-in"><span>          subset_var <span class="op">=</span> <span class="st">"meddra_id"</span>,</span></span>
 <span class="r-in"><span>          sv_selection <span class="op">=</span> <span class="va">adr_llt</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> demo.parquet subset has 1 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> adr.parquet subset has 1 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> out.parquet subset has 1 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> srce.parquet subset has 1 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> followup.parquet subset has 1 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> drug.parquet subset has 1 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> link.parquet subset has 1 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind.parquet subset has 1 rows.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">tb_subset()</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Subsetting VigiBase tables.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■                           </span>  15% | 2ms | Reading source tables </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■                      </span>  30% | 16ms | Picking subset </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span>  45% | 65ms | Collect case list </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50% | 72ms | Collect drug list </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■             </span>  60% | 91ms | Apply case level subset </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■       </span>  80% | 184ms | Apply drug level subset </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | 238ms | Done </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Subset successful</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span>   Table  | Number of rows in subset</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   demo   | <span style="color: #0000BB;">1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   adr    | <span style="color: #0000BB;">1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   out    | <span style="color: #0000BB;">1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   srce   | <span style="color: #0000BB;">1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → followup | <span style="color: #0000BB;">1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   drug   | <span style="color: #0000BB;">1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   link   | <span style="color: #0000BB;">1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   ind    | <span style="color: #0000BB;">1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Subset on drug codes</span></span></span>
 <span class="r-in"><span></span></span>
@@ -228,7 +250,6 @@ as <code>sv_selection</code>.</p>
 <span class="r-in"><span>   <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    ipi <span class="op">=</span> <span class="st">"ipilimumab"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="get_drecno.html">get_drecno</a></span><span class="op">(</span>mp <span class="op">=</span> <span class="va">mp_</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">get_drecno()</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">`d_sel`: Matching drugs</span> ──</span>
@@ -246,14 +267,28 @@ as <code>sv_selection</code>.</p>
 <span class="r-in"><span><span class="fu">tb_subset</span><span class="op">(</span><span class="va">wd_in</span>, <span class="va">wd_out</span>,</span></span>
 <span class="r-in"><span>          subset_var <span class="op">=</span> <span class="st">"drecno"</span>,</span></span>
 <span class="r-in"><span>          sv_selection <span class="op">=</span> <span class="va">d_drecno</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> demo.parquet subset has 2 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> adr.parquet subset has 2 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> out.parquet subset has 2 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> srce.parquet subset has 2 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> followup.parquet subset has 2 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> drug.parquet subset has 2 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> link.parquet subset has 2 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind.parquet subset has 2 rows.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">tb_subset()</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Subsetting VigiBase tables.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■                           </span>  15% | 1ms | Reading source tables </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■                      </span>  30% | 14ms | Picking subset </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span>  45% | 47ms | Collect case list </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50% | 53ms | Collect drug list </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■             </span>  60% | 72ms | Apply case level subset </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■       </span>  80% | 163ms | Apply drug level subset </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | 217ms | Done </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Subset successful</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span>   Table  | Number of rows in subset</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   demo   | <span style="color: #0000BB;">2</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   adr    | <span style="color: #0000BB;">2</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   out    | <span style="color: #0000BB;">2</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   srce   | <span style="color: #0000BB;">2</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → followup | <span style="color: #0000BB;">2</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   drug   | <span style="color: #0000BB;">2</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   link   | <span style="color: #0000BB;">2</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   ind    | <span style="color: #0000BB;">2</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="co"># Subset on age &gt; 65 year-old</span></span></span>
 <span class="r-in"><span></span></span>
@@ -265,14 +300,27 @@ as <code>sv_selection</code>.</p>
 <span class="r-in"><span><span class="fu">tb_subset</span><span class="op">(</span><span class="va">wd_in</span>, <span class="va">wd_out</span>,</span></span>
 <span class="r-in"><span>          subset_var <span class="op">=</span> <span class="st">"age"</span>,</span></span>
 <span class="r-in"><span>          sv_selection <span class="op">=</span> <span class="va">sv_selection</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> demo.parquet subset has 1 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> adr.parquet subset has 1 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> out.parquet subset has 1 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> srce.parquet subset has 1 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> followup.parquet subset has 1 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> drug.parquet subset has 1 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> link.parquet subset has 1 rows.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ind.parquet subset has 1 rows.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">tb_subset()</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Subsetting VigiBase tables.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■                           </span>  15% | 1ms | Reading source tables </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■                      </span>  30% | 14ms | Picking subset </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span>  45% | 44ms | Collect case list </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50% | 50ms | Collect drug list </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■             </span>  60% | 69ms | Apply case level subset </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■       </span>  80% | 159ms | Apply drug level subset </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | 213ms | Done </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Subset successful</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span>   Table  | Number of rows in subset</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   demo   | <span style="color: #0000BB;">1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   adr    | <span style="color: #0000BB;">1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   out    | <span style="color: #0000BB;">1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   srce   | <span style="color: #0000BB;">1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → followup | <span style="color: #0000BB;">1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   drug   | <span style="color: #0000BB;">1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   link   | <span style="color: #0000BB;">1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> →   ind    | <span style="color: #0000BB;">1</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

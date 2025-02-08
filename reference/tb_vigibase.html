@@ -209,12 +209,54 @@ Use <code><a href="dt_parquet.html">dt_parquet()</a></code> to load the tables a
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="fu">tb_vigibase</span><span class="op">(</span>path_base <span class="op">=</span> <span class="va">path_base</span>,</span></span>
 <span class="r-in"><span>        path_sub  <span class="op">=</span> <span class="va">path_sub</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Creating vigibase tables.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>             This process must only be done once per database version.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>             It can take up to 30minutes.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Read DEMO.txt                 3%Split demo                    6%Write demo.parquet           12%Read DRUG.txt                16%Split drug                   20%Write drug.parquet           27%Read FOLLOWUP.txt            30%Split followup               32%Write followup.parquet       34%Read ADR.txt                 36%Split adr                    41%Write adr.parquet            48%Read OUT.txt                 51%Split out                    52%Write out.parquet            53%Read SRCE.txt                55%Split srce                   57%Write srce.parquet           58%Read LINK.txt                60%Split link                   62%Write link.parquet           68%Read IND.txt                 70%Split ind                    72%Write ind.parquet            78%Read SUSPECTEDDUPLICATES.txt 80%Split suspdup                82%Write suspdup.parquet        84%Read AgeGroup_Lx.txt         85%Read Dechallenge_Lx.txt      86%Read Dechallenge2_Lx.txt     87%Read Frequency_Lx.txt        88%Read Gender_Lx.txt           89%Read Notifier_Lx.txt         90%Read Outcome_Lx.txt          91%Read Rechallenge_Lx.txt      92%Read Rechallenge2_Lx.txt     93%Read Region_Lx.txt           94%Read RepBasis_Lx.txt         95%Read ReportType_Lx.txt       96%Read RouteOfAdm_Lx.txt       97%Read Seriousness_Lx.txt      98%Read SizeUnit_Lx.txt         99%Done                             </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">tb_vigibase()</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Creating vigibase tables.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> This process must only be done <span style="color: #BBBB00; font-weight: bold;">once</span> per database version.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> It can take up to 30minutes.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■                              </span>   3% | 1ms | Read DEMO.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■                             </span>   6% | 13ms | Split demo </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■                           </span>  12% | 54ms | Write demo.parquet </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■                          </span>  16% | 207ms | Read DRUG.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■                         </span>  20% | 217ms | Split drug </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■                       </span>  27% | 280ms | Write drug.parquet </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■                      </span>  30% | 411ms | Read FOLLOWUP.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■                     </span>  32% | 421ms | Split followup </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■                     </span>  34% | 455ms | Write followup.parquet </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■                    </span>  36% | 582ms | Read ADR.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span>  39% | 592ms | Split adr </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span>  42% | 633ms | Write adr.parquet </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span>  43% | 641ms | Read OUT.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span>  45% | 650ms | Split out </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span>  46% | 685ms | Write out.parquet </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span>  47% | 815ms | Read SRCE.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span>  48% | 825ms | Split srce </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  49% | 857ms | Write srce.parquet </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50% | 987ms | Read LINK.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■               </span>  52% | 997ms | Split link (longest step) </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■           </span>  68% | 1.2s | Write link.parquet </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■          </span>  70% | 1.3s | Read IND.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span>  72% | 1.3s | Split ind </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■        </span>  78% | 1.3s | Write ind.parquet </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■       </span>  80% | 1.5s | Read SUSPECTEDDUPLICATES.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span>  82% | 1.5s | Split suspdup </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span>  84% | 1.5s | Write suspdup.parquet </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  85% | 1.6s | Process AgeGroup_Lx.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  86% | 1.7s | Process Dechallenge_Lx.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  87% | 1.7s | Process Dechallenge2_Lx.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  88% | 1.7s | Process Frequency_Lx.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■    </span>  89% | 1.7s | Process Gender_Lx.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■    </span>  90% | 1.8s | Process Notifier_Lx.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■    </span>  91% | 1.8s | Process Outcome_Lx.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span>  92% | 1.8s | Process Rechallenge_Lx.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span>  93% | 1.9s | Process Rechallenge2_Lx.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span>  94% | 1.9s | Process Region_Lx.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span>  95% | 1.9s | Process RepBasis_Lx.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  </span>  96% | 1.9s | Process ReportType_Lx.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  </span>  97% | 2s | Process RouteOfAdm_Lx.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  </span>  98% | 2s | Process Seriousness_Lx.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span>  99% | 2s | Process SizeUnit_Lx.txt </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | 2s | Done </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

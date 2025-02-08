@@ -59,7 +59,8 @@ data.table, given another term of the MedDRA SOC Hierarchy.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_llt_soc</span><span class="op">(</span></span>
 <span>  <span class="va">term_sel</span>,</span>
 <span>  term_level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"soc"</span>, <span class="st">"hlgt"</span>, <span class="st">"hlt"</span>, <span class="st">"pt"</span>, <span class="st">"llt"</span><span class="op">)</span>,</span>
-<span>  <span class="va">meddra</span></span>
+<span>  <span class="va">meddra</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -77,6 +78,10 @@ data.table, given another term of the MedDRA SOC Hierarchy.</p>
 
 <dt id="arg-meddra">meddra<a class="anchor" aria-label="anchor" href="#arg-meddra"></a></dt>
 <dd><p>A data.table. Built from meddra_builders functions</p></dd>
+
+
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
+<dd><p>Logical. Allows you to see matching reactions in the console.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -119,16 +124,26 @@ e.g. all preferred terms, all high level terms, etc.</p>
 <span class="r-in"><span>  term_level <span class="op">=</span> <span class="st">"pt"</span>,</span></span>
 <span class="r-in"><span>  meddra <span class="op">=</span> <span class="va">meddra_</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">get_llt_soc()</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #00BB00; font-weight: bold;">✔</span><span style="font-weight: bold;"> Matched reactions at `pt` level (number of codes)</span> ──</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → `colitis`: <span style="color: #0000BB;">"Autoimmune colitis (1)"</span> and <span style="color: #0000BB;">"Colitis (25)"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → `pneumonitis`: <span style="color: #0000BB;">"Organising pneumonia (9)"</span> and <span style="color: #0000BB;">"Pneumonitis (6)"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Set `verbose` to FALSE to suppress this section.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $colitis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 146319904  72535511 145048103  83961164  60502763  86999793  31902962</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8]  74358151  93223730  42212111  47872019   9787331  97183180  76243579</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [15]  57421483  83801839  35994947 145921181 126960392 139876147   7485419</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [22]  56928874 106618606  69329666 136185109 134273207</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [22]  56928874 106618606 136185109 134273207  69329666</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $pneumonitis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 110049083  31672047  49475344  77064677  56481317 136339570 118650884</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 147647338  70842560 114117713  90904107  61950323  56401565 111041017</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15] 116513289</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  77064677  56481317 136339570  56401565 111041017 116513289 110049083</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8]  31672047  49475344 118650884 147647338  70842560 114117713  90904107</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15]  61950323</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># with high level terms</span></span></span>
@@ -138,6 +153,15 @@ e.g. all preferred terms, all high level terms, etc.</p>
 <span class="r-in"><span>  term_level <span class="op">=</span> <span class="st">"hlt"</span>,</span></span>
 <span class="r-in"><span>  meddra <span class="op">=</span> <span class="va">meddra_</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">get_llt_soc()</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #00BB00; font-weight: bold;">✔</span><span style="font-weight: bold;"> Matched reactions at `hlt` level (number of codes)</span> ──</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → `colitis`: <span style="color: #0000BB;">"Gastrointestinal inflammatory disorders NEC (17)"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> → `pneumonitis`: <span style="color: #0000BB;">"Pulmonary thrombotic and embolic conditions (41)"</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Set `verbose` to FALSE to suppress this section.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $colitis</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 138014054  22136645  33346088  76736595 114942138 121450460  52582197</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8]  39107722  89785585  31994263  72565521  53464576  24470833  68617678</span>
