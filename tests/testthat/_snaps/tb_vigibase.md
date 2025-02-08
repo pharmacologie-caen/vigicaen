@@ -1,52 +1,222 @@
 # basic use and here package works
 
     Code
+      options(cli.progress_show_after = 0)
+      options(cli.progress_clear = FALSE)
       tb_vigibase(path_base = path_base, path_sub = path_sub)
     Message
-      Creating vigibase tables.
       
-                  This process must only be done once per database version.
+      -- tb_vigibase() ---------------------------------------------------------------
+      i Creating vigibase tables.
+      This process must only be done once per database version.
+      It can take up to 30minutes.
+      =>----------------------------- percent, seconds | Read DEMO.txt 
+      ==>---------------------------- percent, seconds | Split demo 
+      ====>-------------------------- percent, seconds | Write demo.parquet 
+      =====>------------------------- percent, seconds | Read DRUG.txt 
+      ======>------------------------ percent, seconds | Split drug 
+      ========>---------------------- percent, seconds | Write drug.parquet 
+      =========>--------------------- percent, seconds | Read FOLLOWUP.txt 
+      ==========>-------------------- percent, seconds | Split followup 
+      ==========>-------------------- percent, seconds | Write followup.parquet 
+      ===========>------------------- percent, seconds | Read ADR.txt 
+      ============>------------------ percent, seconds | Split adr 
+      =============>----------------- percent, seconds | Write adr.parquet 
+      =============>----------------- percent, seconds | Read OUT.txt 
+      ==============>---------------- percent, seconds | Split out 
+      ==============>---------------- percent, seconds | Write out.parquet 
+      ==============>---------------- percent, seconds | Read SRCE.txt 
+      ==============>---------------- percent, seconds | Split srce 
+      ===============>--------------- percent, seconds | Write srce.parquet 
+      ===============>--------------- percent, seconds | Read LINK.txt 
+      ================>-------------- percent, seconds | Split link (longest step) 
+      ====================>---------- percent, seconds | Write link.parquet 
+      =====================>--------- percent, seconds | Read IND.txt 
+      ======================>-------- percent, seconds | Split ind 
+      =======================>------- percent, seconds | Write ind.parquet 
+      ========================>------ percent, seconds | Read SUSPECTEDDUPLICATES.txt 
+      =========================>----- percent, seconds | Split suspdup 
+      =========================>----- percent, seconds | Write suspdup.parquet 
+      ==========================>---- percent, seconds | Process AgeGroup_Lx.txt 
+      ==========================>---- percent, seconds | Process Dechallenge_Lx.txt 
+      ==========================>---- percent, seconds | Process Dechallenge2_Lx.txt 
+      ==========================>---- percent, seconds | Process Frequency_Lx.txt 
+      ===========================>--- percent, seconds | Process Gender_Lx.txt 
+      ===========================>--- percent, seconds | Process Notifier_Lx.txt 
+      ===========================>--- percent, seconds | Process Outcome_Lx.txt 
+      ============================>-- percent, seconds | Process Rechallenge_Lx.txt 
+      ============================>-- percent, seconds | Process Rechallenge2_Lx.txt 
+      ============================>-- percent, seconds | Process Region_Lx.txt 
+      ============================>-- percent, seconds | Process RepBasis_Lx.txt 
+      =============================>- percent, seconds | Process ReportType_Lx.txt 
+      =============================>- percent, seconds | Process RouteOfAdm_Lx.txt 
+      =============================>- percent, seconds | Process Seriousness_Lx.txt 
+      ==============================> percent, seconds | Process SizeUnit_Lx.txt 
+      ==============================> percent, seconds | Done 
       
-                  It can take up to 30minutes.
-    Output
-      Read DEMO.txt                 3%Split demo                    6%Write demo.parquet           12%Read DRUG.txt                16%Split drug                   20%Write drug.parquet           27%Read FOLLOWUP.txt            30%Split followup               32%Write followup.parquet       34%Read ADR.txt                 36%Split adr                    41%Write adr.parquet            48%Read OUT.txt                 51%Split out                    52%Write out.parquet            53%Read SRCE.txt                55%Split srce                   57%Write srce.parquet           58%Read LINK.txt                60%Split link                   62%Write link.parquet           68%Read IND.txt                 70%Split ind                    72%Write ind.parquet            78%Read SUSPECTEDDUPLICATES.txt 80%Split suspdup                82%Write suspdup.parquet        84%Read AgeGroup_Lx.txt         85%Read Dechallenge_Lx.txt      86%Read Dechallenge2_Lx.txt     87%Read Frequency_Lx.txt        88%Read Gender_Lx.txt           89%Read Notifier_Lx.txt         90%Read Outcome_Lx.txt          91%Read Rechallenge_Lx.txt      92%Read Rechallenge2_Lx.txt     93%Read Region_Lx.txt           94%Read RepBasis_Lx.txt         95%Read ReportType_Lx.txt       96%Read RouteOfAdm_Lx.txt       97%Read Seriousness_Lx.txt      98%Read SizeUnit_Lx.txt         99%Done                             
 
 ---
 
     Code
       tb_vigibase(path_base = here_path_base, path_sub = here_path_sub)
     Message
-      Creating vigibase tables.
       
-                  This process must only be done once per database version.
+      -- tb_vigibase() ---------------------------------------------------------------
+      i Creating vigibase tables.
+      This process must only be done once per database version.
+      It can take up to 30minutes.
+      =>----------------------------- percent, seconds | Read DEMO.txt 
+      ==>---------------------------- percent, seconds | Split demo 
+      ====>-------------------------- percent, seconds | Write demo.parquet 
+      =====>------------------------- percent, seconds | Read DRUG.txt 
+      ======>------------------------ percent, seconds | Split drug 
+      ========>---------------------- percent, seconds | Write drug.parquet 
+      =========>--------------------- percent, seconds | Read FOLLOWUP.txt 
+      ==========>-------------------- percent, seconds | Split followup 
+      ==========>-------------------- percent, seconds | Write followup.parquet 
+      ===========>------------------- percent, seconds | Read ADR.txt 
+      ============>------------------ percent, seconds | Split adr 
+      =============>----------------- percent, seconds | Write adr.parquet 
+      =============>----------------- percent, seconds | Read OUT.txt 
+      ==============>---------------- percent, seconds | Split out 
+      ==============>---------------- percent, seconds | Write out.parquet 
+      ==============>---------------- percent, seconds | Read SRCE.txt 
+      ==============>---------------- percent, seconds | Split srce 
+      ===============>--------------- percent, seconds | Write srce.parquet 
+      ===============>--------------- percent, seconds | Read LINK.txt 
+      ================>-------------- percent, seconds | Split link (longest step) 
+      ====================>---------- percent, seconds | Write link.parquet 
+      =====================>--------- percent, seconds | Read IND.txt 
+      ======================>-------- percent, seconds | Split ind 
+      =======================>------- percent, seconds | Write ind.parquet 
+      ========================>------ percent, seconds | Read SUSPECTEDDUPLICATES.txt 
+      =========================>----- percent, seconds | Split suspdup 
+      =========================>----- percent, seconds | Write suspdup.parquet 
+      ==========================>---- percent, seconds | Process AgeGroup_Lx.txt 
+      ==========================>---- percent, seconds | Process Dechallenge_Lx.txt 
+      ==========================>---- percent, seconds | Process Dechallenge2_Lx.txt 
+      ==========================>---- percent, seconds | Process Frequency_Lx.txt 
+      ===========================>--- percent, seconds | Process Gender_Lx.txt 
+      ===========================>--- percent, seconds | Process Notifier_Lx.txt 
+      ===========================>--- percent, seconds | Process Outcome_Lx.txt 
+      ============================>-- percent, seconds | Process Rechallenge_Lx.txt 
+      ============================>-- percent, seconds | Process Rechallenge2_Lx.txt 
+      ============================>-- percent, seconds | Process Region_Lx.txt 
+      ============================>-- percent, seconds | Process RepBasis_Lx.txt 
+      =============================>- percent, seconds | Process ReportType_Lx.txt 
+      =============================>- percent, seconds | Process RouteOfAdm_Lx.txt 
+      =============================>- percent, seconds | Process Seriousness_Lx.txt 
+      ==============================> percent, seconds | Process SizeUnit_Lx.txt 
+      ==============================> percent, seconds | Done 
       
-                  It can take up to 30minutes.
-    Output
-      Read DEMO.txt                 3%Split demo                    6%Write demo.parquet           12%Read DRUG.txt                16%Split drug                   20%Write drug.parquet           27%Read FOLLOWUP.txt            30%Split followup               32%Write followup.parquet       34%Read ADR.txt                 36%Split adr                    41%Write adr.parquet            48%Read OUT.txt                 51%Split out                    52%Write out.parquet            53%Read SRCE.txt                55%Split srce                   57%Write srce.parquet           58%Read LINK.txt                60%Split link                   62%Write link.parquet           68%Read IND.txt                 70%Split ind                    72%Write ind.parquet            78%Read SUSPECTEDDUPLICATES.txt 80%Split suspdup                82%Write suspdup.parquet        84%Read AgeGroup_Lx.txt         85%Read Dechallenge_Lx.txt      86%Read Dechallenge2_Lx.txt     87%Read Frequency_Lx.txt        88%Read Gender_Lx.txt           89%Read Notifier_Lx.txt         90%Read Outcome_Lx.txt          91%Read Rechallenge_Lx.txt      92%Read Rechallenge2_Lx.txt     93%Read Region_Lx.txt           94%Read RepBasis_Lx.txt         95%Read ReportType_Lx.txt       96%Read RouteOfAdm_Lx.txt       97%Read Seriousness_Lx.txt      98%Read SizeUnit_Lx.txt         99%Done                             
 
 ---
 
     Code
       tb_vigibase(path_base = path_base, path_sub = here_path_sub)
     Message
-      Creating vigibase tables.
       
-                  This process must only be done once per database version.
+      -- tb_vigibase() ---------------------------------------------------------------
+      i Creating vigibase tables.
+      This process must only be done once per database version.
+      It can take up to 30minutes.
+      =>----------------------------- percent, seconds | Read DEMO.txt 
+      ==>---------------------------- percent, seconds | Split demo 
+      ====>-------------------------- percent, seconds | Write demo.parquet 
+      =====>------------------------- percent, seconds | Read DRUG.txt 
+      ======>------------------------ percent, seconds | Split drug 
+      ========>---------------------- percent, seconds | Write drug.parquet 
+      =========>--------------------- percent, seconds | Read FOLLOWUP.txt 
+      ==========>-------------------- percent, seconds | Split followup 
+      ==========>-------------------- percent, seconds | Write followup.parquet 
+      ===========>------------------- percent, seconds | Read ADR.txt 
+      ============>------------------ percent, seconds | Split adr 
+      =============>----------------- percent, seconds | Write adr.parquet 
+      =============>----------------- percent, seconds | Read OUT.txt 
+      ==============>---------------- percent, seconds | Split out 
+      ==============>---------------- percent, seconds | Write out.parquet 
+      ==============>---------------- percent, seconds | Read SRCE.txt 
+      ==============>---------------- percent, seconds | Split srce 
+      ===============>--------------- percent, seconds | Write srce.parquet 
+      ===============>--------------- percent, seconds | Read LINK.txt 
+      ================>-------------- percent, seconds | Split link (longest step) 
+      ====================>---------- percent, seconds | Write link.parquet 
+      =====================>--------- percent, seconds | Read IND.txt 
+      ======================>-------- percent, seconds | Split ind 
+      =======================>------- percent, seconds | Write ind.parquet 
+      ========================>------ percent, seconds | Read SUSPECTEDDUPLICATES.txt 
+      =========================>----- percent, seconds | Split suspdup 
+      =========================>----- percent, seconds | Write suspdup.parquet 
+      ==========================>---- percent, seconds | Process AgeGroup_Lx.txt 
+      ==========================>---- percent, seconds | Process Dechallenge_Lx.txt 
+      ==========================>---- percent, seconds | Process Dechallenge2_Lx.txt 
+      ==========================>---- percent, seconds | Process Frequency_Lx.txt 
+      ===========================>--- percent, seconds | Process Gender_Lx.txt 
+      ===========================>--- percent, seconds | Process Notifier_Lx.txt 
+      ===========================>--- percent, seconds | Process Outcome_Lx.txt 
+      ============================>-- percent, seconds | Process Rechallenge_Lx.txt 
+      ============================>-- percent, seconds | Process Rechallenge2_Lx.txt 
+      ============================>-- percent, seconds | Process Region_Lx.txt 
+      ============================>-- percent, seconds | Process RepBasis_Lx.txt 
+      =============================>- percent, seconds | Process ReportType_Lx.txt 
+      =============================>- percent, seconds | Process RouteOfAdm_Lx.txt 
+      =============================>- percent, seconds | Process Seriousness_Lx.txt 
+      ==============================> percent, seconds | Process SizeUnit_Lx.txt 
+      ==============================> percent, seconds | Done 
       
-                  It can take up to 30minutes.
-    Output
-      Read DEMO.txt                 3%Split demo                    6%Write demo.parquet           12%Read DRUG.txt                16%Split drug                   20%Write drug.parquet           27%Read FOLLOWUP.txt            30%Split followup               32%Write followup.parquet       34%Read ADR.txt                 36%Split adr                    41%Write adr.parquet            48%Read OUT.txt                 51%Split out                    52%Write out.parquet            53%Read SRCE.txt                55%Split srce                   57%Write srce.parquet           58%Read LINK.txt                60%Split link                   62%Write link.parquet           68%Read IND.txt                 70%Split ind                    72%Write ind.parquet            78%Read SUSPECTEDDUPLICATES.txt 80%Split suspdup                82%Write suspdup.parquet        84%Read AgeGroup_Lx.txt         85%Read Dechallenge_Lx.txt      86%Read Dechallenge2_Lx.txt     87%Read Frequency_Lx.txt        88%Read Gender_Lx.txt           89%Read Notifier_Lx.txt         90%Read Outcome_Lx.txt          91%Read Rechallenge_Lx.txt      92%Read Rechallenge2_Lx.txt     93%Read Region_Lx.txt           94%Read RepBasis_Lx.txt         95%Read ReportType_Lx.txt       96%Read RouteOfAdm_Lx.txt       97%Read Seriousness_Lx.txt      98%Read SizeUnit_Lx.txt         99%Done                             
 
 ---
 
     Code
       tb_vigibase(path_base = here_path_base, path_sub = path_sub)
     Message
-      Creating vigibase tables.
       
-                  This process must only be done once per database version.
+      -- tb_vigibase() ---------------------------------------------------------------
+      i Creating vigibase tables.
+      This process must only be done once per database version.
+      It can take up to 30minutes.
+      =>----------------------------- percent, seconds | Read DEMO.txt 
+      ==>---------------------------- percent, seconds | Split demo 
+      ====>-------------------------- percent, seconds | Write demo.parquet 
+      =====>------------------------- percent, seconds | Read DRUG.txt 
+      ======>------------------------ percent, seconds | Split drug 
+      ========>---------------------- percent, seconds | Write drug.parquet 
+      =========>--------------------- percent, seconds | Read FOLLOWUP.txt 
+      ==========>-------------------- percent, seconds | Split followup 
+      ==========>-------------------- percent, seconds | Write followup.parquet 
+      ===========>------------------- percent, seconds | Read ADR.txt 
+      ============>------------------ percent, seconds | Split adr 
+      =============>----------------- percent, seconds | Write adr.parquet 
+      =============>----------------- percent, seconds | Read OUT.txt 
+      ==============>---------------- percent, seconds | Split out 
+      ==============>---------------- percent, seconds | Write out.parquet 
+      ==============>---------------- percent, seconds | Read SRCE.txt 
+      ==============>---------------- percent, seconds | Split srce 
+      ===============>--------------- percent, seconds | Write srce.parquet 
+      ===============>--------------- percent, seconds | Read LINK.txt 
+      ================>-------------- percent, seconds | Split link (longest step) 
+      ====================>---------- percent, seconds | Write link.parquet 
+      =====================>--------- percent, seconds | Read IND.txt 
+      ======================>-------- percent, seconds | Split ind 
+      =======================>------- percent, seconds | Write ind.parquet 
+      ========================>------ percent, seconds | Read SUSPECTEDDUPLICATES.txt 
+      =========================>----- percent, seconds | Split suspdup 
+      =========================>----- percent, seconds | Write suspdup.parquet 
+      ==========================>---- percent, seconds | Process AgeGroup_Lx.txt 
+      ==========================>---- percent, seconds | Process Dechallenge_Lx.txt 
+      ==========================>---- percent, seconds | Process Dechallenge2_Lx.txt 
+      ==========================>---- percent, seconds | Process Frequency_Lx.txt 
+      ===========================>--- percent, seconds | Process Gender_Lx.txt 
+      ===========================>--- percent, seconds | Process Notifier_Lx.txt 
+      ===========================>--- percent, seconds | Process Outcome_Lx.txt 
+      ============================>-- percent, seconds | Process Rechallenge_Lx.txt 
+      ============================>-- percent, seconds | Process Rechallenge2_Lx.txt 
+      ============================>-- percent, seconds | Process Region_Lx.txt 
+      ============================>-- percent, seconds | Process RepBasis_Lx.txt 
+      =============================>- percent, seconds | Process ReportType_Lx.txt 
+      =============================>- percent, seconds | Process RouteOfAdm_Lx.txt 
+      =============================>- percent, seconds | Process Seriousness_Lx.txt 
+      ==============================> percent, seconds | Process SizeUnit_Lx.txt 
+      ==============================> percent, seconds | Done 
       
-                  It can take up to 30minutes.
-    Output
-      Read DEMO.txt                 3%Split demo                    6%Write demo.parquet           12%Read DRUG.txt                16%Split drug                   20%Write drug.parquet           27%Read FOLLOWUP.txt            30%Split followup               32%Write followup.parquet       34%Read ADR.txt                 36%Split adr                    41%Write adr.parquet            48%Read OUT.txt                 51%Split out                    52%Write out.parquet            53%Read SRCE.txt                55%Split srce                   57%Write srce.parquet           58%Read LINK.txt                60%Split link                   62%Write link.parquet           68%Read IND.txt                 70%Split ind                    72%Write ind.parquet            78%Read SUSPECTEDDUPLICATES.txt 80%Split suspdup                82%Write suspdup.parquet        84%Read AgeGroup_Lx.txt         85%Read Dechallenge_Lx.txt      86%Read Dechallenge2_Lx.txt     87%Read Frequency_Lx.txt        88%Read Gender_Lx.txt           89%Read Notifier_Lx.txt         90%Read Outcome_Lx.txt          91%Read Rechallenge_Lx.txt      92%Read Rechallenge2_Lx.txt     93%Read Region_Lx.txt           94%Read RepBasis_Lx.txt         95%Read ReportType_Lx.txt       96%Read RouteOfAdm_Lx.txt       97%Read Seriousness_Lx.txt      98%Read SizeUnit_Lx.txt         99%Done                             
 

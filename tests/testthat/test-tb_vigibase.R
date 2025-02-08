@@ -73,10 +73,21 @@ test_that("basic use and here package works", {
     }
   })
 
-   expect_snapshot(
+   expect_snapshot({
+     options(cli.progress_show_after = 0)
+     options(cli.progress_clear = FALSE)
      tb_vigibase(path_base = path_base,
              path_sub  = path_sub)
+   },
+   transform =
+     function(chr_line)
+       stringr::str_replace(
+         chr_line,
+         "(?>=\\d{1,3}\\%\\s| ).*(?= \\|)",
+         " percent, seconds"
+       )
    )
+
 
    demo_res <- arrow::read_parquet(paste0(path_base, "demo.parquet"),
                                    mmap = FALSE)
@@ -170,7 +181,14 @@ test_that("basic use and here package works", {
 
    expect_snapshot(
      tb_vigibase(path_base = here_path_base,
-             path_sub  = here_path_sub)
+             path_sub  = here_path_sub),
+     transform =
+       function(chr_line)
+         stringr::str_replace(
+           chr_line,
+           "(?>=\\d{1,3}\\%\\s| ).*(?= \\|)",
+           " percent, seconds"
+         )
    )
 
    demo_res_here <- arrow::read_parquet(here::here(here_path_base, "demo.parquet"),
@@ -183,12 +201,26 @@ test_that("basic use and here package works", {
 
    expect_snapshot(
      tb_vigibase(path_base = path_base,
-             path_sub  = here_path_sub)
+             path_sub  = here_path_sub),
+     transform =
+       function(chr_line)
+         stringr::str_replace(
+           chr_line,
+           "(?>=\\d{1,3}\\%\\s| ).*(?= \\|)",
+           " percent, seconds"
+         )
    )
 
    expect_snapshot(
      tb_vigibase(path_base = here_path_base,
-             path_sub  = path_sub)
+             path_sub  = path_sub),
+     transform =
+       function(chr_line)
+         stringr::str_replace(
+           chr_line,
+           "(?>=\\d{1,3}\\%\\s| ).*(?= \\|)",
+           " percent, seconds"
+         )
    )
 
    age_group_res <-

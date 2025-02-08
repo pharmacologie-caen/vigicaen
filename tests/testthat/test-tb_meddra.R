@@ -23,7 +23,14 @@ test_that("can process meddra tables", {
     })
 
   expect_snapshot(
-    tb_meddra(path_meddra)
+    tb_meddra(path_meddra),
+    transform =
+      function(chr_line)
+        stringr::str_replace(
+          chr_line,
+          "(?>=\\d{1,3}\\%\\s| ).*(?= \\|)",
+          " percent, seconds"
+        )
   )
 
   meddra_res <-
@@ -74,5 +81,17 @@ test_that("can process meddra tables", {
   )
 
   unlink(tmp_folder, recursive = TRUE)
+})
+
+test_that("msg_tb_onceperdatabase prints in different formats", {
+  cli::test_that_cli("format is ok", {
+    expect_snapshot( {
+      msg_tb_onceperdatabase()
+    })
+  })
+  expect_message(
+    msg_tb_onceperdatabase(),
+    "process"
+  )
 })
 

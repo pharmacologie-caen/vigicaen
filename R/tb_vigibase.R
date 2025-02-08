@@ -18,6 +18,8 @@
 #'
 #' @keywords import
 #' @importFrom stringr str_sub str_trim
+#' @importFrom cli cli_progress_bar cli_progress_update
+#' @importFrom cli cli_progress_done
 #'
 #' @returns
 #' \itemize{
@@ -165,17 +167,31 @@ tb_vigibase <-
       stop(paste0(path_sub, " does not exist"))
     }
 
-    message("Creating vigibase tables.\n
-            This process must only be done once per database version.\n
-            It can take up to 30minutes.")
+    cli::cli_h1(
+      "tb_vigibase()"
+    )
+    cli::cli_alert_info(
+    "Creating vigibase tables.")
+
+    msg_tb_onceperdatabase()
+
+    cli::cli_inform("It can take up to 30minutes.")
 
     # ---- demo ---- ####
-    texter("Read DEMO.txt", "3%%")
+    cli_progress_bar(
+      "Creating vigibase",
+      format = "{cli::pb_bar} {cli::pb_percent} | {cli::pb_elapsed} | {cli::pb_status}",
+      total = 100
+    )
+
+    cli_progress_update(force = TRUE,status = "Read DEMO.txt", set = 3)
 
     demo <- reader("DEMO.txt", path_base)
 
     # ---- split
-    texter("Split demo", "6%%")
+    cli_progress_update(force = TRUE,
+      status = "Split demo",
+      set = 6)
 
     demo <-
       demo |>
@@ -196,7 +212,9 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    texter("Write demo.parquet", "12%%")
+    cli_progress_update(force = TRUE,
+      status = "Write demo.parquet",
+      set = 12)
 
     arrow::write_parquet(demo,
                   sink = paste0(path_base, "demo.parquet")
@@ -207,12 +225,16 @@ tb_vigibase <-
     gc()
 
     # ---- drug ---- ####
-    texter("Read DRUG.txt", "16%%")
+    cli_progress_update(force = TRUE,
+      status = "Read DRUG.txt",
+      set = 16)
 
     drug <- reader("DRUG.txt", path_base)
 
     # ---- split
-    texter("Split drug", "20%%")
+    cli_progress_update(force = TRUE,
+      status = "Split drug",
+      set = 20)
 
     drug <-
       drug |>
@@ -242,7 +264,9 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    texter("Write drug.parquet", "27%%")
+    cli_progress_update(force = TRUE,
+      status = "Write drug.parquet",
+      set = 27)
 
     arrow::write_parquet(drug,
                          sink = paste0(path_base, "drug.parquet")
@@ -254,12 +278,16 @@ tb_vigibase <-
 
 
     # ---- followup ---- ####
-    texter("Read FOLLOWUP.txt", "30%%")
+    cli_progress_update(force = TRUE,
+      status = "Read FOLLOWUP.txt",
+      set = 30)
 
     followup <- reader("FOLLOWUP.txt", path_base)
 
     # ---- split
-    texter("Split followup", "32%%")
+    cli_progress_update(force = TRUE,
+      status = "Split followup",
+      set = 32)
 
     followup <-
       followup |>
@@ -277,7 +305,9 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    texter("Write followup.parquet", "34%%")
+    cli_progress_update(force = TRUE,
+      status = "Write followup.parquet",
+      set = 34)
 
     arrow::write_parquet(followup,
                          sink = paste0(path_base, "followup.parquet")
@@ -288,12 +318,16 @@ tb_vigibase <-
     gc()
 
     # ---- adr ---- ####
-    texter("Read ADR.txt", "36%%")
+    cli_progress_update(force = TRUE,
+      status = "Read ADR.txt",
+      set = 36)
 
     adr <- reader("ADR.txt", path_base)
 
     # ---- split
-    texter("Split adr", "41%%")
+    cli_progress_update(force = TRUE,
+      status = "Split adr",
+      set = 39)
 
     adr <-
       adr |>
@@ -313,19 +347,25 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    texter("Write adr.parquet", "48%%")
+    cli_progress_update(force = TRUE,
+      status = "Write adr.parquet",
+      set = 42)
 
     arrow::write_parquet(adr,
                          sink = paste0(path_base, "adr.parquet")
     )
 
     # ---- out ---- ####
-    texter("Read OUT.txt", "51%%")
+    cli_progress_update(force = TRUE,
+      status = "Read OUT.txt",
+      set = 43)
 
     out <- reader("OUT.txt", path_base)
 
     # ---- split
-    texter("Split out", "52%%")
+    cli_progress_update(force = TRUE,
+      status = "Split out",
+      set = 45)
 
     out <-
       out |>
@@ -344,7 +384,9 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    texter("Write out.parquet", "53%%")
+    cli_progress_update(force = TRUE,
+      status = "Write out.parquet",
+      set = 46)
 
     arrow::write_parquet(out,
                          sink = paste0(path_base, "out.parquet")
@@ -356,12 +398,16 @@ tb_vigibase <-
     gc()
 
     # ---- srce ---- ####
-    texter("Read SRCE.txt", "55%%")
+    cli_progress_update(force = TRUE,
+      status = "Read SRCE.txt",
+      set = 47)
 
     srce <- reader("SRCE.txt", path_base)
 
     # ---- split
-    texter("Split srce", "57%%")
+    cli_progress_update(force = TRUE,
+      status = "Split srce",
+      set = 48)
 
     srce <-
       srce |>
@@ -379,7 +425,9 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    texter("Write srce.parquet", "58%%")
+    cli_progress_update(force = TRUE,
+      status = "Write srce.parquet",
+      set = 49)
 
     arrow::write_parquet(srce,
                          sink = paste0(path_base, "srce.parquet")
@@ -389,14 +437,17 @@ tb_vigibase <-
 
     gc()
 
-
     # ---- link ---- ####
-    texter("Read LINK.txt", "60%%")
+    cli_progress_update(force = TRUE,
+      status = "Read LINK.txt",
+      set = 50)
 
     link <- reader("LINK.txt", path_base)
 
     # ---- split
-    texter("Split link", "62%%")
+    cli_progress_update(force = TRUE,
+      status = "Split link (longest step)",
+      set = 52)
 
     link <-
       link |>
@@ -437,7 +488,9 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    texter("Write link.parquet", "68%%")
+    cli_progress_update(force = TRUE,
+      status = "Write link.parquet",
+      set = 68)
 
     arrow::write_parquet(link,
                          sink = paste0(path_base, "link.parquet")
@@ -447,7 +500,9 @@ tb_vigibase <-
     gc()
 
     # ---- ind ---- ####
-    texter("Read IND.txt", "70%%")
+    cli_progress_update(force = TRUE,
+      status = "Read IND.txt",
+      set = 70)
 
     ind <- arrow::read_delim_arrow(paste0(path_base, "IND.txt"),
                                    col_names = FALSE,
@@ -460,7 +515,9 @@ tb_vigibase <-
     )
 
     # ---- split
-    texter("Split ind", "72%%")
+    cli_progress_update(force = TRUE,
+      status = "Split ind",
+      set = 72)
 
     ind <-
       ind |>
@@ -478,7 +535,9 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    texter("Write ind.parquet", "78%%")
+    cli_progress_update(force = TRUE,
+      status = "Write ind.parquet",
+      set = 78)
 
     arrow::write_parquet(ind,
                          sink = paste0(path_base, "ind.parquet")
@@ -488,13 +547,17 @@ tb_vigibase <-
     gc()
 
     # ---- suspectedduplicates ---- ####
-    texter("Read SUSPECTEDDUPLICATES.txt", "80%%")
+    cli_progress_update(force = TRUE,
+      status = "Read SUSPECTEDDUPLICATES.txt",
+      set = 80)
 
     suspdup <- reader("SUSPECTEDDUPLICATES.txt",
                       folder = path_sub)
 
     # ---- split
-    texter("Split suspdup", "82%%")
+    cli_progress_update(force = TRUE,
+      status = "Split suspdup",
+      set = 82)
 
     suspdup <-
       suspdup |>
@@ -512,7 +575,9 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    texter("Write suspdup.parquet", "84%%")
+    cli_progress_update(force = TRUE,
+      status = "Write suspdup.parquet",
+      set = 84)
 
     arrow::write_parquet(suspdup,
                          sink = paste0(path_base, "suspdup.parquet")
@@ -523,7 +588,9 @@ tb_vigibase <-
     gc()
 
     # AgeGroup
-    texter("Read AgeGroup_Lx.txt", "85%%")
+    cli_progress_update(force = TRUE,
+      status = "Process AgeGroup_Lx.txt",
+      set = 85)
 
     AgeGroup <- reader("AgeGroup_Lx.txt", path_sub)
     AgeGroup <-
@@ -536,7 +603,9 @@ tb_vigibase <-
     arrow::write_parquet(AgeGroup, sink = paste0(path_sub, "AgeGroup.parquet"))
 
     # Dechallenge
-    texter("Read Dechallenge_Lx.txt", "86%%")
+    cli_progress_update(force = TRUE,
+      status = "Process Dechallenge_Lx.txt",
+      set = 86)
 
     Dechallenge <- reader("Dechallenge_Lx.txt", path_sub)
     Dechallenge <-
@@ -549,7 +618,9 @@ tb_vigibase <-
     arrow::write_parquet(Dechallenge, sink = paste0(path_sub, "Dechallenge.parquet"))
 
     # Dechallenge2
-    texter("Read Dechallenge2_Lx.txt", "87%%")
+    cli_progress_update(force = TRUE,
+      status = "Process Dechallenge2_Lx.txt",
+      set = 87)
 
     Dechallenge2 <- reader("Dechallenge2_Lx.txt", path_sub)
     Dechallenge2 <-
@@ -562,7 +633,9 @@ tb_vigibase <-
     arrow::write_parquet(Dechallenge2, sink = paste0(path_sub, "Dechallenge2.parquet"))
 
     # FrequencyU
-    texter("Read Frequency_Lx.txt", "88%%")
+    cli_progress_update(force = TRUE,
+      status = "Process Frequency_Lx.txt",
+      set = 88)
 
     Frequency <- reader("Frequency_Lx.txt", path_sub)
     Frequency <-
@@ -575,7 +648,9 @@ tb_vigibase <-
     arrow::write_parquet(Frequency, sink = paste0(path_sub, "Frequency.parquet"))
 
     # Gender
-    texter("Read Gender_Lx.txt", "89%%")
+    cli_progress_update(force = TRUE,
+      status = "Process Gender_Lx.txt",
+      set = 89)
 
     Gender <- reader("Gender_Lx.txt", path_sub)
     Gender <-
@@ -588,7 +663,9 @@ tb_vigibase <-
     arrow::write_parquet(Gender, sink = paste0(path_sub, "Gender.parquet"))
 
     # Notifier
-    texter("Read Notifier_Lx.txt", "90%%")
+    cli_progress_update(force = TRUE,
+      status = "Process Notifier_Lx.txt",
+      set = 90)
 
     Notifier <- reader("Notifier_Lx.txt", path_sub)
     Notifier <-
@@ -601,7 +678,9 @@ tb_vigibase <-
     arrow::write_parquet(Notifier, sink = paste0(path_sub, "Notifier.parquet"))
 
     # Outcome
-    texter("Read Outcome_Lx.txt", "91%%")
+    cli_progress_update(force = TRUE,
+      status = "Process Outcome_Lx.txt",
+      set = 91)
 
     Outcome <- reader("Outcome_Lx.txt", path_sub)
     Outcome <-
@@ -614,7 +693,9 @@ tb_vigibase <-
     arrow::write_parquet(Outcome, sink = paste0(path_sub, "Outcome.parquet"))
 
     # Rechallenge
-    texter("Read Rechallenge_Lx.txt", "92%%")
+    cli_progress_update(force = TRUE,
+      status = "Process Rechallenge_Lx.txt",
+      set = 92)
 
     Rechallenge <- reader("Rechallenge_Lx.txt", path_sub)
     Rechallenge <-
@@ -627,7 +708,9 @@ tb_vigibase <-
     arrow::write_parquet(Rechallenge, sink = paste0(path_sub, "Rechallenge.parquet"))
 
     # Rechallenge2
-    texter("Read Rechallenge2_Lx.txt", "93%%")
+    cli_progress_update(force = TRUE,
+      status = "Process Rechallenge2_Lx.txt",
+      set = 93)
 
     Rechallenge2 <- reader("Rechallenge2_Lx.txt", path_sub)
     Rechallenge2 <-
@@ -640,7 +723,9 @@ tb_vigibase <-
     arrow::write_parquet(Rechallenge2, sink = paste0(path_sub, "Rechallenge2.parquet"))
 
     # Region
-    texter("Read Region_Lx.txt", "94%%")
+    cli_progress_update(force = TRUE,
+      status = "Process Region_Lx.txt",
+      set = 94)
 
     Region <- reader("Region_Lx.txt", path_sub)
     Region <-
@@ -653,7 +738,9 @@ tb_vigibase <-
     arrow::write_parquet(Region, sink = paste0(path_sub, "Region.parquet"))
 
     # RepBasis
-    texter("Read RepBasis_Lx.txt", "95%%")
+    cli_progress_update(force = TRUE,
+      status = "Process RepBasis_Lx.txt",
+      set = 95)
 
     RepBasis <- reader("RepBasis_Lx.txt", path_sub)
     RepBasis <-
@@ -666,7 +753,9 @@ tb_vigibase <-
     arrow::write_parquet(RepBasis, sink = paste0(path_sub, "RepBasis.parquet"))
 
     # ReportType
-    texter("Read ReportType_Lx.txt", "96%%")
+    cli_progress_update(force = TRUE,
+      status = "Process ReportType_Lx.txt",
+      set = 96)
 
     ReportType <- reader("ReportType_Lx.txt", path_sub)
     ReportType <-
@@ -679,7 +768,9 @@ tb_vigibase <-
     arrow::write_parquet(ReportType, sink = paste0(path_sub, "ReportType.parquet"))
 
     # RouteOfAdm
-    texter("Read RouteOfAdm_Lx.txt", "97%%")
+    cli_progress_update(force = TRUE,
+      status = "Process RouteOfAdm_Lx.txt",
+      set = 97)
 
     RouteOfAdm <- reader("RouteOfAdm_Lx.txt", path_sub)
     RouteOfAdm <-
@@ -692,7 +783,9 @@ tb_vigibase <-
     arrow::write_parquet(RouteOfAdm, sink = paste0(path_sub, "RouteOfAdm.parquet"))
 
     # Seriousness
-    texter("Read Seriousness_Lx.txt", "98%%")
+    cli_progress_update(force = TRUE,
+      status = "Process Seriousness_Lx.txt",
+      set = 98)
 
     Seriousness <- reader("Seriousness_Lx.txt", path_sub)
     Seriousness <-
@@ -707,7 +800,9 @@ tb_vigibase <-
     arrow::write_parquet(Seriousness, sink = paste0(path_sub, "Seriousness.parquet"))
 
     # SizeUnit
-    texter("Read SizeUnit_Lx.txt", "99%%")
+    cli_progress_update(force = TRUE,
+      status = "Process SizeUnit_Lx.txt",
+      set = 99)
 
     SizeUnit <-
       read.table(
@@ -736,5 +831,8 @@ tb_vigibase <-
       dplyr::compute()
     arrow::write_parquet(SizeUnit, sink = paste0(path_sub, "SizeUnit.parquet"))
 
-    texter("Done", "")
+    cli_progress_update(force = TRUE,
+      status = "Done",
+      set = 100)
+    cli_progress_done()
   }
