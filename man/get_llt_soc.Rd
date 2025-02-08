@@ -7,7 +7,8 @@
 get_llt_soc(
   term_sel,
   term_level = c("soc", "hlgt", "hlt", "pt", "llt"),
-  meddra
+  meddra,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ get_llt_soc(
 \item{term_level}{A character string. One of "soc", "hlgt", "hlt", "pt", or "llt"}
 
 \item{meddra}{A data.table. Built from meddra_builders functions}
+
+\item{verbose}{Logical. Allows you to see matching reactions in the console.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Collect llt codes from a \code{meddra}

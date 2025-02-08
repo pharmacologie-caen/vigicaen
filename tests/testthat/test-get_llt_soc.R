@@ -3,7 +3,8 @@ test_that("basic use works", {
     get_llt_soc(
       rlang::list2(pneumonitis = "Pneumonitis"),
       term_level = "pt",
-      meddra = meddra_
+      meddra = meddra_,
+      verbose = FALSE
     )
 
   llt_extraction_true <-
@@ -21,32 +22,69 @@ test_that("there is no duplicate in extracted llts", {
     get_llt_soc(
       rlang::list2(colitis = "Colitis"),
       term_level = "pt",
-      meddra = meddra_)
+      meddra = meddra_,
+      verbose = FALSE)
 
   expect_equal(purrr::map(llt_extraction_soc, length),
                purrr::map(llt_extraction_soc, ~ length(unique(.x)))
                )
   })
 
-test_that("throws warning when nothing is found", {
-  expect_warning(
+test_that("verbose works", {
+  # Intended for the rechallenge data management
+  good_list <-
+    rlang::list2(item1 = c("Colitis"),
+                 item2 = c("Organising pneumonia",
+                           "Pneumonitis")
+    )
+  expect_snapshot(
+    r1 <-
     get_llt_soc(
-      rlang::list2(rate = "youps"),
+      good_list,
       term_level = "pt",
-      meddra = meddra_
-    ),
-    "the following terms were not found at pt level: youps"
+      meddra = meddra_)
   )
 })
 
-test_that("warning even if one term good and one term bad", {
-  expect_warning(
-    get_llt_soc(
-      rlang::list2(rate = c("Hepatitis", "youps")),
+test_that("unmatched terms management", {
+  wrong_list <-
+    rlang::list2(rate = c("youps", "Youps", "Colitis"),
+                 encorerate = c("another", "yet another")
+    )
+
+  wrong_with_capital <-
+    rlang::list2(rate = c("Youps", "Youps", "Colitis")
+    )
+
+  wrong_without_capital <-
+    rlang::list2(rate = c("youps"))
+
+  expect_snapshot(
+    r1 <- get_llt_soc(
+      wrong_without_capital,
       term_level = "pt",
-      meddra = meddra_
-    ),
-    "the following terms were not found at pt level: youps"
+      meddra = meddra_,
+      verbose = FALSE
+    )
+  )
+
+  expect_snapshot(
+    r1 <- get_llt_soc(
+      wrong_with_capital,
+      term_level = "pt",
+      meddra = meddra_,
+      verbose = FALSE
+    )
+  )
+
+  # even if one term good and one term bad
+  expect_snapshot(
+    r1 <- get_llt_soc(
+      wrong_list,
+      term_level = "pt",
+      meddra = meddra_,
+      verbose = FALSE
+    )
   )
 })
 
@@ -65,7 +103,8 @@ test_that("works with unique and multiple terms", {
     get_llt_soc(
       pt_sel,
       term_level = "pt",
-      meddra = meddra_
+      meddra = meddra_,
+      verbose = FALSE
     )
 
   purrr::iwalk(
@@ -92,7 +131,8 @@ test_that("works at different term levels (soc, hlgt, hlt, pt, llt)", {
       get_llt_soc(
         term_list,
         term_level = t_level,
-        meddra = meddra_
+        meddra = meddra_,
+        verbose = FALSE
       )
   )
 
@@ -114,13 +154,23 @@ test_that("works at different term levels (soc, hlgt, hlt, pt, llt)", {
     expect_equal(tl_res_length, tl_res_correct_length)
 })
 
-test_that("works with meddra as Table (out of memory)", {
+test_that("works with meddra as Table (out of memory) or not data.table", {
   llt_extraction_soc <-
     get_llt_soc(
       rlang::list2(pneumonitis = "Pneumonitis"),
       term_level = "pt",
       meddra = meddra_ |>
-        arrow::as_arrow_table()
+        arrow::as_arrow_table(),
+      verbose = FALSE
+    )
+
+  llt_extraction_soc2 <-
+    get_llt_soc(
+      rlang::list2(pneumonitis = "Pneumonitis"),
+      term_level = "pt",
+      meddra = meddra_ |>
+        as.data.frame(),
+      verbose = FALSE
     )
 
   llt_extraction_true <-
@@ -129,5 +179,7 @@ test_that("works with meddra as Table (out of memory)", {
     )
 
   expect_equal(llt_extraction_soc, llt_extraction_true)
+
+  expect_equal(llt_extraction_soc2, llt_extraction_true)
 
 })
