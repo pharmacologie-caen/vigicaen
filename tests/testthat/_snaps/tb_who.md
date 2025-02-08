@@ -2,13 +2,107 @@
 
     Code
       tb_who(path_who = path_who)
-    Output
-      Read MP.txt                   3%Split mp                      6%Write mp.parquet             12%Read PP.txt                  16%Split pp                     20%Write pp.parquet             27%Read ThG.txt                 30%Split thg                    32%Write thg.parquet            34%Read ING.txt                 36%Split ing                    41%Write ing.parquet            48%Read SRCE.txt                51%Split srce                   53%Write srce.parquet           55%Read ORG.txt                 57%Split org                    59%Write org.parquet            61%Read CCODE.txt               63%Split ccode                  68%Write ccode.parquet          75%Read ATC.txt                 79%Split atc                    80%Write atc.parquet            81%Read SUN.txt                 82%Split sun                    83%Write sun.parquet            84%Read PF.txt                  85%Split sun                    86%Write pf.parquet             87%Read STR.txt                 88%Split str                    89%Write str.parquet            90%Read PRG.txt                 91%Split prg                    92%Write prg.parquet            93%Read PRT.txt                 94%Split prt                    95%Write prt.parquet            96%Read Unit-X.txt              97%Split unitx                  98%Write unitx.parquet          99%Done                             
+    Message
+      
+      -- tb_who() --------------------------------------------------------------------
+      i Creating WHO Drug tables.
+      This process must only be done once per database version.
+      =>----------------------------- percent, seconds | Read MP.txt 
+      ==>---------------------------- percent, seconds | Split mp 
+      ====>-------------------------- percent, seconds | Write mp.parquet 
+      =====>------------------------- percent, seconds | Read PP.txt 
+      ======>------------------------ percent, seconds | Split pp 
+      ========>---------------------- percent, seconds | Write pp.parquet 
+      =========>--------------------- percent, seconds | Read ThG.txt 
+      ==========>-------------------- percent, seconds | Split thg 
+      ==========>-------------------- percent, seconds | Write thg.parquet 
+      ===========>------------------- percent, seconds | Read ING.txt 
+      ============>------------------ percent, seconds | Split ing 
+      ==============>---------------- percent, seconds | Write ing.parquet 
+      ===============>--------------- percent, seconds | Read SRCE.txt 
+      ================>-------------- percent, seconds | Split srce 
+      ================>-------------- percent, seconds | Write srce.parquet 
+      =================>------------- percent, seconds | Read ORG.txt 
+      ==================>------------ percent, seconds | Split org 
+      ==================>------------ percent, seconds | Write org.parquet 
+      ===================>----------- percent, seconds | Read CCODE.txt 
+      ====================>---------- percent, seconds | Split ccode 
+      ======================>-------- percent, seconds | Write ccode.parquet 
+      ========================>------ percent, seconds | Read ATC.txt 
+      ========================>------ percent, seconds | Split atc 
+      ========================>------ percent, seconds | Write atc.parquet 
+      =========================>----- percent, seconds | Read SUN.txt 
+      =========================>----- percent, seconds | Split sun 
+      =========================>----- percent, seconds | Write sun.parquet 
+      ==========================>---- percent, seconds | Read PF.txt 
+      ==========================>---- percent, seconds | Split pf 
+      ==========================>---- percent, seconds | Write pf.parquet 
+      ==========================>---- percent, seconds | Read STR.txt 
+      ===========================>--- percent, seconds | Split str 
+      ===========================>--- percent, seconds | Write str.parquet 
+      ===========================>--- percent, seconds | Read PRG.txt 
+      ============================>-- percent, seconds | Split prg 
+      ============================>-- percent, seconds | Write prg.parquet 
+      ============================>-- percent, seconds | Read PRT.txt 
+      ============================>-- percent, seconds | Split prt 
+      =============================>- percent, seconds | Write prt.parquet 
+      =============================>- percent, seconds | Read Unit-X.txt 
+      =============================>- percent, seconds | Split unitx 
+      ==============================> percent, seconds | Write unitx.parquet 
+      ==============================> percent, seconds | Done 
+      
 
 ---
 
     Code
       tb_who(path_who = path_who_no_slash)
-    Output
-      Read MP.txt                   3%Split mp                      6%Write mp.parquet             12%Read PP.txt                  16%Split pp                     20%Write pp.parquet             27%Read ThG.txt                 30%Split thg                    32%Write thg.parquet            34%Read ING.txt                 36%Split ing                    41%Write ing.parquet            48%Read SRCE.txt                51%Split srce                   53%Write srce.parquet           55%Read ORG.txt                 57%Split org                    59%Write org.parquet            61%Read CCODE.txt               63%Split ccode                  68%Write ccode.parquet          75%Read ATC.txt                 79%Split atc                    80%Write atc.parquet            81%Read SUN.txt                 82%Split sun                    83%Write sun.parquet            84%Read PF.txt                  85%Split sun                    86%Write pf.parquet             87%Read STR.txt                 88%Split str                    89%Write str.parquet            90%Read PRG.txt                 91%Split prg                    92%Write prg.parquet            93%Read PRT.txt                 94%Split prt                    95%Write prt.parquet            96%Read Unit-X.txt              97%Split unitx                  98%Write unitx.parquet          99%Done                             
+    Message
+      
+      -- tb_who() --------------------------------------------------------------------
+      i Creating WHO Drug tables.
+      This process must only be done once per database version.
+      =>----------------------------- percent, seconds | Read MP.txt 
+      ==>---------------------------- percent, seconds | Split mp 
+      ====>-------------------------- percent, seconds | Write mp.parquet 
+      =====>------------------------- percent, seconds | Read PP.txt 
+      ======>------------------------ percent, seconds | Split pp 
+      ========>---------------------- percent, seconds | Write pp.parquet 
+      =========>--------------------- percent, seconds | Read ThG.txt 
+      ==========>-------------------- percent, seconds | Split thg 
+      ==========>-------------------- percent, seconds | Write thg.parquet 
+      ===========>------------------- percent, seconds | Read ING.txt 
+      ============>------------------ percent, seconds | Split ing 
+      ==============>---------------- percent, seconds | Write ing.parquet 
+      ===============>--------------- percent, seconds | Read SRCE.txt 
+      ================>-------------- percent, seconds | Split srce 
+      ================>-------------- percent, seconds | Write srce.parquet 
+      =================>------------- percent, seconds | Read ORG.txt 
+      ==================>------------ percent, seconds | Split org 
+      ==================>------------ percent, seconds | Write org.parquet 
+      ===================>----------- percent, seconds | Read CCODE.txt 
+      ====================>---------- percent, seconds | Split ccode 
+      ======================>-------- percent, seconds | Write ccode.parquet 
+      ========================>------ percent, seconds | Read ATC.txt 
+      ========================>------ percent, seconds | Split atc 
+      ========================>------ percent, seconds | Write atc.parquet 
+      =========================>----- percent, seconds | Read SUN.txt 
+      =========================>----- percent, seconds | Split sun 
+      =========================>----- percent, seconds | Write sun.parquet 
+      ==========================>---- percent, seconds | Read PF.txt 
+      ==========================>---- percent, seconds | Split pf 
+      ==========================>---- percent, seconds | Write pf.parquet 
+      ==========================>---- percent, seconds | Read STR.txt 
+      ===========================>--- percent, seconds | Split str 
+      ===========================>--- percent, seconds | Write str.parquet 
+      ===========================>--- percent, seconds | Read PRG.txt 
+      ============================>-- percent, seconds | Split prg 
+      ============================>-- percent, seconds | Write prg.parquet 
+      ============================>-- percent, seconds | Read PRT.txt 
+      ============================>-- percent, seconds | Split prt 
+      =============================>- percent, seconds | Write prt.parquet 
+      =============================>- percent, seconds | Read Unit-X.txt 
+      =============================>- percent, seconds | Split unitx 
+      ==============================> percent, seconds | Write unitx.parquet 
+      ==============================> percent, seconds | Done 
+      
 

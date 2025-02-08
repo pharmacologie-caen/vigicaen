@@ -45,8 +45,24 @@
 tb_meddra <-
   function(path_meddra){
 
+    cli::cli_h1(
+      "tb_meddra()"
+    )
+    cli::cli_alert_info(
+      "Creating MedDRA tables.")
+
+    msg_tb_onceperdatabase()
+
+    cli_progress_bar(
+      "Creating MedDRA",
+      format = "{cli::pb_bar} {cli::pb_percent} | {cli::pb_elapsed} | {cli::pb_status}",
+      total = 100
+    )
+
     # ---- llt.asc ---- ####
-    texter("Read llt.asc", "15%%")
+    cli_progress_update(force = TRUE,
+                        status = "Read llt.asc",
+                        set = 15)
 
     llt_table <- read.table(paste0(path_meddra, "llt.asc"),
                             sep = "$",
@@ -66,7 +82,9 @@ tb_meddra <-
                                           "empty_col"))
 
     # ---- mdhier.asc ---- ####
-    texter("Read mdhier.asc", "30%%")
+    cli_progress_update(force = TRUE,
+                        status = "Read mdhier.asc",
+                        set = 30)
 
     med_hierarchy <- read.table(paste0(path_meddra, "mdhier.asc"),
                                 sep = "$",
@@ -94,7 +112,9 @@ tb_meddra <-
       dplyr::left_join(med_hierarchy, by = "pt_code")
 
     # ---- write
-    texter("Write meddra_hierarchy.parquet", "45%%")
+    cli_progress_update(force = TRUE,
+                        status = "Write meddra_hierarchy.parquet",
+                        set = 45)
 
     arrow::write_parquet(med_hierarchy_llt,
                          sink = paste0(path_meddra, "meddra_hierarchy.parquet")
@@ -103,7 +123,9 @@ tb_meddra <-
     # SMQ #### ####
 
     # ---- smq_list.asc ---- ####
-    texter("Read smq_list.asc", "60%%")
+    cli_progress_update(force = TRUE,
+                        status = "Read smq_list.asc",
+                        set = 60)
 
     smq_list <- read.table(paste0(path_meddra, "smq_list.asc"),
                            sep = "$",
@@ -123,14 +145,18 @@ tb_meddra <-
 
 
     # ---- write
-    texter("Write smq_list.parquet", "70%%")
+    cli_progress_update(force = TRUE,
+                        status = "Write smq_list.parquet",
+                        set = 70)
 
     arrow::write_parquet(smq_list,
                          sink = paste0(path_meddra, "smq_list.parquet")
     )
 
     # ---- smq_content.asc ---- ####
-    texter("Read smq_content.asc", "80%%")
+    cli_progress_update(force = TRUE,
+                        status = "Read smq_content.asc",
+                        set = 80)
 
     smq_content <- read.table(paste0(path_meddra, "smq_content.asc"),
                               sep = "$",
@@ -149,13 +175,27 @@ tb_meddra <-
                                             "empty_col"))
 
     # ---- write
-    texter("Write smq_content.parquet", "90%%")
+    cli_progress_update(force = TRUE,
+                        status = "Write smq_content.parquet",
+                        set = 90)
 
     arrow::write_parquet(smq_content,
                          sink = paste0(path_meddra, "smq_content.parquet")
     )
 
-    texter("Done", "")
+    cli_progress_update(force = TRUE,
+                        status = "Done",
+                        set = 100)
+
+    cli_progress_done()
 
   }
 
+# Helpers ------------------------------
+
+
+msg_tb_onceperdatabase <-
+  function(){
+    cli::cli_inform(
+      "This process must only be done {.strong {cli::col_yellow('once')}} per database version.")
+  }

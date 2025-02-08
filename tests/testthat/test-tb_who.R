@@ -54,7 +54,14 @@ test_that("basic use works", {
   })
 
   expect_snapshot(
-    tb_who(path_who = path_who)
+    tb_who(path_who = path_who),
+    transform =
+      function(chr_line)
+        stringr::str_replace(
+          chr_line,
+          "(?>=\\d{1,3}\\%\\s| ).*(?= \\|)",
+          " percent, seconds"
+        )
   )
 
   mp_res <- arrow::read_parquet(paste0(path_who, "mp.parquet"))
@@ -85,7 +92,15 @@ test_that("basic use works", {
   })
 
   expect_snapshot(
-    tb_who(path_who = path_who_no_slash)
+    tb_who(path_who = path_who_no_slash
+           ),
+    transform =
+      function(chr_line)
+        stringr::str_replace(
+          chr_line,
+          "(?>=\\d{1,3}\\%\\s| ).*(?= \\|)",
+          " percent, seconds"
+        )
   )
 
   mp_res_ns <- arrow::read_parquet(paste0(path_who, "mp.parquet"))

@@ -167,10 +167,6 @@ tb_subset <-
            rm_suspdup = TRUE
   ){
 
-    # supress notes for no visible binding for these variables
-    UMCReportId <- NULL
-    Drug_Id <- NULL
-
     subset_var <- rlang::arg_match(subset_var)
 
     # check integer lists for meddra_id, medprod_id, and drecno
@@ -247,13 +243,34 @@ tb_subset <-
 
     # First step import
 
+    cli::cli_h1(
+      "tb_subset()"
+    )
+    cli::cli_alert_info(
+      "Subsetting VigiBase tables.")
+
+    cli_progress_bar(
+      "Subsetting VigiBase",
+      format = "{cli::pb_bar} {cli::pb_percent} | {cli::pb_elapsed} | {cli::pb_status}",
+      total = 100
+    )
+
+    cli_progress_update(force = TRUE,
+                        status = "Reading source tables",
+                        set = 15)
+
     drug <- arrow::read_parquet(paste0(wd_in, "drug.parquet"), as_data_frame = FALSE)
     adr  <- arrow::read_parquet(paste0(wd_in, "adr.parquet"),  as_data_frame = FALSE)
     demo <- arrow::read_parquet(paste0(wd_in, "demo.parquet"), as_data_frame = FALSE)
 
-    # Creer le subset a partir de drug ou adr (ou demo pour age) et obtenir UMCreportID et DrugId
+    # Create subset from drug or adr (or demo for age) and collect
+    # UMCreportID & DrugId
 
     # first step, create the sv data
+
+    cli_progress_update(force = TRUE,
+                        status = "Picking subset",
+                        set = 30)
 
     sv_df <- rlang::eval_tidy(
       rlang::expr(!!sv_df_sym)
@@ -277,12 +294,21 @@ tb_subset <-
     #
     # sv_df <- eval(subset_expr) # 20211021 shall NOT be used as export, as it misses non of-interest drug or adr lines (as compared to drug or adr restricted to umc list)
 
+    cli_progress_update(force = TRUE,
+                        status = "Collect case list",
+                        set = 45)
+
     umc_subset <-
       sv_df |>
       dplyr::pull(unique(.data$UMCReportId),
                   as_vector = FALSE)
 
-    drug_id_subset <- # No need to extract Adr_Id, you need drug_id for table ind
+    cli_progress_update(force = TRUE,
+                        status = "Collect drug list",
+                        set = 50)
+
+    drug_id_subset <-
+      # No need to extract Adr_Id, you need drug_id for table ind
       drug |>
       dplyr::filter(.data$UMCReportId %in% .env$umc_subset) |>
       dplyr::pull(unique(.data$Drug_Id),
@@ -291,11 +317,11 @@ tb_subset <-
 
     # UMCReportId restricted datasets
 
-    urd <- function(parquet_file, restrict_list, wd_in, wd_out) {
+    cli_progress_update(force = TRUE,
+                        status = "Apply case level subset",
+                        set = 60)
 
-      # supress notes for no visible binding for these variables
-      UMCReportId <- NULL
-      Drug_Id <- NULL
+    urd <- function(parquet_file, restrict_list, wd_in, wd_out) {
 
       df <-
         if (grepl("adr", parquet_file)) {
@@ -312,29 +338,32 @@ tb_subset <-
 
       nr <- nrow(df)
 
-      writeLines(
-        paste0(parquet_file, " subset has ", nr, " rows.")
-      )
-
       arrow::write_parquet(df, sink = paste0(wd_out, parquet_file))
+
+      return(nr)
     }
 
-
     urd_list <-
-      paste0(
         c("demo", "adr", "out", "srce", "followup",
-          if(!rm_suspdup) {"suspdup"}),
-        ".parquet")
+          if(!rm_suspdup) {"suspdup"}) |>
+      rlang::set_names() |>
+      purrr::map(function(x)
+        paste0(x, ".parquet")
+      )
 
-    purrr::walk(urd_list, urd, restrict_list = umc_subset, wd_in, wd_out)
+    nr_urd <-
+      purrr::map(urd_list, urd,
+                 restrict_list = umc_subset,
+                 wd_in,
+                 wd_out)
 
     # Drug_Id restricted datasets
 
-    drd <- function(parquet_file, restrict_list, wd_in, wd_out) {
+    cli_progress_update(force = TRUE,
+                        status = "Apply drug level subset",
+                        set = 80)
 
-      # supress notes for no visible binding for these variables
-      UMCReportId <- NULL
-      Drug_Id <- NULL
+    drd <- function(parquet_file, restrict_list, wd_in, wd_out) {
 
       df <-
         if (grepl("drug", parquet_file)) {
@@ -351,18 +380,56 @@ tb_subset <-
 
       nr <- nrow(df)
 
-      writeLines(
-        paste0(parquet_file, " subset has ", nr, " rows.")
-      )
-
       arrow::write_parquet(df, sink = paste0(wd_out, parquet_file))
+
+      return(nr)
     }
 
     drd_list <-
-      paste0(
-        c("drug", "link", "ind"),
-        ".parquet")
+      c("drug", "link", "ind") |>
+      rlang::set_names() |>
+      purrr::map(
+        function(x)
+          paste0(x, ".parquet")
+      )
 
-    purrr::walk(drd_list, drd, restrict_list = drug_id_subset, wd_in, wd_out)
+    nr_drd <-
+      purrr::map(drd_list, drd,
+                  restrict_list = drug_id_subset,
+                  wd_in,
+                  wd_out)
+
+    cli_progress_update(force = TRUE,
+                        status = "Done",
+                        set = 100)
+
+    cli_progress_done()
+
+    nr_lines <-
+      c(nr_urd, nr_drd)
+
+    cli_par()
+
+    cli_alert_success("Subset successful")
+
+    cli_end()
+    cli_par()
+    cli_alert_info("{stringr::str_pad('Table', 9, 'both', use_width = TRUE)}| Number of rows in subset")
+    lines_cli <-
+      nr_lines |> purrr::imap(function(l_, n_){
+
+        l_lab <- "{.val {l_}}"
+
+        n_lab <- stringr::str_pad(n_, 8, "both", use_width = TRUE)
+
+        cli::cli_alert(
+          c(">" = paste0(
+            "{n_lab} | ",
+            l_lab)
+          )
+        )
+      })
+
+    invisible()
 
   }

@@ -46,13 +46,28 @@ tb_who <-
       stop(paste0(path_who, " does not exist"))
     }
 
+    cli::cli_h1(
+      "tb_who()"
+    )
+    cli::cli_alert_info(
+      "Creating WHO Drug tables.")
+
+    msg_tb_onceperdatabase()
+
+    cli_progress_bar(
+      "Creating WHODrug",
+      format = "{cli::pb_bar} {cli::pb_percent} | {cli::pb_elapsed} | {cli::pb_status}",
+      total = 100
+    )
+
+
     # ---- mp ---- ####
-    texter("Read MP.txt", "3%%")
+    cli_progress_update(force = TRUE,status = "Read MP.txt", set = 3)
 
     mp <- reader("MP.txt", path_who)
 
     # ---- split
-    texter("Split mp", "6%%")
+    cli_progress_update(force = TRUE,status = "Split mp", set = 6)
 
     mp <-
       mp |>
@@ -110,19 +125,28 @@ tb_who <-
       dplyr::compute()
 
     # ---- write
-    texter("Write mp.parquet", "12%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Write mp.parquet",
+      set = 12)
 
     arrow::write_parquet(mp,
                          sink = paste0(path_who, "mp.parquet")
     )
 
     # ---- pharmaceutical products ---- ####
-    texter("Read PP.txt", "16%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Read PP.txt",
+      set = 16)
 
     pp <- reader("PP.txt", path_who)
 
     # ---- split
-    texter("Split pp", "20%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Split pp",
+      set = 20)
 
     pp <-
       pp |>
@@ -144,7 +168,10 @@ tb_who <-
       dplyr::compute()
 
     # ---- write
-    texter("Write pp.parquet", "27%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Write pp.parquet",
+      set = 27)
 
     arrow::write_parquet(pp,
                          sink = paste0(path_who, "pp.parquet")
@@ -152,12 +179,18 @@ tb_who <-
 
 
     # ---- Therapeutic group ---- ####
-    texter("Read ThG.txt", "30%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Read ThG.txt",
+      set = 30)
 
     thg <- reader("ThG.txt", path_who)
 
     # ---- split
-    texter("Split thg", "32%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Split thg",
+      set = 32)
 
     thg <-
       thg |>
@@ -178,19 +211,28 @@ tb_who <-
       dplyr::compute()
 
     # ---- write
-    texter("Write thg.parquet", "34%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Write thg.parquet",
+      set = 34)
 
     arrow::write_parquet(thg,
                          sink = paste0(path_who, "thg.parquet")
     )
 
     # ---- ingredient ---- ####
-    texter("Read ING.txt", "36%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Read ING.txt",
+      set = 36)
 
     ing <- reader("ING.txt", path_who)
 
     # ---- split
-    texter("Split ing", "41%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Split ing",
+      set = 41)
 
     ing <-
       ing |>
@@ -226,19 +268,28 @@ tb_who <-
       dplyr::compute()
 
     # ---- write
-    texter("Write ing.parquet", "48%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Write ing.parquet",
+      set = 48)
 
     arrow::write_parquet(ing,
                          sink = paste0(path_who, "ing.parquet")
     )
 
     # ---- Reference (SRCE) ---- ####
-    texter("Read SRCE.txt", "51%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Read SRCE.txt",
+      set = 51)
 
     srce <- reader("SRCE.txt", path_who)
 
     # ---- split
-    texter("Split srce", "53%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Split srce",
+      set = 53)
 
     srce <-
       srce |>
@@ -256,19 +307,28 @@ tb_who <-
       dplyr::compute()
 
     # ---- write
-    texter("Write srce.parquet", "55%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Write srce.parquet",
+      set = 55)
 
     arrow::write_parquet(srce,
                          sink = paste0(path_who, "srce.parquet")
     )
 
     # ---- Organization ---- ####
-    texter("Read ORG.txt", "57%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Read ORG.txt",
+      set = 57)
 
     org <- reader("ORG.txt", path_who)
 
     # ---- split
-    texter("Split org", "59%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Split org",
+      set = 59)
 
     org <-
       org |>
@@ -280,19 +340,28 @@ tb_who <-
       dplyr::compute()
 
     # ---- write
-    texter("Write org.parquet", "61%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Write org.parquet",
+      set = 61)
 
     arrow::write_parquet(org,
                          sink = paste0(path_who, "org.parquet")
     )
 
     # ---- Country CCODE ---- ####
-    texter("Read CCODE.txt", "63%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Read CCODE.txt",
+      set = 63)
 
     ccode <- reader("CCODE.txt", path_who)
 
     # ---- split
-    texter("Split ccode", "68%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Split ccode",
+      set = 68)
 
     ccode <-
       ccode |>
@@ -309,19 +378,28 @@ tb_who <-
       dplyr::compute()
 
     # ---- write
-    texter("Write ccode.parquet", "75%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Write ccode.parquet",
+      set = 75)
 
     arrow::write_parquet(ccode,
                          sink = paste0(path_who, "ccode.parquet")
     )
 
     # ---- ATC code ---- ####
-    texter("Read ATC.txt", "79%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Read ATC.txt",
+      set = 79)
 
     atc <- reader("ATC.txt", path_who)
 
     # ---- split
-    texter("Split atc", "80%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Split atc",
+      set = 80)
 
     atc <-
       atc |>
@@ -339,19 +417,28 @@ tb_who <-
       dplyr::compute()
 
     # ---- write
-    texter("Write atc.parquet", "81%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Write atc.parquet",
+      set = 81)
 
     arrow::write_parquet(atc,
                          sink = paste0(path_who, "atc.parquet")
     )
 
     # ---- Substance ---- ####
-    texter("Read SUN.txt", "82%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Read SUN.txt",
+      set = 82)
 
     sun <- reader("SUN.txt", path_who)
 
     # ---- split
-    texter("Split sun", "83%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Split sun",
+      set = 83)
 
     sun <-
       sun |>
@@ -373,19 +460,28 @@ tb_who <-
       dplyr::compute()
 
     # ---- write
-    texter("Write sun.parquet", "84%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Write sun.parquet",
+      set = 84)
 
     arrow::write_parquet(sun,
                          sink = paste0(path_who, "sun.parquet")
     )
 
     # ---- Pharmaceutical form (PF) ---- ####
-    texter("Read PF.txt", "85%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Read PF.txt",
+      set = 85)
 
     pf <- reader("PF.txt", path_who)
 
     # ---- split
-    texter("Split sun", "86%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Split pf",
+      set = 86)
 
     pf <-
       pf |>
@@ -402,14 +498,20 @@ tb_who <-
       dplyr::compute()
 
     # ---- write
-    texter("Write pf.parquet", "87%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Write pf.parquet",
+      set = 87)
 
     arrow::write_parquet(pf,
                          sink = paste0(path_who, "pf.parquet")
     )
 
     # ---- Strength = dosage ---- ####
-    texter("Read STR.txt", "88%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Read STR.txt",
+      set = 88)
 
     str <-  arrow::read_delim_arrow(
       paste0(path_who, "STR.txt"),
@@ -422,7 +524,10 @@ tb_who <-
     )
 
     # ---- split
-    texter("Split str", "89%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Split str",
+      set = 89)
 
     str <-
       str |>
@@ -439,19 +544,28 @@ tb_who <-
       dplyr::compute()
 
     # ---- write
-    texter("Write str.parquet", "90%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Write str.parquet",
+      set = 90)
 
     arrow::write_parquet(str,
                          sink = paste0(path_who, "str.parquet")
     )
 
     # ---- Product group ---- ####
-    texter("Read PRG.txt", "91%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Read PRG.txt",
+      set = 91)
 
     prg <- reader("PRG.txt", path_who)
 
     # ---- split
-    texter("Split prg", "92%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Split prg",
+      set = 92)
 
     prg <-
       prg |>
@@ -470,19 +584,28 @@ tb_who <-
       dplyr::compute()
 
     # ---- write
-    texter("Write prg.parquet", "93%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Write prg.parquet",
+      set = 93)
 
     arrow::write_parquet(prg,
                          sink = paste0(path_who, "prg.parquet")
     )
 
     # ---- Product type ---- ####
-    texter("Read PRT.txt", "94%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Read PRT.txt",
+      set = 94)
 
     prt <- reader("PRT.txt", path_who)
 
     # ---- split
-    texter("Split prt", "95%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Split prt",
+      set = 95)
 
     prt <-
       prt |>
@@ -500,14 +623,20 @@ tb_who <-
       dplyr::compute()
 
     # ---- write
-    texter("Write prt.parquet", "96%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Write prt.parquet",
+      set = 96)
 
     arrow::write_parquet(prt,
                          sink = paste0(path_who, "prt.parquet")
     )
 
     # ---- Unit full code ASCII ---- ####
-    texter("Read Unit-X.txt", "97%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Read Unit-X.txt",
+      set = 97)
 
     unitx <-  arrow::read_delim_arrow(
       paste0(path_who, "Unit-X.txt"),
@@ -520,7 +649,10 @@ tb_who <-
     )
 
     # ---- split
-    texter("Split unitx", "98%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Split unitx",
+      set = 98)
 
     unitx <-
       unitx |>
@@ -538,11 +670,19 @@ tb_who <-
       dplyr::compute()
 
     # ---- write
-    texter("Write unitx.parquet", "99%%")
+    cli_progress_update(
+      force = TRUE,
+      status = "Write unitx.parquet",
+      set = 99)
 
     arrow::write_parquet(unitx,
                          sink = paste0(path_who, "unitx.parquet")
     )
 
-    texter("Done", "")
+    cli_progress_update(
+      force = TRUE,
+      status = "Done",
+      set = 100)
+
+    cli_progress_done()
   }
