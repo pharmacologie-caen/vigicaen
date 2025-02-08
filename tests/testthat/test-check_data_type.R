@@ -18,6 +18,11 @@ test_that("cli format and basic use work", {
     range = 1
   )
 
+  meddra_valid <- data.frame(
+    llt_code = 1, llt_name = 1, pt_name = 1,
+    hlt_name = 1, hlgt_name = 1, soc_name = 1
+  )
+
   data_invalid <-
     data.frame(
       UMCReportId = 1
@@ -36,6 +41,10 @@ test_that("cli format and basic use work", {
     check_data_link(link_valid, ".data")
   )
 
+  expect_invisible(
+    check_data_meddra(meddra_valid, ".data")
+  )
+
   expect_snapshot(
     error = TRUE, {
       check_data_link(drug_valid, ".data")
@@ -51,6 +60,12 @@ test_that("cli format and basic use work", {
   expect_snapshot(
     error = TRUE, {
       check_data_link(demo_valid, ".data")
+    }
+  )
+
+  expect_snapshot(
+    error = TRUE, {
+      check_data_meddra(demo_valid, ".data")
     }
   )
 
@@ -73,7 +88,11 @@ test_that("cli format and basic use work", {
     })
   })
 
-
+  cli::test_that_cli("format is ok", {
+    expect_snapshot(error = TRUE, {
+      check_data_meddra(data_invalid, arg = "x")
+    })
+  })
 })
 
 test_that("smq_list is distinguished of smq_list_content", {

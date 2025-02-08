@@ -28,6 +28,16 @@
       x Missing columns: Drug_Id, Adr_Id, Dechallenge1, tto_mean, and range
       > Supply a `link` table to `.data`. See ?link_.
 
+---
+
+    Code
+      check_data_meddra(demo_valid, ".data")
+    Condition
+      Error:
+      ! `.data` is not a `meddra` table.
+      x Missing columns: llt_code, llt_name, pt_name, soc_name, and hlt_name
+      > Supply a `meddra` table to `.data`. See ?meddra_.
+
 # format is ok [plain]
 
     Code
@@ -57,6 +67,16 @@
       ! `x` is not a `link` table.
       x Missing columns: Drug_Id, Adr_Id, Dechallenge1, tto_mean, and range
       > Supply a `link` table to `x`. See ?link_.
+
+---
+
+    Code
+      check_data_meddra(data_invalid, arg = "x")
+    Condition
+      Error:
+      ! `x` is not a `meddra` table.
+      x Missing columns: llt_code, llt_name, pt_name, soc_name, and hlt_name
+      > Supply a `meddra` table to `x`. See ?meddra_.
 
 ---
 
@@ -102,6 +122,16 @@
 ---
 
     Code
+      check_data_meddra(data_invalid, arg = "x")
+    Condition
+      [1m[33mError[39m:[22m
+      [1m[22m[33m![39m `x` is not a `meddra` table.
+      [31mx[39m Missing columns: llt_code, llt_name, pt_name, soc_name, and hlt_name
+      > Supply a `meddra` table to `x`. See ?meddra_.
+
+---
+
+    Code
       vigicaen:::check_data_smqlist(smq_list_content, arg = "x")
     Condition
       [1m[33mError[39m:[22m
@@ -143,6 +173,16 @@
 ---
 
     Code
+      check_data_meddra(data_invalid, arg = "x")
+    Condition
+      Error:
+      ! `x` is not a `meddra` table.
+      ✖ Missing columns: llt_code, llt_name, pt_name, soc_name, and hlt_name
+      → Supply a `meddra` table to `x`. See ?meddra_.
+
+---
+
+    Code
       vigicaen:::check_data_smqlist(smq_list_content, arg = "x")
     Condition
       Error:
@@ -180,6 +220,16 @@
       [1m[22m[33m![39m `x` is not a `link` table.
       [31m✖[39m Missing columns: Drug_Id, Adr_Id, Dechallenge1, tto_mean, and range
       → Supply a `link` table to `x`. See ?link_.
+
+---
+
+    Code
+      check_data_meddra(data_invalid, arg = "x")
+    Condition
+      [1m[33mError[39m:[22m
+      [1m[22m[33m![39m `x` is not a `meddra` table.
+      [31m✖[39m Missing columns: llt_code, llt_name, pt_name, soc_name, and hlt_name
+      → Supply a `meddra` table to `x`. See ?meddra_.
 
 ---
 

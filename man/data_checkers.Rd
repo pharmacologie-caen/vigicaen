@@ -6,6 +6,7 @@
 \alias{check_data_drug}
 \alias{check_data_link}
 \alias{check_data_mp}
+\alias{check_data_meddra}
 \alias{check_data_smqlist}
 \title{Internal dataset type checkers}
 \usage{
@@ -28,6 +29,12 @@ check_data_link(
 )
 
 check_data_mp(
+  .data,
+  arg = rlang::caller_arg(.data),
+  call = rlang::caller_env()
+)
+
+check_data_meddra(
   .data,
   arg = rlang::caller_arg(.data),
   call = rlang::caller_env()
@@ -61,6 +68,8 @@ Internal helpers to check argument values.
 \item \code{check_data_link()}: link checker
 
 \item \code{check_data_mp()}: mp checker
+
+\item \code{check_data_meddra()}: meddra checker
 
 \item \code{check_data_smqlist()}: smq_list data checker
 

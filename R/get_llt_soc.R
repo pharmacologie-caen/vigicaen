@@ -67,7 +67,7 @@ get_llt_soc <-
         dplyr::collect(meddra)
     }
 
-    get_one_term_llt <- function(one_term,
+    check_data_meddra(meddra)
                                  llt_code = {{ llt_code }}){
       term_request <- rlang::expr(!!term_sym %in% !!one_term)
 

@@ -128,6 +128,34 @@ check_data_mp <-
     }
   }
 
+#' @describeIn data_checkers meddra checker
+
+check_data_meddra <-
+  function(.data,
+           arg = rlang::caller_arg(.data),
+           call = rlang::caller_env()){
+
+    meddra_cols <-
+      c("llt_code", "llt_name", "pt_name",
+        "soc_name", "hlt_name")
+
+    if (!all(meddra_cols %in% names(.data))) {
+
+      missing_cols <-
+        meddra_cols[!meddra_cols %in% names(.data)]
+
+
+      cli::cli_abort(
+        c(
+          "{.arg {arg}} is not a {.arg meddra} table.",
+          "x" = "Missing columns: {missing_cols}",
+          ">" = "Supply a {.arg meddra} table to {.arg {arg}}. See ?meddra_."
+        ),
+        call = call
+      )
+    }
+  }
+
 #' @describeIn data_checkers smq_list data checker
 
 check_data_smqlist <-
