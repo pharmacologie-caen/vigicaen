@@ -346,4 +346,73 @@ test_that("too few time to onset prevents graph drawing", {
     TRUE
   )
 
+test_that("error if no adr or drug cases found", {
+  # zero drug cases, zero adr cases
+
+  d_drecno_empty <-
+    list(d1 = integer())
+
+  a_llt_empty <-
+    list(a1 = integer())
+
+  err <- rlang::catch_cnd(vigi_routine(
+    demo_data = demo_,
+    drug_data = drug_,
+    adr_data  = adr_,
+    link_data = link_,
+    d_code = d_drecno_empty,
+    a_code = ex_$a_llt["a_colitis"],
+    case_tto = 50,
+    vigibase_version = "September 2024"
+  ))
+
+  expect_s3_class(err, "no_cases")
+  expect_equal(err$arg, "d1")
+  expect_equal(err$arg_type, "drug")
+  expect_equal(err$dataset, "demo_data")
+
+  expect_error(
+    vigi_routine(
+      demo_data = demo_,
+      drug_data = drug_,
+      adr_data  = adr_,
+      link_data = link_,
+      d_code = d_drecno_empty,
+      a_code = ex_$a_llt["a_colitis"],
+      case_tto = 50,
+      vigibase_version = "September 2024"
+    ),
+    class = "no_cases"
+  )
+
+  err2 <- rlang::catch_cnd(vigi_routine(
+    demo_data = demo_,
+    drug_data = drug_,
+    adr_data  = adr_,
+    link_data = link_,
+    d_code = ex_$d_drecno["nivolumab"],
+    a_code = a_llt_empty,
+    case_tto = 50,
+    vigibase_version = "September 2024"
+  ))
+
+  expect_s3_class(err2, "no_cases")
+  expect_equal(err2$arg, "a1")
+  expect_equal(err2$arg_type, "adr")
+  expect_equal(err2$dataset, "demo_data")
+
+  expect_error(
+    vigi_routine(
+      demo_data = demo_,
+      drug_data = drug_,
+      adr_data  = adr_,
+      link_data = link_,
+      d_code = ex_$d_drecno["nivolumab"],
+      a_code = a_llt_empty,
+      case_tto = 50,
+      vigibase_version = "September 2024"
+    ),
+    class = "no_cases"
+  )
+
 })

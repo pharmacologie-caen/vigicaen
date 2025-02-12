@@ -198,6 +198,30 @@ vigi_routine <-
         add_adr(a_code, adr_data = adr_data)
     )
 
+    n_drug <-
+      demo_data |>
+      check_dm(d_name)
+
+    n_adr <-
+      demo_data |>
+      check_dm(a_name)
+
+    if(n_drug[, 1] == 0){
+      error_vigiroutine_nocases(
+        d_name,
+        "drug",
+       "demo_data"
+      )
+    }
+
+    if(n_adr[, 1] == 0){
+      error_vigiroutine_nocases(
+        a_name,
+        "adr",
+        "demo_data"
+      )
+    }
+
     # ---- compute ic ----
 
     res_ic <-
@@ -522,4 +546,25 @@ vigi_routine <-
       return(g1)
     }
 
+  }
+
+# Helpers -------------------------
+
+error_vigiroutine_nocases <-
+  function(arg, arg_type, dataset,
+           call = rlang::caller_env()){
+
+    arg_type_fmted <-
+      stringr::str_to_title(arg_type)
+
+    cli::cli_abort(
+      message =
+        paste0("{arg_type_fmted} code(s) in {arg} didn't",
+        " match any cases in {.arg {dataset}}."),
+      class  = "no_cases",
+      arg = arg,
+      arg_type = arg_type,
+      dataset = dataset,
+      call = call
+    )
   }
