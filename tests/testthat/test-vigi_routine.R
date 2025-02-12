@@ -161,7 +161,8 @@ test_that("checkers of d_code and a_code work", {
 
   # not lists
 
-  expect_error(
+  expect_snapshot(
+    error = TRUE,
     vigi_routine(
       demo_data = demo,
       drug_data = drug,
@@ -170,11 +171,11 @@ test_that("checkers of d_code and a_code work", {
       d_code = "nivolumab",
       a_code = a_llt,
       vigibase_version = "September 2024"
-    ),
-    "d_code must be a named list"
+    )
   )
 
-  expect_error(
+  expect_snapshot(
+    error = TRUE,
     vigi_routine(
       demo_data = demo,
       drug_data = drug,
@@ -183,8 +184,7 @@ test_that("checkers of d_code and a_code work", {
       d_code = d_drecno,
       a_code = "a_colitis",
       vigibase_version = "September 2024"
-    ),
-    "a_code must be a named list"
+    )
   )
 
 })

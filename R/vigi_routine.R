@@ -154,13 +154,10 @@ vigi_routine <-
       stop("a_code must have only one item for this function.")
     }
 
-    if(!is.list(d_code)){
-      stop("d_code must be a named list")
-    }
+    check_id_list_numeric(d_code)
 
-    if(!is.list(a_code)){
-      stop("a_code must be a named list")
-    }
+    check_id_list_numeric(a_code)
+
 
     # 0.2 d_name and a_name, d_label and a_label
 
