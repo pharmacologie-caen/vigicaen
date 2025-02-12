@@ -409,7 +409,7 @@ vigi_routine <-
 
     # ---- patient label & h justification
 
-    if (!is.null(case_tto)) {
+    if (!is.null(case_tto) & nrow(ttos) > 2) {
       pl_label <-
         paste0("Patient: ", round(case_tto), " days")
 
@@ -542,7 +542,7 @@ vigi_routine <-
     if(nrow(ttos) > 2){
       invisible(g_both)
     } else {
-      message("Not enough data to plot time to onset")
+      cli::cli_alert_info("Not enough data to plot time to onset")
       return(g1)
     }
 
