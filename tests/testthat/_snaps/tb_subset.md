@@ -14,6 +14,7 @@
       ==================>------------ percent, seconds | Apply case level subset 
       ========================>------ percent, seconds | Apply drug level subset 
       ==============================> percent, seconds | Done 
+      
       v Subset successful
       
       i percent, seconds | Number of rows in subset
@@ -43,6 +44,7 @@
       ==================>------------ percent, seconds | Apply case level subset 
       ========================>------ percent, seconds | Apply drug level subset 
       ==============================> percent, seconds | Done 
+      
       v Subset successful
       
       i percent, seconds | Number of rows in subset
@@ -72,6 +74,7 @@
       ==================>------------ percent, seconds | Apply case level subset 
       ========================>------ percent, seconds | Apply drug level subset 
       ==============================> percent, seconds | Done 
+      
       v Subset successful
       
       i percent, seconds | Number of rows in subset
@@ -101,6 +104,7 @@
       ==================>------------ percent, seconds | Apply case level subset 
       ========================>------ percent, seconds | Apply drug level subset 
       ==============================> percent, seconds | Done 
+      
       v Subset successful
       
       i percent, seconds | Number of rows in subset
@@ -131,6 +135,7 @@
       ==================>------------ percent, seconds | Apply case level subset 
       ========================>------ percent, seconds | Apply drug level subset 
       ==============================> percent, seconds | Done 
+      
       v Subset successful
       
       i percent, seconds | Number of rows in subset
@@ -161,6 +166,7 @@
       ==================>------------ percent, seconds | Apply case level subset 
       ========================>------ percent, seconds | Apply drug level subset 
       ==============================> percent, seconds | Done 
+      
       v Subset successful
       
       i percent, seconds | Number of rows in subset
@@ -190,6 +196,7 @@
       ==================>------------ percent, seconds | Apply case level subset 
       ========================>------ percent, seconds | Apply drug level subset 
       ==============================> percent, seconds | Done 
+      
       v Subset successful
       
       i percent, seconds | Number of rows in subset
