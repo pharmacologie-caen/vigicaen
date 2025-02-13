@@ -115,7 +115,7 @@
 
     Code
       adr_test <- add_drug(data.table(UMCReportId = c(1, 1, 2, 2, 3), Adr_Id = c(
-        "a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"), MedDRA_Id = c(100000,
+        "a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"), MedDRA_Id = c(1e+05,
         20000, 30000, 40000, 50000), Outcome = c(1, 2, 3, 2, 2)), d_code = d_drecno_test,
       drug_data = drug_test)
     Message
@@ -126,7 +126,7 @@
     Code
       adr_test_a <- dplyr::collect(add_drug(arrow::as_arrow_table(data.table(
         UMCReportId = c(1, 1, 2, 2, 3), Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2",
-          "a4_adr4", "a5_adr2"), MedDRA_Id = c(100000, 20000, 30000, 40000, 50000),
+          "a4_adr4", "a5_adr2"), MedDRA_Id = c(1e+05, 20000, 30000, 40000, 50000),
         Outcome = c(1, 2, 3, 2, 2))), d_code = d_drecno_test, drug_data = arrow::as_arrow_table(
         drug_test)))
     Message

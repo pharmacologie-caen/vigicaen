@@ -15,7 +15,6 @@
       ========================>------ percent, seconds | Read smq_content.asc 
       ===========================>--- percent, seconds | Write smq_content.parquet 
       ==============================> percent, seconds | Done 
-      
 
 # format is ok [plain]
 
