@@ -193,7 +193,7 @@ add_dose <-
     # Display a message about checking results and trimming
     cli::cli_alert_info("Important: Please check the results for posology, as coding issues are common. Some results may seem unbelievable and should be carefully reviewed and trimmed.")
 
-    dose_cols <- .data %>% dplyr::select(contains("dose_mg_per_day"))
+    dose_cols <- .data |> dplyr::select(contains("dose_mg_per_day"))
 
     # Check if any of the columns have non-NA values
     if (any(purrr::map_lgl(dose_cols, ~ any(!is.na(.))))) {
