@@ -38,24 +38,24 @@
 #' @seealso [add_drug()], [get_drecno()], [get_atc_code()]
 #' @examples
 #' # Example: Adding doses for paracetamol
-#' d_code <- list(paracetamol = c("DRECNO_001", "DRECNO_002"))
+#' d_code <- list(paracetamol = c("001", "002"))
 #' demo_updated <- add_dose(
-#'   .data = demo,
+#'   .data = demo_,
 #'   d_code = d_code,
 #'   d_names = "paracetamol",
 #'   repbasis = "sci",
 #'   method = "DrecNo",
-#'   drug_data = drug
+#'   drug_data = drug_
 #' )
 #'
 #' # Example: Restricting to "suspect" reputation base
 #' demo_suspect <- add_dose(
-#'   .data = demo,
+#'   .data = demo_,
 #'   d_code = d_code,
 #'   d_names = "paracetamol_suspected",
 #'   repbasis = "s",
 #'   method = "DrecNo",
-#'   drug_data = drug
+#'   drug_data = drug_
 #' )
 
 
@@ -70,8 +70,9 @@ add_dose <-
            drug_data
   )
   {
-    method <- rlang::arg_match(method)
 
+    check_id_list_numeric(d_code)
+    method <- rlang::arg_match(method)
     check_data_drug(drug_data, "drug_data")
 
     data_type <-
@@ -145,15 +146,30 @@ add_dose <-
     })
 
 
-    # Add dynamic dose columns to .data
-    for (i in seq_along(d_code)) {
-      drug_data_t <- t_ids[[i]]
-      drug_name <- paste0(d_names[i], "_dose_mg_per_day")
-      .data <- .data |>
-        dplyr::left_join(drug_data_t, by = c("UMCReportId" = "t_id")) |>
-        dplyr::mutate(!!drug_name := ifelse(is.na(dose_mg_per_day), NA_real_, dose_mg_per_day)) |>
-        dplyr::select(-dose_mg_per_day) # Remove intermediate column
-    }
+    e_l <-
+      t_ids |>
+      purrr::map(function(t_id_subset) {
+        # Create a lookup vector for t_id to dose
+        lookup <- setNames(t_id_subset$dose_mg_per_day, t_id_subset$t_id)
+        # Return a quosure that performs the lookup
+        rlang::quo(
+          lookup[as.character(t_id)]
+        ) |>
+          rlang::quo_set_env(
+            new.env(parent = rlang::caller_env()) |>
+              { \(e) { e$lookup <- lookup; e } }()
+          )
+      }) |>
+      rlang::set_names(paste0(d_names, "_dose_mg_per_day"))
+
+    # Prepare destination table with renamed columns
+    dest_data <- .data |> dplyr::rename(dplyr::all_of(renamer_tid))
+
+    # Add new columns using the quosures
+    dest_data_withcols <- dest_data |> dplyr::mutate(!!!e_l)
+
+    .data <- dest_data_withcols
+
 
     # Count the number of rows with a valid dose in mg/day for each drug
     dose_counts <- purrr::map_dfr(d_names, ~ {
