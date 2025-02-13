@@ -434,7 +434,7 @@ test_that("works with adr data, drug identification is UMCReportId wise", {
       data.table(
         UMCReportId = c(1, 1, 2, 2, 3),
         Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
-        MedDRA_Id = c(10000, 20000, 30000, 40000, 50000),
+        MedDRA_Id = c(100000, 20000, 30000, 40000, 50000),
         Outcome = c(1, 2, 3, 2, 2)
       ) |>
       add_drug(d_code = d_drecno_test,
@@ -446,7 +446,7 @@ test_that("works with adr data, drug identification is UMCReportId wise", {
       data.table(
         UMCReportId = c(1, 1, 2, 2, 3),
         Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
-        MedDRA_Id = c(10000, 20000, 30000, 40000, 50000),
+        MedDRA_Id = c(100000, 20000, 30000, 40000, 50000),
         Outcome = c(1, 2, 3, 2, 2)
       ) |>
       arrow::as_arrow_table() |>
