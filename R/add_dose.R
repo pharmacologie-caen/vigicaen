@@ -38,7 +38,7 @@
 #' @seealso [add_drug()], [get_drecno()], [get_atc_code()]
 #' @examples
 #' # Example: Adding doses for paracetamol
-#' d_code <- list(paracetamol = c("001", "002"))
+#' d_code <- list(paracetamol = c(001, 002))
 #' demo_updated <- add_dose(
 #'   .data = demo_,
 #'   d_code = d_code,
