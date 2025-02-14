@@ -5,7 +5,7 @@
 #' @param msg Character string
 #' @param step Character string
 #'
-#'
+#' @noRd
 #' @examples
 #'
 #' vigicaen:::texter("I am doing this step", "3%%")

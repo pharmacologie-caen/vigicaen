@@ -13,6 +13,8 @@
 #' @param .data A data.frame to be checked
 #' @param cols A character vector, name of columns to look at (usually will be `d_names`, `a_names`)
 #' @keywords data_management
+#' @returns A transposed data.frame, with row.names equal to `cols`, and first column
+#' is the number of lines in `.data` where each col is equal to `1`.
 #' @export
 #' @seealso [desc_facvar()], [add_adr()], [add_drug()]
 #' @examples

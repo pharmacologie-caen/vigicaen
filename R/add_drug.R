@@ -32,6 +32,11 @@
 #' @param drug_data A data.frame containing the drug data (usually, it is `drug`)
 #' @param data_type `r lifecycle::badge('deprecated')`. Data_type is now detected
 #' internally.
+#' @returns A dataset with the new drug columns.
+#' Each element of `d_names` will add a column with the same name in `.data`.
+#' The value can be 0 (the corresponding drug is absent)
+#' or 1 (the drug is present in the case if `.data` is `demo` or `adr`,
+#' or "this row correspond to this drug", if `.data` is `drug` or `link`).
 #' @keywords data_management drug
 #' @export
 #' @importFrom rlang .data

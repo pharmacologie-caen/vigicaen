@@ -80,7 +80,11 @@ datasets to apply any regression or machine learning algorithm.
 
 ### Solution 1
 
-You can install the development version of vigicaen from [GitHub](https://github.com/) with:
+From CRAN
+
+> `install.packages("vigicaen")`
+
+Development version from [GitHub](https://github.com/)
 
 > `devtools::install_github("pharmacologie-caen/vigicaen")`
 

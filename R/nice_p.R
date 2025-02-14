@@ -9,6 +9,7 @@
 #' @param p_val A numeric. The p-value to format.
 #' @param print_zero A logical. Should leading zero be printed? (see Details)
 #' @keywords pvalue
+#' @returns A character vector with the formatted p-value(s)
 #' @export
 #' @examples
 #' pvals <-

@@ -8,10 +8,10 @@
 #'
 #' @param .path A character string with the path to be fixed.
 #'
-#' @return A character string with the path, fixed with its end slash.
+#' @returns A character string with the path, fixed with its end slash.
 #'
 #' @seealso [tb_vigibase()], [tb_meddra()], [tb_subset()], [dt_parquet()]
-#'
+#' @noRd
 #' @examples
 #' vigicaen:::fix_path_endslash("C:/Users/username/Documents")
 

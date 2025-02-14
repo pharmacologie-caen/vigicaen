@@ -1,5 +1,5 @@
 Package: vigicaen
-Title: VigiBase, pharmacovigilance database, toolbox
+Title: VigiBase Pharmacovigilance Database Toolbox
 Version: 0.15.0
 Authors@R: c(
        person("Charles", "Dolladille", email = "cdolladille@hotmail.com", role = c("aut", "cre"),
@@ -9,7 +9,7 @@ Authors@R: c(
        person("Universite de Caen Normandie", role = c("cph"), comment = "Caen, France"),
        person("Unite de pharmaco-epidemiologie", role = c("cph") , comment = "Service de pharmacologie, Centre Hospitalier Universitaire de Caen, Caen, France")
        )
-Description: Tools to facilitate the analysis of the World Health Organization
+Description: Perform the analysis of the World Health Organization
        (WHO) Pharmacovigilance database VigiBase (Extract Case Level version),
        e.g., load data, perform data management,
        disproportionality analysis, and descriptive statistics. Intended for

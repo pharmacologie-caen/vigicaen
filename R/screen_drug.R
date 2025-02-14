@@ -24,7 +24,7 @@
 #' to be included in the results. Defaults to `NULL`.
 #' @param top_n An integer specifying the number of most frequently occurring drugs to return. Defaults to `NULL`.
 #'
-#' @return A `data.frame` with the following columns:
+#' @returns A `data.frame` with the following columns:
 #' \itemize{
 #'    \item `Drug name`: The drug name.
 #'    \item `DrecNo`: The drug record number

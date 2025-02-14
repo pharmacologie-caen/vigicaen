@@ -7,7 +7,7 @@
 #' @param call Helper to format the error message.
 #'
 #' @returns An error if the dataset is invalid. Nothing in other cases
-#'
+#' @noRd
 #' @examples
 #'
 #' drug_valid <- data.frame(

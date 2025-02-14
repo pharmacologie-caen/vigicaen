@@ -26,7 +26,7 @@
 #'
 #' @export
 #'
-#' @return .parquet files into the `path_meddra` directory.
+#' @returns .parquet files into the `path_meddra` directory.
 #' Three tables: `meddra_hierarchy`, `smq_list`, and `smq_content`.
 #' Some columns are returned as `integer` (all `*_code` columns).
 #' All other columns are `character`.

@@ -13,6 +13,7 @@
 #' @param dig A numeric. Number of digits
 #' @param method What sort of printing do you need? (see Details)
 #' @keywords number
+#' @returns A character vector with the formatted number(s)
 #' @export
 #' @examples
 #' num <- c(0.1, 0.02, 1.658)

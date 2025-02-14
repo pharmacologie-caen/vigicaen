@@ -6,14 +6,8 @@
 #' @param arg Helper to format the error message.
 #' @param call Helper to format the error message.
 #'
-#' @return An error if the dataset is invalid. Nothing in other cases
-#'
-#' @examples
-#'
-#' drug_valid <- data.frame(
-#'   DrecNo = 1, UMCReportId = 1, MedicinalProd_Id = 1, Drug_Id = 1)
-#'
-#'  vigicaen:::check_data_drug(drug_valid, ".data")
+#' @returns An error if the dataset is invalid. Nothing in other cases
+#' @noRd
 #'
 #' @name id_list_checkers
 

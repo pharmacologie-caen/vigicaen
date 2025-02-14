@@ -15,6 +15,7 @@
 #' @param smq_list A data.table. A list of SMQs.
 #' @param smq_content A data.table. A list of SMQs content.
 #' @param smq_list_content  `r lifecycle::badge('deprecated')`
+#' @returns A named list of integers. Low-level term codes.
 #' @keywords data_management meddra smq llt
 #' @seealso [get_llt_soc()]
 #' @export

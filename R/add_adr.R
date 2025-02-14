@@ -19,7 +19,10 @@
 #' @param data_type `r lifecycle::badge('deprecated')`. Data_type is now detected
 #' internally.
 #' @returns A dataset with the new adr columns.
-#' Each value of `a_names` will add a column with the same name in `.data`.
+#' Each element of `a_names` will add a column with the same name in `.data`.
+#' The value can be 0 (the corresponding adr is absent)
+#' or 1 (the adr is present in the case if `.data` is `demo` or `drug`,
+#' or "this row correspond to this adr", if `.data` is `adr` or `link`).
 #' @export
 #' @importFrom rlang .data
 #' @importFrom rlang .env

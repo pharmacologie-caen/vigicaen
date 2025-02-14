@@ -18,7 +18,7 @@
 #' @param tto_time_range Incertitude range of Time to onset, in days. Defaults to 1 as recommended by umc
 #' @param ... Additional parameters to be passed to [desc_cont()]. E.g. `format`, `digits`...
 #'
-#' @return A data.table with one row per drug-adr pair
+#' @returns A data.table with one row per drug-adr pair
 #' \itemize{
 #'   \item A descriptive of time to onsets for this combination (column `tto_max`).
 #' }

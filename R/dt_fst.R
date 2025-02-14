@@ -12,6 +12,7 @@
 #' @param ext A character string, optional, specifying the file extension.
 #' @keywords import
 #' @export
+#' @returns A data.table, read from `path_base/(name)`.
 #' @seealso [dt_parquet()], [tb_vigibase()], [tb_who()], [tb_meddra()]
 #' @examples
 #'

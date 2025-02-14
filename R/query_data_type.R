@@ -9,8 +9,8 @@
 #' @param arg Helper to format the error message.
 #' @param call Helper to format the error message.
 #'
-#' @return A character vector with corresponding data type. An error in other cases
-#'
+#' @returns A character vector with corresponding data type. An error in other cases
+#' @noRd
 #' @examples
 #'
 #' drug_valid <- data.frame(

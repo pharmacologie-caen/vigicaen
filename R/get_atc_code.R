@@ -17,8 +17,8 @@
 #' @param thg_data A data.table. Correspondence between ATC codes and MedicinalProd_Id (usually, it is `thg`)
 #' @keywords data_management drug atc
 #' @export
-#' @returns A list of **DreNos** if `vigilyze` is set to `TRUE`,
-#' or a list of **MedicinalProd_Ids** if `vigilyze` is set to `FALSE`
+#' @returns A named list of integers. **DrecNos** if `vigilyze` is set to `TRUE`,
+#' or **MedicinalProd_Ids** if `vigilyze` is set to `FALSE`.
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #' @seealso \code{\link{mp_}}, \code{\link{thg_}}, [add_drug()], [get_drecno()]

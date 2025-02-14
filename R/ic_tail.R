@@ -15,6 +15,7 @@
 #' @param n_obs Number of observed cases
 #' @param n_exp Number of expected cases (see Details)
 #' @param p End of chosen credibility interval
+#' @returns A numeric vector. The lower end of the credibility interval
 #' @keywords disproportionality ic
 #' @seealso [compute_dispro()]
 #' @export

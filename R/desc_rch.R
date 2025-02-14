@@ -20,7 +20,7 @@
 #' @param drug_s A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}}.
 #' @param adr_s A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}}.
 #'
-#' @return A data.table with one row per drug-adr pair
+#' @returns A data.table with one row per drug-adr pair
 #' \itemize{
 #'   \item `drug_s` and `adr_s`, same as input.
 #'   \item Counts of __overall__, __rch__, __inf__, and __rec__ cases (see details).

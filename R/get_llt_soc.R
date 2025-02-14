@@ -13,6 +13,7 @@
 #' @param term_level A character string. One of "soc", "hlgt", "hlt", "pt", or "llt"
 #' @param meddra A data.table. Built from meddra_builders functions
 #' @param verbose Logical. Allows you to see matching reactions in the console.
+#' @returns A named list of integers. Low-level term codes.
 #' @keywords data_management meddra soc llt
 #' @seealso [get_llt_smq()]
 #' @export

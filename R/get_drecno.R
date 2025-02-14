@@ -73,6 +73,7 @@
 #' Turn to FALSE once you've checked the matching.
 #' @param inspect `r lifecycle::badge('deprecated')` Use `verbose` instead.
 #' @param show_all `r lifecycle::badge('deprecated')`  Use `verbose` instead.
+#' @returns A named list of integers. DrecNos.
 #' @keywords data_management drug atc
 #' @export
 #' @importFrom rlang .data
@@ -81,7 +82,8 @@
 #' @seealso [add_drug()], [get_atc_code()]
 #' @examples
 #'
-#' # ## Get drecnos for a list a drugs. Check spelling and use WHO name, #' in lowercase
+#' # ## Get drecnos for a list a drugs. Check spelling and use WHO name,
+#' in lowercase
 #'
 #' d_sel_names <- list(
 #'   nivolumab = "nivolumab",

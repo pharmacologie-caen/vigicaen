@@ -5,7 +5,7 @@
 #' @param file_name Character string
 #' @param folder Character string
 #'
-#'
+#' @noRd
 #' @examples
 #'
 #' demo <-data.frame(f0= c("96548661   32194501051119460820"))
