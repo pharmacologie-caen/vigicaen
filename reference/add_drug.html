@@ -103,6 +103,14 @@ internally.</p></dd>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>A dataset with the new drug columns.
+Each element of <code>d_names</code> will add a column with the same name in <code>.data</code>.
+The value can be 0 (the corresponding drug is absent)
+or 1 (the drug is present in the case if <code>.data</code> is <code>demo</code> or <code>adr</code>,
+or "this row correspond to this drug", if <code>.data</code> is <code>drug</code> or <code>link</code>).</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p><code>d_code</code> is a named list containing drug codes.
 Either drug record numbers (e.g., from <code><a href="get_drecno.html">get_drecno()</a></code>), or

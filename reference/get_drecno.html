@@ -101,6 +101,10 @@ Turn to FALSE once you've checked the matching.</p></dd>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>A named list of integers. DrecNos.</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p><code>get_drecno()</code> is an <em>ID collector</em> function.
 Collected IDs can be used to create drug columns in datasets
@@ -187,7 +191,8 @@ drug alone drecno is not found, hence the cases related to this drug will not be
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># ## Get drecnos for a list a drugs. Check spelling and use WHO name, #' in lowercase</span></span></span>
+<span class="r-in"><span><span class="co"># ## Get drecnos for a list a drugs. Check spelling and use WHO name,</span></span></span>
+<span class="r-in"><span><span class="co"># in lowercase</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">d_sel_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  nivolumab <span class="op">=</span> <span class="st">"nivolumab"</span>,</span></span>

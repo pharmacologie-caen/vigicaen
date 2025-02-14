@@ -94,7 +94,10 @@ internally.</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A dataset with the new adr columns.
-Each value of <code>a_names</code> will add a column with the same name in <code>.data</code>.</p>
+Each element of <code>a_names</code> will add a column with the same name in <code>.data</code>.
+The value can be 0 (the corresponding adr is absent)
+or 1 (the adr is present in the case if <code>.data</code> is <code>demo</code> or <code>drug</code>,
+or "this row correspond to this adr", if <code>.data</code> is <code>adr</code> or <code>link</code>).</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
