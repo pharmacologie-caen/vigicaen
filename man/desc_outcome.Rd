@@ -78,5 +78,4 @@ desc_outcome(
 \code{\link{adr_}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}
 }
 \keyword{descriptive}
-\keyword{drug-adr}
-\keyword{pair,}
+\keyword{drug-adr-pair}

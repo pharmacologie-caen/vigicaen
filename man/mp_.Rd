@@ -56,5 +56,4 @@ data(mp_)
 There is none
 }
 \keyword{datasets}
-\keyword{datasets,}
 \keyword{whodrug}

@@ -64,5 +64,4 @@ desc_tto(.data = link_,
 \code{\link{link_}}, \code{\link[=extract_tto]{extract_tto()}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}, \code{\link[=desc_dch]{desc_dch()}}, \code{\link[=desc_rch]{desc_rch()}}
 }
 \keyword{descriptive}
-\keyword{drug-adr}
-\keyword{pair,}
+\keyword{drug-adr-pair}

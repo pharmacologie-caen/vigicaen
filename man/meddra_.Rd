@@ -106,5 +106,4 @@ data(meddra_)
 There is none
 }
 \keyword{datasets}
-\keyword{datasets,}
 \keyword{meddra}

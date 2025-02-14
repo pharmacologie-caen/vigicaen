@@ -70,5 +70,4 @@ desc_rch(.data = link_,
 \code{\link{link_}}, \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}, \code{\link[=desc_dch]{desc_dch()}}, \code{\link[=desc_tto]{desc_tto()}}
 }
 \keyword{descriptive}
-\keyword{drug-adr}
-\keyword{pair,}
+\keyword{drug-adr-pair}

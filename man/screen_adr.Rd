@@ -79,4 +79,4 @@ screen_adr(
 
 }
 \keyword{adr}
-\keyword{descriptive,}
+\keyword{descriptive}
