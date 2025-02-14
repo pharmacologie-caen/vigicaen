@@ -8,12 +8,8 @@
 #'
 #' @returns An error if the dataset is invalid. Nothing in other cases
 #' @noRd
-#'
-#' @name id_list_checkers
 
 NULL
-
-#' @describeIn id_list_checkers named list checker
 
 check_id_list <-
   function(id_list,
@@ -66,8 +62,6 @@ check_id_list <-
       )
     }
   }
-
-#' @describeIn id_list_checkers numeric list id checker
 
 check_id_list_numeric <-
 function(id_list,

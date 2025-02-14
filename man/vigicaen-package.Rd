@@ -4,11 +4,11 @@
 \name{vigicaen-package}
 \alias{vigicaen}
 \alias{vigicaen-package}
-\title{vigicaen: VigiBase, pharmacovigilance database, toolbox}
+\title{vigicaen: VigiBase Pharmacovigilance Database Toolbox}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Tools to facilitate the analysis of the World Health Organization (WHO) Pharmacovigilance database VigiBase (Extract Case Level version), e.g., load data, perform data management, disproportionality analysis, and descriptive statistics. Intended for pharmacovigilance routine use or studies. This package is NOT supported nor reflect the opinion of the WHO, or the Uppsala Monitoring Centre.
+Perform the analysis of the World Health Organization (WHO) Pharmacovigilance database VigiBase (Extract Case Level version), e.g., load data, perform data management, disproportionality analysis, and descriptive statistics. Intended for pharmacovigilance routine use or studies. This package is NOT supported nor reflect the opinion of the WHO, or the Uppsala Monitoring Centre.
 }
 \seealso{
 Useful links:

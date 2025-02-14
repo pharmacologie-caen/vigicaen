@@ -17,12 +17,8 @@
 #'   DrecNo = 1, UMCReportId = 1, MedicinalProd_Id = 1, Drug_Id = 1)
 #'
 #'  vigicaen:::query_data_type(drug_valid, ".data")
-#'
-#' @name data_query
 
 NULL
-
-#' @describeIn data_query drug data checker
 
 query_data_type <-
   function(.data,

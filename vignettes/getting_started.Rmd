@@ -171,7 +171,7 @@ This will allow you to go through most of the data management steps.
 
 At the time of statistical modelling, you might need to load a table
 and/or use modelling packages that do not rely on RAM (one example:
-[biglm](https://cran.r-project.org/web/packages/biglm/index.html))
+[biglm](https://CRAN.R-project.org/package=biglm))
 
 # Subsetting tables
 

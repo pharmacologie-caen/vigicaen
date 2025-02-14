@@ -5,7 +5,7 @@
 
 [![R-CMD-check](https://github.com/pharmacologie-caen/vigicaen/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pharmacologie-caen/vigicaen/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](Redirect-URL)
-[![codecov](https://codecov.io/gh/pharmacologie-caen/vigicaen/graph/badge.svg?token=BQXVJEWDZG)](https://codecov.io/gh/pharmacologie-caen/vigicaen)
+[![codecov](https://codecov.io/gh/pharmacologie-caen/vigicaen/graph/badge.svg?token=BQXVJEWDZG)](https://app.codecov.io/gh/pharmacologie-caen/vigicaen)
 <!-- badges: end -->
 
 > Visit the [package
@@ -68,7 +68,7 @@ There are 2 types of users this package is aimed at:
 - [![PV -
   Advanced](https://img.shields.io/badge/PV-Advanced-43b284)](https://pharmacologie-caen.github.io/vigicaen/articles/basic_workflow.html)
   Advanced pharmacovigilance researchers. These users must be familiar
-  with R and (a bit of) statistics. They will find tools to load tables,
+  with R and (a bit of) statistics. The will find tools to load tables,
   perform usual data management, identify drug and reaction IDs,
   describe complexe features (**dechallenge, rechallenge**), perform
   disproportionality, and get ready-to-use datasets to apply any
@@ -78,8 +78,11 @@ There are 2 types of users this package is aimed at:
 
 ### Solution 1
 
-You can install the development version of vigicaen from
-[GitHub](https://github.com/) with:
+From CRAN
+
+> `install.packages("vigicaen")`
+
+Development version from [GitHub](https://github.com/)
 
 > `devtools::install_github("pharmacologie-caen/vigicaen")`
 

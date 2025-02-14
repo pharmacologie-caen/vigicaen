@@ -13,6 +13,9 @@ ic_tail(n_obs = NULL, n_exp = NULL, p = 0.025)
 
 \item{p}{End of chosen credibility interval}
 }
+\value{
+A numeric vector. The lower end of the credibility interval
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Compute
 the Information Component credibility interval, typically the lower end of

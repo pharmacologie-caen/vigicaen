@@ -23,6 +23,9 @@ get_llt_smq(
 
 \item{smq_list_content}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 }
+\value{
+A named list of integers. Low-level term codes.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Collect llts from \code{smq_list}
 and \code{smq_content} data.tables, given an SMQ.

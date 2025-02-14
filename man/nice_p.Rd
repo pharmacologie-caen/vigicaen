@@ -11,6 +11,9 @@ nice_p(p_val, print_zero = FALSE)
 
 \item{print_zero}{A logical. Should leading zero be printed? (see Details)}
 }
+\value{
+A character vector with the formatted p-value(s)
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Formatting function
 for consistent p-value reporting.

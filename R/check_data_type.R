@@ -14,12 +14,8 @@
 #'   DrecNo = 1, UMCReportId = 1, MedicinalProd_Id = 1, Drug_Id = 1)
 #'
 #'  vigicaen:::check_data_drug(drug_valid, ".data")
-#'
-#' @name data_checkers
 
 NULL
-
-#' @describeIn data_checkers adr data checker
 
 check_data_adr <-
   function(.data,
@@ -48,8 +44,6 @@ check_data_adr <-
     }
   }
 
-#' @describeIn data_checkers drug data checker
-
 check_data_drug <-
   function(.data,
            arg = rlang::caller_arg(.data),
@@ -77,8 +71,6 @@ check_data_drug <-
     }
   }
 
-#' @describeIn data_checkers link checker
-
 check_data_link <-
   function(.data,
            arg = rlang::caller_arg(.data),
@@ -100,8 +92,6 @@ check_data_link <-
       )
     }
   }
-
-#' @describeIn data_checkers mp checker
 
 check_data_mp <-
   function(.data,
@@ -128,8 +118,6 @@ check_data_mp <-
     }
   }
 
-#' @describeIn data_checkers meddra checker
-
 check_data_meddra <-
   function(.data,
            arg = rlang::caller_arg(.data),
@@ -155,8 +143,6 @@ check_data_meddra <-
       )
     }
   }
-
-#' @describeIn data_checkers smq_list data checker
 
 check_data_smqlist <-
   function(.data,

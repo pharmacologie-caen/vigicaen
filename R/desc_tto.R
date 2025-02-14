@@ -22,7 +22,7 @@
 #' \itemize{
 #'   \item A descriptive of time to onsets for this combination (column `tto_max`).
 #' }
-#' @keywords drug-adr pair, descriptive
+#' @keywords drug-adr-pair descriptive
 #' @export
 #' @importFrom rlang .data
 #' @importFrom rlang .env

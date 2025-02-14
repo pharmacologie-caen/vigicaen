@@ -16,8 +16,8 @@ get_atc_code(atc_sel, mp, thg_data, vigilyze = TRUE)
 \item{vigilyze}{A logical. Should ATC classes be retrieved using the vigilyze style? See details}
 }
 \value{
-A list of \strong{DreNos} if \code{vigilyze} is set to \code{TRUE},
-or a list of \strong{MedicinalProd_Ids} if \code{vigilyze} is set to \code{FALSE}
+A named list of integers. \strong{DrecNos} if \code{vigilyze} is set to \code{TRUE},
+or \strong{MedicinalProd_Ids} if \code{vigilyze} is set to \code{FALSE}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Collect

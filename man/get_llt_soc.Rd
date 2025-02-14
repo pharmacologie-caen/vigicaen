@@ -20,6 +20,9 @@ get_llt_soc(
 
 \item{verbose}{Logical. Allows you to see matching reactions in the console.}
 }
+\value{
+A named list of integers. Low-level term codes.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Collect llt codes from a \code{meddra}
 data.table, given another term of the MedDRA SOC Hierarchy.

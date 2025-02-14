@@ -26,7 +26,7 @@
 #'   \item Counts of __overall__, __rch__, __inf__, and __rec__ cases (see details).
 #' }
 #' @export
-#' @keywords drug-adr pair, descriptive
+#' @keywords drug-adr-pair descriptive
 #' @seealso \code{\link{link_}}, [add_drug()], [add_adr()], [desc_dch()], [desc_tto()]
 #' @importFrom rlang .data
 #' @importFrom rlang .env

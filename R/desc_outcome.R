@@ -19,7 +19,7 @@
 #'   \item Died- reaction may be contributory
 #' }
 #' See `vignette("descriptive")` for more details.
-#' @keywords drug-adr pair, descriptive
+#' @keywords drug-adr-pair descriptive
 #' @param .data, An `adr` data.table. See \code{\link{adr_}}
 #' @param drug_s A character vector, the drug column(s)
 #' @param adr_s A character vector, the adverse drug reaction column(s).

@@ -83,7 +83,7 @@
 #' @examples
 #'
 #' # ## Get drecnos for a list a drugs. Check spelling and use WHO name,
-#' in lowercase
+#' # in lowercase
 #'
 #' d_sel_names <- list(
 #'   nivolumab = "nivolumab",

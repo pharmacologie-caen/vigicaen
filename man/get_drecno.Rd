@@ -30,6 +30,9 @@ Turn to FALSE once you've checked the matching.}
 
 \item{inspect}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{verbose} instead.}
 }
+\value{
+A named list of integers. DrecNos.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Collect
 Drug Record Numbers associated to one or more drugs.
@@ -111,7 +114,8 @@ drug alone drecno is not found, hence the cases related to this drug will not be
 
 \examples{
 
-# ## Get drecnos for a list a drugs. Check spelling and use WHO name, #' in lowercase
+# ## Get drecnos for a list a drugs. Check spelling and use WHO name,
+# in lowercase
 
 d_sel_names <- list(
   nivolumab = "nivolumab",

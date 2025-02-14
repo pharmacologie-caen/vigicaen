@@ -27,7 +27,10 @@ internally.}
 }
 \value{
 A dataset with the new adr columns.
-Each value of \code{a_names} will add a column with the same name in \code{.data}.
+Each element of \code{a_names} will add a column with the same name in \code{.data}.
+The value can be 0 (the corresponding adr is absent)
+or 1 (the adr is present in the case if \code{.data} is \code{demo} or \code{drug},
+or "this row correspond to this adr", if \code{.data} is \code{adr} or \code{link}).
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}Creates adr columns

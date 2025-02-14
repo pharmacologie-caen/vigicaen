@@ -11,6 +11,10 @@ check_dm(.data, cols)
 
 \item{cols}{A character vector, name of columns to look at (usually will be \code{d_names}, \code{a_names})}
 }
+\value{
+A transposed data.frame, with row.names equal to \code{cols}, and first column
+is the number of lines in \code{.data} where each col is equal to \code{1}.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Quick check
 that your data management steps through \code{\link{add_adr}}

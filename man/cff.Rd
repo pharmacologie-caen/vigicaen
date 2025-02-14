@@ -17,6 +17,9 @@ cff(num, low_ci, up_ci, dig = 0, method = c("num_only", "num_ci", "ci"))
 
 \item{method}{What sort of printing do you need? (see Details)}
 }
+\value{
+A character vector with the formatted number(s)
+}
 \description{
 This is a formatting function for consistent number reporting.
 }

@@ -51,7 +51,7 @@
 #' The results are sorted in descending order of `percentage`.
 #'
 #' @export
-#' @keywords descriptive, adr
+#' @keywords descriptive adr
 #'
 #' @examples
 #' # Example 1: Filter terms appearing in at least 5% of reports

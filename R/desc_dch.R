@@ -19,7 +19,7 @@
 #'  }
 #' @importFrom rlang .data
 #' @importFrom rlang .env
-#' @keywords drug-adr pair, descriptive
+#' @keywords drug-adr-pair descriptive
 #' @export
 #' @seealso \code{\link{link_}}, [add_drug()], [add_adr()], [desc_tto()], [desc_rch()]
 #' @examples

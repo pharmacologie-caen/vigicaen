@@ -24,7 +24,7 @@
 #'   \item `adr_s` and `drug_s`, same as input.
 #'   \item `UMCReportId`, the unique identifier of the case.
 #' }
-#' @keywords drug-adr pair, descriptive
+#' @keywords drug-adr-pair descriptive
 #' @export
 #' @importFrom rlang .data
 #' @importFrom rlang .env

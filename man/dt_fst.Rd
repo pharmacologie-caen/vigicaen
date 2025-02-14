@@ -13,6 +13,9 @@ dt_fst(path_base, name = NULL, ext = ".fst")
 
 \item{ext}{A character string, optional, specifying the file extension.}
 }
+\value{
+A data.table, read from \code{path_base/(name)}.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Short hand to \code{as.data.table(read_fst())}.
 File extension can be omitted.

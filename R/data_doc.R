@@ -236,7 +236,7 @@
 #'  \item `empty_col.y` Logical. Empty column.
 #'  }
 #'
-#' @keywords datasets, meddra
+#' @keywords datasets meddra
 #'
 #' @references There is none
 #'
@@ -298,7 +298,7 @@
 #'   \item `MedicinalProd_Id` Integer. The medicinalproduct identifier.
 #'   }
 #'
-#' @keywords datasets, whodrug
+#' @keywords datasets whodrug
 #'
 #' @references There is none
 #'

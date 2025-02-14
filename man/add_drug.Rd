@@ -32,6 +32,13 @@ and "i" for interacting ; default to all, e.g. "sci").}
 \item{data_type}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}. Data_type is now detected
 internally.}
 }
+\value{
+A dataset with the new drug columns.
+Each element of \code{d_names} will add a column with the same name in \code{.data}.
+The value can be 0 (the corresponding drug is absent)
+or 1 (the drug is present in the case if \code{.data} is \code{demo} or \code{adr},
+or "this row correspond to this drug", if \code{.data} is \code{drug} or \code{link}).
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Creates drug columns.
 in vigibase datasets (demo, link, adr, but also drug).
