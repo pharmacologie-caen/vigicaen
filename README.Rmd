@@ -15,8 +15,8 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/pharmacologie-caen/vigicaen/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pharmacologie-caen/vigicaen/actions/workflows/R-CMD-check.yaml)
-[![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](<Redirect-URL>)
-[![codecov](https://codecov.io/gh/pharmacologie-caen/vigicaen/graph/badge.svg?token=BQXVJEWDZG)](https://app.codecov.io/gh/pharmacologie-caen/vigicaen)
+[![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)]
+[![codecov](https://codecov.io/gh/pharmacologie-caen/vigicaen/graph/badge.svg)](https://app.codecov.io/gh/pharmacologie-caen/vigicaen)
 <!-- badges: end -->
 
 > Visit the [package website](https://pharmacologie-caen.github.io/vigicaen/)

@@ -3,7 +3,8 @@
 on:
   push:
     tags:
-    - v[012].[0-9]+.[0-9]+ 
+    - v[012].[0-9]+.[0-9]+
+    - rcmdcheck_test
   pull_request:
     branches: [main, master]
 
