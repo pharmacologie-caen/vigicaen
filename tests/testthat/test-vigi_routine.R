@@ -161,7 +161,8 @@ test_that("checkers of d_code and a_code work", {
 
   # not lists
 
-  expect_error(
+  expect_snapshot(
+    error = TRUE,
     vigi_routine(
       demo_data = demo,
       drug_data = drug,
@@ -170,11 +171,11 @@ test_that("checkers of d_code and a_code work", {
       d_code = "nivolumab",
       a_code = a_llt,
       vigibase_version = "September 2024"
-    ),
-    "d_code must be a named list"
+    )
   )
 
-  expect_error(
+  expect_snapshot(
+    error = TRUE,
     vigi_routine(
       demo_data = demo,
       drug_data = drug,
@@ -183,8 +184,7 @@ test_that("checkers of d_code and a_code work", {
       d_code = d_drecno,
       a_code = "a_colitis",
       vigibase_version = "September 2024"
-    ),
-    "a_code must be a named list"
+    )
   )
 
 })
@@ -344,6 +344,124 @@ test_that("too few time to onset prevents graph drawing", {
   expect_equal(
     file.exists(paste0(path_vigiroutine_test2, "vigicaen_graph.png")),
     TRUE
+  )
+
+  suppressMessages(link_colitis <-
+    link |>
+    add_adr(
+      a_code = ex_$a_llt,
+      adr_data = adr_
+    ) |>
+    add_drug(
+      d_code = ex_$d_drecno,
+      drug_data = drug_
+    )
+  )
+
+  one_colitis <-
+    link_colitis |>
+    dplyr::filter(a_colitis == 1 & atezolizumab == 1 & !is.na(tto_mean)) |>
+    dplyr::slice_head(n = 1) |>
+    dplyr::select(UMCReportId, Drug_Id, Adr_Id)
+
+  demo <- demo_ |>
+    dplyr::filter(UMCReportId %in% one_colitis$UMCReportId)
+  adr  <- adr_  |>
+    dplyr::filter(Adr_Id %in% one_colitis$Adr_Id)
+  drug <- drug_ |>
+    dplyr::filter(Drug_Id %in% one_colitis$Drug_Id)
+  link <- link_ |>
+    dplyr::filter(UMCReportId %in% one_colitis$UMCReportId)
+
+  d_drecno <-
+    ex_$d_drecno["atezolizumab"]
+
+  # not enough cases
+
+  expect_message(
+    expect_doppelganger(
+      "no cases",
+      vigi_routine(
+        demo_data = demo,
+        drug_data = drug,
+        adr_data  = adr,
+        link_data = link,
+        d_code = ex_$d_drecno["atezolizumab"],
+        a_code = ex_$a_llt["a_colitis"],
+        vigibase_version = "September 2024"
+      )
+    ),
+    "Not enough data to plot time to onset"
+  )
+})
+
+test_that("error if no adr or drug cases found", {
+  # zero drug cases, zero adr cases
+
+  d_drecno_empty <-
+    list(d1 = integer())
+
+  a_llt_empty <-
+    list(a1 = integer())
+
+  err <- rlang::catch_cnd(vigi_routine(
+    demo_data = demo_,
+    drug_data = drug_,
+    adr_data  = adr_,
+    link_data = link_,
+    d_code = d_drecno_empty,
+    a_code = ex_$a_llt["a_colitis"],
+    case_tto = 50,
+    vigibase_version = "September 2024"
+  ))
+
+  expect_s3_class(err, "no_cases")
+  expect_equal(err$arg, "d1")
+  expect_equal(err$arg_type, "drug")
+  expect_equal(err$dataset, "demo_data")
+
+  expect_error(
+    vigi_routine(
+      demo_data = demo_,
+      drug_data = drug_,
+      adr_data  = adr_,
+      link_data = link_,
+      d_code = d_drecno_empty,
+      a_code = ex_$a_llt["a_colitis"],
+      case_tto = 50,
+      vigibase_version = "September 2024"
+    ),
+    class = "no_cases"
+  )
+
+  err2 <- rlang::catch_cnd(vigi_routine(
+    demo_data = demo_,
+    drug_data = drug_,
+    adr_data  = adr_,
+    link_data = link_,
+    d_code = ex_$d_drecno["nivolumab"],
+    a_code = a_llt_empty,
+    case_tto = 50,
+    vigibase_version = "September 2024"
+  ))
+
+  expect_s3_class(err2, "no_cases")
+  expect_equal(err2$arg, "a1")
+  expect_equal(err2$arg_type, "adr")
+  expect_equal(err2$dataset, "demo_data")
+
+  expect_error(
+    vigi_routine(
+      demo_data = demo_,
+      drug_data = drug_,
+      adr_data  = adr_,
+      link_data = link_,
+      d_code = ex_$d_drecno["nivolumab"],
+      a_code = a_llt_empty,
+      case_tto = 50,
+      vigibase_version = "September 2024"
+    ),
+    class = "no_cases"
   )
 
 })

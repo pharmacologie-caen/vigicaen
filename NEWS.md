@@ -7,6 +7,8 @@
 * `get_llt_soc()` output is reworked with `cli` features.
 The function also now correctly supports non-data.table data.frame.
 
+* `vigi_routine()` fails if there are no drug or adr cases found in `demo_data`.
+
 # vigicaen 0.15.0
 
 ## Breaking changes

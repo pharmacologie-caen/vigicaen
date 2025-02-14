@@ -154,13 +154,10 @@ vigi_routine <-
       stop("a_code must have only one item for this function.")
     }
 
-    if(!is.list(d_code)){
-      stop("d_code must be a named list")
-    }
+    check_id_list_numeric(d_code)
 
-    if(!is.list(a_code)){
-      stop("a_code must be a named list")
-    }
+    check_id_list_numeric(a_code)
+
 
     # 0.2 d_name and a_name, d_label and a_label
 
@@ -200,6 +197,30 @@ vigi_routine <-
         add_drug(d_code, drug_data = drug_data) |>
         add_adr(a_code, adr_data = adr_data)
     )
+
+    n_drug <-
+      demo_data |>
+      check_dm(d_name)
+
+    n_adr <-
+      demo_data |>
+      check_dm(a_name)
+
+    if(n_drug[, 1] == 0){
+      error_vigiroutine_nocases(
+        d_name,
+        "drug",
+       "demo_data"
+      )
+    }
+
+    if(n_adr[, 1] == 0){
+      error_vigiroutine_nocases(
+        a_name,
+        "adr",
+        "demo_data"
+      )
+    }
 
     # ---- compute ic ----
 
@@ -388,7 +409,7 @@ vigi_routine <-
 
     # ---- patient label & h justification
 
-    if (!is.null(case_tto)) {
+    if (!is.null(case_tto) & nrow(ttos) > 2) {
       pl_label <-
         paste0("Patient: ", round(case_tto), " days")
 
@@ -521,8 +542,29 @@ vigi_routine <-
     if(nrow(ttos) > 2){
       invisible(g_both)
     } else {
-      message("Not enough data to plot time to onset")
+      cli::cli_alert_info("Not enough data to plot time to onset")
       return(g1)
     }
 
+  }
+
+# Helpers -------------------------
+
+error_vigiroutine_nocases <-
+  function(arg, arg_type, dataset,
+           call = rlang::caller_env()){
+
+    arg_type_fmted <-
+      stringr::str_to_title(arg_type)
+
+    cli::cli_abort(
+      message =
+        paste0("{arg_type_fmted} code(s) in {arg} didn't",
+        " match any cases in {.arg {dataset}}."),
+      class  = "no_cases",
+      arg = arg,
+      arg_type = arg_type,
+      dataset = dataset,
+      call = call
+    )
   }
