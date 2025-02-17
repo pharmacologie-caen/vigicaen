@@ -7,7 +7,7 @@ test_that("basic load of dt_parquet", {
     arrow::as_arrow_table()
 
   tmp_folder <- tempdir()
-  path_data <- paste0(tmp_folder, "\\")
+  path_data <- paste0(tmp_folder, "/")
 
   arrow::write_parquet(demo,
                        sink = paste0(path_data, "demo.parquet")
@@ -46,7 +46,7 @@ test_that("alternative path syntaxes work",{
     arrow::as_arrow_table()
 
   tmp_folder <- tempdir()
-  path_data <- paste0(tmp_folder, "\\")
+  path_data <- paste0(tmp_folder, "/")
 
   arrow::write_parquet(demo,
                        sink = paste0(path_data, "demo_altsynt.parquet")

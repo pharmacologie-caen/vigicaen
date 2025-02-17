@@ -2,7 +2,7 @@ test_that("you can subset on drecno, age, meddra_id", {
 
   wd_in <- tempdir()
 
-  wd_in <- paste0(wd_in, "\\", "tb_subset_t1") # avoid windows #1224
+  wd_in <- paste0(wd_in, "/", "tb_subset_t1") # avoid windows #1224
   # never rewrite on the same tempfile in ANY test.
 
   dir.create(path = wd_in)
@@ -60,7 +60,7 @@ test_that("you can subset on drecno, age, meddra_id", {
          arrow::write_parquet(
            dataset |>
              arrow::as_arrow_table(),
-           sink = paste0(wd_in, "\\", name, ".parquet")
+           sink = paste0(wd_in, "/", name, ".parquet")
          )
 
      )
@@ -227,7 +227,7 @@ test_that("you can subset on drecno, age, meddra_id", {
 
   unlink(wd_in, recursive = TRUE)
   # attempt to clean note on debian
-  if(dir.exists(wd_in))
+  if(dir.exists(wd_in) & Sys.info()[["sysname"]] != "Windows")
     file.remove(wd_in)
 
 })
@@ -246,7 +246,7 @@ test_that("you can keep suspdup", {
 
   wd_in <- tempdir()
 
-  wd_in <- paste0(wd_in, "\\", "sub") # avoid windows #1224
+  wd_in <- paste0(wd_in, "/", "sub") # avoid windows #1224
 
   dir.create(path = wd_in)
 
@@ -371,7 +371,7 @@ test_that("you can keep suspdup", {
   )
 
   unlink(wd_in, recursive = TRUE)
-  if(dir.exists(wd_in))
+  if(dir.exists(wd_in) & Sys.info()[["sysname"]] != "Windows")
     file.remove(wd_in)
 
 
@@ -382,7 +382,7 @@ test_that("alternative syntaxes work", {
 
   wd_in <- tempdir()
 
-  wd_in <- paste0(wd_in, "\\", "sub2") # avoid windows #1224
+  wd_in <- paste0(wd_in, "/", "sub2") # avoid windows #1224
 
   dir.create(path = wd_in)
 
@@ -484,8 +484,8 @@ test_that("alternative syntaxes work", {
 
 
   unlink(wd_in, recursive = TRUE)
-  if(dir.exists(wd_in))
-    file.remove(wd_in)
+  if(dir.exists(wd_in) & Sys.info()[["sysname"]] != "Windows")
+    file.remove(here::here(wd_in))
 })
 
 unlink(tempdir(), recursive = TRUE)

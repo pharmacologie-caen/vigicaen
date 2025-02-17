@@ -52,7 +52,7 @@
 #' # For the example, we create tables in a directory that should be replaced by
 #' # your own directory containing the entire database.
 #'
-#' wd_in <- paste0(tempdir(), "\\", "tbsubsetex")
+#' wd_in <- paste0(tempdir(), "/", "tbsubsetex")
 #' dir.create(wd_in)
 #' # --- technical steps ---- #
 #'
