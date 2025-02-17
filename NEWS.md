@@ -1,3 +1,9 @@
+# vigicaen 0.15.3
+
+## Minor 
+
+* Addressing CRAN queries on package DESCRIPTION.
+
 # vigicaen 0.15.2
 
 ## Minor
