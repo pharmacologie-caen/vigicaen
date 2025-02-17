@@ -645,7 +645,9 @@ test_that("you can use arrow/parquet format", {
       drug_test = c(0, 0, 0, 0, 1)
     )
 
-  tmp_folder <- tempdir()
+  tmp_folder <- paste0(tempdir(), "/", "add_drug_t1")
+
+  dir.create(path = tmp_folder)
 
   arrow::write_parquet(demo_test,
                        sink = paste0(tmp_folder, "\\demo.parquet"))
@@ -679,7 +681,10 @@ test_that("you can use arrow/parquet format", {
 
   expect_equal(res, res_a)
 
+  unlink(tmp_folder, recursive = TRUE)
 
+  if(dir.exists(tmp_folder) & Sys.info()[["sysname"]] != "Windows")
+    file.remove(tmp_folder)
 })
 
 test_that("Providing data_type arg raises deprecation warn", {
