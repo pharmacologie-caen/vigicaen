@@ -17,7 +17,7 @@ Description: Perform the analysis of the World Health Organization
        This package is NOT supported nor reflect the opinion of the WHO, or the
        Uppsala Monitoring Centre.
 Depends: R (>= 4.1.0),
-License: file LICENSE
+License: CECILL-2.1
 Encoding: UTF-8
 LazyData: true
 LazyDataCompression: xz
