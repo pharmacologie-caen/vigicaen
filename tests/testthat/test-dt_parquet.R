@@ -7,7 +7,7 @@ test_that("basic load of dt_parquet", {
     arrow::as_arrow_table()
 
   tmp_folder <- tempdir()
-  path_data <- paste0(tmp_folder, "/")
+  path_data <- paste0(tmp_folder, "\\")
 
   arrow::write_parquet(demo,
                        sink = paste0(path_data, "demo.parquet")
@@ -33,7 +33,7 @@ test_that("basic load of dt_parquet", {
   )
   # cannot perform full equal, since "pointer"s aren't the same.
 
-  unlink(tmp_folder, recursive = TRUE)
+  unlink(paste0(path_data, "demo.parquet"), recursive = TRUE)
 })
 
 
@@ -46,7 +46,7 @@ test_that("alternative path syntaxes work",{
     arrow::as_arrow_table()
 
   tmp_folder <- tempdir()
-  path_data <- paste0(tmp_folder, "/")
+  path_data <- paste0(tmp_folder, "\\")
 
   arrow::write_parquet(demo,
                        sink = paste0(path_data, "demo_altsynt.parquet")
@@ -75,6 +75,5 @@ test_that("alternative path syntaxes work",{
   )
 
 
-  unlink(tmp_folder, recursive = TRUE)
+  unlink(paste0(path_data, "demo_altsynt.parquet"), recursive = TRUE)
 })
-

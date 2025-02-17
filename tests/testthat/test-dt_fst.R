@@ -4,7 +4,7 @@ test_that("import is successful", {
   path <- tempdir()
 
   fst::write_fst(x = df,
-                path = paste0(path, "/", "df.fst")
+                path = paste0(path, "\\", "df.fst")
                 )
 
   # You may import the file directly to data.table format with dt_fst
@@ -15,7 +15,7 @@ test_that("import is successful", {
   expect_equal(df, df2)
   expect_equal(class(df2), c("data.table", "data.frame"))
 
-  unlink(path, recursive = TRUE)
+  unlink( paste0(path, "\\", "df.fst"))
 })
 
 
@@ -25,7 +25,7 @@ test_that("works with here syntax seemlessly", {
   path <- tempdir()
 
   fst::write_fst(x = df,
-                 path = paste0(path, "/", "df.fst")
+                 path =  paste0(path, "\\", "df.fst")
   )
 
   here_path <- here::here(path)
@@ -38,7 +38,7 @@ test_that("works with here syntax seemlessly", {
   expect_equal(df, df2)
   expect_equal(class(df2), c("data.table", "data.frame"))
 
-  unlink(path, recursive = TRUE)
+  unlink( paste0(path, "\\", "df.fst"), recursive = TRUE)
 })
 
 test_that("works without name arg", {
@@ -66,6 +66,5 @@ test_that("works without name arg", {
   expect_equal(df, df3)
   expect_equal(class(df3), c("data.table", "data.frame"))
 
-  unlink(path, recursive = TRUE)
+  unlink( paste0(path, "\\", "df.fst"), recursive = TRUE)
 })
-

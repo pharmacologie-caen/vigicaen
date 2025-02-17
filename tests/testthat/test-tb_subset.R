@@ -60,7 +60,7 @@ test_that("you can subset on drecno, age, meddra_id", {
          arrow::write_parquet(
            dataset |>
              arrow::as_arrow_table(),
-           sink = paste0(wd_in, "/", name, ".parquet")
+           sink = paste0(wd_in, "\\", name, ".parquet")
          )
 
      )
@@ -226,6 +226,9 @@ test_that("you can subset on drecno, age, meddra_id", {
   )
 
   unlink(wd_in, recursive = TRUE)
+  # attempt to clean note on debian
+  if(dir.exists(wd_in))
+    file.remove(wd_in)
 
 })
 
@@ -368,6 +371,9 @@ test_that("you can keep suspdup", {
   )
 
   unlink(wd_in, recursive = TRUE)
+  if(dir.exists(wd_in))
+    file.remove(wd_in)
+
 
 })
 
@@ -477,6 +483,7 @@ test_that("alternative syntaxes work", {
   )
 
 
- unlink(wd_in, recursive = TRUE)
-
+  unlink(wd_in, recursive = TRUE)
+  if(dir.exists(wd_in))
+    file.remove(wd_in)
 })

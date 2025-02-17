@@ -52,8 +52,8 @@
 #' # For the example, we create tables in a directory that should be replaced by
 #' # your own directory containing the entire database.
 #'
-#' wd_in <- tempdir()
-#'
+#' wd_in <- paste0(tempdir(), "\\", "tbsubsetex")
+#' dir.create(wd_in)
 #' # --- technical steps ---- #
 #'
 #' library(data.table)
@@ -156,6 +156,8 @@
 #' tb_subset(wd_in, wd_out,
 #'           subset_var = "age",
 #'           sv_selection = sv_selection)
+#'
+#' unlink(wd_in, recursive = TRUE)
 
 tb_subset <-
   function(wd_in,

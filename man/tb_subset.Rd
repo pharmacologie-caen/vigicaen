@@ -70,8 +70,8 @@ Use \code{\link[=dt_parquet]{dt_parquet()}} to load the tables afterward.
 # For the example, we create tables in a directory that should be replaced by
 # your own directory containing the entire database.
 
-wd_in <- tempdir()
-
+wd_in <- paste0(tempdir(), "\\\\", "tbsubsetex")
+dir.create(wd_in)
 # --- technical steps ---- #
 
 library(data.table)
@@ -174,6 +174,8 @@ wd_out <- paste0(wd_in, "/", "more_than_65_subset", "/")
 tb_subset(wd_in, wd_out,
           subset_var = "age",
           sv_selection = sv_selection)
+
+unlink(wd_in, recursive = TRUE)
 }
 \seealso{
 \code{\link[=get_drecno]{get_drecno()}}, \code{\link[=get_atc_code]{get_atc_code()}}, \code{\link[=get_llt_soc]{get_llt_soc()}}, \code{\link[=get_llt_smq]{get_llt_smq()}}, \code{\link[=dt_parquet]{dt_parquet()}}
