@@ -1,3 +1,9 @@
+# vigicaen 0.15.2
+
+## Minor
+
+* Clearing remaining temp files from tests
+
 # vigicaen 0.15.1
 
 ## New features
