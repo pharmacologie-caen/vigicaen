@@ -77,7 +77,8 @@ test_that("basic use and here package works", {
      options(cli.progress_show_after = 0)
      options(cli.progress_clear = FALSE)
      tb_vigibase(path_base = path_base,
-             path_sub  = path_sub)
+             path_sub  = path_sub,
+             force = TRUE)
    },
    transform =
      function(chr_line)
@@ -181,7 +182,8 @@ test_that("basic use and here package works", {
 
    expect_snapshot(
      tb_vigibase(path_base = here_path_base,
-             path_sub  = here_path_sub),
+             path_sub  = here_path_sub,
+             force = TRUE),
      transform =
        function(chr_line)
          stringr::str_replace(
@@ -201,7 +203,8 @@ test_that("basic use and here package works", {
 
    expect_snapshot(
      tb_vigibase(path_base = path_base,
-             path_sub  = here_path_sub),
+             path_sub  = here_path_sub,
+             force = TRUE),
      transform =
        function(chr_line)
          stringr::str_replace(
@@ -213,7 +216,8 @@ test_that("basic use and here package works", {
 
    expect_snapshot(
      tb_vigibase(path_base = here_path_base,
-             path_sub  = path_sub),
+             path_sub  = path_sub,
+             force = TRUE),
      transform =
        function(chr_line)
          stringr::str_replace(
@@ -383,19 +387,22 @@ test_that("path_base and path_sub exist before working on tables", {
 
   expect_error(
     tb_vigibase(path_base = wrong_path,
-            path_sub  = right_path),
+            path_sub  = right_path,
+            force = TRUE),
     info = "/a/wrong/filepath/ does not exist"
   )
 
   expect_error(
     tb_vigibase(path_base = right_path,
-            path_sub  = wrong_path),
+            path_sub  = wrong_path,
+            force = TRUE),
     info = "/a/wrong/filepath/ does not exist"
   )
 
   expect_error(
     tb_vigibase(path_base = wrong_path,
-            path_sub  = wrong_path),
+            path_sub  = wrong_path,
+            force = TRUE),
     info = "/a/wrong/filepath/ does not exist"
   )
 })

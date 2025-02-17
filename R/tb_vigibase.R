@@ -15,6 +15,8 @@
 #' @param path_base Character string, a directory containing vigibase txt tables. It is also the
 #' output directory.
 #' @param path_sub  Character string, a directory containing subsidiary tables.
+#' @param force Logical, to be passed to `cli::cli_progress_update()`. Used for internal
+#' purposes.
 #'
 #' @keywords import
 #' @importFrom stringr str_sub str_trim
@@ -150,7 +152,8 @@
 
 tb_vigibase <-
   function(path_base,
-           path_sub
+           path_sub,
+           force = FALSE
            ){
 
     path_base <-
@@ -184,12 +187,12 @@ tb_vigibase <-
       total = 100
     )
 
-    cli_progress_update(force = TRUE,status = "Read DEMO.txt", set = 3)
+    cli_progress_update(force = force,status = "Read DEMO.txt", set = 3)
 
     demo <- reader("DEMO.txt", path_base)
 
     # ---- split
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Split demo",
       set = 6)
 
@@ -212,7 +215,7 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Write demo.parquet",
       set = 12)
 
@@ -225,14 +228,14 @@ tb_vigibase <-
     gc()
 
     # ---- drug ---- ####
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Read DRUG.txt",
       set = 16)
 
     drug <- reader("DRUG.txt", path_base)
 
     # ---- split
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Split drug",
       set = 20)
 
@@ -264,7 +267,7 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Write drug.parquet",
       set = 27)
 
@@ -278,14 +281,14 @@ tb_vigibase <-
 
 
     # ---- followup ---- ####
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Read FOLLOWUP.txt",
       set = 30)
 
     followup <- reader("FOLLOWUP.txt", path_base)
 
     # ---- split
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Split followup",
       set = 32)
 
@@ -305,7 +308,7 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Write followup.parquet",
       set = 34)
 
@@ -318,14 +321,14 @@ tb_vigibase <-
     gc()
 
     # ---- adr ---- ####
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Read ADR.txt",
       set = 36)
 
     adr <- reader("ADR.txt", path_base)
 
     # ---- split
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Split adr",
       set = 39)
 
@@ -347,7 +350,7 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Write adr.parquet",
       set = 42)
 
@@ -356,14 +359,14 @@ tb_vigibase <-
     )
 
     # ---- out ---- ####
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Read OUT.txt",
       set = 43)
 
     out <- reader("OUT.txt", path_base)
 
     # ---- split
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Split out",
       set = 45)
 
@@ -384,7 +387,7 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Write out.parquet",
       set = 46)
 
@@ -398,14 +401,14 @@ tb_vigibase <-
     gc()
 
     # ---- srce ---- ####
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Read SRCE.txt",
       set = 47)
 
     srce <- reader("SRCE.txt", path_base)
 
     # ---- split
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Split srce",
       set = 48)
 
@@ -425,7 +428,7 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Write srce.parquet",
       set = 49)
 
@@ -438,14 +441,14 @@ tb_vigibase <-
     gc()
 
     # ---- link ---- ####
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Read LINK.txt",
       set = 50)
 
     link <- reader("LINK.txt", path_base)
 
     # ---- split
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Split link (longest step)",
       set = 52)
 
@@ -488,7 +491,7 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Write link.parquet",
       set = 68)
 
@@ -500,7 +503,7 @@ tb_vigibase <-
     gc()
 
     # ---- ind ---- ####
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Read IND.txt",
       set = 70)
 
@@ -515,7 +518,7 @@ tb_vigibase <-
     )
 
     # ---- split
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Split ind",
       set = 72)
 
@@ -535,7 +538,7 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Write ind.parquet",
       set = 78)
 
@@ -547,7 +550,7 @@ tb_vigibase <-
     gc()
 
     # ---- suspectedduplicates ---- ####
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Read SUSPECTEDDUPLICATES.txt",
       set = 80)
 
@@ -555,7 +558,7 @@ tb_vigibase <-
                       folder = path_sub)
 
     # ---- split
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Split suspdup",
       set = 82)
 
@@ -575,7 +578,7 @@ tb_vigibase <-
       dplyr::compute()
 
     # ---- write
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Write suspdup.parquet",
       set = 84)
 
@@ -588,9 +591,9 @@ tb_vigibase <-
     gc()
 
     # AgeGroup
-    cli_progress_update(force = TRUE,
-      status = "Process AgeGroup_Lx.txt",
-      set = 85)
+    cli_progress_update(force = force,
+      status = "Process Subsidiary files",
+      set = 95)
 
     AgeGroup <- reader("AgeGroup_Lx.txt", path_sub)
     AgeGroup <-
@@ -603,10 +606,6 @@ tb_vigibase <-
     arrow::write_parquet(AgeGroup, sink = paste0(path_sub, "AgeGroup.parquet"))
 
     # Dechallenge
-    cli_progress_update(force = TRUE,
-      status = "Process Dechallenge_Lx.txt",
-      set = 86)
-
     Dechallenge <- reader("Dechallenge_Lx.txt", path_sub)
     Dechallenge <-
       Dechallenge |>
@@ -618,9 +617,6 @@ tb_vigibase <-
     arrow::write_parquet(Dechallenge, sink = paste0(path_sub, "Dechallenge.parquet"))
 
     # Dechallenge2
-    cli_progress_update(force = TRUE,
-      status = "Process Dechallenge2_Lx.txt",
-      set = 87)
 
     Dechallenge2 <- reader("Dechallenge2_Lx.txt", path_sub)
     Dechallenge2 <-
@@ -633,9 +629,6 @@ tb_vigibase <-
     arrow::write_parquet(Dechallenge2, sink = paste0(path_sub, "Dechallenge2.parquet"))
 
     # FrequencyU
-    cli_progress_update(force = TRUE,
-      status = "Process Frequency_Lx.txt",
-      set = 88)
 
     Frequency <- reader("Frequency_Lx.txt", path_sub)
     Frequency <-
@@ -648,9 +641,6 @@ tb_vigibase <-
     arrow::write_parquet(Frequency, sink = paste0(path_sub, "Frequency.parquet"))
 
     # Gender
-    cli_progress_update(force = TRUE,
-      status = "Process Gender_Lx.txt",
-      set = 89)
 
     Gender <- reader("Gender_Lx.txt", path_sub)
     Gender <-
@@ -663,9 +653,6 @@ tb_vigibase <-
     arrow::write_parquet(Gender, sink = paste0(path_sub, "Gender.parquet"))
 
     # Notifier
-    cli_progress_update(force = TRUE,
-      status = "Process Notifier_Lx.txt",
-      set = 90)
 
     Notifier <- reader("Notifier_Lx.txt", path_sub)
     Notifier <-
@@ -678,9 +665,6 @@ tb_vigibase <-
     arrow::write_parquet(Notifier, sink = paste0(path_sub, "Notifier.parquet"))
 
     # Outcome
-    cli_progress_update(force = TRUE,
-      status = "Process Outcome_Lx.txt",
-      set = 91)
 
     Outcome <- reader("Outcome_Lx.txt", path_sub)
     Outcome <-
@@ -693,9 +677,6 @@ tb_vigibase <-
     arrow::write_parquet(Outcome, sink = paste0(path_sub, "Outcome.parquet"))
 
     # Rechallenge
-    cli_progress_update(force = TRUE,
-      status = "Process Rechallenge_Lx.txt",
-      set = 92)
 
     Rechallenge <- reader("Rechallenge_Lx.txt", path_sub)
     Rechallenge <-
@@ -708,9 +689,6 @@ tb_vigibase <-
     arrow::write_parquet(Rechallenge, sink = paste0(path_sub, "Rechallenge.parquet"))
 
     # Rechallenge2
-    cli_progress_update(force = TRUE,
-      status = "Process Rechallenge2_Lx.txt",
-      set = 93)
 
     Rechallenge2 <- reader("Rechallenge2_Lx.txt", path_sub)
     Rechallenge2 <-
@@ -723,9 +701,6 @@ tb_vigibase <-
     arrow::write_parquet(Rechallenge2, sink = paste0(path_sub, "Rechallenge2.parquet"))
 
     # Region
-    cli_progress_update(force = TRUE,
-      status = "Process Region_Lx.txt",
-      set = 94)
 
     Region <- reader("Region_Lx.txt", path_sub)
     Region <-
@@ -738,9 +713,6 @@ tb_vigibase <-
     arrow::write_parquet(Region, sink = paste0(path_sub, "Region.parquet"))
 
     # RepBasis
-    cli_progress_update(force = TRUE,
-      status = "Process RepBasis_Lx.txt",
-      set = 95)
 
     RepBasis <- reader("RepBasis_Lx.txt", path_sub)
     RepBasis <-
@@ -753,9 +725,6 @@ tb_vigibase <-
     arrow::write_parquet(RepBasis, sink = paste0(path_sub, "RepBasis.parquet"))
 
     # ReportType
-    cli_progress_update(force = TRUE,
-      status = "Process ReportType_Lx.txt",
-      set = 96)
 
     ReportType <- reader("ReportType_Lx.txt", path_sub)
     ReportType <-
@@ -768,9 +737,6 @@ tb_vigibase <-
     arrow::write_parquet(ReportType, sink = paste0(path_sub, "ReportType.parquet"))
 
     # RouteOfAdm
-    cli_progress_update(force = TRUE,
-      status = "Process RouteOfAdm_Lx.txt",
-      set = 97)
 
     RouteOfAdm <- reader("RouteOfAdm_Lx.txt", path_sub)
     RouteOfAdm <-
@@ -783,9 +749,6 @@ tb_vigibase <-
     arrow::write_parquet(RouteOfAdm, sink = paste0(path_sub, "RouteOfAdm.parquet"))
 
     # Seriousness
-    cli_progress_update(force = TRUE,
-      status = "Process Seriousness_Lx.txt",
-      set = 98)
 
     Seriousness <- reader("Seriousness_Lx.txt", path_sub)
     Seriousness <-
@@ -800,9 +763,6 @@ tb_vigibase <-
     arrow::write_parquet(Seriousness, sink = paste0(path_sub, "Seriousness.parquet"))
 
     # SizeUnit
-    cli_progress_update(force = TRUE,
-      status = "Process SizeUnit_Lx.txt",
-      set = 99)
 
     SizeUnit <-
       read.table(
@@ -831,7 +791,7 @@ tb_vigibase <-
       dplyr::compute()
     arrow::write_parquet(SizeUnit, sink = paste0(path_sub, "SizeUnit.parquet"))
 
-    cli_progress_update(force = TRUE,
+    cli_progress_update(force = force,
       status = "Done",
       set = 100)
     cli_progress_done()

@@ -3,7 +3,7 @@
     Code
       options(cli.progress_show_after = 0)
       options(cli.progress_clear = FALSE)
-      tb_vigibase(path_base = path_base, path_sub = path_sub)
+      tb_vigibase(path_base = path_base, path_sub = path_sub, force = TRUE)
     Message
       
       -- tb_vigibase() ---------------------------------------------------------------
@@ -37,28 +37,14 @@
       ========================>------ percent, seconds | Read SUSPECTEDDUPLICATES.txt 
       =========================>----- percent, seconds | Split suspdup 
       =========================>----- percent, seconds | Write suspdup.parquet 
-      ==========================>---- percent, seconds | Process AgeGroup_Lx.txt 
-      ==========================>---- percent, seconds | Process Dechallenge_Lx.txt 
-      ==========================>---- percent, seconds | Process Dechallenge2_Lx.txt 
-      ==========================>---- percent, seconds | Process Frequency_Lx.txt 
-      ===========================>--- percent, seconds | Process Gender_Lx.txt 
-      ===========================>--- percent, seconds | Process Notifier_Lx.txt 
-      ===========================>--- percent, seconds | Process Outcome_Lx.txt 
-      ============================>-- percent, seconds | Process Rechallenge_Lx.txt 
-      ============================>-- percent, seconds | Process Rechallenge2_Lx.txt 
-      ============================>-- percent, seconds | Process Region_Lx.txt 
-      ============================>-- percent, seconds | Process RepBasis_Lx.txt 
-      =============================>- percent, seconds | Process ReportType_Lx.txt 
-      =============================>- percent, seconds | Process RouteOfAdm_Lx.txt 
-      =============================>- percent, seconds | Process Seriousness_Lx.txt 
-      ==============================> percent, seconds | Process SizeUnit_Lx.txt 
+      ============================>-- percent, seconds | Process Subsidiary files 
       ==============================> percent, seconds | Done 
       
 
 ---
 
     Code
-      tb_vigibase(path_base = here_path_base, path_sub = here_path_sub)
+      tb_vigibase(path_base = here_path_base, path_sub = here_path_sub, force = TRUE)
     Message
       
       -- tb_vigibase() ---------------------------------------------------------------
@@ -92,28 +78,14 @@
       ========================>------ percent, seconds | Read SUSPECTEDDUPLICATES.txt 
       =========================>----- percent, seconds | Split suspdup 
       =========================>----- percent, seconds | Write suspdup.parquet 
-      ==========================>---- percent, seconds | Process AgeGroup_Lx.txt 
-      ==========================>---- percent, seconds | Process Dechallenge_Lx.txt 
-      ==========================>---- percent, seconds | Process Dechallenge2_Lx.txt 
-      ==========================>---- percent, seconds | Process Frequency_Lx.txt 
-      ===========================>--- percent, seconds | Process Gender_Lx.txt 
-      ===========================>--- percent, seconds | Process Notifier_Lx.txt 
-      ===========================>--- percent, seconds | Process Outcome_Lx.txt 
-      ============================>-- percent, seconds | Process Rechallenge_Lx.txt 
-      ============================>-- percent, seconds | Process Rechallenge2_Lx.txt 
-      ============================>-- percent, seconds | Process Region_Lx.txt 
-      ============================>-- percent, seconds | Process RepBasis_Lx.txt 
-      =============================>- percent, seconds | Process ReportType_Lx.txt 
-      =============================>- percent, seconds | Process RouteOfAdm_Lx.txt 
-      =============================>- percent, seconds | Process Seriousness_Lx.txt 
-      ==============================> percent, seconds | Process SizeUnit_Lx.txt 
+      ============================>-- percent, seconds | Process Subsidiary files 
       ==============================> percent, seconds | Done 
       
 
 ---
 
     Code
-      tb_vigibase(path_base = path_base, path_sub = here_path_sub)
+      tb_vigibase(path_base = path_base, path_sub = here_path_sub, force = TRUE)
     Message
       
       -- tb_vigibase() ---------------------------------------------------------------
@@ -147,28 +119,14 @@
       ========================>------ percent, seconds | Read SUSPECTEDDUPLICATES.txt 
       =========================>----- percent, seconds | Split suspdup 
       =========================>----- percent, seconds | Write suspdup.parquet 
-      ==========================>---- percent, seconds | Process AgeGroup_Lx.txt 
-      ==========================>---- percent, seconds | Process Dechallenge_Lx.txt 
-      ==========================>---- percent, seconds | Process Dechallenge2_Lx.txt 
-      ==========================>---- percent, seconds | Process Frequency_Lx.txt 
-      ===========================>--- percent, seconds | Process Gender_Lx.txt 
-      ===========================>--- percent, seconds | Process Notifier_Lx.txt 
-      ===========================>--- percent, seconds | Process Outcome_Lx.txt 
-      ============================>-- percent, seconds | Process Rechallenge_Lx.txt 
-      ============================>-- percent, seconds | Process Rechallenge2_Lx.txt 
-      ============================>-- percent, seconds | Process Region_Lx.txt 
-      ============================>-- percent, seconds | Process RepBasis_Lx.txt 
-      =============================>- percent, seconds | Process ReportType_Lx.txt 
-      =============================>- percent, seconds | Process RouteOfAdm_Lx.txt 
-      =============================>- percent, seconds | Process Seriousness_Lx.txt 
-      ==============================> percent, seconds | Process SizeUnit_Lx.txt 
+      ============================>-- percent, seconds | Process Subsidiary files 
       ==============================> percent, seconds | Done 
       
 
 ---
 
     Code
-      tb_vigibase(path_base = here_path_base, path_sub = path_sub)
+      tb_vigibase(path_base = here_path_base, path_sub = path_sub, force = TRUE)
     Message
       
       -- tb_vigibase() ---------------------------------------------------------------
@@ -202,21 +160,7 @@
       ========================>------ percent, seconds | Read SUSPECTEDDUPLICATES.txt 
       =========================>----- percent, seconds | Split suspdup 
       =========================>----- percent, seconds | Write suspdup.parquet 
-      ==========================>---- percent, seconds | Process AgeGroup_Lx.txt 
-      ==========================>---- percent, seconds | Process Dechallenge_Lx.txt 
-      ==========================>---- percent, seconds | Process Dechallenge2_Lx.txt 
-      ==========================>---- percent, seconds | Process Frequency_Lx.txt 
-      ===========================>--- percent, seconds | Process Gender_Lx.txt 
-      ===========================>--- percent, seconds | Process Notifier_Lx.txt 
-      ===========================>--- percent, seconds | Process Outcome_Lx.txt 
-      ============================>-- percent, seconds | Process Rechallenge_Lx.txt 
-      ============================>-- percent, seconds | Process Rechallenge2_Lx.txt 
-      ============================>-- percent, seconds | Process Region_Lx.txt 
-      ============================>-- percent, seconds | Process RepBasis_Lx.txt 
-      =============================>- percent, seconds | Process ReportType_Lx.txt 
-      =============================>- percent, seconds | Process RouteOfAdm_Lx.txt 
-      =============================>- percent, seconds | Process Seriousness_Lx.txt 
-      ==============================> percent, seconds | Process SizeUnit_Lx.txt 
+      ============================>-- percent, seconds | Process Subsidiary files 
       ==============================> percent, seconds | Done 
       
 

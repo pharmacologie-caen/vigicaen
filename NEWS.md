@@ -4,6 +4,8 @@
 
 * Addressing CRAN queries on package DESCRIPTION.
 
+* Condensing examples and `tb_vigibase()` default output.
+
 # vigicaen 0.15.2
 
 ## Minor

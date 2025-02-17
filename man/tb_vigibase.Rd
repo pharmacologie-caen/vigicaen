@@ -4,13 +4,16 @@
 \alias{tb_vigibase}
 \title{Create main VigiBase ECL tables}
 \usage{
-tb_vigibase(path_base, path_sub)
+tb_vigibase(path_base, path_sub, force = FALSE)
 }
 \arguments{
 \item{path_base}{Character string, a directory containing vigibase txt tables. It is also the
 output directory.}
 
 \item{path_sub}{Character string, a directory containing subsidiary tables.}
+
+\item{force}{Logical, to be passed to \code{cli::cli_progress_update()}. Used for internal
+purposes.}
 }
 \value{
 \itemize{

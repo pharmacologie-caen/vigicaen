@@ -96,22 +96,8 @@
 #'   vigibase_version = "September 2024"
 #' )
 #'
-#' # Additional customization with d_name and a_name args
 #'
-#' vigi_routine(
-#'   case_tto = 150,
-#'   demo_data = demo,
-#'   drug_data = drug,
-#'   adr_data  = adr,
-#'   link_data = link,
-#'   d_code = d_drecno,
-#'   a_code = a_llt,
-#'   vigibase_version = "September 2024",
-#'   d_label = "Nivolumab",
-#'   a_label = "Colitis"
-#' )
-#'
-#' # You can export the plot with export_to
+#' # Customize with d_name and a_name, export the plot with export_to
 #'
 #' vigi_routine(
 #'   case_tto = 150,

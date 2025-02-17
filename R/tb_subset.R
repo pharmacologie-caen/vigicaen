@@ -124,7 +124,7 @@
 #'  list(
 #'    colitis = "Colitis"
 #'    ) |>
-#'    get_llt_soc(term_level = "pt", meddra_)
+#'    get_llt_soc(term_level = "pt", meddra_, verbose = FALSE)
 #'
 #'
 #' wd_out <- paste0(wd_in, "/", "colitis_subset", "/")
@@ -138,7 +138,7 @@
 #'  d_drecno <-
 #'    list(
 #'     ipi = "ipilimumab") |>
-#'     get_drecno(mp = mp_)
+#'     get_drecno(mp = mp_, verbose = FALSE)
 #'
 #' wd_out <- paste0(wd_in, "/", "nivolumab_subset", "/")
 #'
