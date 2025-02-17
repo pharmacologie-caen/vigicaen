@@ -32,7 +32,7 @@
 #' df <- dt_fst(path, "df")
 #'
 #' # Clean up (required for CRAN checks)
-#' unlink(path, recursive = TRUE)
+#' unlink(tempdir(), recursive = TRUE)
 
 dt_fst <- function(path_base,
                    name = NULL,

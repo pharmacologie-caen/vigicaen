@@ -487,3 +487,5 @@ test_that("alternative syntaxes work", {
   if(dir.exists(wd_in))
     file.remove(wd_in)
 })
+
+unlink(tempdir(), recursive = TRUE)
