@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Perform the analysis of the World Health Organization (WHO) Pharmacovigilance database 'VigiBase' (Extract Case Level version), <[https://who-umc.org/]https://who-umc.org/> e.g., load data, perform data management, disproportionality analysis, and descriptive statistics. Intended for pharmacovigilance routine use or studies. This package is NOT supported nor reflect the opinion of the WHO, or the Uppsala Monitoring Centre. Disproportionality methods are described by Norén et al (2013) \doi{10.1177/0962280211403604}.
+Perform the analysis of the World Health Organization (WHO) Pharmacovigilance database 'VigiBase' (Extract Case Level version), \url{https://who-umc.org/} e.g., load data, perform data management, disproportionality analysis, and descriptive statistics. Intended for pharmacovigilance routine use or studies. This package is NOT supported nor reflect the opinion of the WHO, or the Uppsala Monitoring Centre. Disproportionality methods are described by Norén et al (2013) \doi{10.1177/0962280211403604}.
 }
 \seealso{
 Useful links:

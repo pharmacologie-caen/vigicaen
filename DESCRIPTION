@@ -11,7 +11,7 @@ Authors@R: c(
        )
 Description: Perform the analysis of the World Health Organization
        (WHO) Pharmacovigilance database 'VigiBase' (Extract Case Level version),
-       <[https://who-umc.org/]https://who-umc.org/>
+       <https://who-umc.org/>
        e.g., load data, perform data management,
        disproportionality analysis, and descriptive statistics. Intended for
        pharmacovigilance routine use or studies.

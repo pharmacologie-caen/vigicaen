@@ -1,3 +1,9 @@
+# vigicaen 0.15.4
+
+## Minor
+
+* Fixing typos in DESCRIPTION, per CRAN query.
+
 # vigicaen 0.15.3
 
 ## Minor 
