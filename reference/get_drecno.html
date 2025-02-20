@@ -190,7 +190,8 @@ drug alone drecno is not found, hence the cases related to this drug will not be
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive()</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># ## Get drecnos for a list a drugs. Check spelling and use WHO name,</span></span></span>
 <span class="r-in"><span><span class="co"># in lowercase</span></span></span>
 <span class="r-in"><span></span></span>
@@ -209,30 +210,7 @@ drug alone drecno is not found, hence the cases related to this drug will not be
 <span class="r-in"><span>             mp <span class="op">=</span> <span class="va">mp_</span>,</span></span>
 <span class="r-in"><span>             allow_combination <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>             method <span class="op">=</span> <span class="st">"drug_name"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">get_drecno()</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">`d_sel`: Matching drugs</span> ──</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #00BB00;">✔</span> Matched drugs </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → `nivolumab`: <span style="color: #0000BB;">"nivolumab"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → `ipilimumab`: <span style="color: #0000BB;">"ipilimumab"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → `nivo_ipi`: <span style="color: #0000BB;">"nivolumab"</span> and <span style="color: #0000BB;">"ipilimumab"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Set `verbose` to FALSE to suppress this section.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ────────────────────────────────────────────────────────────────────────────────</span>
 <span class="r-in"><span><span class="va">d_drecno</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $nivolumab</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 111841511</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ipilimumab</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 133138448</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $nivo_ipi</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 111841511 133138448</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># And DrecNos of drugs allowing for combinations</span></span></span>
 <span class="r-in"><span></span></span>
@@ -241,30 +219,8 @@ drug alone drecno is not found, hence the cases related to this drug will not be
 <span class="r-in"><span>             mp <span class="op">=</span> <span class="va">mp_</span>,</span></span>
 <span class="r-in"><span>             allow_combination <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>             method <span class="op">=</span> <span class="st">"drug_name"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">get_drecno()</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">`d_sel`: Matching drugs</span> ──</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #00BB00;">✔</span> Matched drugs </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → `nivolumab`: <span style="color: #0000BB;">"nivolumab"</span> and <span style="color: #0000BB;">"ipilimumab;nivolumab"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → `ipilimumab`: <span style="color: #0000BB;">"ipilimumab"</span> and <span style="color: #0000BB;">"ipilimumab;nivolumab"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> → `nivo_ipi`: <span style="color: #0000BB;">"nivolumab"</span>, <span style="color: #0000BB;">"ipilimumab;nivolumab"</span>, and <span style="color: #0000BB;">"ipilimumab"</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Set `verbose` to FALSE to suppress this section.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ────────────────────────────────────────────────────────────────────────────────</span>
 <span class="r-in"><span><span class="va">d_drecno</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $nivolumab</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 111841511  98742214</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ipilimumab</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 133138448  98742214</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $nivo_ipi</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 111841511  98742214 133138448</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

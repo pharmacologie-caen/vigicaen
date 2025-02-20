@@ -109,7 +109,8 @@ If you want to work with the SOC hierarchy, use <code><a href="get_llt_soc.html"
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Finding llt codes for Embolism (SMQ)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive()</span></span></span>
+<span class="r-in"><span><span class="co">## Finding llt codes for Embolism (SMQ)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">smq_sel</span> <span class="op">&lt;-</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/list2.html" class="external-link">list2</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  embolism <span class="op">=</span> <span class="st">"Embolic and thrombotic events, venous (SMQ)"</span></span></span>
@@ -119,58 +120,6 @@ If you want to work with the SOC hierarchy, use <code><a href="get_llt_soc.html"
 <span class="r-in"><span>                smq_list <span class="op">=</span> <span class="va">smq_list_</span>,</span></span>
 <span class="r-in"><span>                smq_content <span class="op">=</span> <span class="va">smq_content_</span></span></span>
 <span class="r-in"><span>                <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $embolism</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]  85288735 109659678 126191842 120664031  60463627  82655496  73306620</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [8]  48132331  37663821  85794931 105046157 146439500  78254869  50293849</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [15] 139174695  93554112 100245806  21356500 130368160  27401242 136526683</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [22]  40832118  84403602 146545975  28755507  34823125  19030937   5813258</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [29] 105978976  63797021 113876498 149835459 118402594  36416155 105657941</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [36]  67068954  76716171 139597877 120089767  51885399    304263  67976607</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [43]  33936246 136003875  69130250  77358024 130151164 149678488  23977184</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [50]   6229995  93678060 110027077 110695910   3357620  74544721  43288588</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [57]  79855625  38284426  46832664  61355169  97240284  79040497  31429939</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [64]  63272525  76429956  32425466  64925552 145196315  94975426 126297040</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] 122394206  76821377  40250547  38403684  74633314  90868960 115651649</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [78]  48524016  38743861 136540370  79682936 122949384   7050343 111626352</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [85]  64431906  66451864  32176181  57550942  50490429 104849125  27158602</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [92]  73298357 118431320 135569704 115444635   8078518  39978825 115373686</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [99]  87693556  31847528  38720250 105674858  34849692 106721088  61639970</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [106]  35156945 134283731  96345137  79416859  82655483 114518464  70035252</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [113] 148453778  46218852 100891403 111360379 136895769  25702295 145317345</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [120]  77368022  48536990  41864659  83179644 134591296  36968455 117109999</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [127] 109843396  87568154  26912719  91691350 121857994  70698983  74635981</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [134] 124595099  16787507   9511277  40040613  16903498  14594992  28622391</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [141]  41080644  28249017   2984912 140627050 123744910  48145124 105623339</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [148]  51124910 110328887 132691070  35768584 136722978  55851418  84974487</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [155] 107627865 106908545 140927393 103612504  58960846  70193745 122560747</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [162]  19453547  27886826  50216700  23239859  32492931  28312617   1469682</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [169]  41187366 123918719 148897289 138263513  21507116  55256352 134254639</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [176]  86351641   1589922  79442942  69699289 113390302   9562605  57034425</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [183] 148792752 102676325  64785602  37303100 130642623 142358481 149885982</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [190]  59487970 107782971  63700414 142480252   2657900  26006966  37655481</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [197]    896386 132829879  22040691 101219924  65359162  88923732 101434775</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [204]  86624265 144458576 115344273   4594624 145655157  67018693 121052063</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [211]  39835193  33584926  67919686  93166338  71713859  18033045  74855189</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [218] 122440040  44452243 127662888  40591802  82927900  92160117  71721337</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [225]  35648859  99833298 120133013 126490855    650122 128240132 129643220</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [232]  79111056  42986098  59324057 139565981 106711654 149913765 142254884</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [239] 141979625 101985456  14454989 116167560  86912514  23672729 135634150</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [246] 139775288 134837971  99778351  76603355  18304554 119202449  77563969</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [253]   6114954 123750750 128631925  14975565  42399332  25697068  70012595</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [260]  84202418 101660261  76856857  19096646 113580750   4205054  23552550</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [267]  55282022  82221868  25213786 124298199  65093845  17144088 127677959</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [274]  29119663 115051544 106187760  32446995  54741662  64044031 123489956</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [281] 105736592  46105046 134609138  28734408 109388833  24987800  31830762</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [288]  73074331  68951631  22596761  24028827 149304070 105196281 126677734</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [295]   7277060 141220961  40334554 119016483 109963248  77962799  21123438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [302]  47996307  18269084  64946895  15620915 146391837   6360834  30583864</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [309]  51352302  69157336 135522748  29609342 121197690 127461738  35526772</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [316]  16934519   5348678  36983018 137105200 112683400  85687116 143580706</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [323]    132997  56674981 110113464  49365225 103374741  74375166  68921125</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [330]  23041997 147203505  92864807 108851800  15611328 101201951 138155548</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [337]  50635919   5126349  90611741 109009274 117218728 110681174 139495643</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [344]  91815795 114007211 111976571  61401026   8625259</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># You can query multiple SMQs in one item, and query high level SMQs</span></span></span>
 <span class="r-in"><span><span class="va">smq_sel2</span> <span class="op">&lt;-</span></span></span>
@@ -184,125 +133,7 @@ If you want to work with the SOC hierarchy, use <code><a href="get_llt_soc.html"
 <span class="r-in"><span>            smq_list <span class="op">=</span> <span class="va">smq_list_</span>,</span></span>
 <span class="r-in"><span>            smq_content <span class="op">=</span> <span class="va">smq_content_</span></span></span>
 <span class="r-in"><span>            <span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">get_llt_smq()</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #00BBBB;">ℹ</span> Sub-SMQs found </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">ℹ</span> High SMQ | <span style="color: #00BBBB;">✔</span> Sub SMQ(s)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> • In `ischemic_heart_disease`:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   • <span style="color: #00BB00;">ℹ</span> <span style="color: #0000BB;">"Ischaemic heart disease (SMQ)"</span> | <span style="color: #00BBBB;">✔</span> Myocardial infarction (SMQ) and Other</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   ischaemic heart disease (SMQ)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ────────────────────────────────────────────────────────────────────────────────</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $sepsis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1]  25943564  70526024 106425680 104130676 104688190  42185831 113336413</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [8]  95787623 136679797  99738588 119439867 139400334   5316970  41027311</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [15] 145495741   7394796  34501944 126298041 112346602  59649807  17036735</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [22]   4829802  33369255  40238875  14764326  25452633  96220238  49074752</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [29]  23100113  47206290 142032594  83925751  92610783  20534797 113627683</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [36]  25140274  58190948  16591081  16574427  29517775   1465760 138508766</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] 130232875  45058581  37772190  53452693  27528641 133140192  13296652</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [50]  94116186 124337587  14384801  45971294  86616946  43916064 131590035</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [57]   8240675   4481800  49207583  23757238  17616367  56155828 141480734</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [64]  40900795  88300412 118293741  86488744  60701158  80340894   3490647</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] 105877296 107852459  51707703  45583864 120886176 125986829  29836315</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [78]  27260748 133351551 133712269  35488577  40713123 129642346   9879593</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [85]  92226853  89298123 116331704  48638513  72211855 113076620  77851212</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [92]  44395711  30609287 100928827 101082606   2190028  40821685  35575223</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [99] 104077834  23503717  12736576 115734680  74376157 100741052  78188555</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [106]  14620036  93420083  27218604 103752749 118559439  71969495 108861503</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [113]  19189985  21782825  57509840  28792959  36052698  48468557 140216721</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [120] 106980913  69977954 149854040  65117086  86206425   1856017  33747962</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [127]  66381463  78674383  13144516 111962820  34358779  81232705  79813759</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [134]  64763005  45335520  96083877  63692167  42789386  92377516 140595425</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [141]  38641835  75408305 113380856  39155333 132201412 109329212   6847779</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [148]  83226177 107089482  99675739 111802871   7687078 144366177  69934586</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [155] 106605085 103327107 148689127  53353041  43661559  39548063  60882990</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [162]  57155409    402306  31308319  24749809 134410748  14760753  79138042</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [169]  11118166  41463398 105746822 139706987 129516350 130837950 141498583</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [176]   5357758 134088227 147319794  13994857 113949531  26771816  83357008</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [183]  97634575 138827366  74084628  59987822 119044145  19858489  17513625</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [190] 124298951 111976640 109618104 138540092  25790252  25967602  37383605</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [197] 144078266 116921374  35808720  91477409  75256472 107628583  63149755</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [204] 128803453  23215235  36148837   3503133 100177261 122605063 129938451</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [211]   8371414  45266109  76621321  88082600  70765627 140389073  52574283</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [218]   3945198  72961696  98709766  44780729  16218572  78389310  58895786</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [225] 127762748 116440378 138786488  61555999  86020546  14391828  69211038</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [232]  66560283  23012164 149315873 112240381  89108301 108723614  18039298</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [239]  82539422  94467894 111816039 103093173    156548  13195559  59007245</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [246] 119493720  24794871  63061530  25673950  60903414  36341101  25669974</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [253] 111375384 133078179 146175354  38987636  14238564 144905989 131620800</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [260]  37515942 102142430 112771005  46458247 137519023  65312730  51369210</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [267] 120086248 119320221 131913834  63975995 141767371  33206272  50292167</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [274]  22270548 120654794 135632533  58764901 105917714 131679871  94897194</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [281]  97652260 103839644  89371533  27445454 147261593  30126428 137922497</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [288] 129516175   6768397 138776850  87308896  63044234  64171230  64760955</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [295]  55251343  29156297  57318362  15978624 124230796  32077316  79053099</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [302]  91798936  11082867  21885260 122407304  31161102 147715549  11970846</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [309] 128157222  26027006  97258895  27909669</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ischemic_heart_disease</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 124234018 113497668 135120530  24096848  98750386  73574372  71831361</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [8] 131833661  34895973  13943325  71054742 104825059    550055  21440692</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [15]  91023433  81807039 128091333  21673174  80775074  63531143  47042964</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [22]  17391820  45130311  40775374  18563798  42412419  51183969 116107225</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [29]  33774438  99275365  10971393  79928512 141639130  95682897  33100637</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [36] 136385584 105075594  38441973  49668699 134927662  40183880  29596956</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [43] 138299485  28586538  71182618  96199415  34772763   3269584 103961081</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [50]  24405847  96950651 120159929   5479463 102868772  16855037  65195756</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [57]  82558419  21858498  47766497  92459895  56613051 146006255 130582339</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [64] 144896897 120872186  89031526 127714094 137959300  27165038 108193347</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [71] 103522829 126627705  24011142 121033471 103632111  62829737  47994864</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [78]  93571408  58191959  26664868  11623922  39986436  93124611  32468896</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [85]  67508216 122173562  71830475  52332219   3941613 132753674  72513195</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [92]  40094392  13470900  90510767  65020887 149380223  50102849  82918385</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [99] 106783802   8603762   6984504  60746801 103497033  86870465 144162383</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [106]  77996126 124963115  48398233  51954402  79179202  60791902 147401479</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [113] 123719141  67661721  16278967 101763904  56558563  30684264  51604685</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [120]   8623610 116291431  46248181 125327481  39045690  32663975 106136288</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [127] 110987691  22173005  54233867  33466419  15247363   9442863 121761626</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [134]  22306654  24763069  10962932  22279309  92111168 119625635 146525095</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [141]  20691538  75628099 137661058  16363701  21511621 102106865  49511976</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [148] 126383038  34626547  42559957  16437757 126763912  73589913  17066525</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [155]  83906676  90202995 139218396   7124971  25680727 126494479 133593814</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [162]  40970740 130839599 102067576  84233978 120763616  53416535  90385378</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [169] 104816924  90527431  32359063  65182808   3483742   9303936  39120990</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [176]  72273275 137063839  43578412  69359404  25114201  40093871  58196243</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [183] 110024728 103615311  17214689    861921  92777096  19732086  79753016</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [190]  42395758 108438079  75291798  11470129  24100131  28887653  64822174</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [197]  91142470  60738288  64692419   9878720   9357783  15837482 134791313</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [204] 114989422  36768391 101809846  19460260  62553875  35783621  49970329</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [211]  42980435 137404068 128408237  45997665   4945718  89937639 137103165</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [218]  47660522  57995702  34470539   8085353   9689937 104910371 130757787</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [225]  94106539 121234960  13042649 141130310  11239162  68887802  41231057</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [232]  91685443 125212975  63399468 140700655  57062814 139323248  84772739</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [239]  49982121 109694925 128331775  78498288 130497196 132316700 132352130</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [246]  17975285 141118342 106800974  42862032 136204787  16392437 149464251</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [253] 118636338 135234172 111875283 126227264 117866845  75382523  19231803</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [260]  15775454 116802602  25706569 132964945  27740733  14265432  18077291</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [267]  12400471 148674360 127670196 139396257 108516412  92568295   4856542</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [274]   3054364  56845565 113885620  64170226   1730542 132354996 121814215</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [281]  52117806 134597539  12862981  18545671  37136785 110775893  21066964</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [288] 116296689 126906165  72865317  27685337  29906349  97375477  29308873</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [295]  63500072 105386241 106951043     15449  88026289 105271758  81398517</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [302]  18666027  45403384 116901664  92824941  97203832  47283644 127088461</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [309]  56921754  13808645 117922387 114553381   7270577 126039267  86565806</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [316]  95920955  35340372   6642380  77269108  40527110  31572410  46444639</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [323]  27524200  98809088   5248555  11012245 147045668 129576918  53091908</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [330] 129026631  90648655   4944915 114324048  58449035  39092537 105409482</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [337]  54159574 141115312 107361966  48654055 106093660 134529419 121248745</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [344]  79205030  89184488 147039873  36692356 132217673  83561705  18252435</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [351] 144518947  17624746  83145610  56356473  32290982 129108987 115216536</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [358] 103767362 100065178  72189273  64782210 142741063 147261677  20464098</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [365]  30301294 101959431 133916508  42287702  22303940  26005290 140650332</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [372]  65203872  72576880  58765604  17880800  59436595  99102000  59567061</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [379] 122288461 122315919 121226833  36240057  26122229  48765939 118805773</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [386]  27076257 129377209  89246016  57078449  34587131 104202918  52042811</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [393]  29685635  35690259  69310970 109637582  64541383  49558037  23296820</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [400] 127456476  66210030 119729674  63766180 101741397</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

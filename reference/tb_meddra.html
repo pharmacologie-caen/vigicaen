@@ -121,14 +121,19 @@ All other columns are <code>character</code>.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive()</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Use the examples from tb_main if you want to see these functions in action.</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">path_meddra</span> <span class="op">&lt;-</span> <span class="st">"/meddra_directory/"</span></span></span>
+<span class="r-in"><span><span class="va">path_meddra</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"/meddra_directory/"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">path_meddra</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="create_example_tables.html">create_ex_meddra_asc</a></span><span class="op">(</span><span class="va">path_meddra</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## NOT RUN ##</span></span></span>
-<span class="r-in"><span><span class="co"># tb_meddra(path_meddra = path_meddra)</span></span></span>
+<span class="r-in"><span><span class="fu">tb_meddra</span><span class="op">(</span>path_meddra <span class="op">=</span> <span class="va">path_meddra</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Clear temporary files when you're done</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">path_meddra</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
