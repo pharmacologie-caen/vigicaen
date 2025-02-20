@@ -49,7 +49,7 @@ The \code{suspectedduplicates} table will be added to the base directory.
 Use \code{\link[=dt_parquet]{dt_parquet()}} to load the tables afterward.
 }
 \examples{
-
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # --- Setting to try out ---- ####
 
 f_sets <-
@@ -150,6 +150,7 @@ purrr::iwalk(f_sets, function(d_, name_){
 
  tb_vigibase(path_base = path_base,
         path_sub  = path_sub)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_meddra]{tb_meddra()}}, \code{\link[=tb_subset]{tb_subset()}}, \code{\link[=dt_parquet]{dt_parquet()}}

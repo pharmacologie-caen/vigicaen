@@ -17,7 +17,7 @@
 #' @keywords data_management meddra soc llt
 #' @seealso [get_llt_smq()]
 #' @export
-#' @examples
+#' @examplesIf interactive()
 #'
 #' ## Finding llt codes for colitis
 #'

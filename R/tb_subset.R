@@ -41,7 +41,7 @@
 #' @keywords dataset subset custom
 #' @export
 #' @seealso [get_drecno()], [get_atc_code()], [get_llt_soc()], [get_llt_smq()], [dt_parquet()]
-#' @examples
+#' @examplesIf interactive()
 #' ## Extract all colitis cases
 #'
 #' # Locate your input directory

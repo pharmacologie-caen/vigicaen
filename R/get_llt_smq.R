@@ -19,7 +19,7 @@
 #' @keywords data_management meddra smq llt
 #' @seealso [get_llt_soc()]
 #' @export
-#' @examples
+#' @examplesIf interactive()
 #' ## Finding llt codes for Embolism (SMQ)
 #'
 #' smq_sel <- rlang::list2(

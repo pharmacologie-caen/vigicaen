@@ -39,6 +39,7 @@ between the narrow and the broad scope of the SMQ.
 If you want to work with the SOC hierarchy, use \code{\link[=get_llt_soc]{get_llt_soc()}}.
 }
 \examples{
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 ## Finding llt codes for Embolism (SMQ)
 
 smq_sel <- rlang::list2(
@@ -62,6 +63,7 @@ get_llt_smq(smq_sel2,
             smq_list = smq_list_,
             smq_content = smq_content_
             )
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=get_llt_soc]{get_llt_soc()}}

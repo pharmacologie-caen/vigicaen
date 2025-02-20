@@ -26,7 +26,7 @@
 #' and some columns as `numeric` (Quantity from ingredient table)
 #' All other columns are `character`.
 #'
-#' @examples
+#' @examplesIf interactive()
 #'
 #' # Use the examples from tb_main if you want to see these functions in action.
 #'

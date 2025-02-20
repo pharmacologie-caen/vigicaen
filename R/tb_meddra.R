@@ -31,7 +31,7 @@
 #' Some columns are returned as `integer` (all `*_code` columns).
 #' All other columns are `character`.
 #'
-#' @examples
+#' @examplesIf interactive()
 #'
 #' # Use the examples from tb_main if you want to see these functions in action.
 #'

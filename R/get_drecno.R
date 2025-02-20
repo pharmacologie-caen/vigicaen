@@ -80,7 +80,7 @@
 #' @importFrom rlang .env
 #' @import cli
 #' @seealso [add_drug()], [get_atc_code()]
-#' @examples
+#' @examplesIf interactive()
 #'
 #' # ## Get drecnos for a list a drugs. Check spelling and use WHO name,
 #' # in lowercase

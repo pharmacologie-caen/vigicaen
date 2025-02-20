@@ -46,7 +46,7 @@
 #' and some columns as `numeric` (TimeToOnsetMin, TimeToOnsetMax)
 #' All other columns are `character`.
 #'
-#' @examples
+#' @examplesIf interactive()
 #'
 #' # --- Setting to try out ---- ####
 #'

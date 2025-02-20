@@ -60,7 +60,7 @@ as \code{sv_selection}.
 Use \code{\link[=dt_parquet]{dt_parquet()}} to load the tables afterward.
 }
 \examples{
-## Extract all colitis cases
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 # Locate your input directory
 # wd_in <- "../vigibase_ecl/main/"
@@ -176,6 +176,7 @@ tb_subset(wd_in, wd_out,
           sv_selection = sv_selection)
 
 unlink(wd_in, recursive = TRUE)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=get_drecno]{get_drecno()}}, \code{\link[=get_atc_code]{get_atc_code()}}, \code{\link[=get_llt_soc]{get_llt_soc()}}, \code{\link[=get_llt_smq]{get_llt_smq()}}, \code{\link[=dt_parquet]{dt_parquet()}}
