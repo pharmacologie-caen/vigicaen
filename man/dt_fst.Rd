@@ -28,7 +28,7 @@ be loaded \strong{IN}-memory or \strong{OUT} of memory with \code{\link{dt_parqu
 \examples{
 
 # Say you have a data.frame stored in an fst format, such as this one
-df <- data.frame(a = 1:100, b = rnorm(100))
+df <- data.frame(a = 1:10)
 
 path <- paste0(tempdir(), "/dtfstex")
 dir.create(path)

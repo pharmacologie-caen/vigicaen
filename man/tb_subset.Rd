@@ -60,81 +60,15 @@ as \code{sv_selection}.
 Use \code{\link[=dt_parquet]{dt_parquet()}} to load the tables afterward.
 }
 \examples{
-## Extract all colitis cases
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
-# Locate your input directory
-# wd_in <- "../vigibase_ecl/main/"
-# Choose a (close) directory to export to (it doesnt have to exist before you call it)
-# wd_out <- "../vigibase_ecl/main/subset/"
-
-# For the example, we create tables in a directory that should be replaced by
-# your own directory containing the entire database.
+# --- technical steps ---- #
 
 wd_in <- paste0(tempdir(), "/", "tbsubsetex")
 dir.create(wd_in)
-# --- technical steps ---- #
+create_ex_main_pq(wd_in)
 
-library(data.table)
-
-mini_data <- rlang::list2(
-  demo =
-    data.table(
-      UMCReportId = c(1, 2, 3, 4),
-      AgeGroup = c(1, 2, 7, 9)
-    ),
-  drug =
-    data.table(
-      UMCReportId = c(1, 2, 3, 4),
-      Drug_Id = c("d1", "d2", "d3", "d4"),
-      DrecNo = c(133138448, 133138448, 111841511, 111841511),
-      MedicinalProd_Id = c(25027716, 97354576, 104264760, 37484408)
-    ),
-  adr  =
-    data.table(
-      UMCReportId = c(1, 2, 3, 4),
-      Adr_Id = c("a1", "a2", "a3", "a4"),
-      MedDRA_Id = c(110049083, 31672047, 146319904, 72535511)
-    ),
-  link =
-    data.table(
-      Drug_Id = c("d1", "d2", "d3", "d4"),
-      Adr_Id = c("a1", "a2", "a3", "a4")
-    ),
-  srce =
-    data.table(
-      UMCReportId = c(1, 2, 3, 4)
-    ),
-  ind  =
-    data.table(
-      Drug_Id = c("d1", "d2", "d3", "d4")
-    ),
-  out  =
-    data.table(
-      UMCReportId = c(1, 2, 3, 4)
-    ),
-  followup =
-    data.table(
-      UMCReportId = c(1, 2, 3, 4)
-    ),
-  suspdup =
-    data.table(
-      UMCReportId = c(3),
-      SuspectedduplicateReportId = c(4)
-    )
-)
-
-  purrr::iwalk(
-    mini_data,
-    function(dataset, name)
-      arrow::write_parquet(
-        dataset |>
-          arrow::as_arrow_table(),
-        sink = paste0(wd_in, "/", name, ".parquet")
-      )
-
-  )
-
-# back to tb_subset, you should select a subset_var and corresponding data
+# Select a subset_var and corresponding data
 
 # Subset on adr colitis codes
 
@@ -143,7 +77,6 @@ adr_llt <-
    colitis = "Colitis"
    ) |>
    get_llt_soc(term_level = "pt", meddra_, verbose = FALSE)
-
 
 wd_out <- paste0(wd_in, "/", "colitis_subset", "/")
 
@@ -176,6 +109,7 @@ tb_subset(wd_in, wd_out,
           sv_selection = sv_selection)
 
 unlink(wd_in, recursive = TRUE)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=get_drecno]{get_drecno()}}, \code{\link[=get_atc_code]{get_atc_code()}}, \code{\link[=get_llt_soc]{get_llt_soc()}}, \code{\link[=get_llt_smq]{get_llt_smq()}}, \code{\link[=dt_parquet]{dt_parquet()}}

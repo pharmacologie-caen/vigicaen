@@ -12,12 +12,14 @@
 #'
 #' tmp_folder <- tempdir()
 #'
-#' path_base <- paste0(tmp_folder, "/")
+#' path_base <- paste0(tmp_folder, "/reader/")
 #'
 #' write.table(demo, file = paste0(path_base, "DEMO.txt"),
 #'             row.names = FALSE, quote = FALSE, col.names = FALSE)
 #'
 #' vigicaen:::reader("DEMO.txt", path_base)
+#'
+#' unlink(path_base, recursive = TRUE)
 
 reader <- function(file_name, folder){
   arrow::read_delim_arrow(paste0(folder, file_name),

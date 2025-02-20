@@ -31,15 +31,18 @@
 #' Some columns are returned as `integer` (all `*_code` columns).
 #' All other columns are `character`.
 #'
-#' @examples
+#' @examplesIf interactive()
 #'
 #' # Use the examples from tb_main if you want to see these functions in action.
 #'
-#' path_meddra <- "/meddra_directory/"
+#' path_meddra <- paste0(tempdir(), "/meddra_directory/")
+#' dir.create(path_meddra)
+#' create_ex_meddra_asc(path_meddra)
 #'
-#' ## NOT RUN ##
-#' # tb_meddra(path_meddra = path_meddra)
+#' tb_meddra(path_meddra = path_meddra)
 #'
+#' # Clear temporary files when you're done
+#' unlink(path_meddra, recursive = TRUE)
 
 
 tb_meddra <-

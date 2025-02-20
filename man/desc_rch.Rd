@@ -44,13 +44,11 @@ link_ <-
   link_ |>
   add_drug(
     d_code = ex_$d_groups_drecno,
-    drug_data = drug_,
-    data_type = "link"
+    drug_data = drug_
   ) |>
   add_adr(
     a_code = ex_$a_llt,
-    adr_data = adr_,
-    data_type = "link"
+    adr_data = adr_
   )
 
 desc_rch(.data = link_,

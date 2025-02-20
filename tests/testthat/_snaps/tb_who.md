@@ -1,7 +1,7 @@
 # basic use works
 
     Code
-      tb_who(path_who = path_who)
+      tb_who(path_who = path_who, force = TRUE)
     Message
       
       -- tb_who() --------------------------------------------------------------------
@@ -55,7 +55,7 @@
 ---
 
     Code
-      tb_who(path_who = path_who_no_slash)
+      tb_who(path_who = path_who_no_slash, force = TRUE)
     Message
       
       -- tb_who() --------------------------------------------------------------------

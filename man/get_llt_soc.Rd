@@ -35,6 +35,7 @@ In \code{term_sel}, all terms should come from the same hierarchical level,
 e.g. all preferred terms, all high level terms, etc.
 }
 \examples{
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 ## Finding llt codes for colitis
 
@@ -68,6 +69,7 @@ get_llt_soc(
   term_level = "hlt",
   meddra = meddra_
   )
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=get_llt_smq]{get_llt_smq()}}

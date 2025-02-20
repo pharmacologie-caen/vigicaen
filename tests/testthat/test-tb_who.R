@@ -1,30 +1,4 @@
 test_that("basic use works", {
-  # just in case you want to remember how you made this list
-
-  # run each reading from an example dataset, without processing it.
-  #df_expr <- list(atc  ,   ccode ,   ing    ,
-  #                mp    ,   org ,   pf   ,
-  #                pp    ,   prt    ,  srce,
-  #                str ,   sun  ,   thg   ,
-  #                unitx) |>
-  #  rlang::set_names(
-  #    "atc",  "ccode", "ing",
-  #    "mp",   "org",   "pf",
-  #    "pp",   "prt",   "srce",
-  #    "str",  "sun",   "thg",
-  #    "unitx"
-  #  ) |>
-  #  rlang::set_names(~ paste0(stringr::str_to_upper(.x), ".txt")) |>
-  #  purrr::map(
-  #    function(d_){
-  #
-  #      string <- d_ |> head(1) |> collect() |> pull()
-  #      rlang::expr(data.frame(f0 = !!string))
-  #    }
-  #  )
-  #rlang::call2(expr(list2), !!!df_expr)
-
-
   f_sets <-
     list(ATC.txt = data.frame(f0 = "A         1ALIMENTARY TRACT AND METABOLISM                                                                               "),
         CCODE.txt = data.frame(f0 = "ABW       Aruba                                                                           "),
@@ -54,7 +28,7 @@ test_that("basic use works", {
   })
 
   expect_snapshot(
-    tb_who(path_who = path_who),
+    tb_who(path_who = path_who, force = TRUE),
     transform =
       function(chr_line)
         stringr::str_replace(
@@ -92,8 +66,8 @@ test_that("basic use works", {
   })
 
   expect_snapshot(
-    tb_who(path_who = path_who_no_slash
-           ),
+    tb_who(path_who = path_who_no_slash,
+           force = TRUE),
     transform =
       function(chr_line)
         stringr::str_replace(
@@ -114,7 +88,7 @@ test_that("path_who exists before working on tables", {
   wrong_path <- "/a/wrong/filepath/"
 
   expect_error(
-    tb_who(path_who  = wrong_path),
+    tb_who(path_who  = wrong_path, force = TRUE),
     info = "/a/wrong/filepath/ does not exist"
   )
 })
