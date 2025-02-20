@@ -1,8 +1,11 @@
 ## Resubmission
-This is a resubmission. In this version I have:
+This is a resubmission. Thank you for your comments. In this version I have:
 
-* Changed the url format from <[https://who-umc.org/]https://who-umc.org/> to
-<https://who-umc.org/>
+* Removed commented code lines in examples in tb_meddra.Rd, tb_who.Rd, and
+tb_subset.Rd
+
+* Replaced those commented code lines by real examples (which required adding
+helper functions)
 
 ## R CMD check results
 
