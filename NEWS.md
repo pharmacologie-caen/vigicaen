@@ -1,3 +1,11 @@
+# vigicaen 0.15.5
+
+## Minor
+
+* Working on examples per CRAN query (#128).
+
+* `create_ex_*` family mostly aimed at example set up or internal use (#128).
+
 # vigicaen 0.15.4
 
 ## Minor
