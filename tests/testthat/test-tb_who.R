@@ -54,7 +54,7 @@ test_that("basic use works", {
   })
 
   expect_snapshot(
-    tb_who(path_who = path_who),
+    tb_who(path_who = path_who, force = TRUE),
     transform =
       function(chr_line)
         stringr::str_replace(
@@ -92,8 +92,8 @@ test_that("basic use works", {
   })
 
   expect_snapshot(
-    tb_who(path_who = path_who_no_slash
-           ),
+    tb_who(path_who = path_who_no_slash,
+           force = TRUE),
     transform =
       function(chr_line)
         stringr::str_replace(
@@ -114,7 +114,7 @@ test_that("path_who exists before working on tables", {
   wrong_path <- "/a/wrong/filepath/"
 
   expect_error(
-    tb_who(path_who  = wrong_path),
+    tb_who(path_who  = wrong_path, force = TRUE),
     info = "/a/wrong/filepath/ does not exist"
   )
 })

@@ -13,6 +13,8 @@
 #'
 #' @param path_who Character string, a directory containing whodrug txt tables. It is also the
 #' output directory.
+#' @param force Logical, to be passed to `cli::cli_progress_update()`. Used for internal
+#' purposes.
 #'
 #' @importFrom stringr str_sub str_trim
 #'
@@ -30,13 +32,18 @@
 #'
 #' # Use the examples from tb_main if you want to see these functions in action.
 #'
-#' path_who <- "/whodrug_directory/"
+#' path_who <- paste0(tempdir(), "/whodrug_directory/")
+#' dir.create(path_who)
+#' create_ex_who_txt(path_who)
 #'
-#' ## NOT RUN ##
-#' # tb_who(path_who = path_who)
+#' tb_who(path_who = path_who)
+#'
+#' # Clear temporary files when you're done
+#' unlink(path_who, recursive = TRUE)
 
 tb_who <-
-  function(path_who
+  function(path_who,
+           force = FALSE
            ){
 
     path_who <-
@@ -62,12 +69,12 @@ tb_who <-
 
 
     # ---- mp ---- ####
-    cli_progress_update(force = TRUE,status = "Read MP.txt", set = 3)
+    cli_progress_update(force = force,status = "Read MP.txt", set = 3)
 
     mp <- reader("MP.txt", path_who)
 
     # ---- split
-    cli_progress_update(force = TRUE,status = "Split mp", set = 6)
+    cli_progress_update(force = force,status = "Split mp", set = 6)
 
     mp <-
       mp |>
@@ -126,7 +133,7 @@ tb_who <-
 
     # ---- write
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Write mp.parquet",
       set = 12)
 
@@ -136,7 +143,7 @@ tb_who <-
 
     # ---- pharmaceutical products ---- ####
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Read PP.txt",
       set = 16)
 
@@ -144,7 +151,7 @@ tb_who <-
 
     # ---- split
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Split pp",
       set = 20)
 
@@ -169,7 +176,7 @@ tb_who <-
 
     # ---- write
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Write pp.parquet",
       set = 27)
 
@@ -180,7 +187,7 @@ tb_who <-
 
     # ---- Therapeutic group ---- ####
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Read ThG.txt",
       set = 30)
 
@@ -188,7 +195,7 @@ tb_who <-
 
     # ---- split
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Split thg",
       set = 32)
 
@@ -212,7 +219,7 @@ tb_who <-
 
     # ---- write
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Write thg.parquet",
       set = 34)
 
@@ -222,7 +229,7 @@ tb_who <-
 
     # ---- ingredient ---- ####
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Read ING.txt",
       set = 36)
 
@@ -230,7 +237,7 @@ tb_who <-
 
     # ---- split
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Split ing",
       set = 41)
 
@@ -269,7 +276,7 @@ tb_who <-
 
     # ---- write
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Write ing.parquet",
       set = 48)
 
@@ -279,7 +286,7 @@ tb_who <-
 
     # ---- Reference (SRCE) ---- ####
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Read SRCE.txt",
       set = 51)
 
@@ -287,7 +294,7 @@ tb_who <-
 
     # ---- split
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Split srce",
       set = 53)
 
@@ -308,7 +315,7 @@ tb_who <-
 
     # ---- write
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Write srce.parquet",
       set = 55)
 
@@ -318,7 +325,7 @@ tb_who <-
 
     # ---- Organization ---- ####
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Read ORG.txt",
       set = 57)
 
@@ -326,7 +333,7 @@ tb_who <-
 
     # ---- split
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Split org",
       set = 59)
 
@@ -341,7 +348,7 @@ tb_who <-
 
     # ---- write
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Write org.parquet",
       set = 61)
 
@@ -351,7 +358,7 @@ tb_who <-
 
     # ---- Country CCODE ---- ####
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Read CCODE.txt",
       set = 63)
 
@@ -359,7 +366,7 @@ tb_who <-
 
     # ---- split
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Split ccode",
       set = 68)
 
@@ -379,7 +386,7 @@ tb_who <-
 
     # ---- write
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Write ccode.parquet",
       set = 75)
 
@@ -389,7 +396,7 @@ tb_who <-
 
     # ---- ATC code ---- ####
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Read ATC.txt",
       set = 79)
 
@@ -397,7 +404,7 @@ tb_who <-
 
     # ---- split
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Split atc",
       set = 80)
 
@@ -418,7 +425,7 @@ tb_who <-
 
     # ---- write
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Write atc.parquet",
       set = 81)
 
@@ -428,7 +435,7 @@ tb_who <-
 
     # ---- Substance ---- ####
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Read SUN.txt",
       set = 82)
 
@@ -436,7 +443,7 @@ tb_who <-
 
     # ---- split
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Split sun",
       set = 83)
 
@@ -461,7 +468,7 @@ tb_who <-
 
     # ---- write
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Write sun.parquet",
       set = 84)
 
@@ -471,7 +478,7 @@ tb_who <-
 
     # ---- Pharmaceutical form (PF) ---- ####
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Read PF.txt",
       set = 85)
 
@@ -479,7 +486,7 @@ tb_who <-
 
     # ---- split
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Split pf",
       set = 86)
 
@@ -499,7 +506,7 @@ tb_who <-
 
     # ---- write
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Write pf.parquet",
       set = 87)
 
@@ -509,7 +516,7 @@ tb_who <-
 
     # ---- Strength = dosage ---- ####
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Read STR.txt",
       set = 88)
 
@@ -525,7 +532,7 @@ tb_who <-
 
     # ---- split
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Split str",
       set = 89)
 
@@ -545,7 +552,7 @@ tb_who <-
 
     # ---- write
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Write str.parquet",
       set = 90)
 
@@ -555,7 +562,7 @@ tb_who <-
 
     # ---- Product group ---- ####
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Read PRG.txt",
       set = 91)
 
@@ -563,7 +570,7 @@ tb_who <-
 
     # ---- split
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Split prg",
       set = 92)
 
@@ -585,7 +592,7 @@ tb_who <-
 
     # ---- write
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Write prg.parquet",
       set = 93)
 
@@ -595,7 +602,7 @@ tb_who <-
 
     # ---- Product type ---- ####
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Read PRT.txt",
       set = 94)
 
@@ -603,7 +610,7 @@ tb_who <-
 
     # ---- split
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Split prt",
       set = 95)
 
@@ -624,7 +631,7 @@ tb_who <-
 
     # ---- write
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Write prt.parquet",
       set = 96)
 
@@ -634,7 +641,7 @@ tb_who <-
 
     # ---- Unit full code ASCII ---- ####
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Read Unit-X.txt",
       set = 97)
 
@@ -650,7 +657,7 @@ tb_who <-
 
     # ---- split
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Split unitx",
       set = 98)
 
@@ -671,7 +678,7 @@ tb_who <-
 
     # ---- write
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Write unitx.parquet",
       set = 99)
 
@@ -680,7 +687,7 @@ tb_who <-
     )
 
     cli_progress_update(
-      force = TRUE,
+      force = force,
       status = "Done",
       set = 100)
 
