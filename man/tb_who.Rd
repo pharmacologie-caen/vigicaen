@@ -4,11 +4,14 @@
 \alias{tb_who}
 \title{Create main WHO tables}
 \usage{
-tb_who(path_who)
+tb_who(path_who, force = FALSE)
 }
 \arguments{
 \item{path_who}{Character string, a directory containing whodrug txt tables. It is also the
 output directory.}
+
+\item{force}{Logical, to be passed to \code{cli::cli_progress_update()}. Used for internal
+purposes.}
 }
 \value{
 .parquet files into the \code{path_who} directory.
@@ -34,10 +37,14 @@ Use \code{\link[=dt_parquet]{dt_parquet()}} to load the tables afterward.
 
 # Use the examples from tb_main if you want to see these functions in action.
 
-path_who <- "/whodrug_directory/"
+path_who <- paste0(tempdir(), "/whodrug_directory/")
+dir.create(path_who)
+create_ex_who_txt(path_who)
 
-## NOT RUN ##
-# tb_who(path_who = path_who)
+tb_who(path_who = path_who)
+
+# Clear temporary files when you're done
+unlink(path_who, recursive = TRUE)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
