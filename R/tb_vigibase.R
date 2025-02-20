@@ -48,106 +48,26 @@
 #'
 #' @examplesIf interactive()
 #'
-#' # --- Setting to try out ---- ####
+#' # --- Set up example source files ---- ####
 #'
-#' f_sets <-
-#'  list(
-#'    DEMO.txt = data.frame(f0= c("96548661   32194501051119460820")),
-#'    DRUG.txt = data.frame(f0 =
-#'              c("70548965   8          4901354    064392080055011    31- 806")
-#'                ),
-#'    LINK.txt = data.frame(
-#'    f0 = c("2          654654     51---0.78991   0.98745    ",
-#'           "2          456456     51---6.98789   -          ")),
-#'    FOLLOWUP.txt = data.frame(f0 = c("0548978    0254687    ",
-#'                                     "7568798    4565321    ")),
-#'    ADR.txt = data.frame(f0 = c("96570161   14         100474561",
-#'                                "70578465   17         145078144")),
-#'    OUT.txt = data.frame(f0 = c("70547815   - N",
-#'                                "96575661   - Y")),
-#'    SRCE.txt = data.frame(f0 = c("4898765    1 ",
-#'                                 "9804562    1 ")),
-#'    IND.txt = data.frame(# 266 length
-#'      f0 = paste0("780954     Cutaneous diseases due to other mycobacteria",
-#'                  rep(" ", 211))
-#'      ),
-#'    SUSPECTEDDUPLICATES.txt = data.frame(f0 = c("789054     789542     ",
-#'                                                "780546     654352     ")),
-#'    AgeGroup_Lx.txt = data.frame(f0 = c("1An age range             ")),
-#'    Dechallenge_Lx.txt = data.frame(f0 = paste0("1Some drug action",
-#'                                                rep(" ", 237))),
-#'    Dechallenge2_Lx.txt = data.frame(f0 = paste0("1Some outcome occurring",
-#'                                                 rep(" ", 231))),
-#'    Frequency_Lx.txt =
-#'      data.frame(f0 =
-#'                   paste0("123Some frequency of administration",
-#'                          rep(" ", 221))),
-#'    Gender_Lx.txt = data.frame(f0 = paste0("1Some gender",
-#'                                           rep(" ", 242))),
-#'    Notifier_Lx.txt = data.frame(f0 = paste0("1 Some notifier",
-#'                                             rep(" ", 240))),
-#'    Outcome_Lx.txt = data.frame(f0 = paste0("1Some outcome",
-#'                                            rep(" ", 241))),
-#'    Rechallenge_Lx.txt = data.frame(f0 = paste0("1A rechallenge action",
-#'                                                rep(" ", 60))),
-#'    Rechallenge2_Lx.txt =
-#'      data.frame(f0 = paste0("1A reaction recurrence status",
-#'                             rep(" ", 36))),
-#'    Region_Lx.txt = data.frame(f0 = paste0("1A world region",
-#'                                           rep(" ", 36))),
-#'    RepBasis_Lx.txt = data.frame(f0 = paste0("1A reputation basis",
-#'                                             rep(" ", 32))),
-#'    ReportType_Lx.txt = data.frame(f0 = paste0("1A type of report",
-#'                                               rep(" ", 237))),
-#'    RouteOfAdm_Lx.txt = data.frame(f0 = paste0("1 A route of admnistration",
-#'                                               rep(" ", 56))),
-#'    Seriousness_Lx.txt = data.frame(f0 = paste0("1 Some seriousness criteria",
-#'                                                rep(" ", 224))),
-#'    SizeUnit_Lx.txt = data.frame(f0 = paste0("1 A dosing unit",
-#'                                             rep(" ", 66)))
-#'  )
+#' path_base <- paste0(tempdir(), "/", "main", "/")
 #'
-#' tmp_folder <- tempdir()
+#' path_sub  <- paste0(tempdir(), "/", "sub",  "/")
 #'
-#' path_base <- paste0(tmp_folder, "/", "main", "/")
+#' dir.create(path_base)
+#' dir.create(path_sub)
 #'
-#' if(!dir.exists(path_base)) {dir.create(path_base)}
-#'
-#' path_sub  <- paste0(tmp_folder, "/", "sub",  "/")
-#'
-#' if(!dir.exists(path_sub)) {dir.create(path_sub)}
-#'
-#' purrr::iwalk(f_sets, function(d_, name_){
-#'   if(name_ %in%
-#'      c("SUSPECTEDDUPLICATES.txt",
-#'        "AgeGroup_Lx.txt",
-#'        "Dechallenge_Lx.txt",
-#'        "Dechallenge2_Lx.txt",
-#'        "Frequency_Lx.txt",
-#'        "Gender_Lx.txt",
-#'        "Notifier_Lx.txt",
-#'        "Outcome_Lx.txt",
-#'        "Rechallenge_Lx.txt",
-#'        "Rechallenge2_Lx.txt",
-#'        "Region_Lx.txt",
-#'        "RepBasis_Lx.txt",
-#'        "ReportType_Lx.txt",
-#'        "RouteOfAdm_Lx.txt",
-#'        "Seriousness_Lx.txt",
-#'        "SizeUnit_Lx.txt")
-#'   ){
-#'     write.table(d_, file = paste0(path_sub, name_),
-#'       row.names = FALSE, quote = FALSE, col.names = FALSE)
-#'   } else {
-#'     write.table(d_, file = paste0(path_base, name_),
-#'       row.names = FALSE, quote = FALSE, col.names = FALSE)
-#'   }
-#' })
+#' create_ex_main_txt(path_base)
+#' create_ex_sub_txt(path_sub)
 #'
 #'  # ---- Running tb_vigibase
 #'
 #'  tb_vigibase(path_base = path_base,
 #'         path_sub  = path_sub)
+#'
+#'  # Clear temporary files when you're done
+#'  unlink(path_base, recursive = TRUE)
+#'  unlink(path_sub, recursive = TRUE)
 
 
 tb_vigibase <-
