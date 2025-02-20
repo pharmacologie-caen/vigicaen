@@ -47,6 +47,9 @@ mentions across all reports.
 }
 }
 \examples{
+# Set up start
+data.table::setDTthreads(1)
+
 # Filter drugs appearing in at least 10\% of reports
 screen_drug(
   .data = drug_,
@@ -63,4 +66,7 @@ screen_drug(
 
 # nb: in the example datasets, not all drugs are recorded in mp_,
 # leading to NAs in screen_drug output.
+
+# Set up end
+data.table::setDTthreads(0)
 }

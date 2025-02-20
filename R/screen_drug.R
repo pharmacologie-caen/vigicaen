@@ -24,6 +24,7 @@
 #' to be included in the results. Defaults to `NULL`.
 #' @param top_n An integer specifying the number of most frequently occurring drugs to return. Defaults to `NULL`.
 #'
+#' @importFrom data.table setDTthreads
 #' @returns A `data.frame` with the following columns:
 #' \itemize{
 #'    \item `Drug name`: The drug name.
@@ -36,6 +37,9 @@
 #'
 #' @export
 #' @examples
+#' # Set up start
+#' data.table::setDTthreads(1)
+#'
 #' # Filter drugs appearing in at least 10% of reports
 #' screen_drug(
 #'   .data = drug_,
@@ -52,6 +56,9 @@
 #'
 #' # nb: in the example datasets, not all drugs are recorded in mp_,
 #' # leading to NAs in screen_drug output.
+#'
+#' # Set up end
+#' data.table::setDTthreads(0)
 
 
 screen_drug <-
