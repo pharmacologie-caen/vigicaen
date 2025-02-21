@@ -339,6 +339,7 @@ get_drecno <- function(
             .data$who == TRUE
           ) |>
           dplyr::pull(.data$DrecNo) |>
+          as.integer() |>
           unique())
 
     return(output)

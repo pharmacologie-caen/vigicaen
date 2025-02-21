@@ -644,3 +644,33 @@ test_that("find_drug_and_check_exist returns correct output", {
     mp_
   ))
 })
+
+
+test_that("output IDs are in integer format", {
+
+  # Define the drug IDs
+  nivo_drecno <- 111841511
+  ipi_drecno <- 133138448
+  ipi_nivo_drecno <- 98742214
+
+  # Define the drug names and combinations
+  d_sel_names <- list(
+    nivolumab = "nivolumab",
+    ipilimumab = "ipilimumab",
+    nivo_ipi = c("nivolumab", "ipilimumab")
+  )
+
+
+  # Call the function and store the result
+  d_drecno_res <- get_drecno(
+    d_sel = d_sel_names,
+    mp = mp_,  # Assuming 'mp_' is defined elsewhere in your context
+    allow_combination = FALSE,
+    method = "drug_name")
+
+  # Loop through the result to check if all IDs are integers
+  for (drecno in d_drecno_res) {
+    expect_type(drecno, "integer")  # Check if each DrecNo is of integer type
+    expect_true(all(drecno %% 1 == 0))  # Check if all values are whole numbers (integer check)
+  }
+})
