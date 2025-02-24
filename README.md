@@ -6,6 +6,8 @@
 [![R-CMD-check](https://github.com/pharmacologie-caen/vigicaen/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pharmacologie-caen/vigicaen/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)](https://lifecycle.r-lib.org/)
 [![codecov](https://codecov.io/gh/pharmacologie-caen/vigicaen/graph/badge.svg)](https://app.codecov.io/gh/pharmacologie-caen/vigicaen)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/vigicaen)](https://CRAN.R-project.org/package=vigicaen)
 <!-- badges: end -->
 
 > Visit the [package
@@ -100,6 +102,10 @@ Alternatively, you can use the following command in R:
 
 `install.packages("path/to/vigicaen_X.XX.X.tar.gz", repos = NULL, type = "source")`
 
+## Cheatsheet
+
+<a href="https://github.com/pharmacologie-caen/cheatsheets/blob/main/pdf/vigicaen.pdf"><img src="https://raw.githubusercontent.com/pharmacologie-caen/cheatsheets/main/pdf/vigicaen.png" width="326" height="252"/></a>
+
 ## How to use
 
 > Visit the [package
@@ -119,7 +125,7 @@ Good places to start your journey:
 
 ## Example [![PV - Routine](https://img.shields.io/badge/PV-Routine-0f7ba2)](https://pharmacologie-caen.github.io/vigicaen/articles/routine_pharmacovigilance.html)
 
-You are working on a colitis case reported 150 days after nivolumab
+You are working on a colitis case reported 80 days after ipilimumab
 initiation.
 
 You would like to know the information component (possibly restricted to
@@ -143,7 +149,7 @@ meddra <- meddra_
 
 d_code <- 
   list(
-    nivolumab = "nivolumab"
+    ipilimumab = "ipilimumab"
   ) |> 
   get_drecno(mp = mp)
 
@@ -156,7 +162,7 @@ a_code <-
 # Step 3: Plot results
 
 vigi_routine(
-  case_tto  = 150, # your case
+  case_tto  = 80, # your case
   demo_data = demo,
   drug_data = drug,
   adr_data  = adr,
