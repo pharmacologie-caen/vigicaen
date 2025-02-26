@@ -228,31 +228,6 @@ test_that(
   }
 )
 
-test_that(
-  "doesnt work with categorial columns", {
-    df <-
-      data.frame(
-        smoke_status = c("smoker", "non-smoker",
-                         "smoker", "smoker",
-                         "smoker", "smoker",
-                         "non-smoker"
-        ),
-        age = c(60, 50, 56, 49, 75, 69, 85)
-      )
-
-    expect_error(
-      desc_cont(vc = c("smoke_status"),
-                 .data = df,
-                 format = "median (q1-q3)",
-                 dig = 0)
-      ,
-      "Non numeric or integer columns selected"
-    )
-
-
-  }
-)
-
 
 test_that(
   "doesnt work if format as two time min", {
@@ -268,37 +243,6 @@ test_that(
                 dig = 0)
       ,
       "format code `min` is present more than once in `format`."
-    )
-
-
-  }
-)
-
-test_that(
-  "doesnt work with names out of .data names", {
-    df <-
-      data.frame(
-        age = c(60, 50, 56, 49, 75, 69, 85)
-      )
-
-    expect_error(
-      desc_cont(vc = c("bmi"),
-                .data = df,
-                format = "median (q1-q3)",
-                dig = 0)
-      ,
-      "Column(s) bmi is(are) absent of .data",
-      fixed = TRUE
-    )
-
-    expect_error(
-      desc_cont(vc = c("bmi", "sex"),
-                .data = df,
-                format = "median (q1-q3)",
-                dig = 0)
-      ,
-      "Column(s) bmi, sex is(are) absent of .data",
-      fixed = TRUE
     )
 
 
@@ -353,5 +297,124 @@ test_that("exporting raw values works", {
   expect_equal(
     res_age,
     res_age_true
+  )
+})
+
+test_that("error columns not found prints nicely", {
+
+  # single missing var
+
+  cnd <-
+    rlang::catch_cnd(error_columns_in_data("vf", ".data", c("v2")))
+
+  expect_equal(cnd$col_arg, "vf")
+  expect_equal(cnd$must_be_in, ".data")
+  expect_equal(cnd$missing_cols, c("v2"))
+
+  expect_s3_class(cnd, "columns_not_in_data")
+
+  d1 <- data.frame(v1 = 1)
+
+  vf = c("v1", "v2")
+
+  cnd_from_checker <-
+    rlang::catch_cnd(check_columns_in_data(d1, vf))
+
+  expect_equal(cnd$col_arg, cnd_from_checker$col_arg)
+  expect_equal(cnd$must_be_in, cnd_from_checker$must_be_in)
+  expect_equal(cnd$missing_cols, cnd_from_checker$missing_cols)
+  expect_s3_class(cnd_from_checker, "columns_not_in_data")
+
+  expect_snapshot(check_columns_in_data(d1, vf),
+                  error = TRUE,
+                  cnd_class = TRUE)
+
+  # run smoothly if columns were found
+  expect_silent(check_columns_in_data(d1, "v1"))
+
+
+  df <-
+    data.frame(age = c(60, 50, 56, 49, 75, 69, 85))
+
+  expect_error(desc_cont(
+    vc = c("bmi"),
+    .data = df,
+    format = "median (q1-q3)",
+    dig = 0
+  ),
+  class = "columns_not_in_data")
+
+  # several missing vars
+
+  expect_snapshot(error_columns_in_data("vf", ".data", c("v2", "v3")),
+                  error = TRUE,
+                  cnd_class = TRUE)
+
+  expect_error(desc_cont(
+    vc = c("bmi", "sex"),
+    .data = df,
+    format = "median (q1-q3)",
+    dig = 0
+  )
+  ,
+  class = "columns_not_in_data"
+    )
+})
+
+test_that("error columns not numeric/integer prints nicely", {
+
+  # single non numeric/integer var
+
+  cnd <-
+    rlang::catch_cnd(
+      error_columns_numeric_integer(
+        "vf", "v2")
+      )
+
+  expect_equal(cnd$col_arg, "vf")
+  expect_equal(cnd$not_numeric_integer, "v2")
+
+  expect_s3_class(cnd, "columns_not_numeric_integer")
+
+  d1 <- data.frame(v1 = as.numeric(1), v2 = "a", v3 = 2L, v4 = "b")
+
+  vf <- c("v1", "v2")
+
+  cnd_from_checker <-
+    rlang::catch_cnd(check_columns_numeric_integer(d1, vf))
+
+  expect_equal(cnd$col_arg, cnd_from_checker$col_arg)
+  expect_equal(cnd$must_be_in, cnd_from_checker$must_be_in)
+  expect_equal(cnd$non_numeric_cols, cnd_from_checker$non_numeric_cols)
+  expect_s3_class(cnd_from_checker, "columns_not_numeric_integer")
+
+  expect_snapshot(check_columns_numeric_integer(d1, vf),
+                  error = TRUE,
+                  cnd_class = TRUE)
+
+  # run smoothly if columns are numeric or integer
+  expect_silent(check_columns_numeric_integer(d1, c("v1", "v3")))
+
+  # several non numeric integer
+
+  vf_cols <- c("v1", "v2", "v4")
+
+  expect_snapshot(check_columns_numeric_integer(d1, vf_cols),
+                  error = TRUE,
+                  cnd_class = TRUE)
+
+  expect_error(desc_cont(vc = c("v2"),
+            .data = d1,
+            format = "median (q1-q3)",
+            dig = 0),
+  class = "columns_not_numeric_integer")
+
+  expect_snapshot(
+    desc_cont(vc = c("v2"),
+              .data = d1,
+              format = "median (q1-q3)",
+              dig = 0),
+    error = TRUE,
+    cnd_class = TRUE
   )
 })

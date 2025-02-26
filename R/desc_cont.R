@@ -80,28 +80,11 @@ desc_cont <-
 
     # checkers ----
 
-    # only columns present in the dataset
-    if(!all(vc %in% names(.data))){
-      err_msg <-
-        paste0(vc[!vc %in% names(.data)], collapse = ", ")
-      stop(
-        paste0(
-          "Column(s) ",
-          err_msg, " is(are) absent of .data")
-      )
-    }
+    check_columns_in_data(.data, vc)
 
     # only numeric or integer vars ----
-    col_classes <-
-      purrr::map(.data, class) |>
-      purrr::keep_at(vc) |>
-      purrr::list_simplify()
 
-    if(!all(col_classes %in% c("numeric", "integer"))){
-      stop("Non numeric or integer columns selected")
-    }
-
-
+    check_columns_numeric_integer(.data, vc)
 
     # ---- formatting arguments ----
 
@@ -236,4 +219,85 @@ desc_cont <-
       cc_core
     ) |>
       purrr::list_rbind()
+  }
+
+# Helpers ------------
+
+error_columns_in_data <-
+  function(
+    col_arg,
+    must_be_in,
+    missing_cols,
+    call = rlang::caller_env()
+    ){
+    cli::cli_abort(
+      message =
+        c("{.arg {col_arg}} columns must be in {.arg {must_be_in}}.",
+          "i" = "The followings were not found in {.arg {must_be_in}}: {.val {missing_cols}}"),
+      class  = "columns_not_in_data",
+      col_arg = col_arg,
+      must_be_in = must_be_in,
+      missing_cols = missing_cols,
+      call = call
+    )
+  }
+
+check_columns_in_data <-
+  function(
+    .data,
+    cols,
+    call = rlang::caller_env()
+    )  {
+      if(!all(cols %in% names(.data))){
+        missing_cols <-
+          cols[!cols %in% names(.data)]
+
+        error_columns_in_data(
+          col_arg = rlang::caller_arg(cols),
+          must_be_in = ".data",
+          missing_cols = missing_cols,
+          call = call
+        )
+      }
+    }
+
+error_columns_numeric_integer <-
+  function(
+    col_arg,
+    not_numeric_integer,
+    call = rlang::caller_env()
+    ){
+    cli::cli_abort(
+      message =
+        c("{.arg {col_arg}} columns must be numeric or integer.",
+          "i" = "The followings are not numeric/integer: {.val {not_numeric_integer}}"),
+      class  = "columns_not_numeric_integer",
+      col_arg = col_arg,
+      not_numeric_integer = not_numeric_integer,
+      call = call
+    )
+  }
+
+check_columns_numeric_integer <-
+  function(.data, cols, call = rlang::caller_env())  {
+    col_classes <-
+      purrr::map(.data, class) |>
+      purrr::keep_at(cols) |>
+      purrr::list_simplify()
+
+    if (!all(col_classes %in% c("numeric", "integer"))) {
+      not_numeric_integer <-
+        cols[!(col_classes %in% c("numeric", "integer"))]
+
+
+      not_numeric_integer <-
+        cols[!(purrr::map_lgl(.data[cols], is.numeric) |
+                 purrr::map_lgl(.data[cols], is.integer))]
+
+      error_columns_numeric_integer(
+        col_arg = rlang::caller_arg(cols),
+        not_numeric_integer = not_numeric_integer,
+        call = call
+      )
+    }
   }
