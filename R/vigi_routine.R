@@ -130,20 +130,15 @@ vigi_routine <-
   ){
     # #### 0. checkers #### ####
 
-    # 0.1 d_drecno and a_llt only have one item each.
-
-    if (length(d_code) != 1) {
-      stop("d_code must have only one item for this function.")
-    }
-
-    if (length(a_code) != 1) {
-      stop("a_code must have only one item for this function.")
-    }
+    # 0.1 d_code and a_code are numeric named lists, with only one item each.
 
     check_id_list_numeric(d_code)
 
     check_id_list_numeric(a_code)
 
+    check_length_one(d_code, "vigi_routine()")
+
+    check_length_one(a_code, "vigi_routine()")
 
     # 0.2 d_name and a_name, d_label and a_label
 
@@ -166,10 +161,10 @@ vigi_routine <-
     if(!is.null(export_to)){
       if(!grepl("\\.(eps|ps|tex|pdf|jpeg|tiff|png|bmp|svg|wmf)$",
                 export_to)){
-        stop(paste0(
-        "export_to must end by '.bmp', '.eps', '.jpeg', '.pdf', '.png', '.ps'",
-        "'.svg', '.tex', '.tiff', or '.wmf' (windows only)"
-        ))
+        cli::cli_abort(
+          paste0("{.arg export_to} must end by '.bmp', '.eps', '.jpeg', '.pdf', '.png', '.ps'",
+          "'.svg', '.tex', '.tiff', or '.wmf' (windows only)")
+        )
       }
     }
 
@@ -553,4 +548,33 @@ error_vigiroutine_nocases <-
       dataset = dataset,
       call = call
     )
+  }
+
+error_length_one <-
+  function(arg, fn, wrong_length, call = rlang::caller_env()){
+
+    cli::cli_abort(
+      message =
+        c("{.arg {arg}} must have only one item in {.arg {fn}}.",
+          "x" = "{.arg {arg}} has {wrong_length} items."),
+      class  = "length_one",
+      arg = arg,
+      fn = fn,
+      wrong_length = wrong_length,
+      call = call
+    )
+  }
+
+check_length_one <-
+  function(named_list,
+           fn,
+           call = rlang::caller_env()){
+    if(length(named_list) > 1){
+      error_length_one(
+        arg = rlang::caller_arg(named_list),
+        fn = fn,
+        wrong_length = length(named_list),
+        call = call
+      )
+    }
   }
