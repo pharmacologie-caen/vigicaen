@@ -1,5 +1,10 @@
 # vigicaen (development version)
 
+## Minor
+
+* Error and warnings all turned into `cli` syntax. Gathered redundant checkers
+internally.
+
 # vigicaen 0.15.5
 
 ## Minor
