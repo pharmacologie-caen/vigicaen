@@ -103,28 +103,18 @@ desc_cont <-
     display_max <-
       stringr::str_detect(format, "max")
 
-
-    many_params <-
-      c("median", "q1", "q3", "min", "max") |>
-      rlang::set_names() |>
-      purrr::map(
-        ~ stringr::str_count(format, .x)
-      )
-
     if(!any(display_median,
             display_q1,
             display_q3,
             display_min,
             display_max)
        ){
-      stop("format arg does not contain any of median, q1, q3, min or max. Please provide at least one.")
-    }
-
-    many_params |>
-      purrr::imap(function(counts, param_name)
-        if(counts > 1)
-          stop(paste0("format code `", param_name, "` is present more than once in `format`."))
+      error_required_format_values(
+        format = format,
+        required_values = c("median", "q1", "q3", "min", "max")
       )
+
+    }
 
     var_to_export <-
       if(export_raw_values){
@@ -168,23 +158,23 @@ desc_cont <-
 
               value =
                 .env$format |>
-                stringr::str_replace(
+                stringr::str_replace_all(
                   "median",
                   paste0(.data$median_fmt)
                 ) |>
-                stringr::str_replace(
+                stringr::str_replace_all(
                   "q1",
                   paste0(.data$q1_fmt)
                 ) |>
-                stringr::str_replace(
+                stringr::str_replace_all(
                   "q3",
                   .data$q3_fmt
                 ) |>
-                stringr::str_replace(
+                stringr::str_replace_all(
                   "min",
                   .data$min_fmt
                 ) |>
-                stringr::str_replace(
+                stringr::str_replace_all(
                   "max",
                   .data$max_fmt
                 )
@@ -233,7 +223,7 @@ error_columns_in_data <-
     cli::cli_abort(
       message =
         c("{.arg {col_arg}} columns must be in {.arg {must_be_in}}.",
-          "i" = "The followings were not found in {.arg {must_be_in}}: {.val {missing_cols}}"),
+          "x" = "The followings were not found in {.arg {must_be_in}}: {.val {missing_cols}}."),
       class  = "columns_not_in_data",
       col_arg = col_arg,
       must_be_in = must_be_in,
@@ -270,7 +260,7 @@ error_columns_numeric_integer <-
     cli::cli_abort(
       message =
         c("{.arg {col_arg}} columns must be numeric or integer.",
-          "i" = "The followings are not numeric/integer: {.val {not_numeric_integer}}"),
+          "x" = "The following {?is/are} not numeric/integer: {.val {not_numeric_integer}}."),
       class  = "columns_not_numeric_integer",
       col_arg = col_arg,
       not_numeric_integer = not_numeric_integer,
@@ -300,4 +290,20 @@ check_columns_numeric_integer <-
         call = call
       )
     }
+  }
+
+error_required_format_values <-
+  function(
+    format,
+    required_values,
+    call = rlang::caller_env()
+  ){
+    cli::cli_abort(
+      message =
+        '{.arg format} must contain at least one of {glue::glue_collapse(required_values, sep = ", ", last = " or ")}',
+      class  = "required_format_values",
+      format = format,
+      required_values = required_values,
+      call = call
+    )
   }
