@@ -115,12 +115,15 @@ test_that("screen_adr returns empty data table for high freq_threshold", {
   expect_equal(nrow(result), 0)  # Should return empty data table if threshold is too high
 })
 
-test_that("screen_adr handles term_level mismatch", {
+test_that("error if term_level mismatches", {
+
+  # Through rlang::arg_match
   expect_error(
     screen_adr(
       .data = adr_, meddra = meddra_, term_level = "invalid_level"
     ),
-    "Invalid 'term_level' specified. Choose from 'soc', 'hlgt', 'hlt', 'pt', 'llt'."
+    regexp = "term_level.*soc.*hlgt.*hlt.*pt.*llt",
+    class = "rlang_error"
   )
 })
 

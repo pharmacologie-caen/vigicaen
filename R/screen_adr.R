@@ -87,17 +87,13 @@ screen_adr <-
   # and issue a warning if so
 
   if (!is.null(freq_threshold) && !is.null(top_n)) {
-    warning("Both 'freq_threshold' and 'top_n' are specified. Only 'top_n' will be applied. Please specify only one for precise control.")
+    cli::cli_warn(
+      "Both 'freq_threshold' and 'top_n' are specified. Only 'top_n' will be applied. Please specify only one for precise control.")
     freq_threshold <- NULL  # Ignore freq_threshold if both are provided
   }
 
-  # Match the term_level argument to one of the
-  # allowed values, or raise an error
-  tryCatch({
-    term_level <- match.arg(term_level)
-  }, error = function(e) {
-    stop("Invalid 'term_level' specified. Choose from 'soc', 'hlgt', 'hlt', 'pt', 'llt'.")
-  })
+  term_level <-
+    rlang::arg_match(term_level)
 
   term_level_name <- paste0(term_level, "_name")  # Use term_level_name directly
 
