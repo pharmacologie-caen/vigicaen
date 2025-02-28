@@ -57,9 +57,6 @@ extract_tto <-
   {
     check_data_link(.data)
 
-    # if (!all(c("tto_mean", "range") %in% names(.data))) {
-    #   stop("Either tto_mean or range columns are missing. See ?link_")
-    # }
     core_extract_tto <- function(one_adr, one_drug, UMCReportId = {
       {
         UMCReportId
