@@ -10,7 +10,7 @@ desc_facvar(
   format = "n_/N_ (pc_\%)",
   digits = 0,
   pad_width = 12,
-  ncat_max = 10,
+  ncat_max = 20,
   export_raw_values = FALSE
 )
 }
