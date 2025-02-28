@@ -115,6 +115,16 @@ test_that("standard use works", {
 })
 
 test_that("checkers of d_code and a_code work", {
+  cnd <- rlang::catch_cnd(error_length_one("d_code", "vigi_routine()", 2))
+
+  expect_s3_class(
+    cnd, "length_one"
+  )
+
+  expect_equal(cnd$arg, "d_code")
+  expect_equal(cnd$fn, "vigi_routine()")
+  expect_equal(cnd$wrong_length, 2)
+
   d_drecno_toolong <-
     ex_$d_drecno[c("nivolumab", "ipilimumab")]
 
@@ -133,7 +143,7 @@ test_that("checkers of d_code and a_code work", {
   drug <- drug_
   link <- link_
 
-  expect_error(
+  expect_snapshot(error = TRUE, cnd_class = TRUE,
     vigi_routine(
       demo_data = demo,
       drug_data = drug,
@@ -142,11 +152,26 @@ test_that("checkers of d_code and a_code work", {
       d_code = d_drecno_toolong,
       a_code = a_llt,
       vigibase_version = "September 2024"
-    ),
-    "d_code must have only one item for this function."
+    )
   )
 
-  expect_error(
+  cnd_vr1 <- rlang::catch_cnd(
+    vigi_routine(
+      demo_data = demo,
+      drug_data = drug,
+      adr_data  = adr,
+      link_data = link,
+      d_code = d_drecno_toolong,
+      a_code = a_llt,
+      vigibase_version = "September 2024"
+    )
+    )
+
+  expect_s3_class(cnd_vr1, "length_one")
+  expect_equal(cnd_vr1$arg, "d_code")
+  expect_equal(cnd_vr1$fn, "vigi_routine()")
+
+  expect_snapshot(error = TRUE, cnd_class = TRUE,
     vigi_routine(
       demo_data = demo,
       drug_data = drug,
@@ -155,9 +180,24 @@ test_that("checkers of d_code and a_code work", {
       d_code = d_drecno,
       a_code = a_llt_toolong,
       vigibase_version = "September 2024"
-    ),
-    "a_code must have only one item for this function."
+    )
   )
+
+  cnd_vr2 <- rlang::catch_cnd(
+    vigi_routine(
+      demo_data = demo,
+      drug_data = drug,
+      adr_data  = adr,
+      link_data = link,
+      d_code = d_drecno,
+      a_code = a_llt_toolong,
+      vigibase_version = "September 2024"
+    )
+  )
+
+  expect_s3_class(cnd_vr2, "length_one")
+  expect_equal(cnd_vr2$arg, "a_code")
+  expect_equal(cnd_vr2$fn, "vigi_routine()")
 
   # not lists
 
@@ -189,6 +229,13 @@ test_that("checkers of d_code and a_code work", {
 
 })
 
+cli::test_that_cli("length one checker prints nicely",{
+  expect_snapshot(
+    error = TRUE,
+    error_length_one("d_code", "vigi_routine()", 2)
+  )
+})
+
 test_that("export_to ends with proper extension and check svglite", {
   d_drecno <-
     ex_$d_drecno["nivolumab"]
@@ -212,11 +259,22 @@ test_that("export_to ends with proper extension and check svglite", {
       vigibase_version = "September 2024",
       export_to = "vigicaen_graph"
       ),
-    "export_to must end by"
+    regexp = "export_to.*must end by"
   )
 
-  # insufficient checker
-
+  expect_snapshot(
+    error = TRUE,
+    vigi_routine(
+      demo_data = demo,
+      drug_data = drug,
+      adr_data  = adr,
+      link_data = link,
+      d_code = d_drecno,
+      a_code = a_llt,
+      vigibase_version = "September 2024",
+      export_to = "vigicaen_graph"
+    )
+  )
 })
 
 test_that("formatting IC025 with out of bound value works", {

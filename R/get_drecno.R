@@ -368,7 +368,7 @@ find_drug_and_check_exist <-
 
           cli::cli_abort(
             c(
-              "{.arg {arg}} has length > 1.",
+              "{.arg {arg}} must have length 1.",
               "x" = "{.arg d_sel} structure is probably incorrect."
             ),
             call = call,

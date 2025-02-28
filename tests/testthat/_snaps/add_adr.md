@@ -111,7 +111,7 @@
       add_adr(demo_, a_code = ex_$a_llt, adr_data = drug_)
     Condition
       Error in `add_adr()`:
-      ! `adr_data` is not an `adr` table.
+      ! `adr_data` must be an `adr` table.
       x Missing columns: Adr_Id, MedDRA_Id, and Outcome
       > Supply an `adr` table to `adr_data`. See ?adr_.
 

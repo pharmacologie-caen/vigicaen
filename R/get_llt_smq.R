@@ -255,7 +255,7 @@ find_smq <- function(
 
         cli::cli_abort(
           c(
-            "{.arg {arg}} has length > 1.",
+            "{.arg {arg}} must have length 1.",
             "x" = "{.arg smq} structure is probably incorrect."
           ),
           call = call,
@@ -310,10 +310,20 @@ find_smq <- function(
     any(sub_smqs_match$smq_algorithm != "N")
 
   if(any_algorithmic){
+
+    which_are_algorithmic <-
+      c(one_smq_name,sub_smqs_match$smq_name)[
+        c(
+          exact_match$smq_algorithm != "N",
+          sub_smqs_match$smq_algorithm != "N"
+          )
+      ]
+
     cli::cli_abort(
       c(
-        "SMQ {.val {one_smq_name}} or one of its Sub-SMQs is/are algorithmic",
-        "x" = "Algorithmic SMQs are not handled by {.code get_llt_smq()}."
+        "SMQ {.val {one_smq_name}} and its Sub-SMQs must be non-algorithmic.",
+        "x" = "Algorithmic SMQ{?s}: {.val {which_are_algorithmic}}.",
+        "i" = "Algorithmic SMQs are not handled by {.code get_llt_smq()}."
       ),
       call = rlang::caller_env()
     )

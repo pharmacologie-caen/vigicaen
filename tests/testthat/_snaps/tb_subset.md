@@ -210,7 +210,7 @@
     Condition <no_dir>
       Error in `tb_subset()`:
       ! `wd_in` must exist.
-      i "that_dir_doesnt_exist" does not exist.
+      x "that_dir_doesnt_exist" does not exist.
 
 # printing error no dir [plain]
 
@@ -219,7 +219,7 @@
     Condition
       Error:
       ! `wd_in` must exist.
-      i "/wrong_path/" does not exist.
+      x "/wrong_path/" does not exist.
 
 # printing error no dir [ansi]
 
@@ -228,7 +228,7 @@
     Condition
       [1m[33mError[39m:[22m
       [1m[22m[33m![39m `wd_in` must exist.
-      [36mi[39m [34m"/wrong_path/"[39m does not exist.
+      [31mx[39m [34m"/wrong_path/"[39m does not exist.
 
 # printing error no dir [unicode]
 
@@ -237,7 +237,7 @@
     Condition
       Error:
       ! `wd_in` must exist.
-      ℹ "/wrong_path/" does not exist.
+      ✖ "/wrong_path/" does not exist.
 
 # printing error no dir [fancy]
 
@@ -246,5 +246,5 @@
     Condition
       [1m[33mError[39m:[22m
       [1m[22m[33m![39m `wd_in` must exist.
-      [36mℹ[39m [34m"/wrong_path/"[39m does not exist.
+      [31m✖[39m [34m"/wrong_path/"[39m does not exist.
 

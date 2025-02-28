@@ -373,9 +373,9 @@ error_dir_exists <- function(dir,
                              wrong_dir,
                              call = rlang::caller_env()
                              ){
-  cli_abort(
+  cli::cli_abort(
     message = c("{.arg {dir}} must exist.",
-                "i" = "{.val {wrong_dir}} does not exist."),
+                "x" = "{.val {wrong_dir}} does not exist."),
     call = call,
     class = "no_dir",
     dir = dir,

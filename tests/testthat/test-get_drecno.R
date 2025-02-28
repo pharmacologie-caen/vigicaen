@@ -644,3 +644,28 @@ test_that("find_drug_and_check_exist returns correct output", {
     mp_
   ))
 })
+
+test_that("input a data.frame works", {
+  # just to confirm that if d_one is data.frame (which are named lists)
+  # everything works, even though this is probably not the best way to go.
+
+  d_one <-
+    data.frame(
+      analgesic = c("tramadol"),
+      ici = c("nivolumab")
+    )
+
+  list_one <-
+    list(
+      analgesic = c("tramadol"),
+      ici = c("nivolumab")
+    )
+
+  r1 <-
+    suppressMessages(get_drecno(d_one, mp_))
+
+  r2 <-
+    suppressMessages(get_drecno(list_one, mp_))
+
+  expect_equal(r1, r2)
+})

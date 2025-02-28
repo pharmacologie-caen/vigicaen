@@ -201,7 +201,7 @@
       data_type = "demo")
     Condition
       Error in `add_drug()`:
-      ! `drug_data` is not a `drug` table.
+      ! `drug_data` must be a `drug` table.
       x Missing columns: DrecNo, MedicinalProd_Id, and Drug_Id
       > Supply a `drug` table to `drug_data`. See ?drug_.
 

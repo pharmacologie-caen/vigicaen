@@ -171,5 +171,5 @@
     Condition <no_dir>
       Error in `tb_vigibase()`:
       ! `path_base` must exist.
-      i "/a/wrong/filepath/" does not exist.
+      x "/a/wrong/filepath/" does not exist.
 

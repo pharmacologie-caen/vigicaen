@@ -35,7 +35,7 @@ check_data_adr <-
 
       cli::cli_abort(
         c(
-          "{.arg {arg}} is not an {.arg adr} table.",
+          "{.arg {arg}} must be an {.arg adr} table.",
           "x" = "Missing columns: {missing_cols}",
           ">" = "Supply an {.arg adr} table to {.arg {arg}}. See ?adr_."
         ),
@@ -62,7 +62,7 @@ check_data_drug <-
 
       cli::cli_abort(
         c(
-          "{.arg {arg}} is not a {.arg drug} table.",
+          "{.arg {arg}} must be a {.arg drug} table.",
           "x" = "Missing columns: {missing_cols}",
             ">" = "Supply a {.arg drug} table to {.arg {arg}}. See ?drug_."
         ),
@@ -84,7 +84,7 @@ check_data_link <-
 
       cli::cli_abort(
         c(
-          "{.arg {arg}} is not a {.arg link} table.",
+          "{.arg {arg}} must be a {.arg link} table.",
           "x" = "Missing columns: {missing_cols}",
           ">" = "Supply a {.arg link} table to {.arg {arg}}. See ?link_."
         ),
@@ -109,7 +109,7 @@ check_data_mp <-
 
       cli::cli_abort(
         c(
-          "{.arg {arg}} is not an {.arg mp} table.",
+          "{.arg {arg}} must be an {.arg mp} table.",
           "x" = "Missing columns: {missing_cols}",
           ">" = "Supply an {.arg mp} table to {.arg {arg}}. See ?mp_."
         ),
@@ -135,7 +135,7 @@ check_data_meddra <-
 
       cli::cli_abort(
         c(
-          "{.arg {arg}} is not a {.arg meddra} table.",
+          "{.arg {arg}} must be a {.arg meddra} table.",
           "x" = "Missing columns: {missing_cols}",
           ">" = "Supply a {.arg meddra} table to {.arg {arg}}. See ?meddra_."
         ),
@@ -178,9 +178,9 @@ check_data_smqlist <-
 
       cli::cli_abort(
         c(
-          "{.arg {arg}} is not an {.arg smq_list} table.",
+          "{.arg {arg}} must be an {.arg smq_list} table.",
           "x" = "Invalid/missing columns detected",
-          ">" = "Did you provide an {.arg smq_list_content}, instead of an {.arg smq_list} dataset?.",
+          "i" = "Did you provide an {.arg smq_list_content}, instead of an {.arg smq_list} dataset?.",
           ">" = "See ?smq_list_."
         ),
         call = call

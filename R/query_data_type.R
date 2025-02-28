@@ -49,8 +49,8 @@ query_data_type <-
     if (guessed_type == "unknown") {
       cli::cli_abort(
         c(
-          "{.arg {arg}} is not matching any expected data type.",
-          "!" = "Column names are not matching standard ones",
+          "{.arg {arg}} must match an expected data type.",
+          "!" = "Column names are not those of expected data types.",
           ">" = "Supported types are demo, drug, adr, and link. See ?demo_."
         ),
         call = call

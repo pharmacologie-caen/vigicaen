@@ -35,7 +35,7 @@
       i `.data` detected as `link` table.
     Code
       expect_error(extract_tto(.data = wrong_link, adr_s = "a_colitis", drug_s = "pd1"),
-      "`.data` is not a `link` table", fixed = TRUE)
+      "`.data` must be a `link` table", fixed = TRUE)
 
 ---
 

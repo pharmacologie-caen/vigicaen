@@ -5,7 +5,7 @@
     Condition <columns_not_in_data>
       Error:
       ! `vf` columns must be in `.data`.
-      i The followings were not found in `.data`: "v2"
+      x The followings were not found in `.data`: "v2".
 
 ---
 
@@ -14,7 +14,7 @@
     Condition <columns_not_in_data>
       Error:
       ! `vf` columns must be in `.data`.
-      i The followings were not found in `.data`: "v2" and "v3"
+      x The followings were not found in `.data`: "v2" and "v3".
 
 # error columns not numeric/integer prints nicely
 
@@ -23,7 +23,7 @@
     Condition <columns_not_numeric_integer>
       Error:
       ! `vf` columns must be numeric or integer.
-      i The followings are not numeric/integer: "v2"
+      x The following is not numeric/integer: "v2".
 
 ---
 
@@ -32,7 +32,7 @@
     Condition <columns_not_numeric_integer>
       Error:
       ! `vf_cols` columns must be numeric or integer.
-      i The followings are not numeric/integer: "v2" and "v4"
+      x The following are not numeric/integer: "v2" and "v4".
 
 ---
 
@@ -41,5 +41,5 @@
     Condition <columns_not_numeric_integer>
       Error in `desc_cont()`:
       ! `vc` columns must be numeric or integer.
-      i The followings are not numeric/integer: "v2"
+      x The following is not numeric/integer: "v2".
 

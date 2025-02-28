@@ -9,23 +9,27 @@ test_that("does compute an IC tail", {
 })
 
 test_that("fails if n_obs and/or n_exp not provided", {
+
   expect_error(
     ic_tail(
       n_obs = 12
     ),
-   "must supply"
+    regexp = "n_exp",
+   class = "rlang_error"
   )
 
   expect_error(
     ic_tail(
       n_exp = 5
     ),
-    "must supply"
+    regexp = "n_obs",
+    class = "rlang_error"
   )
 
   expect_error(
     ic_tail(
     ),
-    "must supply"
+    regexp = "n_obs", # first non matching
+    class = "rlang_error"
   )
 })
