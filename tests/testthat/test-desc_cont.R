@@ -230,27 +230,34 @@ test_that(
 
 
 test_that(
-  "doesnt work if format as two time min", {
+  "works even if format args are required multiple times", {
     df <-
       data.frame(
         age = c(60, 50, 56, 49, 75, 69, 85)
       )
 
-    expect_error(
+    r1 <-
       desc_cont(vc = c("age"),
                 .data = df,
-                format = "median admin (q1-q3) min",
+                format = "median min (q1-q3) and min again, and median",
                 dig = 0)
-      ,
-      "format code `min` is present more than once in `format`."
+
+    expect_equal(
+      r1$value,
+      "60 49 (53-72) and 49 again, and 60"
     )
-
-
   }
 )
 
 test_that(
   "doesnt work if format as none of min max, q1, q3 and median", {
+
+    cnd <- rlang::catch_cnd(error_required_format_values("format", c("q1", "q3")))
+
+    expect_s3_class(cnd, "required_format_values")
+    expect_equal(cnd$format, "format")
+    expect_equal(cnd$required_values, c("q1", "q3"))
+
     df <-
       data.frame(
         age = c(60, 50, 56, 49, 75, 69, 85)
@@ -262,10 +269,9 @@ test_that(
                 format = "no formal arg",
                 dig = 0)
       ,
-      "format arg does not contain any of median, q1, q3, min or max. Please provide at least one."
+      regexp = "format.*must contain.*median.*q1.*q3.*min.*max",
+      class = "required_format_values"
     )
-
-
   }
 )
 
