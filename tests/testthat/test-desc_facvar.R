@@ -307,7 +307,7 @@ test_that(
                   pad_width = 0,
                   ncat_max = 3)
       ,
-      "format arg does not contain any of n_, N_, or pc_"
+     class = "required_format_values"
     )
 
 
@@ -325,17 +325,18 @@ test_that(
         )
       )
 
-    expect_error(
+    r1 <-
       desc_facvar(vf = c("smoke_status"),
                   .data = df,
-                  format = "n_/n_ (pc%)",
+                  format = "n_/n_ (pc_%)",
                   dig = 0,
                   pad_width = 0,
                   ncat_max = 3)
-      ,
-      "format code `n_` is present more than once in `format`."
-    )
 
+    expect_equal(
+      r1$value,
+      c("2/2 (29%)", "5/5 (71%)")
+    )
 
   }
 )
@@ -356,16 +357,14 @@ test_that(
       desc_facvar(vf = c("bmi"),
                 .data = df)
       ,
-      "Column(s) bmi is(are) absent of .data",
-      fixed = TRUE
+      class = "columns_not_in_data"
     )
 
     expect_error(
       desc_facvar(vf = c("bmi", "sex"),
                 .data = df)
       ,
-      "Column(s) bmi, sex is(are) absent of .data",
-      fixed = TRUE
+      class = "columns_not_in_data"
     )
   }
 )
