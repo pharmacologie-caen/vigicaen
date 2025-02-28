@@ -4,7 +4,7 @@
 \alias{ic_tail}
 \title{Credibility interval limits for the information component}
 \usage{
-ic_tail(n_obs = NULL, n_exp = NULL, p = 0.025)
+ic_tail(n_obs, n_exp, p = 0.025)
 }
 \arguments{
 \item{n_obs}{Number of observed cases}
