@@ -88,7 +88,10 @@ screen_adr <-
 
   if (!is.null(freq_threshold) && !is.null(top_n)) {
     cli::cli_warn(
-      "Both 'freq_threshold' and 'top_n' are specified. Only 'top_n' will be applied. Please specify only one for precise control.")
+      c("Both {cli::col_yellow({symbol$bullet}, ' freq_threshold')} and {cli::col_yellow({symbol$bullet}, ' top_n')} are specified.",
+      ">" = "Only {cli::col_green({symbol$tick})} 'top_n' will be applied.",
+      "i" = "Please specify only one for precise control.")
+    )
     freq_threshold <- NULL  # Ignore freq_threshold if both are provided
   }
 
