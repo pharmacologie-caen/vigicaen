@@ -87,8 +87,13 @@ test_that("basic use works", {
 test_that("path_who exists before working on tables", {
   wrong_path <- "/a/wrong/filepath/"
 
-  expect_error(
-    tb_who(path_who  = wrong_path, force = TRUE),
-    info = "/a/wrong/filepath/ does not exist"
+  expect_snapshot(error = TRUE, cnd_class = TRUE,
+    tb_who(path_who  = wrong_path, force = TRUE)
   )
+
+  cnd <- rlang::catch_cnd(tb_who(path_who  = wrong_path, force = TRUE))
+
+  expect_s3_class(cnd, "no_dir")
+  expect_equal(cnd$dir, "path_who")
+  expect_equal(cnd$wrong_dir, wrong_path)
 })

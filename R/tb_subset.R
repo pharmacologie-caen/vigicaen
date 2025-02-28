@@ -115,9 +115,7 @@ tb_subset <-
     sv_selection <-
       sv_selection |> unlist()
 
-    if(!dir.exists(wd_in)){
-      stop(paste0(wd_in, " was not found, check spelling and availability."))
-    }
+    check_dir_exists(wd_in)
 
     if(!dir.exists(wd_out)){
       dir.create(wd_out)
@@ -367,3 +365,27 @@ tb_subset <-
     invisible()
 
   }
+
+# Helpers ------------
+
+
+error_dir_exists <- function(dir,
+                             wrong_dir,
+                             call = rlang::caller_env()
+                             ){
+  cli_abort(
+    message = c("{.arg {dir}} must exist.",
+                "i" = "{.val {wrong_dir}} does not exist."),
+    call = call,
+    class = "no_dir",
+    dir = dir,
+    wrong_dir = wrong_dir
+  )
+}
+
+check_dir_exists <- function(dir,
+                             call = rlang::caller_env()){
+  if(!dir.exists(dir)){
+    error_dir_exists(rlang::caller_arg(dir), dir, call = call)
+  }
+}

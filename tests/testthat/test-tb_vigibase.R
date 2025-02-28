@@ -389,20 +389,49 @@ test_that("path_base and path_sub exist before working on tables", {
     tb_vigibase(path_base = wrong_path,
             path_sub  = right_path,
             force = TRUE),
-    info = "/a/wrong/filepath/ does not exist"
+    class = "no_dir",
+    regexp = wrong_path
   )
+
+  cnd_base <- rlang::catch_cnd(
+    tb_vigibase(path_base = wrong_path,
+                path_sub  = right_path,
+                force = TRUE)
+  )
+
+  expect_equal(cnd_base$dir, "path_base")
+  expect_equal(cnd_base$wrong_dir, wrong_path)
 
   expect_error(
     tb_vigibase(path_base = right_path,
             path_sub  = wrong_path,
             force = TRUE),
-    info = "/a/wrong/filepath/ does not exist"
+    class = "no_dir",
+    regexp = wrong_path
   )
+
+  cnd_sub <- rlang::catch_cnd(
+    tb_vigibase(path_base = right_path,
+                path_sub  = wrong_path,
+                force = TRUE)
+  )
+
+  expect_equal(cnd_sub$dir, "path_sub")
+  expect_equal(cnd_sub$wrong_dir, wrong_path)
 
   expect_error(
     tb_vigibase(path_base = wrong_path,
             path_sub  = wrong_path,
             force = TRUE),
-    info = "/a/wrong/filepath/ does not exist"
+    class = "no_dir",
+    regexp = wrong_path
   )
+
+  expect_snapshot(error = TRUE,
+                  tb_vigibase(path_base = wrong_path,
+                              # first check is on path_base
+                              path_sub  = wrong_path,
+                              force = TRUE),
+                  cnd_class = TRUE
+                  )
 })
