@@ -135,7 +135,7 @@ table).</p>
 <span><span class="va">smq_content</span> <span class="op">&lt;-</span> <span class="va">smq_content_</span></span>
 <span></span>
 <span><span class="va">suspdup</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span></span>
+<span>  <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span></span>
 <span>    UMCReportId <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>    SuspectedduplicateReportId <span class="op">=</span> <span class="cn">NA</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
@@ -368,11 +368,22 @@ message</p>
 <span>  .data <span class="op">=</span> <span class="va">demo</span>,</span>
 <span>  vf <span class="op">=</span> <span class="st">"year"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `desc_facvar()`:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Too many levels detected in: year</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Number of levels: 13 exceeded `ncat_max`(10)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Did you pass a continuous variable to `desc_facvar()`?</span></span>
-<span><span class="co">#&gt; → Set `ncat_max` to suppress this error.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 13 × 4</span></span></span>
+<span><span class="co">#&gt;    var   level value           n_avail</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> year  2011  <span style="color: #949494;">"</span> 1/750 (0%) <span style="color: #949494;">"</span>      750</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> year  2012  <span style="color: #949494;">"</span> 1/750 (0%) <span style="color: #949494;">"</span>      750</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> year  2013  <span style="color: #949494;">"</span> 2/750 (0%) <span style="color: #949494;">"</span>      750</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> year  2014  <span style="color: #949494;">"</span>10/750 (1%) <span style="color: #949494;">"</span>      750</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> year  2015  <span style="color: #949494;">"</span> 8/750 (1%) <span style="color: #949494;">"</span>      750</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> year  2016  <span style="color: #949494;">"</span>15/750 (2%) <span style="color: #949494;">"</span>      750</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> year  2017  <span style="color: #949494;">"</span>116/750 (15%)<span style="color: #949494;">"</span>     750</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> year  2018  <span style="color: #949494;">"</span>150/750 (20%)<span style="color: #949494;">"</span>     750</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> year  2019  <span style="color: #949494;">"</span>116/750 (15%)<span style="color: #949494;">"</span>     750</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> year  2020  <span style="color: #949494;">"</span>72/750 (10%)<span style="color: #949494;">"</span>      750</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> year  2021  <span style="color: #949494;">"</span>99/750 (13%)<span style="color: #949494;">"</span>      750</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> year  2022  <span style="color: #949494;">"</span>119/750 (16%)<span style="color: #949494;">"</span>     750</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> year  2023  <span style="color: #949494;">"</span>41/750 (5%) <span style="color: #949494;">"</span>      750</span></span></code></pre></div>
 <p>The error message “Too many levels detected in year” is intentional,
 to avoid passing continuous variables in the <code>vf</code>
 argument.</p>
