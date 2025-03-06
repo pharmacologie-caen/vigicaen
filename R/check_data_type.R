@@ -17,6 +17,33 @@
 
 NULL
 
+check_data_demo <-
+  function(.data,
+           arg = rlang::caller_arg(.data),
+           call = rlang::caller_env()){
+
+    demo_cols <-
+      c("UMCReportId",
+        "Type",
+        "DateDatabase",
+        "Region")
+
+    if (!all(demo_cols %in% names(.data))) {
+
+      missing_cols <-
+        demo_cols[!demo_cols %in% names(.data)]
+
+      cli::cli_abort(
+        c(
+          "{.arg {arg}} must be a {.arg demo} table.",
+          "x" = "Missing columns: {missing_cols}",
+          ">" = "Supply a {.arg demo} table to {.arg {arg}}. See ?demo_."
+        ),
+        call = call
+      )
+    }
+  }
+
 check_data_adr <-
   function(.data,
            arg = rlang::caller_arg(.data),
