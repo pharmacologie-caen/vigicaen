@@ -168,6 +168,16 @@ vigi_routine <-
       }
     }
 
+    # 0.4 appropriate data type
+
+    check_data_demo(demo_data)
+
+    check_data_adr(adr_data)
+
+    check_data_drug(drug_data)
+
+    check_data_link(link_data)
+
     # #### 1. acquire data #### ####
 
     # ---- build demo ----
