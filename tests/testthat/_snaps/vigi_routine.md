@@ -86,3 +86,43 @@
       Error in `vigi_routine()`:
       ! `export_to` must end by '.bmp', '.eps', '.jpeg', '.pdf', '.png', '.ps''.svg', '.tex', '.tiff', or '.wmf' (windows only)
 
+# data type checking prints nicely
+
+    Code
+      vigi_routine(demo_data = drug_, drug_data = drug_, adr_data = adr_, link_data = link_,
+        d_code = d_drecno["nivolumab"], a_code = ex_$a_llt["a_colitis"], case_tto = 50,
+        vigibase_version = "September 2024")
+    Condition
+      Error:
+      ! object 'd_drecno' not found
+
+---
+
+    Code
+      vigi_routine(demo_data = demo_, drug_data = demo_, adr_data = adr_, link_data = link_,
+        d_code = d_drecno["nivolumab"], a_code = ex_$a_llt["a_colitis"], case_tto = 50,
+        vigibase_version = "September 2024")
+    Condition
+      Error:
+      ! object 'd_drecno' not found
+
+---
+
+    Code
+      vigi_routine(demo_data = demo_, drug_data = drug_, adr_data = demo_, link_data = link_,
+        d_code = d_drecno["nivolumab"], a_code = ex_$a_llt["a_colitis"], case_tto = 50,
+        vigibase_version = "September 2024")
+    Condition
+      Error:
+      ! object 'd_drecno' not found
+
+---
+
+    Code
+      vigi_routine(demo_data = demo_, drug_data = drug_, adr_data = adr_, link_data = adr_,
+        d_code = d_drecno["nivolumab"], a_code = ex_$a_llt["a_colitis"], case_tto = 50,
+        vigibase_version = "September 2024")
+    Condition
+      Error:
+      ! object 'd_drecno' not found
+

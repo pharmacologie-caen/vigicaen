@@ -34,8 +34,12 @@ test_that("cli format and basic use work", {
   r2 <-
     check_data_adr(adr_valid, ".data")
 
+  r3 <-
+    check_data_demo(demo_valid, ".data")
+
   expect_null(r1)
   expect_null(r2)
+  expect_null(r3)
 
   expect_invisible(
     check_data_link(link_valid, ".data")
@@ -43,6 +47,16 @@ test_that("cli format and basic use work", {
 
   expect_invisible(
     check_data_meddra(meddra_valid, ".data")
+  )
+
+  purrr::map(
+    list(drug_valid, link_valid, adr_valid),
+    function(d_)
+      expect_snapshot(
+        error = TRUE, {
+          check_data_demo(d_, ".data")
+        }
+      )
   )
 
   expect_snapshot(
@@ -142,4 +156,74 @@ test_that("smq_list is distinguished of smq_list_content", {
       vigicaen:::check_data_smqlist(smq_list_content, arg = "x")
     })
   })
+})
+
+test_that("works with arrow::Table", {
+
+  data_invalid <-
+    data.frame(
+      UMCReportId = 1
+    )
+
+  list(demo_, adr_, drug_, link_, meddra_, smq_list_) |>
+    rlang::set_names("demo_", "adr_", "drug_", "link_", "meddra_", "smq_list_") |>
+    purrr::map(arrow::as_arrow_table) |>
+    purrr::discard_at("demo_") |>
+    purrr::map(
+      function(d_)
+      expect_snapshot(
+        error = TRUE, {
+          # arg paste0(name, "data") is deviated to make snapshot reading easier
+          check_data_demo(d_ |> arrow::as_arrow_table(), paste0(name, "data"))
+        }
+      )
+    )
+
+  list(demo_, adr_, drug_, link_, meddra_, smq_list_) |>
+    rlang::set_names("demo_", "adr_", "drug_", "link_", "meddra_", "smq_list_") |>
+    purrr::map(arrow::as_arrow_table) |>
+    purrr::discard_at("drug_") |>
+    purrr::imap(
+      function(d_, name)
+        expect_snapshot(
+          error = TRUE, {
+            check_data_drug(d_ |> arrow::as_arrow_table(), paste0(name, "data"))
+          }
+        )
+    )
+
+  list(demo_, adr_, drug_, link_, meddra_, smq_list_) |>
+    rlang::set_names("demo_", "adr_", "drug_", "link_", "meddra_", "smq_list_") |>
+    purrr::map(arrow::as_arrow_table) |>
+    purrr::discard_at("adr_") |>
+    purrr::imap(
+      function(d_, name)
+        expect_snapshot(
+          error = TRUE, {
+            check_data_adr(d_ |> arrow::as_arrow_table(), paste0(name, "data"))
+          }
+        )
+    )
+
+  list(demo_, adr_, drug_, link_, meddra_, smq_list_) |>
+    rlang::set_names("demo_", "adr_", "drug_", "link_", "meddra_", "smq_list_") |>
+    purrr::map(arrow::as_arrow_table) |>
+    purrr::discard_at("link_") |>
+    purrr::imap(
+      function(d_, name)
+        expect_snapshot(
+          error = TRUE, {
+            check_data_link(d_ |> arrow::as_arrow_table(), paste0(name, "data"))
+          }
+        )
+    )
+
+  expect_invisible(check_data_demo(demo_ |> arrow::as_arrow_table(), ".data"))
+  expect_invisible(check_data_drug(drug_ |> arrow::as_arrow_table(), ".data"))
+  expect_invisible(check_data_adr(adr_ |> arrow::as_arrow_table(), ".data"))
+  expect_invisible(check_data_link(link_ |> arrow::as_arrow_table(), ".data"))
+
+  expect_invisible(check_data_meddra(meddra_ |> arrow::as_arrow_table(), ".data"))
+  expect_invisible(check_data_smqlist(smq_list_ |> arrow::as_arrow_table(), ".data"))
+
 })
