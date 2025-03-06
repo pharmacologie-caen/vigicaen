@@ -5,6 +5,9 @@
 * Error and warnings all turned into `cli` syntax. Gathered redundant checkers
 internally.
 
+* `vigi_routine()` now works with out of memory arrow Tables. Additional
+checkers to `vigi_routine()` for input data type.
+
 # vigicaen 0.15.5
 
 ## Minor
