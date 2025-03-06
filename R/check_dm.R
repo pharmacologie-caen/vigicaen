@@ -44,5 +44,6 @@ check_dm <-
                       ~ sum(.x)
         )
       )  |>
+      dplyr::collect() |>
       t()
   }
