@@ -3,10 +3,13 @@
 ## Minor
 
 * Error and warnings all turned into `cli` syntax. Gathered redundant checkers
-internally.
+internally (#133).
 
 * `vigi_routine()` now works with out of memory arrow Tables. Additional
 checkers to `vigi_routine()` for input data type.
+
+* `compute_or_mod()` now has an informative error message if either args
+`estimate` or `std_er` were not supplied (#123).
 
 # vigicaen 0.15.5
 

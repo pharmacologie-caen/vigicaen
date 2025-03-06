@@ -87,3 +87,24 @@ test_that("works with and without p_val arg", {
     r1_nop$p_val
   )
 })
+
+test_that("estimate and std_er are provided", {
+  expect_error(
+    compute_or_mod(
+      .coef_table = coef_table,
+      p_val = Pr...z..
+    ),
+    class = "rlang_error",
+    regexp = "estimate"
+  )
+
+  expect_error(
+    compute_or_mod(
+      .coef_table = coef_table,
+      estimate = estimate,
+      p_val = Pr...z..
+    ),
+    class = "rlang_error",
+    regexp = "std_er"
+  )
+})

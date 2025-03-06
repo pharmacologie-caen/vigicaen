@@ -71,6 +71,9 @@ compute_or_mod <-
            p_val = NULL,
            alpha = .05) {
 
+    rlang::check_required(estimate)
+    rlang::check_required(std_er)
+
     # To data.frame class if not already
     if(!any(class(.coef_table) %in% c("data.table", "data.frame"))){
       .coef_table <- data.frame(rn = row.names(.coef_table), .coef_table)
