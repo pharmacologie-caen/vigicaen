@@ -66,7 +66,7 @@ get_atc_code <-
       )
 
     if(!all(names(atc_sel) == names(atc_sel_renamed))){
-      warning("names of atc_sel were tolower-ed and trimed")
+      cli::cli_warn("names of atc_sel were tolower-ed and trimed")
     }
 
     if("Table"  %in% class(mp)){

@@ -49,9 +49,7 @@ tb_who <-
     path_who <-
         fix_path_endslash(path_who)
 
-    if(!dir.exists(path_who)){
-      stop(paste0(path_who, " does not exist"))
-    }
+    check_dir_exists(path_who)
 
     cli::cli_h1(
       "tb_who()"

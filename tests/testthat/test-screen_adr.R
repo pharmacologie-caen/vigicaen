@@ -93,11 +93,20 @@ test_that("screen_adr handles both freq_threshold and top_n specified with a war
     result <- screen_adr(
       .data = adr_, meddra = meddra_, term_level = "pt", top_n = 3, freq_threshold = 0.1
     ),
-    "Both 'freq_threshold' and 'top_n' are specified. Only 'top_n' will be applied."
+    regexp = "Both.*freq_threshold.*top_n.*Only.*top_n.*"
   )
   expect_equal(nrow(result), 3)  # Only top_n should be applied
   expect_true("Pneumonitis" %in% result$term && "Diarrhoea" %in% result$term)  # Ensure
   # the top 3 terms are correct
+})
+
+cli::test_that_cli("warning of both freq_threshold and top_n prints nicely", {
+  expect_warning(
+    result <- screen_adr(
+      .data = adr_, meddra = meddra_, term_level = "pt", top_n = 3, freq_threshold = 0.1
+    ),
+    regexp = "Both.*freq_threshold.*top_n.*Only.*top_n.*"
+  )
 })
 
 test_that("screen_adr returns correct columns", {
@@ -115,12 +124,15 @@ test_that("screen_adr returns empty data table for high freq_threshold", {
   expect_equal(nrow(result), 0)  # Should return empty data table if threshold is too high
 })
 
-test_that("screen_adr handles term_level mismatch", {
+test_that("error if term_level mismatches", {
+
+  # Through rlang::arg_match
   expect_error(
     screen_adr(
       .data = adr_, meddra = meddra_, term_level = "invalid_level"
     ),
-    "Invalid 'term_level' specified. Choose from 'soc', 'hlgt', 'hlt', 'pt', 'llt'."
+    regexp = "term_level.*soc.*hlgt.*hlt.*pt.*llt",
+    class = "rlang_error"
   )
 })
 

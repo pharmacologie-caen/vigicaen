@@ -25,11 +25,12 @@
 #'         n_exp = 5)
 #'
 
-ic_tail <- function(n_obs = NULL,
-                    n_exp = NULL,
+ic_tail <- function(n_obs,
+                    n_exp,
                     p = .025) {
-  if (is.null(n_obs) || is.null(n_exp)) {
-    stop("you must supply n_obs AND n_exp (do not add + .5)")
-  }
+
+  rlang::check_required(n_obs)
+  rlang::check_required(n_exp)
+
   log(stats::qgamma(p, shape = n_obs + .5, rate = n_exp + .5), 2)
 }

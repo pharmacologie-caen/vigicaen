@@ -106,3 +106,12 @@
       ==============================> percent, seconds | Done 
       
 
+# path_who exists before working on tables
+
+    Code
+      tb_who(path_who = wrong_path, force = TRUE)
+    Condition <no_dir>
+      Error in `tb_who()`:
+      ! `path_who` must exist.
+      x "/a/wrong/filepath/" does not exist.
+

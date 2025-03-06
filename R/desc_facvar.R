@@ -77,19 +77,12 @@ desc_facvar <-
             format = "n_/N_ (pc_%)",
             digits = 0,
             pad_width = 12,
-            ncat_max = 10,
+            ncat_max = 20,
             export_raw_values = FALSE){
 
     # only columns present in the dataset
-    if(!all(vf %in% names(.data))){
-      err_msg <-
-        paste0(vf[!vf %in% names(.data)], collapse = ", ")
-      stop(
-        paste0(
-          "Column(s) ",
-          err_msg, " is(are) absent of .data")
-      )
-    }
+
+    check_columns_in_data(.data, vf)
 
     # ---- number of levels checker ----
 
@@ -106,7 +99,7 @@ desc_facvar <-
       oob_vars <-
         lev_length[lev_length > ncat_max]
 
-      cli_abort(
+      cli::cli_abort(
         c("Too many levels detected in: {names(oob_vars)}",
           "x" = paste0(
             "Number of levels: {oob_vars} ",
@@ -128,22 +121,12 @@ desc_facvar <-
     display_pc <-
       stringr::str_detect(format, "pc_")
 
-    many_params <-
-      c("n_", "N_", "pc_") |>
-      rlang::set_names() |>
-      purrr::map(
-        ~ stringr::str_count(format, .x)
-      )
-
     if(!any(display_n, display_N, display_pc)){
-      stop("format arg does not contain any of n_, N_, or pc_. Please provide at least one.")
+      error_required_format_values(
+        format = format,
+        required_values = c("n_", "N_", "pc_")
+      )
     }
-
-    many_params |>
-      purrr::imap(function(counts, param_name)
-        if(counts > 1)
-          stop(paste0("format code `", param_name, "` is present more than once in `format`."))
-        )
 
     var_to_export <-
       if(export_raw_values){
@@ -195,15 +178,15 @@ desc_facvar <-
                        dig = .env$digits),
           value =
             .env$format |>
-            stringr::str_replace(
+            stringr::str_replace_all(
               "n_",
               cff(.data$n)
             ) |>
-            stringr::str_replace(
+            stringr::str_replace_all(
               "N_",
               cff(.data$n_avail)
             ) |>
-            stringr::str_replace(
+            stringr::str_replace_all(
               "pc_",
               .data$pc_fmt
             ),

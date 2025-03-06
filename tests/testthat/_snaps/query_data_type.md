@@ -4,8 +4,8 @@
       vigicaen:::query_data_type(invalid_data, ".data")
     Condition
       Error:
-      ! `invalid_data` is not matching any expected data type.
-      ! Column names are not matching standard ones
+      ! `invalid_data` must match an expected data type.
+      ! Column names are not those of expected data types.
       > Supported types are demo, drug, adr, and link. See ?demo_.
 
 # format is ok [plain]

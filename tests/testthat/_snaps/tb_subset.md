@@ -203,3 +203,48 @@
       > percent, seconds | 2
       
 
+# error if no wd_in
+
+    Code
+      tb_subset(wd_in = "that_dir_doesnt_exist", sv_selection = list(a = c(1, 2)))
+    Condition <no_dir>
+      Error in `tb_subset()`:
+      ! `wd_in` must exist.
+      x "that_dir_doesnt_exist" does not exist.
+
+# printing error no dir [plain]
+
+    Code
+      error_dir_exists("wd_in", "/wrong_path/")
+    Condition
+      Error:
+      ! `wd_in` must exist.
+      x "/wrong_path/" does not exist.
+
+# printing error no dir [ansi]
+
+    Code
+      error_dir_exists("wd_in", "/wrong_path/")
+    Condition
+      [1m[33mError[39m:[22m
+      [1m[22m[33m![39m `wd_in` must exist.
+      [31mx[39m [34m"/wrong_path/"[39m does not exist.
+
+# printing error no dir [unicode]
+
+    Code
+      error_dir_exists("wd_in", "/wrong_path/")
+    Condition
+      Error:
+      ! `wd_in` must exist.
+      ✖ "/wrong_path/" does not exist.
+
+# printing error no dir [fancy]
+
+    Code
+      error_dir_exists("wd_in", "/wrong_path/")
+    Condition
+      [1m[33mError[39m:[22m
+      [1m[22m[33m![39m `wd_in` must exist.
+      [31m✖[39m [34m"/wrong_path/"[39m does not exist.
+

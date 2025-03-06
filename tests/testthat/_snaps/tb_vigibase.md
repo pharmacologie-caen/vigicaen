@@ -164,3 +164,12 @@
       ==============================> percent, seconds | Done 
       
 
+# path_base and path_sub exist before working on tables
+
+    Code
+      tb_vigibase(path_base = wrong_path, path_sub = wrong_path, force = TRUE)
+    Condition <no_dir>
+      Error in `tb_vigibase()`:
+      ! `path_base` must exist.
+      x "/a/wrong/filepath/" does not exist.
+

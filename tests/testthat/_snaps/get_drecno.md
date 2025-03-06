@@ -73,7 +73,7 @@
       get_drecno(drug1, mp_, verbose = FALSE)
     Condition
       Error in `get_drecno()`:
-      ! `d_sel` is not a list of character or numeric vectors.
+      ! `d_sel` items must all be of type character or numeric.
       i Nested `lists` are not allowed.
       > Supply a named list of character or numeric vectors to `d_sel`. See ?ex_.
 

@@ -112,9 +112,49 @@ test_that("standard use works", {
     file.exists(paste0(path_vigiroutine_test, "vigicaen_graph.png")),
     TRUE
   )
+
+  expect_message(
+    expect_doppelganger(
+      "Exporting",
+
+      vigi_routine(
+        case_tto = 150,
+        demo_data = arrow::as_arrow_table(demo),
+        drug_data = arrow::as_arrow_table(drug),
+        adr_data  = arrow::as_arrow_table(adr),
+        link_data = arrow::as_arrow_table(link),
+        d_code = d_drecno,
+        a_code = a_llt,
+        vigibase_version = "September 2024",
+        d_label = "Nivolumab",
+        a_label = "Colitis",
+        export_to = paste0(path_vigiroutine_test,
+                           "vigicaen_graph2.png"
+        )
+      )
+    ),
+    "Plot exported to .*vigicaen_graph2.png"
+  )
+
+  expect_equal(
+    file.exists(paste0(path_vigiroutine_test, "vigicaen_graph2.png")),
+    TRUE
+  )
+
+  unlink(path_vigiroutine_test, recursive = TRUE)
 })
 
 test_that("checkers of d_code and a_code work", {
+  cnd <- rlang::catch_cnd(error_length_one("d_code", "vigi_routine()", 2))
+
+  expect_s3_class(
+    cnd, "length_one"
+  )
+
+  expect_equal(cnd$arg, "d_code")
+  expect_equal(cnd$fn, "vigi_routine()")
+  expect_equal(cnd$wrong_length, 2)
+
   d_drecno_toolong <-
     ex_$d_drecno[c("nivolumab", "ipilimumab")]
 
@@ -133,7 +173,7 @@ test_that("checkers of d_code and a_code work", {
   drug <- drug_
   link <- link_
 
-  expect_error(
+  expect_snapshot(error = TRUE, cnd_class = TRUE,
     vigi_routine(
       demo_data = demo,
       drug_data = drug,
@@ -142,11 +182,26 @@ test_that("checkers of d_code and a_code work", {
       d_code = d_drecno_toolong,
       a_code = a_llt,
       vigibase_version = "September 2024"
-    ),
-    "d_code must have only one item for this function."
+    )
   )
 
-  expect_error(
+  cnd_vr1 <- rlang::catch_cnd(
+    vigi_routine(
+      demo_data = demo,
+      drug_data = drug,
+      adr_data  = adr,
+      link_data = link,
+      d_code = d_drecno_toolong,
+      a_code = a_llt,
+      vigibase_version = "September 2024"
+    )
+    )
+
+  expect_s3_class(cnd_vr1, "length_one")
+  expect_equal(cnd_vr1$arg, "d_code")
+  expect_equal(cnd_vr1$fn, "vigi_routine()")
+
+  expect_snapshot(error = TRUE, cnd_class = TRUE,
     vigi_routine(
       demo_data = demo,
       drug_data = drug,
@@ -155,9 +210,24 @@ test_that("checkers of d_code and a_code work", {
       d_code = d_drecno,
       a_code = a_llt_toolong,
       vigibase_version = "September 2024"
-    ),
-    "a_code must have only one item for this function."
+    )
   )
+
+  cnd_vr2 <- rlang::catch_cnd(
+    vigi_routine(
+      demo_data = demo,
+      drug_data = drug,
+      adr_data  = adr,
+      link_data = link,
+      d_code = d_drecno,
+      a_code = a_llt_toolong,
+      vigibase_version = "September 2024"
+    )
+  )
+
+  expect_s3_class(cnd_vr2, "length_one")
+  expect_equal(cnd_vr2$arg, "a_code")
+  expect_equal(cnd_vr2$fn, "vigi_routine()")
 
   # not lists
 
@@ -189,6 +259,13 @@ test_that("checkers of d_code and a_code work", {
 
 })
 
+cli::test_that_cli("length one checker prints nicely",{
+  expect_snapshot(
+    error = TRUE,
+    error_length_one("d_code", "vigi_routine()", 2)
+  )
+})
+
 test_that("export_to ends with proper extension and check svglite", {
   d_drecno <-
     ex_$d_drecno["nivolumab"]
@@ -212,11 +289,22 @@ test_that("export_to ends with proper extension and check svglite", {
       vigibase_version = "September 2024",
       export_to = "vigicaen_graph"
       ),
-    "export_to must end by"
+    regexp = "export_to.*must end by"
   )
 
-  # insufficient checker
-
+  expect_snapshot(
+    error = TRUE,
+    vigi_routine(
+      demo_data = demo,
+      drug_data = drug,
+      adr_data  = adr,
+      link_data = link,
+      d_code = d_drecno,
+      a_code = a_llt,
+      vigibase_version = "September 2024",
+      export_to = "vigicaen_graph"
+    )
+  )
 })
 
 test_that("formatting IC025 with out of bound value works", {
@@ -274,6 +362,20 @@ test_that("patient label is left or right justified, depending on tto median", {
       vigibase_version = "September 2024"
     )
   )
+
+  expect_doppelganger(
+    "case_tto below median",
+    vigi_routine(
+      demo_data = arrow::as_arrow_table(demo),
+      drug_data = arrow::as_arrow_table(drug),
+      adr_data  = arrow::as_arrow_table(adr),
+      link_data = arrow::as_arrow_table(link),
+      d_code = d_drecno,
+      a_code = a_llt,
+      case_tto = 30,
+      vigibase_version = "September 2024"
+    )
+  )
 })
 
 test_that("too few time to onset prevents graph drawing", {
@@ -304,6 +406,22 @@ test_that("too few time to onset prevents graph drawing", {
         )
       ),
       "Not enough data to plot time to onset"
+  )
+
+  expect_message(
+    expect_doppelganger(
+      "no time to onset",
+      vigi_routine(
+        demo_data = arrow::as_arrow_table(demo),
+        drug_data = arrow::as_arrow_table(drug),
+        adr_data  = arrow::as_arrow_table(adr),
+        link_data = arrow::as_arrow_table(link),
+        d_code = d_drecno,
+        a_code = a_llt,
+        vigibase_version = "September 2024"
+      )
+    ),
+    "Not enough data to plot time to onset"
   )
 
   # export is smaller
@@ -415,10 +533,24 @@ test_that("error if no adr or drug cases found", {
     vigibase_version = "September 2024"
   ))
 
+  err_arrow <- rlang::catch_cnd(vigi_routine(
+    demo_data = arrow::as_arrow_table(demo_),
+    drug_data = arrow::as_arrow_table(drug_),
+    adr_data  = arrow::as_arrow_table(adr_),
+    link_data = arrow::as_arrow_table(link_),
+    d_code = d_drecno_empty,
+    a_code = ex_$a_llt["a_colitis"],
+    case_tto = 50,
+    vigibase_version = "September 2024"
+  ))
+
   expect_s3_class(err, "no_cases")
   expect_equal(err$arg, "d1")
   expect_equal(err$arg_type, "drug")
   expect_equal(err$dataset, "demo_data")
+
+  expect_equal(err[c("arg", "message", "class", "arg_type", "dataset")],
+               err_arrow[c("arg", "message", "class", "arg_type", "dataset")])
 
   expect_error(
     vigi_routine(
@@ -445,10 +577,24 @@ test_that("error if no adr or drug cases found", {
     vigibase_version = "September 2024"
   ))
 
+  err2_arrow <- rlang::catch_cnd(vigi_routine(
+    demo_data = arrow::as_arrow_table(demo_),
+    drug_data = arrow::as_arrow_table(drug_),
+    adr_data  = arrow::as_arrow_table(adr_),
+    link_data = arrow::as_arrow_table(link_),
+    d_code = ex_$d_drecno["nivolumab"],
+    a_code = a_llt_empty,
+    case_tto = 50,
+    vigibase_version = "September 2024"
+  ))
+
   expect_s3_class(err2, "no_cases")
   expect_equal(err2$arg, "a1")
   expect_equal(err2$arg_type, "adr")
   expect_equal(err2$dataset, "demo_data")
+
+  expect_equal(err2[c("arg", "message", "class", "arg_type", "dataset")],
+               err2_arrow[c("arg", "message", "class", "arg_type", "dataset")])
 
   expect_error(
     vigi_routine(
@@ -463,5 +609,93 @@ test_that("error if no adr or drug cases found", {
     ),
     class = "no_cases"
   )
+
+})
+
+test_that("works with arrow tables", {
+  d_drecno <-
+    ex_$d_drecno["nivolumab"]
+
+  a_llt <-
+    ex_$a_llt["a_colitis"]
+
+  demo <- demo_
+  adr  <- adr_
+  drug <- drug_
+  link <- link_
+
+  # run routine
+
+  expect_doppelganger(
+    "arrow table",
+    vigi_routine(
+      demo_data = arrow::as_arrow_table(demo),
+      drug_data = arrow::as_arrow_table(drug),
+      adr_data  = arrow::as_arrow_table(adr),
+      link_data = arrow::as_arrow_table(link),
+      d_code = d_drecno,
+      a_code = a_llt,
+      vigibase_version = "September 2024"
+    )
+  )
+})
+
+test_that("data type checking prints nicely", {
+  expect_snapshot(
+    error = TRUE,
+    vigi_routine(
+      demo_data = drug_, # wrong
+      drug_data = drug_,
+      adr_data  = adr_,
+      link_data = link_,
+      d_code = d_drecno["nivolumab"],
+      a_code = ex_$a_llt["a_colitis"],
+      case_tto = 50,
+      vigibase_version = "September 2024"
+    )
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    vigi_routine(
+      demo_data = demo_,
+      drug_data = demo_, # wrong
+      adr_data  = adr_,
+      link_data = link_,
+      d_code = d_drecno["nivolumab"],
+      a_code = ex_$a_llt["a_colitis"],
+      case_tto = 50,
+      vigibase_version = "September 2024"
+    )
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    vigi_routine(
+      demo_data = demo_,
+      drug_data = drug_,
+      adr_data  = demo_, # wrong
+      link_data = link_,
+      d_code = d_drecno["nivolumab"],
+      a_code = ex_$a_llt["a_colitis"],
+      case_tto = 50,
+      vigibase_version = "September 2024"
+    )
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    vigi_routine(
+      demo_data = demo_,
+      drug_data = drug_,
+      adr_data  = adr_,
+      link_data = adr_, # wrong
+      d_code = d_drecno["nivolumab"],
+      a_code = ex_$a_llt["a_colitis"],
+      case_tto = 50,
+      vigibase_version = "September 2024"
+    )
+  )
+
 
 })

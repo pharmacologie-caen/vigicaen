@@ -232,16 +232,6 @@ test_that("you can subset on drecno, age, meddra_id", {
 
 })
 
-test_that("wd_in exists", {
-  expect_error(
-    tb_subset(
-      wd_in = "that_dir_doesnt_exists",
-      sv_selection = list(a = c(1, 2))
-      ),
-    "that_dir_doesnt_exists was not found, check spelling and availability."
-  )
-})
-
 test_that("you can keep suspdup", {
 
   wd_in <- tempdir()
@@ -486,6 +476,43 @@ test_that("alternative syntaxes work", {
   unlink(wd_in, recursive = TRUE)
   if(dir.exists(wd_in) & Sys.info()[["sysname"]] != "Windows")
     file.remove(here::here(wd_in))
+})
+
+test_that("error if no wd_in", {
+  cnd <- rlang::catch_cnd(
+    error_dir_exists("wd_in", "/wrong_path/")
+  )
+
+  expect_s3_class(cnd, "no_dir")
+  expect_equal(cnd$dir, "wd_in")
+  expect_equal(cnd$wrong_dir, "/wrong_path/")
+
+  path_wrong <- "/wrong_path/"
+  expect_error(
+    check_dir_exists(path_wrong),
+    class = "no_dir",
+    regexp = path_wrong
+  )
+
+  # silent if dir exists
+
+  expect_silent(
+    check_dir_exists(tempdir())
+  )
+
+  expect_snapshot(error = TRUE,
+    tb_subset(
+      wd_in = "that_dir_doesnt_exist",
+      sv_selection = list(a = c(1, 2))
+    ),
+    cnd_class = TRUE
+  )
+})
+
+cli::test_that_cli("printing error no dir", {
+  expect_snapshot(error = TRUE,
+                  error_dir_exists("wd_in", "/wrong_path/")
+  )
 })
 
 unlink(tempdir(), recursive = TRUE)

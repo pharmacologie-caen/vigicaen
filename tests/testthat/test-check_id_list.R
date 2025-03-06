@@ -11,8 +11,12 @@ test_that("id list checker works for both character and numeric inputs", {
       item2 = c(8845, 6507)
     )
 
-  wrong_input <-
+  dataframe_input <-
     data.frame(a = c(1, 2))
+
+  wrong_input <-
+    c("item1", "item2")
+
 
   wrong_list <-
     list(
@@ -29,6 +33,9 @@ test_that("id list checker works for both character and numeric inputs", {
   expect_invisible(check_id_list(good_list))
 
   expect_invisible(check_id_list(good_list_num))
+
+  # data.frames are allowed
+  expect_invisible(check_id_list(dataframe_input))
 
   expect_snapshot(
     error = TRUE, {

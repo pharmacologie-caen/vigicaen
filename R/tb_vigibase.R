@@ -82,13 +82,8 @@ tb_vigibase <-
     path_sub <-
       fix_path_endslash(path_sub)
 
-    if(!dir.exists(path_base)){
-      stop(paste0(path_base, " does not exist"))
-    }
-
-    if(!dir.exists(path_sub)){
-      stop(paste0(path_sub, " does not exist"))
-    }
+    check_dir_exists(path_base)
+    check_dir_exists(path_sub)
 
     cli::cli_h1(
       "tb_vigibase()"

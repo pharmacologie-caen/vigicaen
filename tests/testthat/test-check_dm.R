@@ -30,3 +30,37 @@ test_that("returns proper counts", {
                r2)
 
 })
+
+test_that("works with out of memory tables", {
+
+  a_names <- paste0("adr_", names(ex_$a_llt))
+
+  expect_snapshot({
+    demo <-
+      demo_ |>
+      arrow::as_arrow_table()  |>
+      add_adr(a_code = ex_$a_llt,
+              a_names = a_names,
+              adr = adr_ |> arrow::as_arrow_table())
+  })
+
+  res <- check_dm(demo, a_names)
+
+  # proper columns
+
+  expect_equal(
+    row.names(res),
+    a_names
+  )
+
+  # proper counts
+
+  r2 <- purrr::map_dbl(
+    a_names, function(a_n)
+      sum(demo |> dplyr::collect() |> dplyr::pull(.env$a_n))
+    ) %>%
+    rlang::set_names(a_names)
+
+  expect_equal(res[, 1],
+               r2)
+})
