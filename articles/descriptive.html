@@ -1151,16 +1151,14 @@ to <code>non_rec</code> (<code>rec</code> + <code>non_rec</code> =
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/desc_rch.html">desc_rch</a></span><span class="op">(</span></span>
 <span>  <span class="va">link</span>,</span>
-<span>  demo_data <span class="op">=</span> <span class="va">demo</span>,</span>
 <span>  drug_s <span class="op">=</span> <span class="st">"nivolumab"</span>,</span>
 <span>  adr_s  <span class="op">=</span> <span class="st">"a_colitis"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;       drug_s     adr_s n_overall n_rch n_inf n_rec</span></span>
 <span><span class="co">#&gt;       &lt;char&gt;    &lt;char&gt;     &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1: nivolumab a_colitis        44    26    19    12</span></span></code></pre></div>
-<p><strong>The number of cases is counted at the case level in
-demo.</strong> This explains why the <code>demo_data</code> argument is
-required here.</p>
+<p><strong>The number of cases is counted at the case
+level.</strong></p>
 <p>As with <code><a href="../reference/desc_tto.html">desc_tto()</a></code> and <code><a href="../reference/desc_dch.html">desc_dch()</a></code>, you can
 query several drug - adr pairs at once.</p>
 <blockquote>
@@ -1181,7 +1179,6 @@ for our entire dataset</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/desc_rch.html">desc_rch</a></span><span class="op">(</span></span>
 <span>  <span class="va">link</span>,</span>
-<span>  demo_data <span class="op">=</span> <span class="va">demo</span>,</span>
 <span>  drug_s <span class="op">=</span> <span class="st">"all_cases"</span>,</span>
 <span>  adr_s  <span class="op">=</span> <span class="st">"all_cases"</span></span>
 <span><span class="op">)</span></span>
