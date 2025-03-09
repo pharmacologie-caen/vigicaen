@@ -387,3 +387,133 @@ test_that("short nice format and min_n_obs format works", {
     NA_character_
   )
 })
+
+test_that("works with factors instead of character vars",{
+  suppressMessages(
+    demo <-
+      demo_ %>%
+      add_drug(d_code = ex_$d_drecno, drug_data = drug_) %>%
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  )
+
+  res_true <-
+    demo |>
+    compute_dispro(
+      y = "a_colitis",
+      x = "nivolumab",
+      export_raw_values = TRUE
+    )
+
+  # both factors
+  res <-
+    demo %>%
+    dplyr::mutate(
+      dplyr::across(c(nivolumab, a_colitis), as.factor)
+    ) |>
+    compute_dispro(
+      y = "a_colitis",
+      x = "nivolumab",
+      export_raw_values = TRUE
+    )
+
+  # one factors
+  res_facd <-
+    demo %>%
+    dplyr::mutate(
+      dplyr::across(c(nivolumab), as.factor)
+    ) |>
+    compute_dispro(
+      y = "a_colitis",
+      x = "nivolumab",
+      export_raw_values = TRUE
+    )
+
+  # the other factor
+
+  res_faca <-
+    demo %>%
+    dplyr::mutate(
+      dplyr::across(c(a_colitis), as.factor)
+    ) |>
+    compute_dispro(
+      y = "a_colitis",
+      x = "nivolumab",
+      export_raw_values = TRUE
+    )
+
+  expect_equal(res, res_true)
+  expect_equal(res_facd, res_true)
+  expect_equal(res_faca, res_true)
+
+  res_arrow <-
+    demo %>%
+    dplyr::mutate(
+      dplyr::across(c(nivolumab, a_colitis), as.factor)
+    ) |>
+    arrow::as_arrow_table() |>
+    compute_dispro(
+      y = "a_colitis",
+      x = "nivolumab",
+      export_raw_values = TRUE
+    )
+
+  expect_equal(res_arrow, res_true)
+})
+
+test_that("factors with levels other than 0 and 1 are rejected", {
+  suppressMessages(
+    demo <-
+      demo_ %>%
+      add_drug(d_code = ex_$d_drecno, drug_data = drug_) %>%
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  )
+
+  demo <-
+    demo |>
+    dplyr::mutate(
+      nivolumab_fac = factor(nivolumab, levels = c(0, 1, 2)),
+      nivolumab_fac2 =
+        ifelse(nivolumab == 0, "a", "b") |> factor(),
+      a_colitis_fac = factor(a_colitis, levels = c(0, 1, 2)),
+      a_colitis_fac2 =
+        ifelse(a_colitis == 0, "a", "b") |> factor(),
+      a_colitis_fac3 =
+        "a" |> factor()
+    )
+
+    expect_snapshot(
+      error = TRUE,
+      {compute_dispro(
+      demo,
+      y = "a_colitis",
+      x = "nivolumab_fac"
+    )})
+
+    expect_error(compute_dispro(
+      demo,
+      y = "a_colitis_fac",
+      x = "nivolumab"
+    ), class = "invalid_factor_levels"
+    )
+
+    expect_error(compute_dispro(
+      demo,
+      y = "a_colitis_fac",
+      x = "nivolumab_fac"
+    ), class = "invalid_factor_levels"
+    )
+
+    expect_error(compute_dispro(
+      demo,
+      y = "a_colitis",
+      x = "nivolumab_fac2"
+    ), class = "invalid_factor_levels"
+    )
+
+    expect_error(compute_dispro(
+      demo,
+      y = "a_colitis_fac3",
+      x = "nivolumab"
+    ), class = "invalid_factor_levels"
+    )
+})
