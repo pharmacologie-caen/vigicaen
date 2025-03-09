@@ -173,18 +173,7 @@ vigi_routine(
 )
 ```
 
-<img src="man/figures/README-render_graph-1.png" width="100%" />
-
-    #> TableGrob (37 x 5) "arrange": 6 grobs
-    #>   z         cells    name           grob
-    #> 1 1 ( 1- 6, 1- 5) arrange gtable[layout]
-    #> 2 2 ( 7-12, 1- 3) arrange gtable[layout]
-    #> 3 3 ( 7-12, 4- 5) arrange gtable[layout]
-    #> 4 4 (13-20, 1- 5) arrange gtable[layout]
-    #> 5 5 (21-36, 1- 5) arrange gtable[layout]
-    #> 6 6 (37-37, 1- 5) arrange gtable[layout]
-
-<img src="man/figures/vg.svg" width="100%" />
+<img src="man/figures/vg.png" alt="Example of vigi_routine with case data." width="100%" />
 
 ## Example [![PV - Advanced](https://img.shields.io/badge/PV-Advanced-43b284)](https://pharmacologie-caen.github.io/vigicaen/articles/basic_workflow.html)
 

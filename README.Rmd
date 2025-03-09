@@ -172,7 +172,7 @@ vigi_routine(
 )
 ```
 
-```{r render_graph, echo = FALSE, message = FALSE, fig.height=7.5, fig.width=4}
+```{r render_graph, echo = FALSE, message = FALSE, include = FALSE}
 library(vigicaen)
 
 d_code <- 
@@ -199,20 +199,16 @@ vigi_routine(
   vigibase_version = "September 2024"
 )
 
-#| fig.alt: >
-#|   Example of vigi_routine with case data.
+td <- tempdir()
 
-g1
-# 
-# td <- tempdir()
-# 
-# ggplot2::ggsave(here::here("man", "figures", "vg.svg"), plot = g1, height = 6.7, width = 4)
+ggplot2::ggsave(here::here("man", "figures", "vg.png"), plot = g1, height = 7.5, width = 4)
 ```
 
 ```{r include_graph, echo = FALSE, fig.height=7.5, fig.width=4}
+#| fig.alt: >
+#|   Example of vigi_routine with case data.
 
-
-knitr::include_graphics(here::here("man", "figures", "vg.svg"))
+knitr::include_graphics(here::here("man", "figures", "vg.png"))
 ```
 
 ## Example [![PV - Advanced](https://img.shields.io/badge/PV-Advanced-43b284)](https://pharmacologie-caen.github.io/vigicaen/articles/basic_workflow.html)
