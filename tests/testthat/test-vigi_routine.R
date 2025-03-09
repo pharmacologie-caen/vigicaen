@@ -699,3 +699,44 @@ test_that("data type checking prints nicely", {
 
 
 })
+
+test_that("absence of rechallenge data correctly displayed", {
+  d_drecno <-
+    ex_$d_drecno["nivolumab"]
+
+  a_llt <-
+    ex_$a_llt["a_colitis"]
+
+  demo <- demo_
+  adr  <- adr_
+  drug <- drug_
+  link <- link_ |>
+    dplyr::filter(!Rechallenge2 %in% c("1", "2"))
+
+  expect_doppelganger(
+    "no rechallenge",
+    vigi_routine(
+      demo_data = demo,
+      drug_data = drug,
+      adr_data  = adr,
+      link_data = link,
+      d_code = d_drecno,
+      a_code = a_llt,
+      vigibase_version = "September 2024"
+    )
+  )
+
+  expect_doppelganger(
+    "no rechallenge",
+    vigi_routine(
+      demo_data = arrow::as_arrow_table(demo),
+      drug_data = arrow::as_arrow_table(drug),
+      adr_data  = arrow::as_arrow_table(adr),
+      link_data = arrow::as_arrow_table(link),
+      d_code = d_drecno,
+      a_code = a_llt,
+      vigibase_version = "September 2024"
+    )
+  )
+
+})
