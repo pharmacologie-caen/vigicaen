@@ -271,21 +271,25 @@ be printed in the graph legend. You can use anything, such as “September
 <span>  vigibase_version <span class="op">=</span> <span class="st">"September 2024"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="routine_pharmacovigilance_files/figure-html/vigi_routine-1.png" alt="Example of vigi_routine." width="384"></p>
-<p>Lets take a look at the results. There are 2 graphs, one of top of
-the other.</p>
+<p>Lets take a look at the results. There are several sections.</p>
 <ul>
-<li><p>The first graph is a disproportionality analysis, using the
-Information Component. The color scale is purely indicative and should
-not be considered as standard.</p></li>
-<li><p>The second graph is a time to onset analysis. It shows the
-distribution of time to onset from drug initiation (here, nivolumab), to
-reaction onset (colitis). The scale is log-transformed, and span from 1
-day to … 10 years! The pale blue and sustained blue bars at the bottom
-indicate the number of limits where 50% and 80% of the patients fall. We
-can roughly see that 50% of the patients had a time to onset comprised
-between ~1.5 month and 1 year. This second graph uses only cases where
-the drug was <strong>suspected</strong> to be responsible for the
-reaction.</p></li>
+<li><p>The number of cases: It displays the number of cases where the
+drug was suspected, interacting, or concomitant. Data are displayed with
+bar charts and numerically.</p></li>
+<li><p>The Rechallenge: Number of informative rechallenges (i.e.,
+rechallenges where the outcome is known). It’s not displayed if no cases
+were found.</p></li>
+<li><p>The disproportionality analysis, using the Information Component.
+The color scale is purely indicative and should not be considered as
+standard.</p></li>
+<li><p>The time to onset analysis. It shows the distribution of time to
+onset from drug initiation (here, nivolumab), to reaction onset
+(colitis). The scale is log-transformed, and span from 1 day to … 10
+years! The pale blue and sustained blue bars at the bottom indicate the
+number of limits where 50% and 80% of the patients fall. We can roughly
+see that 50% of the patients had a time to onset comprised between ~1.5
+month and 1 year. This second graph uses only cases where the drug was
+<strong>suspected</strong> to be responsible for the reaction.</p></li>
 </ul>
 <div class="section level3">
 <h3 id="add-your-own-case-time-to-onset">Add your own case time to onset<a class="anchor" aria-label="anchor" href="#add-your-own-case-time-to-onset"></a>

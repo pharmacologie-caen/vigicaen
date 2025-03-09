@@ -201,14 +201,23 @@
 <span>  a_code    <span class="op">=</span> <span class="va">a_code</span>,</span>
 <span>  vigibase_version <span class="op">=</span> <span class="st">"September 2024"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/vg.svg" alt="Example of vigi_routine with case data." width="100%"></p>
+<p><img src="reference/figures/README-render_graph-1.png" width="100%"></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#&gt; TableGrob (37 x 5) "arrange": 6 grobs</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt;   z         cells    name           grob</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#&gt; 1 1 ( 1- 6, 1- 5) arrange gtable[layout]</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt; 2 2 ( 7-12, 1- 3) arrange gtable[layout]</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt; 3 3 ( 7-12, 4- 5) arrange gtable[layout]</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt; 4 4 (13-20, 1- 5) arrange gtable[layout]</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt; 5 5 (21-36, 1- 5) arrange gtable[layout]</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt; 6 6 (37-37, 1- 5) arrange gtable[layout]</span></span></code></pre></div>
+<p><img src="reference/figures/vg.svg" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="example-pv---advanced">Example <a href="https://pharmacologie-caen.github.io/vigicaen/articles/basic_workflow.html"><img src="https://img.shields.io/badge/PV-Advanced-43b284" alt="PV - Advanced"></a>
 <a class="anchor" aria-label="anchor" href="#example-pv---advanced"></a>
 </h2>
 <p>You want to perform a disproportionality analysis between nivolumab exposure and colitis reporting (reporting odds-ratio <code>or</code> and information component <code>ic</code>).</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/pharmacologie-caen/vigicaen" class="external-link">vigicaen</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">demo</span> <span class="op">&lt;-</span></span>
