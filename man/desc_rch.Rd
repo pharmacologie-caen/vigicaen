@@ -4,12 +4,10 @@
 \alias{desc_rch}
 \title{Rechallenge descriptive}
 \usage{
-desc_rch(.data, demo_data, drug_s = "drug1", adr_s = "adr1")
+desc_rch(.data, drug_s = "drug1", adr_s = "adr1")
 }
 \arguments{
 \item{.data}{A \code{link} data.table. See \code{\link{link_}}.}
-
-\item{demo_data}{A demo data.table.}
 
 \item{drug_s}{A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}}.}
 
@@ -52,14 +50,12 @@ link_ <-
   )
 
 desc_rch(.data = link_,
-         demo_data = demo_,
          drug_s = "pd1",
          adr_s = "a_colitis")
 
 # You can vectorize over drugs and adrs
 
 desc_rch(.data = link_,
-         demo_data = demo_,
          adr_s = c("a_colitis", "a_pneumonitis"),
          drug_s = c("pd1", "pdl1")
          )

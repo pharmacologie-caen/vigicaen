@@ -105,10 +105,11 @@ desc_outcome <-
         names(grouping_variables) <- NULL
 
         data_subset <-
-          .data[.data[[one_drug]] == 1 &
-                     .data[[one_adr]] == 1
-          ]
-
+          .data |>
+          dplyr::filter(
+            .data[[one_drug]] == 1 &
+              .data[[one_adr]] == 1
+          )
 
         out <-
           data_subset |>
@@ -146,6 +147,7 @@ desc_outcome <-
             n_cas =
               dplyr::n()
           ) |>
+          dplyr::collect() |>
           dplyr::left_join(out_worst_mask,
                     by = "out_worst") |>
           dplyr::arrange(.data$drug_s, .data$adr_s, .data$out_worst) |>

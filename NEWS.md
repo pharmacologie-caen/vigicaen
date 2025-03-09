@@ -1,5 +1,13 @@
 # vigicaen (development version)
 
+## New features
+
+* `vigi_routine()` now plots details on drug liability and rechallenge
+when available (#119).
+
+* `desc_rch()`, `desc_dch()` and `desc_outcome()` now handle out of 
+memory arrow Table (#127).
+
 ## Minor
 
 * Error and warnings all turned into `cli` syntax. Gathered redundant checkers

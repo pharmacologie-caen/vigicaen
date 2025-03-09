@@ -135,3 +135,40 @@ test_that("works with vectorization", {
 
 
 })
+
+test_that("works with arrow Table", {
+  link_dch <- data.table(
+    UMCReportId = 1:13,
+    Drug_Id = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13),
+    Adr_Id = c(101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113),
+    adr1         = c(1, 1, 1, 1, 1, 1, 1, 1, 0,   0, 0, 0, 0),
+    adr2         = c(1, 0, 1, 0, 1, 0, 1, 0, 1,   1, 1, 1, 1),
+    drug1        = c(1, 1, 1, 1, 1, 1, 0, 0, 0,   1, 0, 1, 1),
+    drug2        = c(0, 1, 0, 1, 1, 0, 1, 0, 1,   0, 1, 0, 1),
+    Dechallenge1 =
+      as.character(c(  1, 4, 2, 1, 2, 2, 1, 3, 2,   4, 1, 1, 2)),
+    Dechallenge2 =
+      as.character(c(  1, 2, 1, 1, 3, 2, 4, 1, "-", 3, 2, 2, 3)),
+    tto_mean = 1,
+    range = 1
+  ) |>
+    arrow::as_arrow_table()
+
+  r1 <- desc_dch(link_dch,
+                 adr_s = "adr1",
+                 drug_s = "drug1")
+
+  true_r1 <-
+    data.frame(
+      drug_s = "drug1",
+      adr_s = "adr1",
+      pos_dch = 3
+    ) |>
+    dplyr::as_tibble()
+
+  expect_equal(
+    r1,
+    true_r1
+  )
+
+})

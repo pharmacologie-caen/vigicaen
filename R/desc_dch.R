@@ -106,10 +106,11 @@ desc_dch <-
         names(grouping_variables) <- NULL
 
         data_subset <-
-          .data[.data[[one_drug]] == 1 &
-                  .data[[one_adr]] == 1
-          ]
-
+          .data |>
+          dplyr::filter(
+            .data[[one_drug]] == 1 &
+              .data[[one_adr]] == 1
+          )
 
         dch <-
           data_subset |>
@@ -125,7 +126,8 @@ desc_dch <-
               )
           ) |>
           dplyr::summarise(max_pos_dch = max(.data$pos_dch),
-                    .by = dplyr::all_of(grouping_variables))
+                    .by = dplyr::all_of(grouping_variables)) |>
+          dplyr::collect()
 
         dch |>
           dplyr::summarise(
