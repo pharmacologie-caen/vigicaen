@@ -176,7 +176,7 @@ The tables you loaded earlier (as demo, drug, adr, and link)
 in the graph legend. You can use anything, such as "September 2024".
 Just remember to write _something_.
 
-```{r vigi_routine, fig.height=6.7, fig.width=4}
+```{r vigi_routine, fig.height=7.5, fig.width=4}
 #| fig.alt: >
 #|   Example of vigi_routine.
 
@@ -191,13 +191,20 @@ vigi_routine(
 )
 ```
 
-Lets take a look at the results. There are 2 graphs, one of top of the other.
+Lets take a look at the results. There are several sections.
 
--    The first graph is a disproportionality analysis, using the 
+-    The number of cases: It displays the number of cases where the drug
+was suspected, interacting, or concomitant. Data are displayed with
+bar charts and numerically.
+
+-    The Rechallenge: Number of informative rechallenges (i.e., rechallenges
+where the outcome is known). It's not displayed if no cases were found.
+
+-    The disproportionality analysis, using the 
 Information Component. The color scale is purely indicative and should
 not be considered as standard.
 
--    The second graph is a time to onset analysis. It shows the distribution
+-    The time to onset analysis. It shows the distribution
 of time to onset from drug initiation (here, nivolumab), to reaction onset
 (colitis). The scale is log-transformed, and span from 1 day to ... 10 years!
 The pale blue and sustained blue bars at the bottom indicate the number of 
@@ -214,7 +221,7 @@ this case, the colitis happened 150days after nivolumab initiation.
 We can add this information to the graph, using the `case_tto` argument.
 
 
-```{r vigi_routine_case, fig.height=6.7, fig.width=4}
+```{r vigi_routine_case, fig.height=7.5, fig.width=4}
 #| fig.alt: >
 #|   Example of vigi_routine with case data.
 
