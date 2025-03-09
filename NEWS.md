@@ -8,6 +8,9 @@ when available (#119).
 * `desc_rch()`, `desc_dch()` and `desc_outcome()` now handle out of 
 memory arrow Table (#127).
 
+* `compute_dispro()` now handles factors as `x` or `y` arguments,
+if levels are strictly equal to 0 and 1 (#134).
+
 ## Minor
 
 * Error and warnings all turned into `cli` syntax. Gathered redundant checkers
