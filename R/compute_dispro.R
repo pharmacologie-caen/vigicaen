@@ -167,6 +167,34 @@ compute_dispro <-
                            .groups = "keep") |>
           dplyr::collect()
 
+        # handle 0/1 factors
+
+        is_one_x_01_factor <-
+          check_01_factor(ct$one_x,
+                          arg = "x",
+                          col_name = one_x)
+
+        is_one_y_01_factor <-
+          check_01_factor(ct$one_y,
+                          arg = "y",
+                          col_name = one_y)
+
+        if(is_one_x_01_factor){
+          ct <-
+            ct |>
+            dplyr::mutate(
+              one_x = as.numeric(as.character(.data$one_x))
+            )
+        }
+
+        if(is_one_y_01_factor){
+          ct <-
+            ct |>
+            dplyr::mutate(
+              one_y = as.numeric(as.character(.data$one_y))
+            )
+        }
+
         # data manage contingency table
         # starting with data mask
         dm |>
@@ -191,23 +219,18 @@ compute_dispro <-
       }
 
     # all drugs and all adrs count tables
+
     ad_aa_counts <-
       x  |>
-      purrr::map(
-        function(one_x_) {
-          y |>
-            purrr::map(
-              function(one_y_)
-                .data |>
-                c_or_abcd_core(
-                  one_y = one_y_,
-                  one_x = one_x_
-                )
-            )
-        }
-      ) |>
-     unlist(recursive = FALSE) |>
+      purrr::map(function(one_x_) {
+        y |>
+          purrr::map(function(one_y_)
+            .data |>
+              c_or_abcd_core(one_y = one_y_, one_x = one_x_))
+      }) |>
+      unlist(recursive = FALSE) |>
       purrr::list_rbind()
+
 
     # compute disproportionality
     ad_aa_counts |>
@@ -278,3 +301,44 @@ compute_dispro <-
       ) |>
       dplyr::select(dplyr::all_of(var_to_export))
   }
+
+# Helpers ---------------
+
+#' Internal factor checker
+#'
+#' If input is not factor, returns FALSE. If input is factors with
+#' levels strictly equal to 0 and 1, returns TRUE. Otherwise,
+#' throws an error.
+#'
+#' @param id_list The id list to check
+#' @param arg Helper to format the error message.
+#' @param call Helper to format the error message.
+#'
+#' @returns An error if the input is invalid. TRUE/FALSE in other cases
+#' @noRd
+
+NULL
+
+check_01_factor <-
+  function(x,
+           arg = rlang::caller_arg(x),
+           col_name = "x",
+           call = rlang::caller_env()){
+  if (is.factor(x)){
+    if (all(levels(x) %in% c(0, 1))) {
+      TRUE
+    } else {
+      cli::cli_abort(
+        c(
+          "{.arg {col_name}} must be a factor with levels 0 and 1.",
+          "x" = "Level{?s} found: {levels(x)}",
+          ">" = "Supply character vector(s), or factor(s) with levels 0 and 1 to {.arg {arg}}."
+        ),
+        call = call,
+        class = "invalid_factor_levels"
+      )
+    }
+  } else {
+    FALSE
+  }
+}
