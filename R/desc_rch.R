@@ -16,7 +16,6 @@
 #' }
 #'
 #' @param .data A `link` data.table. See \code{\link{link_}}.
-#' @param demo_data A demo data.table.
 #' @param drug_s A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}}.
 #' @param adr_s A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}}.
 #'
@@ -45,20 +44,17 @@
 #'   )
 #'
 #' desc_rch(.data = link_,
-#'          demo_data = demo_,
 #'          drug_s = "pd1",
 #'          adr_s = "a_colitis")
 #'
 #' # You can vectorize over drugs and adrs
 #'
 #' desc_rch(.data = link_,
-#'          demo_data = demo_,
 #'          adr_s = c("a_colitis", "a_pneumonitis"),
 #'          drug_s = c("pd1", "pdl1")
 #'          )
 
 desc_rch <- function(.data,
-                     demo_data,
                      drug_s = "drug1",
                      adr_s = "adr1"
 ){
@@ -76,38 +72,35 @@ desc_rch <- function(.data,
                  .data[[one_adr]] == 1
                )
 
-      demo_sel <- demo_data[UMCReportId %in% link_sel[, UMCReportId]]
+      n_overall <- link_sel |>
+        dplyr::distinct(.data$UMCReportId) |>
+        dplyr::count() |>
+        dplyr::collect() |>
+        dplyr::pull()
 
-      link_sel_rch <-
+      n_rch <-
         link_sel |>
-        dplyr::filter(.data$Rechallenge1 == "1")
+        dplyr::filter(.data$Rechallenge1 == "1") |>
+        dplyr::distinct(.data$UMCReportId) |>
+        dplyr::count() |>
+        dplyr::collect() |>
+        dplyr::pull()
 
-      demo_sel_rch <- demo_sel[UMCReportId %in% link_sel_rch[, UMCReportId]]
-
-      link_sel_inf <-
+      n_inf <-
         link_sel |>
-        dplyr::filter(.data$Rechallenge2 %in% c("1", "2"))
+        dplyr::filter(.data$Rechallenge2 %in% c("1", "2")) |>
+        dplyr::distinct(.data$UMCReportId) |>
+        dplyr::count() |>
+        dplyr::collect() |>
+        dplyr::pull()
 
-      demo_sel_inf <- demo_sel[UMCReportId %in% link_sel_inf[, UMCReportId]]
-
-      link_sel_rec <-
+      n_rec <-
         link_sel |>
-        dplyr::filter(.data$Rechallenge2 %in% c("1"))
-
-      demo_sel_rec <- demo_sel[UMCReportId %in% link_sel_rec[, UMCReportId]]
-
-      n_overall <- demo_sel[, .N]
-
-      # ---- Counting rechal cases ---- #
-
-      # ++++ Any ++++ #
-      n_rch <- demo_sel_rch[, .N]
-
-      # ++++ Inf ++++ #
-      n_inf <- demo_sel_inf[, .N]
-
-      # ++++ Recurring cases ++++ #
-      n_rec <- demo_sel_rec[, .N]
+        dplyr::filter(.data$Rechallenge2 == "1") |>
+        dplyr::distinct(.data$UMCReportId) |>
+        dplyr::count() |>
+        dplyr::collect() |>
+        dplyr::pull()
 
       # Output of results
       data.table::data.table(

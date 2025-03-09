@@ -819,14 +819,12 @@ to `non_rec` (`rec` + `non_rec` =  `inf`)
 ```{r desc_rch_example}
 desc_rch(
   link,
-  demo_data = demo,
   drug_s = "nivolumab",
   adr_s  = "a_colitis"
 )
 ```
 
-**The number of cases is counted at the case level in demo.** 
-This explains why the `demo_data` argument is required here.
+**The number of cases is counted at the case level.** 
 
 As with `desc_tto()` and `desc_dch()`, you can query several drug - adr 
 pairs at once.
@@ -852,7 +850,6 @@ We a particular syntax, we can access the information
 ```{r desc_rch_hack}
 desc_rch(
   link,
-  demo_data = demo,
   drug_s = "all_cases",
   adr_s  = "all_cases"
 )

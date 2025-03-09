@@ -223,6 +223,34 @@ vigi_routine <-
         export_raw_values = TRUE
       )
 
+    # ---- obtain drug basis breakdown ----
+
+    basis_mask <-
+      data.frame(
+        label = c("Suspected", "Concomitant", "Interacting"),
+        Basis = c("1", "2", "3")
+      )
+
+   suppressMessages(drug_basis <-
+      drug_data |>
+      add_adr(a_code, adr_data = adr_data) |>
+      dplyr::filter(
+        .data[[a_name]] == 1 &
+        .data$DrecNo %in% d_code[[d_name]]
+      ) |>
+      # case level count
+      dplyr::distinct(.data$UMCReportId, .data$DrecNo, .data$Basis) |>
+      dplyr::count(.data$Basis) |>
+      dplyr::collect()
+   )
+
+    drug_basis_table <-
+      basis_mask |>
+      dplyr::left_join(
+        drug_basis,
+        by = c("Basis")
+      )
+
     # ---- build link ----
 
     suppressMessages(
@@ -258,18 +286,155 @@ vigi_routine <-
       quantile(ttos$tto_max,
                c(0.10, 0.25, 0.5, 0.75, 0.90))
 
+    # ---- extract positive rechallenge ----
+
+    rch <-
+      desc_rch(
+        link_data,
+        adr_s = a_name,
+        drug_s = d_name
+      )
+
     # #### 2. set custom legends #### ####
 
     # setting and vigibase version should be provided by the user.
 
-    plot_subtitle = paste0("Disproportionality analysis and time to onset.\n",
+    plot_subtitle = paste0(
+      # "Disproportionality analysis and time to onset.\n",
                            "Drug: ", d_label, "\n",
                            "Adverse event: ", a_label, "\n",
-                           "N\u00b0 of cases: ", cff(res_ic$a), "\n",
+                           # "N\u00b0 of cases: ", cff(res_ic$a), "\n",
                            "Setting: ", analysis_setting, "\n",
                            "VigiBase version: ", vigibase_version)
 
-    # #### 3. information component plot #### ####
+
+    # #### 1. Header plot #### ####
+
+    g_header <-
+      ggplot() +
+      theme_void() +
+      labs(
+        title = toupper("Vigibase analysis"),
+        subtitle = plot_subtitle
+      ) +
+      theme(
+        plot.margin = margin(0.5, 0.5, 0.1, 0.5, "cm"),
+        plot.background = element_rect(color = NA, fill = "grey97")
+      )
+
+
+    # #### 2. Case count plot #### ####
+
+    # ---- case count dataframe
+
+    db_table_withlab <-
+      drug_basis_table |>
+      dplyr::mutate(
+        n = ifelse(is.na(n), 0, n),
+        n_chr =
+          cff(n),
+        lab_n =
+          label |>
+          factor(levels = label,
+                 labels = stringr::str_pad(
+                   paste0(label, ": ", n_chr),
+                   10, # gives some sort of control on distance of plot
+                   side = "right")
+          )
+      )
+
+    # plot vars to be defined to avoid a note in R CMD CHECK
+
+    n        <- NULL
+    lab_n    <- NULL
+    label    <- NULL
+    n_chr    <- NULL
+    pos_x    <- NULL
+    pos_y    <- NULL
+    tile_width <- NULL
+    lab      <- NULL
+
+    g_db <-
+      ggplot(db_table_withlab, aes(x = lab_n, y = n, fill = lab_n)) +
+      geom_bar(stat = "identity") +
+      guides(fill =
+               guide_legend(title = NULL)
+      ) +
+      theme_void() +
+      labs(subtitle =
+             paste0("N\u00b0 of cases: ", cff(res_ic$a),
+                    "\n") # extra space before plot
+      ) +
+      scale_fill_manual(values = c("grey15", "grey30", "grey80")) +
+      theme(
+        panel.border = element_rect(color = "black", fill = NA),
+        plot.subtitle = element_text(face = "bold"),
+        legend.position = "right",
+        legend.margin = margin(0, 0.6, 0, 0.3, "cm"),
+        plot.margin = margin(0.1, 0.1, 0.1, 0.5, "cm"),
+        legend.key.size = unit(0.5, "cm"),
+        plot.background = element_rect(color = NA, fill = "grey97"))
+
+
+    # #### 3. Rechallenge plot #### ####
+
+    rch_lab <-
+      data.frame(
+        lab =
+          c("Total", "Positive", "Rate",
+            cff(rch$n_inf),
+            cff(rch$n_rec),
+            paste0(cff(rch$n_rec/rch$n_inf * 100, dig = 0), "%")
+        ),
+        pos_x = c(1, 1, 1, 2, 2, 2),
+        pos_y = c(3, 2, 1, 3, 2, 1),
+        tile_width = c(2, 2, 2, 1, 1, 1)
+      )
+
+    # handle absence of rechallenge cases
+    if (rch$n_inf == 0) {
+      g_rch <-
+        ggplot() +
+        annotate(
+          geom = "text",
+          x = 1,
+          y = 1,
+          label = "No data"
+        ) +
+        theme_void() +
+        labs(subtitle = paste0("Rechallenge", "\n")) +
+        theme(
+          plot.margin = margin(0.1, 0.5, 0.1, 0, "cm"),
+          plot.subtitle = element_text(face = "bold"),
+          plot.background = element_rect(color = NA, fill = "grey97"),
+          plot.caption = element_text(family = "serif")
+        )
+
+    } else {
+      g_rch <-
+        rch_lab |>
+        ggplot(aes(
+          x = pos_x,
+          y = pos_y,
+          fill = factor(pos_x)
+        )) +
+        geom_tile(aes(width = tile_width), color = "white") +
+        geom_text(aes(label = lab), size = 3) +
+        scale_fill_manual(values = c("grey60", "grey85")) +
+        guides(fill = "none") +
+        theme_void() +
+        labs(subtitle = paste0("Rechallenge", "\n"),
+             caption = "Informative\nrechallenges only") +
+        theme(
+          plot.margin = margin(0.1, 0.5, 0.1, 0, "cm"),
+          plot.subtitle = element_text(face = "bold"),
+          plot.background = element_rect(color = NA, fill = "grey97"),
+          plot.caption = element_text(family = "serif")
+        )
+
+    }
+
+    # #### 4. information component plot #### ####
 
     # ---- tiles dataframe
 
@@ -370,22 +535,22 @@ vigi_routine <-
 
       guides(fill = "none") +
       labs(
-        title = toupper("Vigibase analysis"),
-        subtitle = plot_subtitle
+        subtitle = "Disproportionality Analysis"
       ) +
       scale_y_continuous(limits = c(0, 3)) +
       theme_void() +
       theme(
         axis.text.x = element_text(size = 11, vjust = 1,
                                    margin = margin(t = -10, r = 0, b = 0, l = 0)),
-        plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm"),
+        plot.subtitle = element_text(face = "bold"),
+        plot.margin = margin(0.25, 0.5, 0.25, 0.5, "cm"),
         plot.background = element_rect(color = NA, fill = "grey97"),
       )
 
     # ggsave(filename = "graph_test.svg", plot = g1, width = 4, height = 1.2)
 
 
-    # #### 4. time to onset plot #### ####
+    # #### 5. time to onset plot #### ####
 
     # ---- dispersion rectangles
 
@@ -462,7 +627,7 @@ vigi_routine <-
             annotate(
               "label",
               x = case_tto,
-              y = 1.15,
+              y = 1.20,
               label = pl_label,
               vjust = 1,
               color = "#bf3626",
@@ -482,11 +647,11 @@ vigi_routine <-
         )) +
         scale_y_continuous(breaks = NULL) +
         labs(
+          subtitle = "Time to onset",
           caption =
             paste0(
               "d: day, w: week, m: month, y: year\n",
-              "x axis capped at 1 day (min) and 10 years (max)\n\n",
-              "Created with vigicaen, the R package for VigiBase\u00ae"
+              "x axis capped at 1 day (min) and 10 years (max)\n\n"
             ),
           x = x_label,
           y = "Distribution"
@@ -496,47 +661,95 @@ vigi_routine <-
         theme(
           plot.background = element_rect(color = NA, fill = "grey97"),
           legend.position = "bottom",
-          plot.caption = element_text(family = "serif")
+          plot.subtitle = element_text(face = "bold"),
+          plot.caption = element_text(family = "serif"),
+          plot.margin = margin(0.2, 0.5, 0, 0.5, "cm"),
         )
+    }
 
+    # #### 6. Footer plot #### ####
 
+    g_footer <-
+      ggplot() +
+      labs(
+        caption =
+          "Created with vigicaen, the R package for VigiBase\u00ae"
+      ) +
+      theme_void() +
+      theme(
+        plot.background = element_rect(color = NA, fill = "grey97"),
+        plot.caption = element_text(family = "serif"),
+        plot.margin = margin(0, 0.5, 0.5, 0.5, "cm"),
+      )
 
-    g_both <-
+    # assemble plots #### ####
+
+    if(nrow(ttos) > 2){
+      g_assembled <-
       gridExtra::grid.arrange(
-        g1, g2, layout_matrix =
+        g_header,
+        g_db, g_rch,
+        g1, g2, g_footer,
+        layout_matrix =
           matrix(
-            c(1, 1, 1, 2, 2, 2, 2), byrow = TRUE, ncol = 1
-          ))
-
+            c(rep(1, 6 * 5),
+              2, 2, 2, 3, 3,
+              2, 2, 2, 3, 3,
+              2, 2, 2, 3, 3,
+              2, 2, 2, 3, 3,
+              2, 2, 2, 3, 3,
+              2, 2, 2, 3, 3,
+              rep(4, 8 * 5),
+              rep(5, 16 * 5),
+              rep(6, 1 * 5)), byrow = TRUE, ncol = 5
+          )
+        )
+    } else {
+      g_assembled <-
+        gridExtra::grid.arrange(
+          g_header,
+          g_db, g_rch,
+          g1, g_footer,
+          layout_matrix =
+            matrix(
+              c(rep(1, 6 * 5),
+                2, 2, 2, 3, 3,
+                2, 2, 2, 3, 3,
+                2, 2, 2, 3, 3,
+                2, 2, 2, 3, 3,
+                2, 2, 2, 3, 3,
+                2, 2, 2, 3, 3,
+                rep(4, 8 * 5),
+                rep(5, 1 * 5)), byrow = TRUE, ncol = 5
+            )
+        )
     }
 
     if(!is.null(export_to)){
       if(nrow(ttos) > 2){
         ggsave(
           filename = export_to,
-          plot = g_both,
+          plot = g_assembled,
           width = 4,
-          height = 6.7
-        )
+          height = 7.5
+          )
       } else {
       ggsave(
         filename = export_to,
-        plot = g1,
+        plot = g_assembled,
         width = 4,
-        height = 2.9
+        height = 4.3
       )
       }
 
       message(paste0("Plot exported to ", export_to))
     }
 
-    if(nrow(ttos) > 2){
-      invisible(g_both)
-    } else {
+    if(nrow(ttos) <= 2){
       cli::cli_alert_info("Not enough data to plot time to onset")
-      return(g1)
     }
 
+    invisible(g_assembled)
   }
 
 # Helpers -------------------------

@@ -1,4 +1,4 @@
-test_that("gives proper counts", {
+test_that("gives proper counts, even with arrow Table", {
 
   d_drecno_test <-
     rlang::list2(
@@ -57,6 +57,16 @@ test_that("gives proper counts", {
   expect_equal(
     d_out_test,
     d_out_correct
+  )
+
+  d_out_test_arrow <-
+    desc_outcome(adr_test |> arrow::as_arrow_table(),
+                 drug_s = "ici1",
+                 adr_s = "adr1")
+
+  expect_equal(
+    d_out_test_arrow,
+    d_out_correct |> dplyr::as_tibble()
   )
 
 })

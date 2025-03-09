@@ -9,7 +9,6 @@ test_that("find proper counts on a known dataset", {
 
   rch_test <-
     desc_rch(.data = link_,
-             demo_data = demo_,
              adr_s = "a_colitis",
              drug_s = "pd1")
 
@@ -56,7 +55,6 @@ test_that("can be vectorized", {
 
   rch_test <-
     desc_rch(.data = link_,
-             demo_data = demo_,
              adr_s = c("a_colitis", "a_pneumonitis"),
              drug_s = "pd1")
 
@@ -79,7 +77,6 @@ test_that("can be vectorized", {
 
   rch_test2 <-
     desc_rch(.data = link_,
-             demo_data = demo_,
              adr_s = c("a_colitis"),
              drug_s = c("pd1", "pdl1")
     )
@@ -123,15 +120,8 @@ test_that("works with few data", {
      range = 1
    )
 
-   demo_rch_test <- data.table(
-     UMCReportId =
-       c(1, 2, 3,4 ,5, 6, 7, 8)
-   )
-
-
    res <- desc_rch(
      .data = link_rch,
-     demo_data = demo_rch_test,
      adr_s = "adr1",
      drug_s = "drug1"
    )
@@ -145,4 +135,53 @@ test_that("works with few data", {
      res$n_inf,
      0
    )
+})
+
+
+test_that("works with out of memory arrow Table", {
+
+  expect_snapshot({
+    link_ <-
+      link_  |>
+      arrow::as_arrow_table() |>
+      add_drug(d_code = ex_$d_groups_drecno,
+               drug_data = drug_ |>  arrow::as_arrow_table())  |>
+      add_adr(a_code = ex_$a_llt,
+              adr_data = adr_ |>  arrow::as_arrow_table())
+  })
+
+  rch_test <-
+    desc_rch(.data = link_,
+             adr_s = "a_colitis",
+             drug_s = "pd1")
+
+  true_n_overall <- 81
+
+  expect_equal(
+    rch_test$n_overall,
+    true_n_overall
+  )
+
+  true_n_rch <- 54
+
+  expect_equal(
+    rch_test$n_rch,
+    true_n_rch
+  )
+
+  true_n_inf <- 44
+
+  expect_equal(
+    rch_test$n_inf,
+    true_n_inf
+  )
+
+  true_n_rec <- 16
+
+  expect_equal(
+    rch_test$n_rec,
+    true_n_rec
+  )
+
+
 })
