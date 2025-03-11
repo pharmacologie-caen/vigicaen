@@ -173,7 +173,7 @@ vigi_routine(
 )
 ```
 
-<img src="man/figures/vg.png" alt="Example of vigi_routine with case data." width="100%" />
+<img src="man/figures/vg.png" alt="Example of vigi_routine with case data." width="50%" />
 
 ## Example [![PV - Advanced](https://img.shields.io/badge/PV-Advanced-43b284)](https://pharmacologie-caen.github.io/vigicaen/articles/basic_workflow.html)
 
