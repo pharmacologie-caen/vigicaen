@@ -19,5 +19,5 @@
       Caused by error in `c_or_abcd_core()`:
       ! `nivolumab_fac` must be a factor with levels 0 and 1.
       x Levels found: 0, 1, and 2
-      > Supply character vector(s), or factor(s) with levels 0 and 1 to `x`.
+      > Supply numeric vector(s), or factor(s) with levels 0 and 1 to `x`.
 

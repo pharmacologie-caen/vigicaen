@@ -332,7 +332,7 @@ check_01_factor <-
         c(
           "{.arg {col_name}} must be a factor with levels 0 and 1.",
           "x" = "Level{?s} found: {levels(x)}",
-          ">" = "Supply character vector(s), or factor(s) with levels 0 and 1 to {.arg {arg}}."
+          ">" = "Supply numeric vector(s), or factor(s) with levels 0 and 1 to {.arg {arg}}."
         ),
         call = call,
         class = "invalid_factor_levels"
