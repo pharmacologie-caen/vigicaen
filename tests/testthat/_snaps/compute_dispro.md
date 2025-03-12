@@ -7,3 +7,17 @@
       i `.data` detected as `demo` table.
       i `.data` detected as `demo` table.
 
+# factors with levels other than 0 and 1 are rejected
+
+    Code
+      compute_dispro(demo, y = "a_colitis", x = "nivolumab_fac")
+    Condition
+      Error in `purrr::map()`:
+      i In index: 1.
+      Caused by error in `purrr::map()`:
+      i In index: 1.
+      Caused by error in `c_or_abcd_core()`:
+      ! `nivolumab_fac` must be a factor with levels 0 and 1.
+      x Levels found: 0, 1, and 2
+      > Supply character vector(s), or factor(s) with levels 0 and 1 to `x`.
+
