@@ -118,12 +118,12 @@ pharmacovigilance report.</p></li>
 in this workflow.</p>
 <blockquote>
 <p>We will use the following example: Say a physician reported a case of
-colitis with nivolumab. We would like to know if there is a reporting
-association between colitis and nivolumab, and we would like to analyze
+colitis with ipilimumab. We would like to know if there is a reporting
+association between colitis and ipilimumab, and we would like to analyze
 time to onset.</p>
 </blockquote>
 <p>Obviously, the first part is more interesting if the association
-between colitis and nivolumab is not well established.</p>
+between colitis and ipilimumab is not well established.</p>
 </div>
 <div class="section level2">
 <h2 id="load-tables">Load tables<a class="anchor" aria-label="anchor" href="#load-tables"></a>
@@ -171,7 +171,7 @@ RAM).</p>
 is exactly similar to the <code><a href="../articles/basic_workflow.html">vignette("basic_workflow")</a></code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d_sel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  nivolumab <span class="op">=</span> <span class="st">"nivolumab"</span></span>
+<span>  ipilimumab <span class="op">=</span> <span class="st">"ipilimumab"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">a_sel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -181,11 +181,11 @@ is exactly similar to the <code><a href="../articles/basic_workflow.html">vignet
 <p>When working with vigicaen, we always need to tell R which drug and
 which reaction we are interested in. Here, we create the
 <code>d_sel</code> object, which is a list, with one item. The item name
-is nivolumab, and the content of this item is “nivolumab”. The same goes
-for <code>a_sel</code>.</p>
+is ipilimumab, and the content of this item is “ipilimumab”. The same
+goes for <code>a_sel</code>.</p>
 <blockquote>
-<p>Use lower case for drugs: Good : “nivolumab”, Wrong : “Nivolumab”,
-“NIVOLUMAB”</p>
+<p>Use lower case for drugs: Good : “ipilimumab”, Wrong : “Ipilimumab”,
+“IPILIMUMAB”</p>
 </blockquote>
 <blockquote>
 <p>Mind the capital letter at the beginning of reactions
@@ -224,7 +224,7 @@ reactions, we need low-level term codes.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="color: #00BB00;">✔</span> Matched drugs</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; → `nivolumab`: <span style="color: #0000BB;">"nivolumab"</span> and <span style="color: #0000BB;">"ipilimumab;nivolumab"</span></span></span>
+<span><span class="co">#&gt; → `ipilimumab`: <span style="color: #0000BB;">"ipilimumab"</span> and <span style="color: #0000BB;">"ipilimumab;nivolumab"</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Set `verbose` to FALSE to suppress this section.</span></span>
@@ -283,7 +283,7 @@ were found.</p></li>
 The color scale is purely indicative and should not be considered as
 standard.</p></li>
 <li><p>The time to onset analysis. It shows the distribution of time to
-onset from drug initiation (here, nivolumab), to reaction onset
+onset from drug initiation (here, ipilimumab), to reaction onset
 (colitis). The scale is log-transformed, and span from 1 day to … 10
 years! The pale blue and sustained blue bars at the bottom indicate the
 number of limits where 50% and 80% of the patients fall. We can roughly
@@ -295,7 +295,7 @@ month and 1 year. This second graph uses only cases where the drug was
 <h3 id="add-your-own-case-time-to-onset">Add your own case time to onset<a class="anchor" aria-label="anchor" href="#add-your-own-case-time-to-onset"></a>
 </h3>
 <p>As we said earlier, we are working on a case reported by a physician.
-In this case, the colitis happened 150days after nivolumab
+In this case, the colitis happened 150days after ipilimumab
 initiation.</p>
 <p>We can add this information to the graph, using the
 <code>case_tto</code> argument.</p>
@@ -310,7 +310,7 @@ initiation.</p>
 <span>  a_code    <span class="op">=</span> <span class="va">a_code</span>,</span>
 <span>  vigibase_version <span class="op">=</span> <span class="st">"September 2024"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="..%2Fman%2Ffigures%2Fvigi_routine_case_render.png" alt="Example of vigi_routine with case data." width="384px"></p>
+<p><img src="routine_pharmacovigilance_files/figure-html/vigi_routine_case-1.png" width="384"></p>
 </div>
 <div class="section level3">
 <h3 id="customize-the-graph">Customize the graph<a class="anchor" aria-label="anchor" href="#customize-the-graph"></a>
@@ -342,7 +342,7 @@ work. (e.g. svglite for “.svg”).</p>
 <span>  link_data <span class="op">=</span> <span class="va">link</span>,</span>
 <span>  d_code    <span class="op">=</span> <span class="va">d_code</span>,</span>
 <span>  a_code    <span class="op">=</span> <span class="va">a_code</span>,</span>
-<span>  d_label   <span class="op">=</span> <span class="st">"Nivolumab"</span>,</span>
+<span>  d_label   <span class="op">=</span> <span class="st">"Ipilimumab"</span>,</span>
 <span>  a_label   <span class="op">=</span> <span class="st">"Colitis (HLT)"</span>,</span>
 <span>  vigibase_version <span class="op">=</span> <span class="st">"September 2024"</span>,</span>
 <span>  export_to <span class="op">=</span> <span class="st">"~/vigicaen_graph.png"</span></span>
