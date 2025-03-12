@@ -53,12 +53,12 @@ report.
 `vigi_routine()` is intended as the cornerstone function in this workflow.
 
 > We will use the following example: Say a physician reported a case of 
-> colitis with nivolumab. We would like to know if there is a reporting
-> association between colitis and nivolumab, and we would like to 
+> colitis with ipilimumab. We would like to know if there is a reporting
+> association between colitis and ipilimumab, and we would like to 
 > analyze time to onset.
 
 Obviously, the first part is more interesting if the association between
-colitis and nivolumab is not well established.
+colitis and ipilimumab is not well established.
 
 # Load tables
 
@@ -111,7 +111,7 @@ exactly similar to the `vignette("basic_workflow")`.
 
 ```{r a_sel_d_sel}
 d_sel <- list(
-  nivolumab = "nivolumab"
+  ipilimumab = "ipilimumab"
 )
 
 a_sel <- list(
@@ -122,10 +122,10 @@ a_sel <- list(
 
 When working with vigicaen, we always need to tell R which drug and which
 reaction we are interested in. Here, we create the `d_sel` object, which is a 
-list, with one item. The item name is nivolumab, and the content of this item
-is "nivolumab". The same goes for `a_sel`. 
+list, with one item. The item name is ipilimumab, and the content of this item
+is "ipilimumab". The same goes for `a_sel`. 
 
-> Use lower case for drugs: Good : "nivolumab", Wrong : "Nivolumab", "NIVOLUMAB"
+> Use lower case for drugs: Good : "ipilimumab", Wrong : "Ipilimumab", "IPILIMUMAB"
 
 > Mind the capital letter at the 
 > beginning of reactions ("**C**olitis"): 
@@ -205,7 +205,7 @@ Information Component. The color scale is purely indicative and should
 not be considered as standard.
 
 -    The time to onset analysis. It shows the distribution
-of time to onset from drug initiation (here, nivolumab), to reaction onset
+of time to onset from drug initiation (here, ipilimumab), to reaction onset
 (colitis). The scale is log-transformed, and span from 1 day to ... 10 years!
 The pale blue and sustained blue bars at the bottom indicate the number of 
 limits where 50% and 80% of the patients fall. We can roughly see that 50% of
@@ -216,12 +216,12 @@ for the reaction.
 ## Add your own case time to onset
 
 As we said earlier, we are working on a case reported by a physician. In
-this case, the colitis happened 150days after nivolumab initiation.
+this case, the colitis happened 150days after ipilimumab initiation.
 
 We can add this information to the graph, using the `case_tto` argument.
 
 
-```{r vigi_routine_case, fig.height=7.5, fig.width=4, eval = FALSE}
+```{r vigi_routine_case, fig.height=7.5, fig.width=4}
 vigi_routine(
   case_tto  = 150,
   demo_data = demo,
@@ -232,30 +232,6 @@ vigi_routine(
   a_code    = a_code,
   vigibase_version = "September 2024"
 )
-```
-
-```{r vigi_routine_case_render, echo = FALSE, message = FALSE, include = FALSE}
-
-g1 <- 
-vigi_routine(
-  case_tto  = 150,
-  demo_data = demo,
-  drug_data = drug,
-  adr_data  = adr,
-  link_data = link,
-  d_code    = d_code,
-  a_code    = a_code,
-  vigibase_version = "September 2024"
-)
-
-ggplot2::ggsave(here::here("man", "figures", "vigi_routine_case_render.png"), plot = g1, height = 7.5, width = 4)
-```
-
-```{r vigi_routine_case_graph, echo = FALSE,  out.width="384px"}
-#| fig.alt: >
-#|   Example of vigi_routine with case data.
-
-knitr::include_graphics(here::here("man", "figures", "vigi_routine_case_render.png"))
 ```
 
 ## Customize the graph
@@ -289,7 +265,7 @@ vigi_routine(
   link_data = link,
   d_code    = d_code,
   a_code    = a_code,
-  d_label   = "Nivolumab",
+  d_label   = "Ipilimumab",
   a_label   = "Colitis (HLT)",
   vigibase_version = "September 2024",
   export_to = "~/vigicaen_graph.png"
