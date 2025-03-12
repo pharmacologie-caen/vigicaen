@@ -248,14 +248,14 @@ vigi_routine(
   vigibase_version = "September 2024"
 )
 
-ggplot2::ggsave(here::here(tempdir(), "vigi_routine_case_render.png"), plot = g1, height = 7.5, width = 4)
+ggplot2::ggsave(here::here("man", "figures", "vigi_routine_case_render.png"), plot = g1, height = 7.5, width = 4)
 ```
 
-```{r vigi_routine_case_graph, echo = FALSE, fig.height=7.5, out.width="384px"}
+```{r vigi_routine_case_graph, echo = FALSE,  out.width="384px"}
 #| fig.alt: >
 #|   Example of vigi_routine with case data.
 
-knitr::include_graphics(here::here(tempdir(), "vigi_routine_case_render.png"))
+knitr::include_graphics(here::here("man", "figures", "vigi_routine_case_render.png"))
 ```
 
 ## Customize the graph
