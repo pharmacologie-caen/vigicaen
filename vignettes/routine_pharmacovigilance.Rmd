@@ -251,7 +251,7 @@ vigi_routine(
 ggplot2::ggsave(here::here(tempdir(), "vigi_routine_case_render.png"), plot = g1, height = 7.5, width = 4)
 ```
 
-```{r vigi_routine_case_graph, echo = FALSE, fig.height=7.5, out.width="4in"}
+```{r vigi_routine_case_graph, echo = FALSE, fig.height=7.5, out.width="384px"}
 #| fig.alt: >
 #|   Example of vigi_routine with case data.
 
