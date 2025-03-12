@@ -204,7 +204,7 @@ td <- tempdir()
 ggplot2::ggsave(here::here("man", "figures", "vg.png"), plot = g1, height = 7.5, width = 4)
 ```
 
-```{r include_graph, echo = FALSE, fig.height=7.5, fig.width=4, out.width="50%"}
+```{r include_graph, echo = FALSE, out.width="4in"}
 #| fig.alt: >
 #|   Example of vigi_routine with case data.
 
