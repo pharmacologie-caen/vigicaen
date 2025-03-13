@@ -59,6 +59,8 @@
 <ul><li><p>Error and warnings all turned into <code>cli</code> syntax. Gathered redundant checkers internally (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/133" class="external-link">#133</a>).</p></li>
 <li><p><code><a href="../reference/vigi_routine.html">vigi_routine()</a></code> now works with out of memory arrow Tables. Additional checkers to <code><a href="../reference/vigi_routine.html">vigi_routine()</a></code> for input data type.</p></li>
 <li><p><code><a href="../reference/compute_or_mod.html">compute_or_mod()</a></code> now has an informative error message if either args <code>estimate</code> or <code>std_er</code> were not supplied (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/123" class="external-link">#123</a>).</p></li>
+<li><p><code><a href="../reference/get_drecno.html">get_drecno()</a></code> now handles non-WHO names matching a unique DrecNo that has several WHO names, and throws an error if matching multiple DrecNos (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/139" class="external-link">#139</a>).</p></li>
+<li><p>Adding dependency to <code>glue</code>.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
