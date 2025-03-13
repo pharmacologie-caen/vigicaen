@@ -1,0 +1,128 @@
+Array                   Array Classes
+ArrayData               ArrayData class
+Buffer                  Buffer class
+ChunkedArray            ChunkedArray class
+Codec                   Compression Codec class
+CsvFileFormat           CSV dataset file format
+CsvReadOptions          File reader options
+CsvTableReader          Arrow CSV and JSON table reader classes
+DataType                DataType class
+Dataset                 Multi-file datasets
+DictionaryType          class DictionaryType
+Expression              Arrow expressions
+ExtensionArray          ExtensionArray class
+ExtensionType           ExtensionType class
+FeatherReader           FeatherReader class
+Field                   Field class
+FileFormat              Dataset file formats
+FileInfo                FileSystem entry info
+FileSelector            file selector
+FileSystem              FileSystem classes
+FileWriteOptions        Format-specific write options
+FixedWidthType          FixedWidthType class
+FragmentScanOptions     Format-specific scan options
+InputStream             InputStream classes
+JsonFileFormat          JSON dataset file format
+Message                 Message class
+MessageReader           MessageReader class
+OutputStream            OutputStream classes
+ParquetArrowReaderProperties
+                        ParquetArrowReaderProperties class
+ParquetFileReader       ParquetFileReader class
+ParquetFileWriter       ParquetFileWriter class
+ParquetReaderProperties
+                        ParquetReaderProperties class
+ParquetWriterProperties
+                        ParquetWriterProperties class
+Partitioning            Define Partitioning for a Dataset
+RecordBatch             RecordBatch class
+RecordBatchReader       RecordBatchReader classes
+RecordBatchWriter       RecordBatchWriter classes
+Scalar                  Arrow scalars
+Scanner                 Scan the contents of a dataset
+Schema                  Schema class
+Table                   Table class
+acero                   Functions available in Arrow dplyr queries
+arrow_array             Create an Arrow Array
+arrow_info              Report information on the package's
+                        capabilities
+arrow_table             Create an Arrow Table
+as_arrow_array          Convert an object to an Arrow Array
+as_arrow_table          Convert an object to an Arrow Table
+as_chunked_array        Convert an object to an Arrow ChunkedArray
+as_data_type            Convert an object to an Arrow DataType
+as_record_batch         Convert an object to an Arrow RecordBatch
+as_record_batch_reader
+                        Convert an object to an Arrow RecordBatchReader
+as_schema               Convert an object to an Arrow Schema
+buffer                  Create a Buffer
+call_function           Call an Arrow compute function
+chunked_array           Create a Chunked Array
+codec_is_available      Check whether a compression codec is available
+compression             Compressed stream classes
+concat_arrays           Concatenate zero or more Arrays
+concat_tables           Concatenate one or more Tables
+copy_files              Copy files between FileSystems
+cpu_count               Manage the global CPU thread pool in libarrow
+create_package_with_all_dependencies
+                        Create a source bundle that includes all
+                        thirdparty dependencies
+csv_convert_options     CSV Convert Options
+csv_parse_options       CSV Parsing Options
+csv_read_options        CSV Reading Options
+csv_write_options       CSV Writing Options
+data-type               Create Arrow data types
+dataset_factory         Create a DatasetFactory
+dictionary              Create a dictionary type
+field                   Create a Field
+flight_connect          Connect to a Flight server
+flight_disconnect       Explicitly close a Flight client
+flight_get              Get data from a Flight server
+flight_put              Send data to a Flight server
+gs_bucket               Connect to a Google Cloud Storage (GCS) bucket
+hive_partition          Construct Hive partitioning
+infer_schema            Extract a schema from an object
+infer_type              Infer the arrow Array type from an R object
+install_arrow           Install or upgrade the Arrow library
+install_pyarrow         Install pyarrow for use with reticulate
+io_thread_count         Manage the global I/O thread pool in libarrow
+list_compute_functions
+                        List available Arrow C++ compute functions
+list_flights            See available resources on a Flight server
+load_flight_server      Load a Python Flight server
+map_batches             Apply a function to a stream of RecordBatches
+match_arrow             Value matching for Arrow objects
+mmap_create             Create a new read/write memory mapped file of a
+                        given size
+mmap_open               Open a memory mapped file
+new_extension_type      Extension types
+open_dataset            Open a multi-file dataset
+open_delim_dataset      Open a multi-file dataset of CSV or other
+                        delimiter-separated format
+read_delim_arrow        Read a CSV or other delimited file with Arrow
+read_feather            Read a Feather file (an Arrow IPC file)
+read_ipc_stream         Read Arrow IPC stream format
+read_json_arrow         Read a JSON file
+read_message            Read a Message from a stream
+read_parquet            Read a Parquet file
+read_schema             Read a Schema from a stream
+record_batch            Create a RecordBatch
+register_scalar_function
+                        Register user-defined functions
+s3_bucket               Connect to an AWS S3 bucket
+scalar                  Create an Arrow Scalar
+schema                  Create a schema or extract one from an object.
+show_exec_plan          Show the details of an Arrow Execution Plan
+to_arrow                Create an Arrow object from a DuckDB connection
+to_duckdb               Create a (virtual) DuckDB table from an Arrow
+                        object
+unify_schemas           Combine and harmonize schemas
+value_counts            'table' for Arrow objects
+vctrs_extension_array   Extension type for generic typed vectors
+write_csv_arrow         Write CSV file to disk
+write_dataset           Write a dataset
+write_delim_dataset     Write a dataset into partitioned flat files.
+write_feather           Write a Feather file (an Arrow IPC file)
+write_ipc_stream        Write Arrow IPC stream format
+write_parquet           Write Parquet file to disk
+write_to_raw            Write Arrow data to a raw vector

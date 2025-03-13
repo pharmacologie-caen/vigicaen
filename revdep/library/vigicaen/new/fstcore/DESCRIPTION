@@ -1,0 +1,66 @@
+Package: fstcore
+Type: Package
+Title: R Bindings to the 'Fstlib' Library
+Description: The 'fstlib' library provides multithreaded serialization of compressed data frames using the
+    'fst' format. The 'fst' format allows for random access of stored data and compression with the 'LZ4' and 'ZSTD'
+    compressors.
+Version: 0.10.0
+Date: 2025-02-10
+Authors@R: 
+    c(person(given = "Mark",
+             family = "Klik",
+             role = c("aut", "cre", "cph"),
+             email = "markklik@gmail.com",
+             comment = "Mark Klik is author of the fstcore package and author and copyright holder of the bundled 'fstlib' code"),
+      person(given = "Yuta",
+             family = "Mori",
+             role = c("ctb", "cph"),
+             comment = "Yuta Mori is author and copyright holder of the bundled 'libdivsufsort-lite' code, part of 'ZSTD'"),
+      person(given = "Przemyslaw",
+             family = "Skibinski",
+             role = c("ctb", "cph"),
+             comment = "Przemyslaw Skibinski is author and copyright holder of the bundled price functions, part of 'ZSTD'"),
+      person(given = "Tino",
+             family = "Reichardt",
+             role = c("ctb", "cph"),
+             comment = "Tino Reichardt is author and copyright holder of bundled sources from the 'zstdmt' library, part of 'ZSTD'"),
+      person(given = "Yann",
+             family = "Collet",
+             role = c("ctb", "cph"),
+             comment = "Yann Collet is author of the bundled 'LZ4' and 'ZSTD' code and copyright holder of 'LZ4'"),
+      person(given = "Facebook, Inc.",
+            role = "cph",
+            comment = "Bundled 'ZSTD' code"))
+Depends: R (>= 3.0.0)
+Imports: Rcpp
+LinkingTo: Rcpp
+SystemRequirements: little-endian platform
+RoxygenNote: 7.3.2
+Suggests: testthat, lintr
+License: MPL-2.0 | file LICENSE
+Encoding: UTF-8
+Copyright: This package includes sources from the LZ4 library owned by
+        Yann Collet, sources of the ZSTD library owned by Facebook,
+        Inc., sources of the libdivsufsort-lite library owned by Yuta
+        Mori and sources of the fstlib library owned by Mark Klik
+URL: https://www.fstpackage.org/fstcore/
+BugReports: https://github.com/fstpackage/fst/issues
+NeedsCompilation: yes
+Packaged: 2025-02-10 20:13:08 UTC; Code
+Author: Mark Klik [aut, cre, cph] (Mark Klik is author of the fstcore package
+    and author and copyright holder of the bundled 'fstlib' code),
+  Yuta Mori [ctb, cph] (Yuta Mori is author and copyright holder of the
+    bundled 'libdivsufsort-lite' code, part of 'ZSTD'),
+  Przemyslaw Skibinski [ctb, cph] (Przemyslaw Skibinski is author and
+    copyright holder of the bundled price functions, part of 'ZSTD'),
+  Tino Reichardt [ctb, cph] (Tino Reichardt is author and copyright
+    holder of bundled sources from the 'zstdmt' library, part of
+    'ZSTD'),
+  Yann Collet [ctb, cph] (Yann Collet is author of the bundled 'LZ4' and
+    'ZSTD' code and copyright holder of 'LZ4'),
+  Facebook, Inc. [cph] (Bundled 'ZSTD' code)
+Maintainer: Mark Klik <markklik@gmail.com>
+Repository: CRAN
+Date/Publication: 2025-02-10 20:50:02 UTC
+Built: R 4.4.3; x86_64-w64-mingw32; 2025-03-11 01:35:16 UTC; windows
+Archs: x64

@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Descriptive</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Descriptive</h1>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction" id="toc-introduction">Introduction</a>
+<ul>
+<li><a href="#objectives" id="toc-objectives">Objectives</a></li>
+<li><a href="#prerequisite" id="toc-prerequisite">Prerequisite</a></li>
+</ul></li>
+<li><a href="#demo-data-counts-of-drugs-adrs-case-characteristics" id="toc-demo-data-counts-of-drugs-adrs-case-characteristics">Demo data:
+counts of drugs, adrs, case characteristics</a>
+<ul>
+<li><a href="#step-0-load-packages" id="toc-step-0-load-packages">Step
+0: Load packages</a></li>
+<li><a href="#step-1-load-datasets-and-add-drug-and-adr-columns" id="toc-step-1-load-datasets-and-add-drug-and-adr-columns">Step 1: Load
+datasets and add drug and adr columns</a></li>
+<li><a href="#desc_facvar" id="toc-desc_facvar"><code>desc_facvar()</code></a>
+<ul>
+<li><a href="#multi-level-variables" id="toc-multi-level-variables">Multi-level variables</a></li>
+<li><a href="#binary-variables" id="toc-binary-variables">Binary
+variables</a></li>
+<li><a href="#logical-variables" id="toc-logical-variables">Logical
+variables</a></li>
+<li><a href="#exporting-raw-values" id="toc-exporting-raw-values">Exporting raw values</a></li>
+</ul></li>
+<li><a href="#grouping-several-levels-of-a-variable" id="toc-grouping-several-levels-of-a-variable">Grouping several levels
+of a variable</a></li>
+<li><a href="#explicit-categorical-variables" id="toc-explicit-categorical-variables">Explicit categorical
+variables</a></li>
+<li><a href="#other-arguments-of-desc_facvar" id="toc-other-arguments-of-desc_facvar">Other arguments of
+<code>desc_facvar()</code></a></li>
+</ul></li>
+<li><a href="#drug-data-drug-screening" id="toc-drug-data-drug-screening">Drug data: drug screening</a></li>
+<li><a href="#adr-data-adr-screening-and-evolution-of-adverse-events" id="toc-adr-data-adr-screening-and-evolution-of-adverse-events">Adr
+data: adr screening and evolution of adverse events</a>
+<ul>
+<li><a href="#adr-screening" id="toc-adr-screening">Adr
+screening</a></li>
+<li><a href="#outcome" id="toc-outcome">Outcome</a></li>
+<li><a href="#step-1-data-management-of-adr-with-add_drug-and-add_adr" id="toc-step-1-data-management-of-adr-with-add_drug-and-add_adr">Step 1:
+Data management of adr with add_drug and add_adr</a></li>
+<li><a href="#step-2-desc_outcome-function" id="toc-step-2-desc_outcome-function">Step 2:
+<code>desc_outcome()</code> function</a></li>
+</ul></li>
+<li><a href="#link-data-time-to-onset-dechallenge-rechallenge" id="toc-link-data-time-to-onset-dechallenge-rechallenge">Link data: time
+to onset, dechallenge, rechallenge</a>
+<ul>
+<li><a href="#step-1-load-the-datasets" id="toc-step-1-load-the-datasets">Step 1: Load the datasets</a></li>
+<li><a href="#step-2-add-drug-and-adr-columns" id="toc-step-2-add-drug-and-adr-columns">Step 2: Add drug and adr
+columns</a></li>
+<li><a href="#learn-the-content-of-link" id="toc-learn-the-content-of-link">Learn the content of link</a></li>
+<li><a href="#identify-drugs-and-adverse-events" id="toc-identify-drugs-and-adverse-events">Identify drugs and adverse
+events</a></li>
+<li><a href="#time-to-onset" id="toc-time-to-onset">Time to
+onset</a></li>
+<li><a href="#dechallenge" id="toc-dechallenge">Dechallenge</a></li>
+<li><a href="#rechallenge" id="toc-rechallenge">Rechallenge</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<div id="objectives" class="section level2">
+<h2>Objectives</h2>
+<ul>
+<li><p>Compute descriptive statistics on a (vigibase) dataset</p></li>
+<li><p>Understand the structure of the <code>link</code> table</p></li>
+</ul>
+</div>
+<div id="prerequisite" class="section level2">
+<h2>Prerequisite</h2>
+<ul>
+<li>Be familiar with data management on drugs and adrs, with the
+<code>get_*</code> and <code>add_*</code> functions (see
+<code>vignette(&quot;basic_workflow&quot;)</code>)</li>
+</ul>
+</div>
+</div>
+<div id="demo-data-counts-of-drugs-adrs-case-characteristics" class="section level1">
+<h1>Demo data: counts of drugs, adrs, case characteristics</h1>
+<div id="step-0-load-packages" class="section level2">
+<h2>Step 0: Load packages</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(vigicaen)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(rlang)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
+</div>
+<div id="step-1-load-datasets-and-add-drug-and-adr-columns" class="section level2">
+<h2>Step 1: Load datasets and add drug and adr columns</h2>
+<p>This vignette uses the preloaded datasets (and a spurious suspdup
+table).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>demo     <span class="ot">&lt;-</span> demo_</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>adr      <span class="ot">&lt;-</span> adr_</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>drug     <span class="ot">&lt;-</span> drug_</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>link     <span class="ot">&lt;-</span> link_</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>out      <span class="ot">&lt;-</span> out_</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>followup <span class="ot">&lt;-</span> followup_</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>srce     <span class="ot">&lt;-</span> srce_</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>thg      <span class="ot">&lt;-</span> thg_</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>mp       <span class="ot">&lt;-</span> mp_</span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>meddra   <span class="ot">&lt;-</span> meddra_</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>smq_list <span class="ot">&lt;-</span> smq_list_</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>smq_content <span class="ot">&lt;-</span> smq_content_</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>suspdup <span class="ot">&lt;-</span> </span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>  data.table<span class="sc">::</span><span class="fu">data.table</span>(</span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>    <span class="at">UMCReportId =</span> <span class="dv">1</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>    <span class="at">SuspectedduplicateReportId =</span> <span class="cn">NA</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>  )</span></code></pre></div>
+<p>And preloaded drug and adr dictionaries.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>d_drecno <span class="ot">&lt;-</span> ex_<span class="sc">$</span>d_drecno</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>a_llt <span class="ot">&lt;-</span> ex_<span class="sc">$</span>a_llt</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>demo <span class="ot">&lt;-</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  demo <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">add_drug</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>    <span class="at">d_code =</span> d_drecno,</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>    <span class="at">drug_data =</span> drug</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  )</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `demo` table.</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>demo <span class="ot">&lt;-</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  demo <span class="sc">|&gt;</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>  <span class="fu">add_adr</span>(</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>    <span class="at">a_code =</span> a_llt,</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>    <span class="at">adr_data =</span> adr</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  )</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `demo` table.</span></span></code></pre></div>
+<p>As we aim to describe drug and adr counts, but also other variables
+(age, sex, type of reporter), they will be added too.</p>
+<p>You can still refer to </p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Age, sex</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>demo <span class="ot">&lt;-</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  demo <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">cut</span>(<span class="fu">as.integer</span>(AgeGroup),</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>              <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>),</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>              <span class="at">include.lowest =</span> <span class="cn">TRUE</span>, <span class="at">right =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>              <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;&lt;18&quot;</span>, <span class="st">&quot;18-45&quot;</span>,<span class="st">&quot;45-64&quot;</span>, <span class="st">&quot;65-74&quot;</span>, <span class="st">&quot;75+&quot;</span>)),</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>    <span class="at">sex =</span> <span class="fu">case_when</span>(Gender <span class="sc">==</span> <span class="st">&quot;1&quot;</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>                    Gender <span class="sc">==</span> <span class="st">&quot;2&quot;</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>                    Gender <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;-&quot;</span>,<span class="st">&quot;0&quot;</span>,<span class="st">&quot;9&quot;</span>) <span class="sc">~</span> <span class="cn">NA_real_</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>                    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>  )</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co"># Death + outcome availability</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>demo <span class="ot">&lt;-</span> </span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>  demo <span class="sc">|&gt;</span> </span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">death =</span> </span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>           <span class="fu">ifelse</span>(UMCReportId <span class="sc">%in%</span> out<span class="sc">$</span>UMCReportId,</span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>                  UMCReportId <span class="sc">%in%</span> </span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>                    (out <span class="sc">|&gt;</span> </span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>                    <span class="fu">filter</span>(Seriousness <span class="sc">==</span> <span class="st">&quot;1&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>                    <span class="fu">pull</span>(UMCReportId)</span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a>                    ),</span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>                  <span class="cn">NA</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>         )</span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a><span class="co"># follow-up, seriousness</span></span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a>demo <span class="ot">&lt;-</span></span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a>  demo <span class="sc">|&gt;</span></span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a>    <span class="at">fup =</span> <span class="fu">if_else</span>(UMCReportId <span class="sc">%in%</span> followup<span class="sc">$</span>UMCReportId, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a>    <span class="at">serious =</span> </span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a>      <span class="fu">ifelse</span>(</span>
+<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a>        UMCReportId <span class="sc">%in%</span> out<span class="sc">$</span>UMCReportId,</span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a>        UMCReportId <span class="sc">%in%</span> </span>
+<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a>          (out <span class="sc">|&gt;</span> </span>
+<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a>          <span class="fu">filter</span>(Serious <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a>          <span class="fu">pull</span>(UMCReportId)</span>
+<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a>          ),</span>
+<span id="cb5-45"><a href="#cb5-45" tabindex="-1"></a>        <span class="cn">NA</span>)</span>
+<span id="cb5-46"><a href="#cb5-46" tabindex="-1"></a>  )</span>
+<span id="cb5-47"><a href="#cb5-47" tabindex="-1"></a></span>
+<span id="cb5-48"><a href="#cb5-48" tabindex="-1"></a><span class="co"># year</span></span>
+<span id="cb5-49"><a href="#cb5-49" tabindex="-1"></a></span>
+<span id="cb5-50"><a href="#cb5-50" tabindex="-1"></a>demo <span class="ot">&lt;-</span> </span>
+<span id="cb5-51"><a href="#cb5-51" tabindex="-1"></a>  demo <span class="sc">|&gt;</span> </span>
+<span id="cb5-52"><a href="#cb5-52" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-53"><a href="#cb5-53" tabindex="-1"></a>    <span class="at">year =</span> <span class="fu">as.numeric</span>(<span class="fu">substr</span>(FirstDateDatabase, <span class="at">start =</span> <span class="dv">1</span>, <span class="at">stop =</span> <span class="dv">4</span>))</span>
+<span id="cb5-54"><a href="#cb5-54" tabindex="-1"></a>    )</span>
+<span id="cb5-55"><a href="#cb5-55" tabindex="-1"></a></span>
+<span id="cb5-56"><a href="#cb5-56" tabindex="-1"></a><span class="co"># type of reporter</span></span>
+<span id="cb5-57"><a href="#cb5-57" tabindex="-1"></a></span>
+<span id="cb5-58"><a href="#cb5-58" tabindex="-1"></a>demo <span class="ot">&lt;-</span></span>
+<span id="cb5-59"><a href="#cb5-59" tabindex="-1"></a>  demo <span class="sc">|&gt;</span></span>
+<span id="cb5-60"><a href="#cb5-60" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb5-61"><a href="#cb5-61" tabindex="-1"></a>    srce <span class="sc">|&gt;</span> <span class="fu">transmute</span>(UMCReportId, <span class="at">type_reporter =</span> Type),</span>
+<span id="cb5-62"><a href="#cb5-62" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">&quot;UMCReportId&quot;</span>)</span></code></pre></div>
+</div>
+<div id="desc_facvar" class="section level2">
+<h2><code>desc_facvar()</code></h2>
+<p><code>desc_facvar()</code> generates a summary of categorical
+variables with 2 or more levels.</p>
+<p>Its <code>.data</code> argument is a dataset to describe. Described
+variables should be passed to <code>vf</code>, as a character
+vector.</p>
+<div id="multi-level-variables" class="section level3">
+<h3>Multi-level variables</h3>
+<p>Let’s take the <code>demo</code> dataset as an example, with variable
+“age”.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">desc_facvar</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="at">.data =</span> demo,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">vf =</span> <span class="st">&quot;age&quot;</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>)</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 4</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt;   var   level value           n_avail</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;             &lt;int&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; 1 age   &lt;18   &quot; 1/499 (0%) &quot;      499</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; 2 age   18-45 &quot;43/499 (9%) &quot;      499</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt; 3 age   45-64 &quot;173/499 (35%)&quot;     499</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; 4 age   65-74 &quot;174/499 (35%)&quot;     499</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; 5 age   75+   &quot;108/499 (22%)&quot;     499</span></span></code></pre></div>
+<p>The output format is a <code>data.frame</code>, of class
+<code>tibble</code>.</p>
+<p>The first column, <code>var</code>, contains the name of the variable
+of interest. The second column, <code>level</code>, contains the level
+of the variable.</p>
+<p>In this example, the first line shows the number of patients whose
+age variable (<code>var</code>) is “&lt;18”, i.e. patients under 18
+years old.</p>
+<p>The percentage appears in the <code>value</code> column, after the
+count of cases and the total number of reports for which the information
+is available.</p>
+<p>This number of reports with available information is recalled in the
+<code>n_avail</code> column.</p>
+</div>
+<div id="binary-variables" class="section level3">
+<h3>Binary variables</h3>
+<p>What happens when the variable has only two levels, for example 1 and
+0, as is often the case for the drug and adr variables?</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">desc_facvar</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="at">.data =</span> demo,</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="at">vf =</span> <span class="st">&quot;nivolumab&quot;</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>)</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 4</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt;   var       level value         n_avail</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;           &lt;int&gt;</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; 1 nivolumab 0     525/750 (70%)     750</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt; 2 nivolumab 1     225/750 (30%)     750</span></span></code></pre></div>
+<p>The output format is unchanged, with a data.frame as output.</p>
+<p>The reading is unchanged: we get the count of cases of the variable
+nivolumab, by its two levels. There are thus 225 patients exposed to
+nivolumab, out of 750 reports in total, which represents 30% of
+patients.</p>
+<p>Conversely, 525 reports do not mention nivolumab.</p>
+<p>In general, when presenting the results, the level 0 of binary
+variables provides little information and can be omitted.</p>
+</div>
+<div id="logical-variables" class="section level3">
+<h3>Logical variables</h3>
+<p>Let’s continue with another example on the “seriousness” status.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">desc_facvar</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="at">.data =</span> demo,</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="at">vf =</span> <span class="st">&quot;serious&quot;</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 4</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt;   var     level value         n_avail</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;           &lt;int&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; 1 serious FALSE 181/747 (24%)     747</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; 2 serious TRUE  566/747 (76%)     747</span></span></code></pre></div>
+<p>The “serious” variable takes the values TRUE/FALSE, and not 1/0, but
+it is interpreted in the same way (it is only an artifact of
+construction).</p>
+<p>Thus, 566 cases are considered serious, out of 747 where the
+information is available.</p>
+</div>
+<div id="exporting-raw-values" class="section level3">
+<h3>Exporting raw values</h3>
+<p>You can export to run plotting or other formatting functions, with
+argument <code>export_raw_values</code>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">desc_facvar</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  <span class="at">.data =</span> demo,</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="at">vf =</span> <span class="st">&quot;nivolumab&quot;</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="at">export_raw_values =</span> <span class="cn">TRUE</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>)</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 6</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co">#&gt;   var       level value         n_avail     n    pc</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;           &lt;int&gt; &lt;int&gt; &lt;dbl&gt;</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt; 1 nivolumab 0     525/750 (70%)     750   525    70</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#&gt; 2 nivolumab 1     225/750 (30%)     750   225    30</span></span></code></pre></div>
+</div>
+</div>
+<div id="grouping-several-levels-of-a-variable" class="section level2">
+<h2>Grouping several levels of a variable</h2>
+<p>What if the available categories do not match our final needs?</p>
+<p>In the example on age, there is only one patient under 18 years old,
+and few patients under 45 years old. We would like to group all this
+data into a single line for a summary.</p>
+<p>The solution is to create the variable with the desired levels
+upstream, in a data management step.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>demo <span class="ot">&lt;-</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  demo <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>    <span class="at">age2 =</span> <span class="fu">cut</span>(<span class="fu">as.integer</span>(AgeGroup),</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>              <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>),</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>              <span class="at">include.lowest =</span> <span class="cn">TRUE</span>, <span class="at">right =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>              <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;&lt;64&quot;</span>, <span class="st">&quot;65-74&quot;</span>, <span class="st">&quot;75+&quot;</span>))</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>  )</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="fu">desc_facvar</span>(</span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>  demo,</span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>  <span class="at">vf =</span> <span class="st">&quot;age2&quot;</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>)</span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 4</span></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co">#&gt;   var   level value         n_avail</span></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;           &lt;int&gt;</span></span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="co">#&gt; 1 age2  &lt;64   217/499 (43%)     499</span></span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="co">#&gt; 2 age2  65-74 174/499 (35%)     499</span></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="co">#&gt; 3 age2  75+   108/499 (22%)     499</span></span></code></pre></div>
+<p>The same is true for columns like “year”.</p>
+<p>When studying the “year” column, it is common to get an error
+message</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">desc_facvar</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>  <span class="at">.data =</span> demo,</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>  <span class="at">vf =</span> <span class="st">&quot;year&quot;</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>)</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt; Error in `desc_facvar()`:</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; ! Too many levels detected in: year</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt; ✖ Number of levels: 13 exceeded `ncat_max`(10)</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt; ℹ Did you pass a continuous variable to `desc_facvar()`?</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co">#&gt; → Set `ncat_max` to suppress this error.</span></span></code></pre></div>
+<p>The error message “Too many levels detected in year” is intentional,
+to avoid passing continuous variables in the <code>vf</code>
+argument.</p>
+<p>The maximum number of categories that can be taken by a variable
+treated by <code>desc_facvar</code> is controlled by the
+<code>ncat_max</code> argument.</p>
+<p>If a variable has more than <code>ncat_max</code> different levels,
+the function stops.</p>
+<p>We can therefore solve this problem by adjusting the value of this
+parameter.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">desc_facvar</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  <span class="at">.data =</span> demo,</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  <span class="at">vf =</span> <span class="st">&quot;year&quot;</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  <span class="at">ncat_max =</span> <span class="dv">20</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>)</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 13 × 4</span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt;    var   level value           n_avail</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;             &lt;int&gt;</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt;  1 year  2011  &quot; 1/750 (0%) &quot;      750</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt;  2 year  2012  &quot; 1/750 (0%) &quot;      750</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt;  3 year  2013  &quot; 2/750 (0%) &quot;      750</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt;  4 year  2014  &quot;10/750 (1%) &quot;      750</span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt;  5 year  2015  &quot; 8/750 (1%) &quot;      750</span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co">#&gt;  6 year  2016  &quot;15/750 (2%) &quot;      750</span></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">#&gt;  7 year  2017  &quot;116/750 (15%)&quot;     750</span></span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="co">#&gt;  8 year  2018  &quot;150/750 (20%)&quot;     750</span></span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="co">#&gt;  9 year  2019  &quot;116/750 (15%)&quot;     750</span></span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co">#&gt; 10 year  2020  &quot;72/750 (10%)&quot;      750</span></span>
+<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a><span class="co">#&gt; 11 year  2021  &quot;99/750 (13%)&quot;      750</span></span>
+<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a><span class="co">#&gt; 12 year  2022  &quot;119/750 (16%)&quot;     750</span></span>
+<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="co">#&gt; 13 year  2023  &quot;41/750 (5%) &quot;      750</span></span></code></pre></div>
+<p>This allows to review the main years, but will be less transposable
+in a final table of a manuscript. A categorization of the reporting
+years may be more informative.</p>
+</div>
+<div id="explicit-categorical-variables" class="section level2">
+<h2>Explicit categorical variables</h2>
+<p>Levels of some variables are indicated by numbers.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">desc_facvar</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>  <span class="at">.data =</span> demo,</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>  <span class="at">vf =</span> <span class="st">&quot;Region&quot;</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>)</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="co">#&gt;   var    level value           n_avail</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;             &lt;int&gt;</span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="co">#&gt; 1 Region 1     &quot; 1/750 (0%) &quot;      750</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="co">#&gt; 2 Region 2     &quot;389/750 (52%)&quot;     750</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt; 3 Region 3     &quot;17/750 (2%) &quot;      750</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt; 4 Region 4     &quot;276/750 (37%)&quot;     750</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt; 5 Region 5     &quot; 6/750 (1%) &quot;      750</span></span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt; 6 Region 6     &quot;61/750 (8%) &quot;      750</span></span></code></pre></div>
+<p>We know that 389 cases come from Region “2”, without being able to
+say which geographical area this region belongs to.</p>
+<p>To obtain the correspondence, there are external tables, such as this
+one for the Region: (they can be found in the subsidiary tables of
+vigibase).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Code</th>
+<th>Label</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>African Region</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Region of the Americas</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>South-East Asia Region</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>European Region</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Eastern Mediterranean Region</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Western Pacific Region</td>
+</tr>
+</tbody>
+</table>
+<p>Several options are possible to bring the information back directly
+into demo, the simplest is to use factors</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>demo <span class="ot">&lt;-</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  demo <span class="sc">|&gt;</span> </span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>    <span class="at">Region =</span> <span class="fu">factor</span>(Region, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>, <span class="st">&quot;4&quot;</span>, <span class="st">&quot;5&quot;</span>, <span class="st">&quot;6&quot;</span>))</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>  )</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="fu">levels</span>(demo<span class="sc">$</span>Region) <span class="ot">&lt;-</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">&quot;African Region&quot;</span>,                                    </span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>    <span class="st">&quot;Region of the Americas&quot;</span>,                            </span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>    <span class="st">&quot;South-East Asia Region&quot;</span>,                            </span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>    <span class="st">&quot;European Region&quot;</span>,                                   </span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>    <span class="st">&quot;Eastern Mediterranean Region&quot;</span>,                      </span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>    <span class="st">&quot;Western Pacific Region&quot;</span>  </span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a>  )</span></code></pre></div>
+<p>Note the transformation in two steps. The first to sort the levels of
+the variable, the second to assign the labels to its levels. This
+sequence is necessary to avoid a random sorting of levels.</p>
+<p>This transformation has the effect of modifying the result of
+<code>desc_facvar()</code></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">desc_facvar</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>  <span class="at">.data =</span> demo,</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  <span class="at">vf =</span> <span class="st">&quot;Region&quot;</span></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>)</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co">#&gt;   var    level                        value           n_avail</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;                        &lt;chr&gt;             &lt;int&gt;</span></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="co">#&gt; 1 Region African Region               &quot; 1/750 (0%) &quot;      750</span></span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="co">#&gt; 2 Region Region of the Americas       &quot;389/750 (52%)&quot;     750</span></span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a><span class="co">#&gt; 3 Region South-East Asia Region       &quot;17/750 (2%) &quot;      750</span></span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="co">#&gt; 4 Region European Region              &quot;276/750 (37%)&quot;     750</span></span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a><span class="co">#&gt; 5 Region Eastern Mediterranean Region &quot; 6/750 (1%) &quot;      750</span></span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a><span class="co">#&gt; 6 Region Western Pacific Region       &quot;61/750 (8%) &quot;      750</span></span></code></pre></div>
+<p>The two other variables mainly affected by this phenomenon are
+<code>Type</code> and <code>type_reporter</code>. The transformation
+code is found in <code>vignette(&quot;template_main.R&quot;)</code></p>
+</div>
+<div id="other-arguments-of-desc_facvar" class="section level2">
+<h2>Other arguments of <code>desc_facvar()</code></h2>
+<p>Three other arguments allow to control the output format of the
+results.</p>
+<ol style="list-style-type: decimal">
+<li><code>format</code> is a character string that must necessarily
+contain the values <code>n</code>, <code>N</code> and
+<code>pc</code>.</li>
+</ol>
+<p>This argument allows to customize the way the result is displayed.
+For example, if you want to put the percentage in brackets instead of
+parentheses</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">desc_facvar</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>  <span class="at">.data =</span> demo,</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>  <span class="at">vf =</span> <span class="st">&quot;nivolumab&quot;</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>  <span class="at">format =</span> <span class="st">&quot;n_/N_ [pc_%]&quot;</span></span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>)</span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 4</span></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt;   var       level value         n_avail</span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;           &lt;int&gt;</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt; 1 nivolumab 0     525/750 [70%]     750</span></span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co">#&gt; 2 nivolumab 1     225/750 [30%]     750</span></span></code></pre></div>
+<p>You can also change all other elements of this argument.</p>
+<ol start="2" style="list-style-type: decimal">
+<li><p><code>pad_width</code> allows to center the results in the middle
+of a character string. If you have particularly high numbers, you can
+increase the value of this parameter, so that your results remain well
+centered.</p></li>
+<li><p><code>digits</code> controls the number of digits after the
+decimal point for the percentage. <strong>Warning</strong>, it is not
+guaranteed that the sum will be exactly 100%.</p></li>
+</ol>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">desc_facvar</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>  <span class="at">.data =</span> demo,</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>  <span class="at">vf =</span> <span class="st">&quot;nivolumab&quot;</span>,</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">1</span></span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>)</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 4</span></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="co">#&gt;   var       level value           n_avail</span></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;             &lt;int&gt;</span></span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a><span class="co">#&gt; 1 nivolumab 0     525/750 (70.0%)     750</span></span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a><span class="co">#&gt; 2 nivolumab 1     225/750 (30.0%)     750</span></span></code></pre></div>
+</div>
+</div>
+<div id="drug-data-drug-screening" class="section level1">
+<h1>Drug data: drug screening</h1>
+</div>
+<div id="adr-data-adr-screening-and-evolution-of-adverse-events" class="section level1">
+<h1>Adr data: adr screening and evolution of adverse events</h1>
+<p><code>screen_drug()</code> let you screen the most drugs reported in
+a <code>drug</code> dataset, sorted by frequency.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">screen_drug</span>(drug, <span class="at">mp_data =</span> mp, <span class="at">top_n =</span> <span class="dv">5</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 4</span></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="co">#&gt;   `Drug name`      DrecNo     N percentage</span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;             &lt;int&gt; &lt;int&gt;      &lt;dbl&gt;</span></span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="co">#&gt; 1 pembrolizumab  20116296   298      39.7 </span></span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="co">#&gt; 2 nivolumab     111841511   225      30   </span></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="co">#&gt; 3 ipilimumab    133138448    86      11.5 </span></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="co">#&gt; 4 atezolizumab  112765189    69       9.2 </span></span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a><span class="co">#&gt; 5 durvalumab    125456180    68       9.07</span></span></code></pre></div>
+<p>Most of the time, you will have filtered the <code>drug</code> data
+upstream, with some <code>add_*</code> function, allowing to focus on a
+subset of cases (of a specific drug, adr, or any set of these)</p>
+<p>For example, identify colitis cases and screen drugs under this
+reaction.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>drug <span class="sc">|&gt;</span> </span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>  <span class="fu">add_adr</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>    a_llt,</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>    <span class="at">adr_data =</span> adr</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>  <span class="fu">filter</span>(a_colitis <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>  <span class="fu">screen_drug</span>(</span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a>    <span class="at">mp_data =</span> mp, <span class="at">top_n =</span> <span class="dv">5</span></span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a>  )</span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `drug` table.</span></span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 4</span></span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a><span class="co">#&gt;   `Drug name`      DrecNo     N percentage</span></span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;             &lt;int&gt; &lt;int&gt;      &lt;dbl&gt;</span></span>
+<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a><span class="co">#&gt; 1 nivolumab     111841511    44       42.3</span></span>
+<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a><span class="co">#&gt; 2 pembrolizumab  20116296    40       38.5</span></span>
+<span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a><span class="co">#&gt; 3 ipilimumab    133138448    20       19.2</span></span>
+<span id="cb19-17"><a href="#cb19-17" tabindex="-1"></a><span class="co">#&gt; 4 &lt;NA&gt;           73636724    14       13.5</span></span>
+<span id="cb19-18"><a href="#cb19-18" tabindex="-1"></a><span class="co">#&gt; 5 &lt;NA&gt;           34178924    13       12.5</span></span></code></pre></div>
+<div id="adr-screening" class="section level2">
+<h2>Adr screening</h2>
+<p><code>screen_adr()</code> let you screen the most frequent reactions
+reported in an <code>adr</code> dataset, sorted by frequency.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">screen_adr</span>(adr_, <span class="at">meddra =</span> meddra_)</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="co">#&gt;                                               term     n percentage</span></span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a><span class="co">#&gt;                                             &lt;char&gt; &lt;int&gt;      &lt;num&gt;</span></span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a><span class="co">#&gt; 1:                                            &lt;NA&gt;   678 90.4000000</span></span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a><span class="co">#&gt; 2: Respiratory, thoracic and mediastinal disorders   110 14.6666667</span></span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a><span class="co">#&gt; 3:                      Gastrointestinal disorders   104 13.8666667</span></span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a><span class="co">#&gt; 4:                              Vascular disorders     9  1.2000000</span></span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a><span class="co">#&gt; 5:                         Immune system disorders     6  0.8000000</span></span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a><span class="co">#&gt; 6:                         Hepatobiliary disorders     5  0.6666667</span></span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a><span class="co">#&gt; 7:          Skin and subcutaneous tissue disorders     1  0.1333333</span></span></code></pre></div>
+<p>Different term levels can be used, according to meddra, with argument
+<code>term_level</code>.</p>
+<p>Most of the time, you will have filtered the <code>adr</code> data
+upstream, with some <code>add_*</code> function, allowing to focus on a
+subset of cases (of a specific drug, adr, or any set of these).</p>
+</div>
+<div id="outcome" class="section level2">
+<h2>Outcome</h2>
+<p>The adr table contains information on the evolution of adverse
+events.</p>
+<p>The possible outcomes (column <code>Outcome</code>) are</p>
+<ul>
+<li>Recovered/resolved</li>
+<li>Recovering/resolving</li>
+<li>Recovered/resolved with sequelae</li>
+<li>Not recovered/not resolved</li>
+<li>Fatal</li>
+<li>Died- unrelated to reaction</li>
+<li>Died- reaction may be contributory</li>
+</ul>
+<p>The adr structure is as follows</p>
+<table>
+<thead>
+<tr class="header">
+<th>UMCReportId</th>
+<th>Adr_Id</th>
+<th>Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>a_1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>a_2</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>a_3</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>a_4</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>A case, identified by its UMCReportId, may have several adverse
+events (Adr_Id) with different outcomes. Summarizing this information
+requires prioritization.</p>
+<p>The logic is as follows: take the ” worst evolution” possible for
+each event of each case, in order to count each event only once for each
+case.</p>
+<p>In order to filter cases according to a drug exposition, it is
+necessary to join the drug data to the adr table.</p>
+</div>
+<div id="step-1-data-management-of-adr-with-add_drug-and-add_adr" class="section level2">
+<h2>Step 1: Data management of adr with add_drug and add_adr</h2>
+<p><code>add_drug()</code> and <code>add_adr()</code> can be used on
+<code>adr</code> data.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>adr <span class="ot">&lt;-</span></span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>  adr <span class="sc">|&gt;</span></span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a>  <span class="fu">add_drug</span>(</span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a>    <span class="at">d_code =</span> d_drecno,</span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a>    <span class="at">drug_data =</span> drug</span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a>  )</span>
+<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `adr` table.</span></span>
+<span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" tabindex="-1"></a>adr <span class="ot">&lt;-</span></span>
+<span id="cb21-11"><a href="#cb21-11" tabindex="-1"></a>  adr <span class="sc">|&gt;</span></span>
+<span id="cb21-12"><a href="#cb21-12" tabindex="-1"></a>  <span class="fu">add_adr</span>(</span>
+<span id="cb21-13"><a href="#cb21-13" tabindex="-1"></a>    <span class="at">a_code =</span> a_llt,</span>
+<span id="cb21-14"><a href="#cb21-14" tabindex="-1"></a>    <span class="at">adr_data =</span> adr</span>
+<span id="cb21-15"><a href="#cb21-15" tabindex="-1"></a>  )</span>
+<span id="cb21-16"><a href="#cb21-16" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `adr` table.</span></span></code></pre></div>
+<p>This allows to identify drugs and adverse events of interest in the
+adr table.</p>
+<p>Drugs are identified at the case level in this table.</p>
+</div>
+<div id="step-2-desc_outcome-function" class="section level2">
+<h2>Step 2: <code>desc_outcome()</code> function</h2>
+<p>The <code>desc_outcome</code> function prioritizes data according to
+the rule:</p>
+<blockquote>
+<p>Take the “worst evolution” possible for each event of each case, in
+order to count each event only once for each case.</p>
+</blockquote>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>adr <span class="sc">|&gt;</span> </span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>  <span class="fu">desc_outcome</span>(</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>    <span class="at">drug_s =</span> <span class="st">&quot;nivolumab&quot;</span>,</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>    <span class="at">adr_s =</span> <span class="st">&quot;a_colitis&quot;</span></span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a>  )</span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 4</span></span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a><span class="co">#&gt;   drug_s    adr_s     n_cas out_label                 </span></span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;int&gt; &lt;chr&gt;                     </span></span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a><span class="co">#&gt; 1 nivolumab a_colitis    10 Unknown                   </span></span>
+<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a><span class="co">#&gt; 2 nivolumab a_colitis    25 Recovered/resolved        </span></span>
+<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a><span class="co">#&gt; 3 nivolumab a_colitis     6 Recovering/resolving      </span></span>
+<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a><span class="co">#&gt; 4 nivolumab a_colitis     1 Not recovered/not resolved</span></span>
+<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a><span class="co">#&gt; 5 nivolumab a_colitis     2 Fatal</span></span></code></pre></div>
+<p>In the case where <code>adr</code> was previously filtered to contain
+only data of a specific adverse drug reaction (for example, with
+<code>tb_subset()</code>), it is still preferable to recreate the drug
+column with <code>add_drug</code> (it will take the value 1 for all
+cases).</p>
+</div>
+</div>
+<div id="link-data-time-to-onset-dechallenge-rechallenge" class="section level1">
+<h1>Link data: time to onset, dechallenge, rechallenge</h1>
+<p>The link table, as created with <code>tb_vigibase()</code>, contains
+additional information than the original link table.</p>
+<p>It is augmented with</p>
+<ul>
+<li><code>UMCReportId</code> the case id</li>
+<li><code>tto_mean</code> the average of TimeToOnsetMin, and
+TimeToOnsetMax, in days</li>
+<li><code>range</code> the half-difference between TimeToOnsetMin and
+TimeToOnsetMax, in days</li>
+</ul>
+<p>These additional variables are useful to compute the time from drug
+initiation to adverse drug reaction onset, and also to compute
+dechallenge and rechallenge data at case level.</p>
+<div id="step-1-load-the-datasets" class="section level2">
+<h2>Step 1: Load the datasets</h2>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>link <span class="ot">&lt;-</span> </span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>  link_</span></code></pre></div>
+</div>
+<div id="step-2-add-drug-and-adr-columns" class="section level2">
+<h2>Step 2: Add drug and adr columns</h2>
+<p>The link table studies the relationship of each drug - adverse event
+pair, within the reports. There are therefore several lines in link for
+each line (case) in demo.</p>
+<p><code>demo</code> table example</p>
+<table>
+<thead>
+<tr class="header">
+<th>UMCReportId</th>
+<th>Other data (age, sexe…)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>65-74, Man</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>65-74, Woman</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>45-64, Woman</td>
+</tr>
+</tbody>
+</table>
+<p>The corresponding <code>link</code> table would be</p>
+<table>
+<thead>
+<tr class="header">
+<th>UMCReportId</th>
+<th>Drug_Id</th>
+<th>Adr_Id</th>
+<th>Time to onset</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1_1</td>
+<td>1_a</td>
+<td>60</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1_2</td>
+<td>1_a</td>
+<td>30</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>1_1</td>
+<td>1_b</td>
+<td>45</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1_2</td>
+<td>1_b</td>
+<td>15</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="learn-the-content-of-link" class="section level2">
+<h2>Learn the content of link</h2>
+<p>Let’s take a while to read data related to the case no 1, in the
+previous example.</p>
+<ul>
+<li><p>It contains two different Drug_Id <code>1_1</code> and
+<code>1_2</code>: this means that this case has two different drugs.
+Most of the time, it is two different drugs (let’s say, paracetamol and
+ibuprofen for this example). It can also be the same drug, with
+different administration modalities (paracetamol with two dosages, or at
+two different times).</p></li>
+<li><p>It contains two different Adr_Id <code>1_a</code> and
+<code>1_b</code>: this means that this case has two different adverse
+events. Mostly, it refers to two different events (e.g. hepatitis and
+hemorrhage).</p></li>
+<li><p>Information are available for each combination. The time to
+onset, i.e. the delay between drug initiation and event onset is
+displayed for each combination</p></li>
+</ul>
+<p>The reading is as follows:</p>
+<ul>
+<li><p>The hepatitis (<code>1_a</code>) occurred 60 days after the
+introduction of paracetamol (<code>1_1</code>), and 30 days after the
+introduction of ibuprofen (<code>1_2</code>).</p></li>
+<li><p>The hemorrhage (<code>1_b</code>) occurred 45 days after the
+introduction of paracetamol (<code>1_1</code>), and 15 days after the
+introduction of ibuprofen (<code>1_2</code>).</p></li>
+</ul>
+<p>In this relatively simple example, everything is coherent: we observe
+that paracetamol and ibuprofen were introduced 30 days apart from each
+other.</p>
+<p>The reality is often more complex: as previously announced, there may
+be several lines in <code>link</code>for the same drug, with different
+time to onset.</p>
+<p>In this case, it is important to decide how to handle this multiple
+information.</p>
+<p>For example, we could have a time to onset at 30 days for paracetamol
+taken at 500mg daily, and a time to onset at 15 days for paracetamol
+taken at 1000mg daily.</p>
+</div>
+<div id="identify-drugs-and-adverse-events" class="section level2">
+<h2>Identify drugs and adverse events</h2>
+<p>As for the <code>demo</code> and <code>adr</code> tables, the
+<code>link</code> table must be completed with drug and adr columns,
+using the <code>add_*</code> family functions.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>link <span class="ot">&lt;-</span></span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>  link <span class="sc">|&gt;</span> </span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>   <span class="fu">add_drug</span>(</span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>    <span class="at">d_code =</span> d_drecno,</span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>    <span class="at">drug_data =</span> drug</span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>  )</span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `link` table.</span></span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a>link <span class="ot">&lt;-</span></span>
+<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a>  link <span class="sc">|&gt;</span></span>
+<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a>  <span class="fu">add_adr</span>(</span>
+<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>    <span class="at">a_code =</span> a_llt,</span>
+<span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a>    <span class="at">adr_data =</span> adr</span>
+<span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a>  )</span>
+<span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `link` table.</span></span></code></pre></div>
+<p>Counts check</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>link <span class="sc">|&gt;</span> </span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>   <span class="fu">check_dm</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a>     <span class="at">cols =</span> <span class="fu">c</span>(<span class="fu">names</span>(d_drecno), <span class="fu">names</span>(a_llt))</span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>     )</span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a><span class="co">#&gt;               [,1]</span></span>
+<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a><span class="co">#&gt; ipilimumab     267</span></span>
+<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a><span class="co">#&gt; atezolizumab   189</span></span>
+<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a><span class="co">#&gt; durvalumab     166</span></span>
+<span id="cb25-9"><a href="#cb25-9" tabindex="-1"></a><span class="co">#&gt; nivolumab     1347</span></span>
+<span id="cb25-10"><a href="#cb25-10" tabindex="-1"></a><span class="co">#&gt; pembrolizumab 1819</span></span>
+<span id="cb25-11"><a href="#cb25-11" tabindex="-1"></a><span class="co">#&gt; avelumab        83</span></span>
+<span id="cb25-12"><a href="#cb25-12" tabindex="-1"></a><span class="co">#&gt; cemiplimab      38</span></span>
+<span id="cb25-13"><a href="#cb25-13" tabindex="-1"></a><span class="co">#&gt; tremelimumab    35</span></span>
+<span id="cb25-14"><a href="#cb25-14" tabindex="-1"></a><span class="co">#&gt; a_embolism      38</span></span>
+<span id="cb25-15"><a href="#cb25-15" tabindex="-1"></a><span class="co">#&gt; a_colitis      314</span></span>
+<span id="cb25-16"><a href="#cb25-16" tabindex="-1"></a><span class="co">#&gt; a_pneumonitis  238</span></span></code></pre></div>
+<p><strong>!! Warning!!</strong>, counts correspond to the number of
+lines for each drug and each effect. It is not the number of reports
+containing each drug or each effect. If you want to obtain this
+information, you must query the <code>demo</code> table.</p>
+</div>
+<div id="time-to-onset" class="section level2">
+<h2>Time to onset</h2>
+<p>The time to onset information is contained in two variables in the
+<code>link</code> table: <code>TimeToOnsetMin</code> and
+<code>TimeToOnsetMax</code>. These two variables reflect the minimum and
+maximum delay of the adverse event occurrence compared to the drug
+intake, taking into account the uncertainty of the input data.</p>
+<table>
+<thead>
+<tr class="header">
+<th>UMCReportId</th>
+<th>Drug_Id</th>
+<th>Adr_Id</th>
+<th>TimeToOnsetMin</th>
+<th>TimeToOnsetMax</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1_1</td>
+<td>1_a</td>
+<td>45</td>
+<td>75</td>
+</tr>
+</tbody>
+</table>
+<p>Here, hepatitis occurred between 45 and 75 days after first
+paracetamol intake.</p>
+<p>This structure is inherited of the incertitude from the source
+reporter or the case. This case would correspond to data like:
+“Hepatitis occurred 2months after paracetamol introduction”.</p>
+<p>This sentence contains an imprecision on the exact delay of
+occurrence: what was the exact day of the month? Was it 1 month and 15
+days? Or 2 months and 15 days? More? It is impossible to decide.</p>
+<p>By convention, we consider that the true time to onset is +/- 15 days
+from the indicated date (here, between 60 - 15 = 45 days, and 60 + 15 =
+75 days).</p>
+<p>Two parameters are derived from this information: the mean time to
+onset <code>tto_mean</code> and the <code>range</code>. The calculation
+is as follows:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>tto_mean <span class="ot">=</span> (TimeToOnsetMax <span class="sc">+</span> TimeToOnsetMin) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>range <span class="ot">=</span> (TimeToOnsetMax <span class="sc">+</span> TimeToOnsetMin) <span class="sc">/</span> <span class="dv">2</span> <span class="sc">-</span> TimeToOnsetMin</span></code></pre></div>
+<table style="width:100%;">
+<colgroup>
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>UMCReportId</th>
+<th>Drug_Id</th>
+<th>Adr_Id</th>
+<th>TimeToOnsetMin</th>
+<th>TimeToOnsetMax</th>
+<th>tto_mean</th>
+<th>range</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1_1</td>
+<td>1_a</td>
+<td>45</td>
+<td>75</td>
+<td>60</td>
+<td>30</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>tto_mean</code> is intuitive: it is the average delay
+between the two available values. In our example, we find 60 days, which
+is the delay indicated by the reporter.</p>
+<p>The <code>range</code> gives the uncertainty: 30 days in our example,
+meaning that we cannot be more precise than 30 days.</p>
+<blockquote>
+<p>The Uppsala Monitoring Centre recommendation is to use only the time
+to onset whose range is &lt;= 1, i.e. the cases where the date is known
+to the day.</p>
+</blockquote>
+<p>Note: the information on hours and minutes is also present in the
+time to onset, if known.</p>
+<p>If we keep on the example of hepatitis, we could have a time to onset
+at 30 days for paracetamol taken at 500mg daily, and a time to onset at
+15 days for paracetamol taken at 1000mg daily.</p>
+<p>In this case, it is important to decide how to handle this multiple
+information. Otherwise, we would have two different
+<code>tto_mean</code> values for the paracetamol - hepatitis pair.</p>
+<p>There is a need for an arbitrary rule to synthetize these data. Our
+habit is to <strong>take the longest delay</strong> between the drug
+introduction and the event occurrence (i.e. the delay between the first
+drug intake and the event). Admittedly, this may not meet all needs.</p>
+<p>This information, that we call <code>tto_max</code>, is obtained with
+<code>extract_tto()</code>.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="fu">extract_tto</span>(</span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a>  <span class="at">.data =</span> link,</span>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a>  <span class="at">drug_s =</span> <span class="st">&quot;nivolumab&quot;</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a>  <span class="at">adr_s  =</span> <span class="st">&quot;a_colitis&quot;</span></span>
+<span id="cb27-5"><a href="#cb27-5" tabindex="-1"></a>)</span>
+<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a><span class="co">#&gt;    UMCReportId tto_max     adr_s    drug_s</span></span>
+<span id="cb27-7"><a href="#cb27-7" tabindex="-1"></a><span class="co">#&gt; 1    108846594     205 a_colitis nivolumab</span></span>
+<span id="cb27-8"><a href="#cb27-8" tabindex="-1"></a><span class="co">#&gt; 2     73027866     175 a_colitis nivolumab</span></span>
+<span id="cb27-9"><a href="#cb27-9" tabindex="-1"></a><span class="co">#&gt; 3     87966085      36 a_colitis nivolumab</span></span>
+<span id="cb27-10"><a href="#cb27-10" tabindex="-1"></a><span class="co">#&gt; 4     88371745     740 a_colitis nivolumab</span></span>
+<span id="cb27-11"><a href="#cb27-11" tabindex="-1"></a><span class="co">#&gt; 5    138643678     379 a_colitis nivolumab</span></span>
+<span id="cb27-12"><a href="#cb27-12" tabindex="-1"></a><span class="co">#&gt; 6     39936658      99 a_colitis nivolumab</span></span>
+<span id="cb27-13"><a href="#cb27-13" tabindex="-1"></a><span class="co">#&gt; 7    140765885       5 a_colitis nivolumab</span></span>
+<span id="cb27-14"><a href="#cb27-14" tabindex="-1"></a><span class="co">#&gt; 8     11372968      62 a_colitis nivolumab</span></span>
+<span id="cb27-15"><a href="#cb27-15" tabindex="-1"></a><span class="co">#&gt; 9     63102481      57 a_colitis nivolumab</span></span>
+<span id="cb27-16"><a href="#cb27-16" tabindex="-1"></a><span class="co">#&gt; 10    34209616       8 a_colitis nivolumab</span></span>
+<span id="cb27-17"><a href="#cb27-17" tabindex="-1"></a><span class="co">#&gt; 11    21293261      59 a_colitis nivolumab</span></span>
+<span id="cb27-18"><a href="#cb27-18" tabindex="-1"></a><span class="co">#&gt; 12    58329610     541 a_colitis nivolumab</span></span>
+<span id="cb27-19"><a href="#cb27-19" tabindex="-1"></a><span class="co">#&gt; 13    38269558     393 a_colitis nivolumab</span></span>
+<span id="cb27-20"><a href="#cb27-20" tabindex="-1"></a><span class="co">#&gt; 14    85691581     490 a_colitis nivolumab</span></span>
+<span id="cb27-21"><a href="#cb27-21" tabindex="-1"></a><span class="co">#&gt; 15   112663221       7 a_colitis nivolumab</span></span>
+<span id="cb27-22"><a href="#cb27-22" tabindex="-1"></a><span class="co">#&gt; 16   109716692      37 a_colitis nivolumab</span></span>
+<span id="cb27-23"><a href="#cb27-23" tabindex="-1"></a><span class="co">#&gt; 17    56986472      47 a_colitis nivolumab</span></span>
+<span id="cb27-24"><a href="#cb27-24" tabindex="-1"></a><span class="co">#&gt; 18    76401465     390 a_colitis nivolumab</span></span>
+<span id="cb27-25"><a href="#cb27-25" tabindex="-1"></a><span class="co">#&gt; 19   125056616      18 a_colitis nivolumab</span></span>
+<span id="cb27-26"><a href="#cb27-26" tabindex="-1"></a><span class="co">#&gt; 20    33942691      36 a_colitis nivolumab</span></span>
+<span id="cb27-27"><a href="#cb27-27" tabindex="-1"></a><span class="co">#&gt; 21   133088642      23 a_colitis nivolumab</span></span>
+<span id="cb27-28"><a href="#cb27-28" tabindex="-1"></a><span class="co">#&gt; 22   143881598     113 a_colitis nivolumab</span></span>
+<span id="cb27-29"><a href="#cb27-29" tabindex="-1"></a><span class="co">#&gt; 23    79620779      85 a_colitis nivolumab</span></span>
+<span id="cb27-30"><a href="#cb27-30" tabindex="-1"></a><span class="co">#&gt; 24    95759941      59 a_colitis nivolumab</span></span></code></pre></div>
+<p>The <code>tto_max</code> is the longest delay between the drug
+introduction and the event occurrence. There is only one line for each
+drug - adr pair.</p>
+<p>This information can be used for a graphical representation, or to
+derive an average, a range… The second option is possible in many ways,
+notably with <code>desc_tto()</code>.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="fu">desc_tto</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>  <span class="at">.data =</span> link,</span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>  <span class="at">drug_s =</span> <span class="st">&quot;nivolumab&quot;</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a>  <span class="at">adr_s  =</span> <span class="st">&quot;a_colitis&quot;</span></span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a>)</span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a><span class="co">#&gt;      drug_s     adr_s     var level                         value n_avail</span></span>
+<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a><span class="co">#&gt; 1 nivolumab a_colitis tto_max  &lt;NA&gt; 60.5 (36.0-248.5) [5.0-740.0]      24</span></span></code></pre></div>
+<p>Several drugs and reactions can be queried in these two
+functions.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a><span class="fu">desc_tto</span>(</span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>  <span class="at">.data =</span> link,</span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>  <span class="at">drug_s =</span> <span class="fu">c</span>(<span class="st">&quot;nivolumab&quot;</span>, <span class="st">&quot;pembrolizumab&quot;</span>),</span>
+<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a>  <span class="at">adr_s  =</span> <span class="fu">c</span>(<span class="st">&quot;a_colitis&quot;</span>, <span class="st">&quot;a_pneumonitis&quot;</span>)</span>
+<span id="cb29-5"><a href="#cb29-5" tabindex="-1"></a>)</span>
+<span id="cb29-6"><a href="#cb29-6" tabindex="-1"></a><span class="co">#&gt;          drug_s         adr_s     var level                           value</span></span>
+<span id="cb29-7"><a href="#cb29-7" tabindex="-1"></a><span class="co">#&gt; 1     nivolumab     a_colitis tto_max  &lt;NA&gt;   60.5 (36.0-248.5) [5.0-740.0]</span></span>
+<span id="cb29-8"><a href="#cb29-8" tabindex="-1"></a><span class="co">#&gt; 2 pembrolizumab     a_colitis tto_max  &lt;NA&gt; 44.0 (18.5-112.5) [1.0-1,207.0]</span></span>
+<span id="cb29-9"><a href="#cb29-9" tabindex="-1"></a><span class="co">#&gt; 3     nivolumab a_pneumonitis tto_max  &lt;NA&gt;  75.0 (49.8-167.0) [18.0-602.0]</span></span>
+<span id="cb29-10"><a href="#cb29-10" tabindex="-1"></a><span class="co">#&gt; 4 pembrolizumab a_pneumonitis tto_max  &lt;NA&gt; 52.0 (21.0-101.0) [0.0-1,050.0]</span></span>
+<span id="cb29-11"><a href="#cb29-11" tabindex="-1"></a><span class="co">#&gt;   n_avail</span></span>
+<span id="cb29-12"><a href="#cb29-12" tabindex="-1"></a><span class="co">#&gt; 1      24</span></span>
+<span id="cb29-13"><a href="#cb29-13" tabindex="-1"></a><span class="co">#&gt; 2      15</span></span>
+<span id="cb29-14"><a href="#cb29-14" tabindex="-1"></a><span class="co">#&gt; 3      22</span></span>
+<span id="cb29-15"><a href="#cb29-15" tabindex="-1"></a><span class="co">#&gt; 4      17</span></span></code></pre></div>
+</div>
+<div id="dechallenge" class="section level2">
+<h2>Dechallenge</h2>
+<p><code>desc_dch()</code> synthesizes the number of positive
+dechallenges:</p>
+<blockquote>
+<p>A positive dechallenge occurs when the drug has been stopped or its
+dosage has been reduced, and the reaction has abatted.</p>
+</blockquote>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="fu">desc_dch</span>(</span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>  link,</span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>  <span class="at">drug_s =</span> <span class="st">&quot;nivolumab&quot;</span>,</span>
+<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a>  <span class="at">adr_s  =</span> <span class="st">&quot;a_colitis&quot;</span></span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a>)</span>
+<span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a><span class="co">#&gt;      drug_s     adr_s pos_dch</span></span>
+<span id="cb30-7"><a href="#cb30-7" tabindex="-1"></a><span class="co">#&gt; 1 nivolumab a_colitis      27</span></span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="fu">desc_dch</span>(</span>
+<span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a>  link,</span>
+<span id="cb31-3"><a href="#cb31-3" tabindex="-1"></a>  <span class="at">drug_s =</span> <span class="fu">c</span>(<span class="st">&quot;nivolumab&quot;</span>, <span class="st">&quot;pembrolizumab&quot;</span>),</span>
+<span id="cb31-4"><a href="#cb31-4" tabindex="-1"></a>  <span class="at">adr_s  =</span> <span class="fu">c</span>(<span class="st">&quot;a_colitis&quot;</span>, <span class="st">&quot;a_pneumonitis&quot;</span>)</span>
+<span id="cb31-5"><a href="#cb31-5" tabindex="-1"></a>)</span>
+<span id="cb31-6"><a href="#cb31-6" tabindex="-1"></a><span class="co">#&gt;          drug_s         adr_s pos_dch</span></span>
+<span id="cb31-7"><a href="#cb31-7" tabindex="-1"></a><span class="co">#&gt; 1     nivolumab     a_colitis      27</span></span>
+<span id="cb31-8"><a href="#cb31-8" tabindex="-1"></a><span class="co">#&gt; 2 pembrolizumab     a_colitis      19</span></span>
+<span id="cb31-9"><a href="#cb31-9" tabindex="-1"></a><span class="co">#&gt; 3     nivolumab a_pneumonitis      22</span></span>
+<span id="cb31-10"><a href="#cb31-10" tabindex="-1"></a><span class="co">#&gt; 4 pembrolizumab a_pneumonitis      26</span></span></code></pre></div>
+</div>
+<div id="rechallenge" class="section level2">
+<h2>Rechallenge</h2>
+<p>Description span from rechallenge cases to informative rechallenge
+cases (those cases where the outcome is known). Drug and Adr identifiers
+refer to DrecNo and MedDRA_Id, respectively. Terminology</p>
+<ul>
+<li><p><code>overall</code> as opposed to <code>rch</code> for
+rechallenged (<code>rch</code> + <code>no_rch</code> =
+<code>overall</code>).</p></li>
+<li><p>Among <code>rch</code>, <code>inf</code> (informative) as opposed
+to <code>non_inf</code> (<code>inf</code> + <code>non_inf</code> =
+<code>rch</code>)</p></li>
+<li><p>Among <code>inf</code>, <code>rec</code> (recurring) as opposed
+to <code>non_rec</code> (<code>rec</code> + <code>non_rec</code> =
+<code>inf</code>)</p></li>
+</ul>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="fu">desc_rch</span>(</span>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a>  link,</span>
+<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>  <span class="at">demo_data =</span> demo,</span>
+<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a>  <span class="at">drug_s =</span> <span class="st">&quot;nivolumab&quot;</span>,</span>
+<span id="cb32-5"><a href="#cb32-5" tabindex="-1"></a>  <span class="at">adr_s  =</span> <span class="st">&quot;a_colitis&quot;</span></span>
+<span id="cb32-6"><a href="#cb32-6" tabindex="-1"></a>)</span>
+<span id="cb32-7"><a href="#cb32-7" tabindex="-1"></a><span class="co">#&gt;       drug_s     adr_s n_overall n_rch n_inf n_rec</span></span>
+<span id="cb32-8"><a href="#cb32-8" tabindex="-1"></a><span class="co">#&gt;       &lt;char&gt;    &lt;char&gt;     &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;</span></span>
+<span id="cb32-9"><a href="#cb32-9" tabindex="-1"></a><span class="co">#&gt; 1: nivolumab a_colitis        44    26    19    12</span></span></code></pre></div>
+<p><strong>The number of cases is counted at the case level in
+demo.</strong> This explains why the <code>demo_data</code> argument is
+required here.</p>
+<p>As with <code>desc_tto()</code> and <code>desc_dch()</code>, you can
+query several drug - adr pairs at once.</p>
+<blockquote>
+<p>Columns passed to arguments <code>drug_s</code> and
+<code>adr_s</code> can correspond to sets of drugs or events, or even
+identify all cases present in your dataset.</p>
+</blockquote>
+<p>Let’s say we want to know the number of positive rechallenge cases
+for our entire dataset</p>
+<p>We must create a variable that takes the value 1 for all cases.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>link <span class="ot">&lt;-</span></span>
+<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a>  link <span class="sc">|&gt;</span> </span>
+<span id="cb33-3"><a href="#cb33-3" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb33-4"><a href="#cb33-4" tabindex="-1"></a>    <span class="at">all_cases =</span> <span class="dv">1</span></span>
+<span id="cb33-5"><a href="#cb33-5" tabindex="-1"></a>  )</span></code></pre></div>
+<p>We a particular syntax, we can access the information</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="fu">desc_rch</span>(</span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a>  link,</span>
+<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a>  <span class="at">demo_data =</span> demo,</span>
+<span id="cb34-4"><a href="#cb34-4" tabindex="-1"></a>  <span class="at">drug_s =</span> <span class="st">&quot;all_cases&quot;</span>,</span>
+<span id="cb34-5"><a href="#cb34-5" tabindex="-1"></a>  <span class="at">adr_s  =</span> <span class="st">&quot;all_cases&quot;</span></span>
+<span id="cb34-6"><a href="#cb34-6" tabindex="-1"></a>)</span>
+<span id="cb34-7"><a href="#cb34-7" tabindex="-1"></a><span class="co">#&gt;       drug_s     adr_s n_overall n_rch n_inf n_rec</span></span>
+<span id="cb34-8"><a href="#cb34-8" tabindex="-1"></a><span class="co">#&gt;       &lt;char&gt;    &lt;char&gt;     &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;</span></span>
+<span id="cb34-9"><a href="#cb34-9" tabindex="-1"></a><span class="co">#&gt; 1: all_cases all_cases       707   297   106    28</span></span></code></pre></div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

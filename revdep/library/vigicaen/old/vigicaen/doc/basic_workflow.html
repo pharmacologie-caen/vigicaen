@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Basic Workflow</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Basic Workflow</h1>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction" id="toc-introduction">Introduction</a>
+<ul>
+<li><a href="#objectives" id="toc-objectives">Objectives</a></li>
+<li><a href="#reminder-of-database-structure" id="toc-reminder-of-database-structure">Reminder of Database
+Structure</a></li>
+<li><a href="#step-0-load-packages" id="toc-step-0-load-packages">Step
+0: Load Packages</a></li>
+</ul></li>
+<li><a href="#building_tables" id="toc-building_tables">Build tables
+from source files</a></li>
+<li><a href="#collecting_ids" id="toc-collecting_ids">Collecting
+IDs</a></li>
+<li><a href="#data-management" id="toc-data-management">Data
+management</a>
+<ul>
+<li><a href="#drug_workflow" id="toc-drug_workflow">Drugs</a>
+<ul>
+<li><a href="#principle" id="toc-principle">Principle</a></li>
+<li><a href="#step-1-load-the-tables" id="toc-step-1-load-the-tables">Step 1: Load the tables</a></li>
+<li><a href="#step-2-choose-drugs-of-interest" id="toc-step-2-choose-drugs-of-interest">Step 2: Choose drugs of
+Interest</a></li>
+<li><a href="#step-3-identify-drug-codes" id="toc-step-3-identify-drug-codes">Step 3: Identify drug codes</a></li>
+<li><a href="#steps-4-and-5-add_drug-function" id="toc-steps-4-and-5-add_drug-function">Steps 4 and 5: add_drug()
+function</a></li>
+<li><a href="#step-6-check-your-data-management" id="toc-step-6-check-your-data-management">Step 6: Check your data
+management</a></li>
+<li><a href="#atc_classes" id="toc-atc_classes">Step 2 and 3 variant:
+ATC classes</a></li>
+<li><a href="#step-4-and-5-variant-suspect-concomitant-interacting" id="toc-step-4-and-5-variant-suspect-concomitant-interacting">Step 4 and
+5 variant: Suspect, concomitant, interacting</a></li>
+<li><a href="#create-multiple-drug-columns" id="toc-create-multiple-drug-columns">Create multiple drug
+columns</a></li>
+<li><a href="#drug-groups" id="toc-drug-groups">Drug groups</a></li>
+</ul></li>
+<li><a href="#adverse-drug-reactions" id="toc-adverse-drug-reactions">Adverse drug reactions</a>
+<ul>
+<li><a href="#principles" id="toc-principles">Principles</a></li>
+<li><a href="#step-1-load-the-tables-1" id="toc-step-1-load-the-tables-1">Step 1: Load the tables</a></li>
+<li><a href="#step-2-choose-events-of-interest" id="toc-step-2-choose-events-of-interest">Step 2: Choose events of
+interest</a></li>
+<li><a href="#step-3-identify-event-codes" id="toc-step-3-identify-event-codes">Step 3: Identify event
+codes</a></li>
+<li><a href="#steps-4-and-5-add_adr-function" id="toc-steps-4-and-5-add_adr-function">Steps 4 and 5: add_adr()
+function</a></li>
+<li><a href="#step-6-check-your-data-management-1" id="toc-step-6-check-your-data-management-1">Step 6: Check your data
+management</a></li>
+</ul></li>
+<li><a href="#other-variables" id="toc-other-variables">Other
+variables</a>
+<ul>
+<li><a href="#age" id="toc-age">Age</a></li>
+<li><a href="#sex" id="toc-sex">Sex</a></li>
+<li><a href="#using-case_when" id="toc-using-case_when">Using
+case_when()</a></li>
+<li><a href="#seriousness-death" id="toc-seriousness-death">Seriousness,
+death</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#disproportionality" id="toc-disproportionality">Disproportionality</a>
+<ul>
+<li><a href="#univariate-analysis" id="toc-univariate-analysis">Univariate analysis</a>
+<ul>
+<li><a href="#disproportionality-metrics" id="toc-disproportionality-metrics">Disproportionality metrics</a></li>
+</ul></li>
+<li><a href="#advanced-modelling-multivariate-analysis" id="toc-advanced-modelling-multivariate-analysis">Advanced modelling,
+multivariate analysis</a>
+<ul>
+<li><a href="#extract-odds-ratio-with-compute_or_mod" id="toc-extract-odds-ratio-with-compute_or_mod">Extract Odds-Ratio with
+compute_or_mod()</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#conclusion" id="toc-conclusion">Conclusion</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<div id="objectives" class="section level2">
+<h2>Objectives</h2>
+<ul>
+<li><p>Collect drug and adverse drug reaction
+<strong>IDs</strong></p></li>
+<li><p>Perform standard data management in VigiBase ECL</p></li>
+<li><p>Conduct disproportionality analysis (both univariate and
+multivariate)</p></li>
+</ul>
+<p>If you want to access script templates for these steps, see</p>
+<ul>
+<li><p><code>vignette(&quot;template_dictionary&quot;)</code> and</p></li>
+<li><p><code>vignette(&quot;template_main&quot;)</code></p></li>
+</ul>
+</div>
+<div id="reminder-of-database-structure" class="section level2">
+<h2>Reminder of Database Structure</h2>
+<p>Each table has a unique identifying key and other keys to perform
+joins.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Table</th>
+<th>Key</th>
+<th>Other keys</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>demo</code></td>
+<td><code>UMCReportId</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>drug</code></td>
+<td><code>Drug_Id</code></td>
+<td><code>UMCReportId</code></td>
+</tr>
+<tr class="odd">
+<td><code>adr</code></td>
+<td><code>Adr_Id</code></td>
+<td><code>UMCReportId</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Goal of the tutorial: perform a disproportionality analysis between
+colitis and nivolumab among checkpoint inhibitor cases.</p>
+</blockquote>
+</div>
+<div id="step-0-load-packages" class="section level2">
+<h2>Step 0: Load Packages</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(vigicaen)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(rlang)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
+</div>
+</div>
+<div id="building_tables" class="section level1">
+<h1>Build tables from source files</h1>
+<p>This process should be done <strong>once per database
+version</strong>.</p>
+<p>You don’t have to do it to follow this tutorial, since we will use
+the package built-in example tables.</p>
+<p>However, when working on real analyses, you will need to process this
+step first.</p>
+<p>See the vignette here <code>vignette(&quot;getting_started&quot;)</code>.</p>
+</div>
+<div id="collecting_ids" class="section level1">
+<h1>Collecting IDs</h1>
+<p>The whole package relies on defining a dictionary of drugs and adrs
+of interest.</p>
+<p>Those collection of terms should be stored in <strong>named
+lists</strong>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># drug selection</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>d_sel <span class="ot">&lt;-</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>    <span class="at">nivolumab   =</span> <span class="st">&quot;nivolumab&quot;</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>    <span class="at">ipilimumab  =</span> <span class="st">&quot;ipilimumab&quot;</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>    <span class="at">nivo_or_ipi =</span> <span class="fu">c</span>(<span class="st">&quot;nivolumab&quot;</span>, <span class="st">&quot;ipilimumab&quot;</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  )</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co"># adverse drug reaction selection</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>a_sel <span class="ot">&lt;-</span> </span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>    <span class="at">colitis     =</span> <span class="st">&quot;Colitis&quot;</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>    <span class="at">pneumonitis =</span> <span class="st">&quot;Pneumonitis&quot;</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>  )</span></code></pre></div>
+<p>As we see, the <code>d_sel</code> list contains three named vectors:
+nivolumab, ipilimumab, and nivo_or_ipi. Each of these vectors can
+contain one or more names of drugs.</p>
+<blockquote>
+<p>The names of the vectors don’t have to be the same as the drug names.
+They will be used to created columns later in the process.</p>
+</blockquote>
+<p>We will pass these named list selections to <em>ID collector</em>
+functions: The <strong><code>get_*</code></strong> family.</p>
+<ul>
+<li><p><code>get_drecno()</code> for drugs, <code>get_atc_code()</code>
+for ATC classes</p></li>
+<li><p><code>get_llt_soc()</code> or <code>get_llt_smq()</code> for
+adverse drug reactions</p></li>
+</ul>
+<p>These functions will allow to collect IDs (e.g. codes) matching our
+drugs and adrs in a specific dictionary.</p>
+<ul>
+<li><p>For drugs, we will use the WHODrug dictionary, and collect Drug
+Record Numbers (DrecNos) most of the time, or Medicinal Product Ids
+(MedicinalProd_Ids) in some specific scenarii.</p></li>
+<li><p>For adrs, we will use the Medical Dictionary for Regulatory
+Activities (MedDRA), and collect term codes (low-level term codes).
+Here, it is important to note that we can work with other terms (like
+Preferred Terms, High Level terms, etc.). The ID collector will just
+collect low-level term codes of all higher level terms, resulting in a
+pretty long list of codes, because VigiBase data is structured on
+low-level term codes.</p></li>
+</ul>
+</div>
+<div id="data-management" class="section level1">
+<h1>Data management</h1>
+<div id="drug_workflow" class="section level2">
+<h2>Drugs</h2>
+<div id="principle" class="section level3">
+<h3>Principle</h3>
+<ol style="list-style-type: decimal">
+<li>Load the <code>demo</code>, <code>drug</code>, and <code>mp</code>
+tables.</li>
+<li>Select one or more medications of interest.</li>
+<li>Identify the drug codes (e.g., the <code>DrecNo(s)</code>)
+associated with these drug using the <code>mp</code> table.</li>
+<li>Search for cases exposed to these medications using the codes in the
+<code>drug</code> table.</li>
+<li>Update the <code>demo</code> table: code 1 if the case reports the
+medication of interest, 0 otherwise.</li>
+<li>Check your data management</li>
+</ol>
+<p>Step 1 is performed with <code>dt_parquet()</code> if you have <a href="#building_tables">your own tables</a>, or using the built-in
+example tables for this tutorial.</p>
+<p>Step 2 and 3 can be referred as “dictionary” steps.</p>
+<p>Step 3 is performed with <code>get_drecno()</code> or
+<code>get_atc_code()</code>.</p>
+<p>Steps 4 and 5 are performed with <code>add_drug()</code>.</p>
+<p>step 6 is performed with <code>check_dm()</code>.</p>
+</div>
+<div id="step-1-load-the-tables" class="section level3">
+<h3>Step 1: Load the tables</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>demo <span class="ot">&lt;-</span> demo_</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>drug <span class="ot">&lt;-</span> drug_</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>mp <span class="ot">&lt;-</span> mp_</span></code></pre></div>
+<blockquote>
+<p>Note: if you are working with your own tables, you will need to load
+them here, with <code>dt_parquet()</code>.</p>
+</blockquote>
+</div>
+<div id="step-2-choose-drugs-of-interest" class="section level3">
+<h3>Step 2: Choose drugs of Interest</h3>
+<p>This is probably the most interesting part of the process, from a
+scientific point of view. But for now, it’s pretty trivial.</p>
+<p>Once you’ve decided which drugs you would like to study
+(e.g. nivolumab in this tutorial), you need to create a <strong>named
+list</strong> of character vectors.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>d_sel <span class="ot">&lt;-</span> <span class="co"># drug selection</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">list2</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    <span class="at">nivolumab =</span> <span class="st">&quot;nivolumab&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  )</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>d_sel</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; $nivolumab</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; [1] &quot;nivolumab&quot;</span></span></code></pre></div>
+<blockquote>
+<p>Remember to use lower case names in d_sel (no capital letters: Good:
+“nivolumab”, Wrong: “Nivolumab” or “NIVOLUMAB”)</p>
+</blockquote>
+<p>The ideal way of picking drugs is by using their <strong>WHO
+name</strong>.</p>
+<p>WHO name is an international non-proprietary name (INN) for the drug.
+A few drugs have more than one INN (e.g. paracetamol and acetaminophen),
+but they still have a unique WHO name (most of the time, one of the
+INN).</p>
+<p>The ID collector <code>get_drecno()</code> will let you know if you
+missed the WHO name.</p>
+<p>Alternatively, you can work with Anatomical and Therapeutical
+Classification (ATC) codes to investigate a set of drug. This is
+explained in the <a href="#atc_classes">ATC section</a>.</p>
+</div>
+<div id="step-3-identify-drug-codes" class="section level3">
+<h3>Step 3: Identify drug codes</h3>
+<p>The function <code>get_drecno()</code> allows you to query the
+<code>mp</code> table with a selection of drug names.</p>
+<p>It takes several arguments, two of which must be filled in: the
+selection of drugs and the table containing the correspondence between
+the name and the code (here, <code>mp</code>).</p>
+<p>You should <strong>always</strong> look carefully at the printed
+message.</p>
+<ol style="list-style-type: decimal">
+<li>Use <code>get_drecno()</code> with argument
+<code>verbose = TRUE</code> (default).</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">get_drecno</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="at">d_sel =</span> d_sel,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">mp =</span> mp_,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="at">verbose =</span> <span class="cn">TRUE</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  )</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; ── get_drecno() ────────────────────────────────────────────────────────────────</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; ── `d_sel`: Matching drugs ──</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; ── ✔ Matched drugs</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; → `nivolumab`: &quot;nivolumab&quot; and &quot;ipilimumab;nivolumab&quot;</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; ℹ Set `verbose` to FALSE to suppress this section.</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; ────────────────────────────────────────────────────────────────────────────────</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt; $nivolumab</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt; [1] 111841511  98742214</span></span></code></pre></div>
+<p>We see that <code>get_drecno()</code> finds two entries containing
+the drug “nivolumab” in the <code>mp</code> table:</p>
+<ul>
+<li><p>The entry for nivolumab alone</p></li>
+<li><p>The entry for the ipilimumab;nivolumab combination</p></li>
+</ul>
+<p>This second entry was identified because the
+<code>allow_combination</code> argument is set to <code>TRUE</code> by
+default. This allows for a broader identification of all specialties
+containing nivolumab. In this situation, this behavior is desirable
+because we want to be sure to identify all cases reporting the drug.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Since these are actually the codes we were looking for, we can
+(optionally) set the <code>verbose</code> argument to FALSE and keep the
+result in an R object called <code>d_drecno</code>.</li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>d_drecno <span class="ot">&lt;-</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="fu">get_drecno</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>    <span class="at">d_sel =</span> d_sel,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>    <span class="at">mp =</span> mp_,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="at">verbose =</span> <span class="cn">FALSE</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>    )</span></code></pre></div>
+</div>
+<div id="steps-4-and-5-add_drug-function" class="section level3">
+<h3>Steps 4 and 5: add_drug() function</h3>
+<p>To identify cases reporting the drug of interest and add the
+corresponding column to <code>demo</code>, we use the
+<code>add_drug()</code> function.</p>
+<p>The <code>add_drug()</code> function takes 3 mandatory arguments:</p>
+<ul>
+<li><p>The dataset on which to add the drug variable(s) (here,
+<code>demo</code>)</p></li>
+<li><p>A named list containing the codes of the drug(s)</p></li>
+<li><p>The <code>drug</code> table linking drug intake to each
+case.</p></li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>demo <span class="ot">&lt;-</span> </span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="fu">add_drug</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>    <span class="at">.data =</span> demo,</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>    <span class="at">d_code =</span> d_drecno,</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>    <span class="at">drug_data =</span> drug)</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `demo` table.</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>demo</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt;      UMCReportId AgeGroup Gender DateDatabase   Type Region FirstDateDatabase</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt;            &lt;int&gt;   &lt;char&gt; &lt;char&gt;       &lt;char&gt; &lt;char&gt; &lt;char&gt;            &lt;char&gt;</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt;   1:   141557914        7      2     20210927      2      4          20200703</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt;   2:    48453218        9      -     20170809      1      2          20170809</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt;   3:   127169804        6      2     20150814      1      2          20150814</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt;   4:    35746144        6      1     20120221      1      2          20111114</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt;   5:   143784377        9      1     20190418      1      2          20190418</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt;  ---                                                                         </span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt; 746:    48354189        6      1     20150814      2      2          20150814</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt; 747:    20398003        7      1     20220107      1      3          20211001</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co">#&gt; 748:   109565701        8      1     20220107      1      3          20220107</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co">#&gt; 749:    95759941        9      1     20200301      2      4          20180810</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co">#&gt; 750:    76017998        7      1     20210301      2      4          20201216</span></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a><span class="co">#&gt;      nivolumab</span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="co">#&gt;          &lt;num&gt;</span></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="co">#&gt;   1:         0</span></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="co">#&gt;   2:         0</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="co">#&gt;   3:         0</span></span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="co">#&gt;   4:         0</span></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a><span class="co">#&gt;   5:         1</span></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a><span class="co">#&gt;  ---          </span></span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a><span class="co">#&gt; 746:         0</span></span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a><span class="co">#&gt; 747:         0</span></span>
+<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a><span class="co">#&gt; 748:         0</span></span>
+<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a><span class="co">#&gt; 749:         1</span></span>
+<span id="cb7-33"><a href="#cb7-33" tabindex="-1"></a><span class="co">#&gt; 750:         0</span></span></code></pre></div>
+<p>Or, in tidyverse syntax</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>demo <span class="ot">&lt;-</span> </span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  demo <span class="sc">|&gt;</span> </span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">add_drug</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>    <span class="at">d_code =</span> d_drecno,</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    <span class="at">drug_data =</span> drug</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  )</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `demo` table.</span></span></code></pre></div>
+</div>
+<div id="step-6-check-your-data-management" class="section level3">
+<h3>Step 6: Check your data management</h3>
+<p>This may seem trivial, but it is an <strong>essential</strong> step
+in the construction of a dataset.</p>
+<p>There are many ways to check that the code has worked. Here, the
+<code>check_dm()</code> function will count the number of rows in the
+dataset where the desired column is equal to 1.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">check_dm</span>(demo, <span class="st">&quot;nivolumab&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#&gt;           [,1]</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="co">#&gt; nivolumab  225</span></span></code></pre></div>
+<p>It shows how many rows in <code>demo</code> have the value 1 in the
+<code>nivolumab</code> column (e.g. how many cases where identified as
+reporting on nivolumab reactions).</p>
+<p>Here, we see that 225 cases report nivolumab.</p>
+</div>
+<div id="atc_classes" class="section level3">
+<h3>Step 2 and 3 variant: ATC classes</h3>
+<p>The correspondence between ATC (Anatomical and Therapeutical
+Classification) classes and drug codes is found in the <code>thg</code>
+table. In this table, drug codes are stored as
+<code>MedicinalProd_Id</code>. It is therefore necessary to make a
+second correspondence with <code>mp</code> to find
+<code>DrecNo</code>.</p>
+<p>This can be done with the <code>get_atc_code()</code> function.</p>
+<p>As with drugs, we first need to identify the ATC class of interest
+(here, “L03”).</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>atc_sel <span class="ot">&lt;-</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>  <span class="fu">list2</span>(<span class="at">l03 =</span> <span class="st">&quot;L03&quot;</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>atc_drecno <span class="ot">&lt;-</span> </span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  <span class="fu">get_atc_code</span>(</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>    <span class="at">atc_sel =</span> atc_sel,</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>    <span class="at">mp =</span> mp,</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>    <span class="at">thg_data =</span> thg_</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>    )</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co">#&gt; ℹ vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)</span></span></code></pre></div>
+<p>The <code>get_atc_code()</code> function requires the <code>mp</code>
+and <code>thg</code> tables, as well as the selection of ATC
+classes.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">str</span>(atc_drecno)</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co">#&gt; List of 1</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt;  $ l03: int [1:13] 22001499 140973512 101027183 124637140 39319101 87207610 121794236 68274950 95345772 88621728 ...</span></span></code></pre></div>
+<p>By default, this function retrieves DrecNos associated with an ATC
+class. It is possible to retrieve MedicinalProd_Ids instead by setting
+the <code>vigilyze</code> argument to <code>FALSE</code>.</p>
+<p>The interest of using MedicinalProd_Ids instead of DrecNos is to
+restrict the drug panel only to packages corresponding to a specific ATC
+class (e.g., you might not want to find all packages of corticosteroids
+if you work with the ATC class “S01BA”, which corresponds to ophtalmic
+steroids).</p>
+<p>Once DrecNos are identified, we can add them to the <code>demo</code>
+table, with the <code>add_drug()</code> function.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>demo <span class="sc">|&gt;</span> </span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  <span class="fu">add_drug</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>    <span class="at">d_code =</span> atc_drecno,</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>    <span class="at">drug_data =</span> drug</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>  )</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `demo` table.</span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt;      UMCReportId AgeGroup Gender DateDatabase   Type Region FirstDateDatabase</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt;            &lt;int&gt;   &lt;char&gt; &lt;char&gt;       &lt;char&gt; &lt;char&gt; &lt;char&gt;            &lt;char&gt;</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt;   1:   141557914        7      2     20210927      2      4          20200703</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt;   2:    48453218        9      -     20170809      1      2          20170809</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt;   3:   127169804        6      2     20150814      1      2          20150814</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt;   4:    35746144        6      1     20120221      1      2          20111114</span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt;   5:   143784377        9      1     20190418      1      2          20190418</span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co">#&gt;  ---                                                                         </span></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">#&gt; 746:    48354189        6      1     20150814      2      2          20150814</span></span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="co">#&gt; 747:    20398003        7      1     20220107      1      3          20211001</span></span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="co">#&gt; 748:   109565701        8      1     20220107      1      3          20220107</span></span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co">#&gt; 749:    95759941        9      1     20200301      2      4          20180810</span></span>
+<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a><span class="co">#&gt; 750:    76017998        7      1     20210301      2      4          20201216</span></span>
+<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a><span class="co">#&gt;      nivolumab   l03</span></span>
+<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="co">#&gt;          &lt;num&gt; &lt;num&gt;</span></span>
+<span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a><span class="co">#&gt;   1:         0     0</span></span>
+<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a><span class="co">#&gt;   2:         0     0</span></span>
+<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a><span class="co">#&gt;   3:         0     0</span></span>
+<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a><span class="co">#&gt;   4:         0     0</span></span>
+<span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a><span class="co">#&gt;   5:         1     0</span></span>
+<span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a><span class="co">#&gt;  ---                </span></span>
+<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a><span class="co">#&gt; 746:         0     0</span></span>
+<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a><span class="co">#&gt; 747:         0     0</span></span>
+<span id="cb12-30"><a href="#cb12-30" tabindex="-1"></a><span class="co">#&gt; 748:         0     0</span></span>
+<span id="cb12-31"><a href="#cb12-31" tabindex="-1"></a><span class="co">#&gt; 749:         1     0</span></span>
+<span id="cb12-32"><a href="#cb12-32" tabindex="-1"></a><span class="co">#&gt; 750:         0     0</span></span></code></pre></div>
+</div>
+<div id="step-4-and-5-variant-suspect-concomitant-interacting" class="section level3">
+<h3>Step 4 and 5 variant: Suspect, concomitant, interacting</h3>
+<p>We can choose to work with drugs according to their “reputation
+basis”.</p>
+<p>This information is stored in the <code>Basis</code> column of the
+<code>drug</code> table.</p>
+<ul>
+<li><p>1 suspect</p></li>
+<li><p>2 concomitant</p></li>
+<li><p>3 interacting</p></li>
+</ul>
+<p>By using the <code>add_drug()</code> function, we can specify which
+type of status we are interested in, in the <code>repbasis</code>
+argument. By default, the value <code>&quot;sci&quot;</code> indicates that we
+consider the drug whether it is suspect, concomitant, or interacting. We
+can change the selection.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>demo <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>  <span class="fu">add_drug</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>    <span class="at">d_code =</span> d_drecno,</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>    <span class="at">drug_data =</span> drug,</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>    <span class="at">repbasis =</span> <span class="st">&quot;sci&quot;</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>  <span class="fu">check_dm</span>(<span class="st">&quot;nivolumab&quot;</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `demo` table.</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="co">#&gt;           [,1]</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt; nivolumab  225</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co"># suspected only</span></span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a>demo <span class="sc">|&gt;</span> </span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a>  <span class="fu">add_drug</span>(</span>
+<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a>    <span class="at">d_code =</span> d_drecno,</span>
+<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a>    <span class="at">drug_data =</span> drug,</span>
+<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a>    <span class="at">repbasis =</span> <span class="st">&quot;s&quot;</span></span>
+<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb13-20"><a href="#cb13-20" tabindex="-1"></a>  <span class="fu">check_dm</span>(<span class="st">&quot;nivolumab&quot;</span>)</span>
+<span id="cb13-21"><a href="#cb13-21" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `demo` table.</span></span>
+<span id="cb13-22"><a href="#cb13-22" tabindex="-1"></a><span class="co">#&gt;           [,1]</span></span>
+<span id="cb13-23"><a href="#cb13-23" tabindex="-1"></a><span class="co">#&gt; nivolumab  214</span></span></code></pre></div>
+</div>
+<div id="create-multiple-drug-columns" class="section level3">
+<h3>Create multiple drug columns</h3>
+<p>To work with multiple drugs, you need to update the initial
+<code>d_sel</code> list.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>d_sel <span class="ot">&lt;-</span> </span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  <span class="fu">list2</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>    <span class="at">nivolumab =</span> <span class="st">&quot;nivolumab&quot;</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>    <span class="at">pembrolizumab =</span> <span class="st">&quot;pembrolizumab&quot;</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>  )</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>d_drecno <span class="ot">&lt;-</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>  d_sel <span class="sc">|&gt;</span> </span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>  <span class="fu">get_drecno</span>(<span class="at">mp =</span> mp)</span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="co">#&gt; ── get_drecno() ────────────────────────────────────────────────────────────────</span></span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt; ── `d_sel`: Matching drugs ──</span></span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a><span class="co">#&gt; ── ✔ Matched drugs</span></span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a><span class="co">#&gt; → `nivolumab`: &quot;nivolumab&quot; and &quot;ipilimumab;nivolumab&quot;</span></span>
+<span id="cb14-18"><a href="#cb14-18" tabindex="-1"></a><span class="co">#&gt; → `pembrolizumab`: &quot;pembrolizumab&quot;</span></span>
+<span id="cb14-19"><a href="#cb14-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-20"><a href="#cb14-20" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-21"><a href="#cb14-21" tabindex="-1"></a><span class="co">#&gt; ℹ Set `verbose` to FALSE to suppress this section.</span></span>
+<span id="cb14-22"><a href="#cb14-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-23"><a href="#cb14-23" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-24"><a href="#cb14-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-25"><a href="#cb14-25" tabindex="-1"></a><span class="co">#&gt; ────────────────────────────────────────────────────────────────────────────────</span></span>
+<span id="cb14-26"><a href="#cb14-26" tabindex="-1"></a></span>
+<span id="cb14-27"><a href="#cb14-27" tabindex="-1"></a>demo <span class="ot">&lt;-</span> </span>
+<span id="cb14-28"><a href="#cb14-28" tabindex="-1"></a>  demo <span class="sc">|&gt;</span> </span>
+<span id="cb14-29"><a href="#cb14-29" tabindex="-1"></a>  <span class="fu">add_drug</span>(</span>
+<span id="cb14-30"><a href="#cb14-30" tabindex="-1"></a>    d_drecno,</span>
+<span id="cb14-31"><a href="#cb14-31" tabindex="-1"></a>    <span class="at">drug_data =</span> drug</span>
+<span id="cb14-32"><a href="#cb14-32" tabindex="-1"></a>  )</span>
+<span id="cb14-33"><a href="#cb14-33" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `demo` table.</span></span>
+<span id="cb14-34"><a href="#cb14-34" tabindex="-1"></a></span>
+<span id="cb14-35"><a href="#cb14-35" tabindex="-1"></a>demo <span class="sc">|&gt;</span> </span>
+<span id="cb14-36"><a href="#cb14-36" tabindex="-1"></a>  <span class="fu">check_dm</span>(<span class="fu">c</span>(<span class="st">&quot;nivolumab&quot;</span>, <span class="st">&quot;pembrolizumab&quot;</span>))</span>
+<span id="cb14-37"><a href="#cb14-37" tabindex="-1"></a><span class="co">#&gt;               [,1]</span></span>
+<span id="cb14-38"><a href="#cb14-38" tabindex="-1"></a><span class="co">#&gt; nivolumab      225</span></span>
+<span id="cb14-39"><a href="#cb14-39" tabindex="-1"></a><span class="co">#&gt; pembrolizumab  298</span></span></code></pre></div>
+</div>
+<div id="drug-groups" class="section level3">
+<h3>Drug groups</h3>
+<p>If you want to work at the level of a group of drugs, but the ATC
+classes do not match your needs perfectly, you can group them in the
+<code>d_sel</code> list.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>d_sel <span class="ot">&lt;-</span> </span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>  <span class="fu">list2</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>    <span class="at">analgesics =</span> <span class="fu">c</span>(<span class="st">&quot;paracetamol&quot;</span>, <span class="st">&quot;tramadol&quot;</span>),</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>    <span class="at">ici =</span> <span class="fu">c</span>(<span class="st">&quot;nivolumab&quot;</span>, <span class="st">&quot;pembrolizumab&quot;</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>  )</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>d_drecno <span class="ot">&lt;-</span></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a>  d_sel <span class="sc">|&gt;</span> </span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a>  <span class="fu">get_drecno</span>(<span class="at">mp =</span> mp,</span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a>             <span class="at">allow_combination =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a><span class="co">#&gt; ── get_drecno() ────────────────────────────────────────────────────────────────</span></span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a><span class="co">#&gt; ── `d_sel`: Matching drugs ──</span></span>
+<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a><span class="co">#&gt; ── ✔ Matched drugs</span></span>
+<span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-18"><a href="#cb15-18" tabindex="-1"></a><span class="co">#&gt; → `analgesics`: &quot;paracetamol&quot; and &quot;tramadol&quot;</span></span>
+<span id="cb15-19"><a href="#cb15-19" tabindex="-1"></a><span class="co">#&gt; → `ici`: &quot;nivolumab&quot; and &quot;pembrolizumab&quot;</span></span>
+<span id="cb15-20"><a href="#cb15-20" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-21"><a href="#cb15-21" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-22"><a href="#cb15-22" tabindex="-1"></a><span class="co">#&gt; ℹ Set `verbose` to FALSE to suppress this section.</span></span>
+<span id="cb15-23"><a href="#cb15-23" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-24"><a href="#cb15-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-25"><a href="#cb15-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-26"><a href="#cb15-26" tabindex="-1"></a><span class="co">#&gt; ────────────────────────────────────────────────────────────────────────────────</span></span>
+<span id="cb15-27"><a href="#cb15-27" tabindex="-1"></a></span>
+<span id="cb15-28"><a href="#cb15-28" tabindex="-1"></a>demo <span class="ot">&lt;-</span> </span>
+<span id="cb15-29"><a href="#cb15-29" tabindex="-1"></a>  demo <span class="sc">|&gt;</span> </span>
+<span id="cb15-30"><a href="#cb15-30" tabindex="-1"></a>  <span class="fu">add_drug</span>(</span>
+<span id="cb15-31"><a href="#cb15-31" tabindex="-1"></a>    d_drecno,</span>
+<span id="cb15-32"><a href="#cb15-32" tabindex="-1"></a>    <span class="at">drug_data =</span> drug</span>
+<span id="cb15-33"><a href="#cb15-33" tabindex="-1"></a>  )</span>
+<span id="cb15-34"><a href="#cb15-34" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `demo` table.</span></span>
+<span id="cb15-35"><a href="#cb15-35" tabindex="-1"></a></span>
+<span id="cb15-36"><a href="#cb15-36" tabindex="-1"></a>demo <span class="sc">|&gt;</span> </span>
+<span id="cb15-37"><a href="#cb15-37" tabindex="-1"></a>  <span class="fu">check_dm</span>(<span class="fu">names</span>(d_sel))</span>
+<span id="cb15-38"><a href="#cb15-38" tabindex="-1"></a><span class="co">#&gt;            [,1]</span></span>
+<span id="cb15-39"><a href="#cb15-39" tabindex="-1"></a><span class="co">#&gt; analgesics   68</span></span>
+<span id="cb15-40"><a href="#cb15-40" tabindex="-1"></a><span class="co">#&gt; ici         519</span></span></code></pre></div>
+</div>
+</div>
+<div id="adverse-drug-reactions" class="section level2">
+<h2>Adverse drug reactions</h2>
+<div id="principles" class="section level3">
+<h3>Principles</h3>
+<ol style="list-style-type: decimal">
+<li><p>Load the <code>demo</code>, <code>adr</code>, and
+<code>meddra</code> tables.</p></li>
+<li><p>Choose the adverse event(s) of interest.</p></li>
+<li><p>Identify the event codes (these are low-level terms according to
+the MedDRA classification). They can be found in the <code>meddra</code>
+table or in the <code>smq</code> tables.</p></li>
+<li><p>Search for cases that have presented this event, using the
+codes</p></li>
+<li><p>Update the <code>demo</code> table: code 1 if the case reports
+the event of interest, 0 otherwise.</p></li>
+<li><p>Check your data management</p></li>
+</ol>
+<p>Similarly to the <a href="#drug_workflow">drug workflow</a>, steps 2
+and 3 can be referred to as “dictionary” steps.</p>
+<p>Step 3 uses <code>get_llt_soc()</code> or
+<code>get_llt_smq()</code>.</p>
+</div>
+<div id="step-1-load-the-tables-1" class="section level3">
+<h3>Step 1: Load the tables</h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>adr <span class="ot">&lt;-</span> adr_</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>meddra <span class="ot">&lt;-</span> meddra_</span></code></pre></div>
+<p>demo was loaded during the <a href="#drug_workflow">drug
+workflow</a>.</p>
+</div>
+<div id="step-2-choose-events-of-interest" class="section level3">
+<h3>Step 2: Choose events of interest</h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>a_sel_pt <span class="ot">&lt;-</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>  <span class="fu">list2</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>    <span class="at">a_colitis =</span> <span class="fu">c</span>(</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>      <span class="st">&quot;Colitis&quot;</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>      <span class="st">&quot;Autoimmune colitis&quot;</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>      <span class="st">&quot;Colitis microscopic&quot;</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>      <span class="st">&quot;Diarrhoea&quot;</span>,</span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a>      <span class="st">&quot;Diarrhoea haemorrhagic&quot;</span>,</span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>      <span class="st">&quot;Duodenitis&quot;</span>,</span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a>      <span class="st">&quot;Enteritis&quot;</span>,</span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a>      <span class="st">&quot;Enterocolitis&quot;</span>,</span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a>      <span class="st">&quot;Enterocolitis haemorrhagic&quot;</span>,</span>
+<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a>      <span class="st">&quot;Ulcerative gastritis&quot;</span></span>
+<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a>    )</span>
+<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a>  )</span></code></pre></div>
+<p>We start with a list of adverse events of interest, grouped
+altogether under the name “a_colitis”.</p>
+<blockquote>
+<p>MedDRA terms always start with a capital letter, be sure to provide
+the exact case, e.g. Good : “<strong>C</strong>olitis”, Wrong :
+“colitis” or “COLITIS”.</p>
+</blockquote>
+<p>Be sure all selected terms belong to the same hierarchical level
+(preferred term, high level term…) in MedDRA. Here, we use Preferred
+Terms.</p>
+</div>
+<div id="step-3-identify-event-codes" class="section level3">
+<h3>Step 3: Identify event codes</h3>
+<p>The <code>get_llt_soc()</code> function allows you to query the
+<code>meddra</code>.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>a_llt <span class="ot">&lt;-</span> </span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>  <span class="fu">get_llt_soc</span>(</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>    <span class="at">term_sel =</span> a_sel_pt,</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>    <span class="at">term_level =</span> <span class="st">&quot;pt&quot;</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>    <span class="at">meddra =</span> meddra_</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>    )</span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="co">#&gt; ── get_llt_soc() ───────────────────────────────────────────────────────────────</span></span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="co">#&gt; ── ✔ Matched reactions at `pt` level (number of codes) ──</span></span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="co">#&gt; → `a_colitis`: &quot;Autoimmune colitis (1)&quot;, &quot;Colitis (25)&quot;, &quot;Colitis microscopic</span></span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="co">#&gt;   (3)&quot;, &quot;Diarrhoea (53)&quot;, &quot;Diarrhoea haemorrhagic (8)&quot;, &quot;Duodenitis (5)&quot;,</span></span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a><span class="co">#&gt;   &quot;Enteritis (8)&quot;, &quot;Enterocolitis (4)&quot;, &quot;Enterocolitis haemorrhagic (10)&quot;, and</span></span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a><span class="co">#&gt;   &quot;Ulcerative gastritis (1)&quot;</span></span>
+<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a><span class="co">#&gt; ℹ Set `verbose` to FALSE to suppress this section.</span></span>
+<span id="cb18-19"><a href="#cb18-19" tabindex="-1"></a></span>
+<span id="cb18-20"><a href="#cb18-20" tabindex="-1"></a>a_llt</span>
+<span id="cb18-21"><a href="#cb18-21" tabindex="-1"></a><span class="co">#&gt; $a_colitis</span></span>
+<span id="cb18-22"><a href="#cb18-22" tabindex="-1"></a><span class="co">#&gt;   [1] 146319904  72535511 145048103  83961164  60502763  86999793  31902962</span></span>
+<span id="cb18-23"><a href="#cb18-23" tabindex="-1"></a><span class="co">#&gt;   [8]  74358151  93223730  42212111  47872019   9787331  97183180  76243579</span></span>
+<span id="cb18-24"><a href="#cb18-24" tabindex="-1"></a><span class="co">#&gt;  [15]  57421483  83801839  35994947 145921181 126960392 139876147   7485419</span></span>
+<span id="cb18-25"><a href="#cb18-25" tabindex="-1"></a><span class="co">#&gt;  [22]  56928874 106618606 136185109 134273207  69329666  71614386  39085290</span></span>
+<span id="cb18-26"><a href="#cb18-26" tabindex="-1"></a><span class="co">#&gt;  [29]  44792724  60161897 117694644  33268936  52457844   3588697  50677287</span></span>
+<span id="cb18-27"><a href="#cb18-27" tabindex="-1"></a><span class="co">#&gt;  [36]  86522225  52090591 115452495  57673555  36505933  97974705 116341322</span></span>
+<span id="cb18-28"><a href="#cb18-28" tabindex="-1"></a><span class="co">#&gt;  [43] 100087548  92141110  76778618 129074932  74911722  30822686 106700292</span></span>
+<span id="cb18-29"><a href="#cb18-29" tabindex="-1"></a><span class="co">#&gt;  [50]  40062048  94663343  99951844  10796290  16785547 100720721  26400336</span></span>
+<span id="cb18-30"><a href="#cb18-30" tabindex="-1"></a><span class="co">#&gt;  [57]  71857357   9581412 142354851 119711285  14275999 116525173  46785130</span></span>
+<span id="cb18-31"><a href="#cb18-31" tabindex="-1"></a><span class="co">#&gt;  [64]  69158837  92034682  11303229  32580170 122765038  94746500  97136680</span></span>
+<span id="cb18-32"><a href="#cb18-32" tabindex="-1"></a><span class="co">#&gt;  [71]  92371714 104194644  80678406 130746421   6544507  54366037  11722654</span></span>
+<span id="cb18-33"><a href="#cb18-33" tabindex="-1"></a><span class="co">#&gt;  [78]  23855288    996046 104846192  35477411  75848043   5029037  50188094</span></span>
+<span id="cb18-34"><a href="#cb18-34" tabindex="-1"></a><span class="co">#&gt;  [85]  84444296 136071015   5144633  62896477  85459432 142989340  22136645</span></span>
+<span id="cb18-35"><a href="#cb18-35" tabindex="-1"></a><span class="co">#&gt;  [92]  33346088  89785585  72565521  53464576 138014054  76736595 121450460</span></span>
+<span id="cb18-36"><a href="#cb18-36" tabindex="-1"></a><span class="co">#&gt;  [99]  52582197  39107722  31994263  68617678 128230716 114942138  24470833</span></span>
+<span id="cb18-37"><a href="#cb18-37" tabindex="-1"></a><span class="co">#&gt; [106]  27038937  54746042  71417752  12508751  74249211 109131610 121557512</span></span>
+<span id="cb18-38"><a href="#cb18-38" tabindex="-1"></a><span class="co">#&gt; [113]  18989134 118819900  11580419 137272208 137544759  76219908</span></span></code></pre></div>
+<p>An alternative is to use the <code>get_llt_smq()</code> function,
+which allows you to query the <code>smq</code> tables.</p>
+<p>Notice that you collect low level term codes, even if you work with
+higher level terms, like preferred terms, or high level terms. This is
+intentional: this list collects all low level term codes composing the
+higher level term. See <a href="#collecting_ids">Collecting ID
+section</a>.</p>
+</div>
+<div id="steps-4-and-5-add_adr-function" class="section level3">
+<h3>Steps 4 and 5: add_adr() function</h3>
+<p>The <code>add_adr()</code> function allows you to identify cases
+reporting the adverse event of interest and add the corresponding column
+to <code>demo</code>.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>demo <span class="ot">&lt;-</span> </span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>  <span class="fu">add_adr</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>    <span class="at">.data =</span> demo,</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>    <span class="at">a_code =</span> a_llt,</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>    <span class="at">adr_data =</span> adr)</span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `demo` table.</span></span></code></pre></div>
+</div>
+<div id="step-6-check-your-data-management-1" class="section level3">
+<h3>Step 6: Check your data management</h3>
+<p><code>check_dm()</code> also works for adr.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>demo <span class="sc">|&gt;</span> </span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>  <span class="fu">check_dm</span>(<span class="st">&quot;a_colitis&quot;</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a><span class="co">#&gt;           [,1]</span></span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a><span class="co">#&gt; a_colitis  104</span></span></code></pre></div>
+</div>
+</div>
+<div id="other-variables" class="section level2">
+<h2>Other variables</h2>
+<p>We may need to create other variables to perform our analysis, for
+example age and sex in a multivariable analysis.</p>
+<div id="age" class="section level3">
+<h3>Age</h3>
+<p>The <code>demo</code> table contains the <code>AgeGroup</code>
+column, which groups ages into categories. You may want to recode it to
+match you research question</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>demo <span class="ot">&lt;-</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>  demo <span class="sc">|&gt;</span></span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">cut</span>(<span class="fu">as.integer</span>(AgeGroup),</span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a>              <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>),</span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a>              <span class="at">include.lowest =</span> <span class="cn">TRUE</span>, <span class="at">right =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a>              <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;&lt;18&quot;</span>, <span class="st">&quot;18-45&quot;</span>,<span class="st">&quot;45-64&quot;</span>, <span class="st">&quot;65-74&quot;</span>, <span class="st">&quot;75+&quot;</span>))</span>
+<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a>  )</span></code></pre></div>
+</div>
+<div id="sex" class="section level3">
+<h3>Sex</h3>
+<p>The <code>demo</code> table contains the <code>Gender</code> column,
+from which you can also create a new sex column (with values 1 for men,
+2 for women, and NA otherwise)</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>demo <span class="ot">&lt;-</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>  demo <span class="sc">|&gt;</span> </span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>    <span class="at">sex =</span> <span class="fu">ifelse</span>(Gender <span class="sc">==</span> <span class="st">&quot;1&quot;</span>, <span class="dv">1</span>,</span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a>                 <span class="fu">ifelse</span>(Gender <span class="sc">==</span> <span class="st">&quot;2&quot;</span>, <span class="dv">2</span>, <span class="cn">NA_real_</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>                 )</span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a>    )</span></code></pre></div>
+</div>
+<div id="using-case_when" class="section level3">
+<h3>Using case_when()</h3>
+<p>The <code>case_when()</code> function from the <code>dplyr</code>
+package allows you to manage multiple options in a single function, with
+a slightly different syntax.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>demo <span class="ot">&lt;-</span> </span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>  demo <span class="sc">|&gt;</span> </span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a>    <span class="at">sex =</span> <span class="fu">case_when</span>(Gender <span class="sc">==</span> <span class="st">&quot;1&quot;</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a>                    Gender <span class="sc">==</span> <span class="st">&quot;2&quot;</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a>                    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a>    )</span></code></pre></div>
+<p>More documentation on <code>case_when()</code> can be found in the
+<code>dplyr</code> package documentation.</p>
+<p>You should just remember here that options are evaluated
+sequentially, from top to bottom.</p>
+</div>
+<div id="seriousness-death" class="section level3">
+<h3>Seriousness, death</h3>
+<p>The <code>out</code> table contains the <code>Seriousness</code>
+column, which indicates whether the case was serious or not, and whether
+the patient experienced a fatal issue during his/her follow-up.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="co"># ---- Serious ---- ####</span></span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>out <span class="ot">&lt;-</span> out_</span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>demo <span class="ot">&lt;-</span> </span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>  demo <span class="sc">|&gt;</span> </span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a>    <span class="at">serious =</span> </span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a>      <span class="fu">ifelse</span>(</span>
+<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a>        UMCReportId <span class="sc">%in%</span> out<span class="sc">$</span>UMCReportId,</span>
+<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a>        UMCReportId <span class="sc">%in%</span> </span>
+<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a>          (out <span class="sc">|&gt;</span> </span>
+<span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a>          <span class="fu">filter</span>(Serious <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a>          <span class="fu">pull</span>(UMCReportId)</span>
+<span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a>          ),</span>
+<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a>        <span class="cn">NA</span>)</span>
+<span id="cb24-17"><a href="#cb24-17" tabindex="-1"></a>    )</span>
+<span id="cb24-18"><a href="#cb24-18" tabindex="-1"></a></span>
+<span id="cb24-19"><a href="#cb24-19" tabindex="-1"></a><span class="co"># ---- Death + outcome availability ---- ####</span></span>
+<span id="cb24-20"><a href="#cb24-20" tabindex="-1"></a></span>
+<span id="cb24-21"><a href="#cb24-21" tabindex="-1"></a>demo <span class="ot">&lt;-</span> </span>
+<span id="cb24-22"><a href="#cb24-22" tabindex="-1"></a>  demo <span class="sc">|&gt;</span> </span>
+<span id="cb24-23"><a href="#cb24-23" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">death =</span> </span>
+<span id="cb24-24"><a href="#cb24-24" tabindex="-1"></a>           <span class="fu">ifelse</span>(UMCReportId <span class="sc">%in%</span> out<span class="sc">$</span>UMCReportId,</span>
+<span id="cb24-25"><a href="#cb24-25" tabindex="-1"></a>                  UMCReportId <span class="sc">%in%</span> </span>
+<span id="cb24-26"><a href="#cb24-26" tabindex="-1"></a>                    (out <span class="sc">|&gt;</span> </span>
+<span id="cb24-27"><a href="#cb24-27" tabindex="-1"></a>                    <span class="fu">filter</span>(Seriousness <span class="sc">==</span> <span class="st">&quot;1&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb24-28"><a href="#cb24-28" tabindex="-1"></a>                    <span class="fu">pull</span>(UMCReportId)</span>
+<span id="cb24-29"><a href="#cb24-29" tabindex="-1"></a>                    ),</span>
+<span id="cb24-30"><a href="#cb24-30" tabindex="-1"></a>                  <span class="cn">NA</span>)</span>
+<span id="cb24-31"><a href="#cb24-31" tabindex="-1"></a>         )</span></code></pre></div>
+<ul>
+<li><p>The <code>serious</code> and <code>death</code> columns are coded
+with TRUE/FALSE values in this example. There is no particular reason to
+prefer it over 1/0 codes. It is just a matter of preference.</p></li>
+<li><p>The <code>Seriousness</code> can have several levels, level 1
+being death. (see subsidiary files)</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="disproportionality" class="section level1">
+<h1>Disproportionality</h1>
+<p>Our <code>demo</code> dataset now has a drug column for nivolumab,
+and an adr column for colitis.</p>
+<p>We can perform a disproportionality analysis between these two
+variables.</p>
+<div id="univariate-analysis" class="section level2">
+<h2>Univariate analysis</h2>
+<div id="disproportionality-metrics" class="section level3">
+<h3>Disproportionality metrics</h3>
+<p>Reporting Odds-Ratio (ROR) and Information Component essentially
+measure the same thing: the disproportionality.</p>
+<p><code>compute_dispro()</code> computes both of these.</p>
+<ul>
+<li><p><code>or</code> and <code>or_ci</code> are the reporting
+Odds-Ratio and its confidence interval (default: 95%CI).</p></li>
+<li><p><code>ic</code> and <code>ic_tail</code> are the Information
+Component, and its lower end of credibility interval (default:
+IC025).</p></li>
+</ul>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>demo <span class="sc">|&gt;</span> </span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>  <span class="fu">compute_dispro</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;a_colitis&quot;</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;nivolumab&quot;</span></span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>    )</span>
+<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 9</span></span>
+<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a><span class="co">#&gt;   y         x         n_obs n_exp or    or_ci          ic ic_tail ci_level</span></span>
+<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   </span></span>
+<span id="cb25-9"><a href="#cb25-9" tabindex="-1"></a><span class="co">#&gt; 1 a_colitis nivolumab    44  31.2 1.88  (1.23-2.88) 0.489  0.0314 95%</span></span></code></pre></div>
+</div>
+</div>
+<div id="advanced-modelling-multivariate-analysis" class="section level2">
+<h2>Advanced modelling, multivariate analysis</h2>
+<p>From this point, it is also possible to run any statistical model
+including drug and adr parameters, but also potential other variables
+such as age and sex. For example, one could wish to perform a
+multivariate logistic regression on the reporting of colitis and
+nivolumab, adjusted on age groups and sex.</p>
+<p>The <code>glm()</code> function from the <code>stats</code> package
+can be used for this purpose.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">glm</span>(a_colitis <span class="sc">~</span> nivolumab, </span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>           <span class="at">data =</span> demo, <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a><span class="fu">summary</span>(mod)</span>
+<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb26-6"><a href="#cb26-6" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb26-7"><a href="#cb26-7" tabindex="-1"></a><span class="co">#&gt; glm(formula = a_colitis ~ nivolumab, family = &quot;binomial&quot;, data = demo)</span></span>
+<span id="cb26-8"><a href="#cb26-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb26-9"><a href="#cb26-9" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb26-10"><a href="#cb26-10" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error z value Pr(&gt;|z|)    </span></span>
+<span id="cb26-11"><a href="#cb26-11" tabindex="-1"></a><span class="co">#&gt; (Intercept)  -2.0477     0.1372 -14.928  &lt; 2e-16 ***</span></span>
+<span id="cb26-12"><a href="#cb26-12" tabindex="-1"></a><span class="co">#&gt; nivolumab     0.6334     0.2170   2.919  0.00351 ** </span></span>
+<span id="cb26-13"><a href="#cb26-13" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb26-14"><a href="#cb26-14" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb26-15"><a href="#cb26-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb26-16"><a href="#cb26-16" tabindex="-1"></a><span class="co">#&gt; (Dispersion parameter for binomial family taken to be 1)</span></span>
+<span id="cb26-17"><a href="#cb26-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb26-18"><a href="#cb26-18" tabindex="-1"></a><span class="co">#&gt;     Null deviance: 603.80  on 749  degrees of freedom</span></span>
+<span id="cb26-19"><a href="#cb26-19" tabindex="-1"></a><span class="co">#&gt; Residual deviance: 595.53  on 748  degrees of freedom</span></span>
+<span id="cb26-20"><a href="#cb26-20" tabindex="-1"></a><span class="co">#&gt; AIC: 599.53</span></span>
+<span id="cb26-21"><a href="#cb26-21" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb26-22"><a href="#cb26-22" tabindex="-1"></a><span class="co">#&gt; Number of Fisher Scoring iterations: 4</span></span></code></pre></div>
+<p>In a logistic regression models, estimates lead to (reporting) OR by
+the exponential.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="fu">summary</span>(mod)<span class="sc">$</span>coefficients</span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="co">#&gt;               Estimate Std. Error    z value     Pr(&gt;|z|)</span></span>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a><span class="co">#&gt; (Intercept) -2.0476928  0.1371736 -14.927752 2.174746e-50</span></span>
+<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a><span class="co">#&gt; nivolumab    0.6333854  0.2169532   2.919456 3.506429e-03</span></span>
+<span id="cb27-5"><a href="#cb27-5" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">summary</span>(mod)<span class="sc">$</span>coefficients[<span class="dv">2</span>, <span class="dv">1</span>])</span>
+<span id="cb27-7"><a href="#cb27-7" tabindex="-1"></a><span class="co">#&gt; [1] 1.883978</span></span></code></pre></div>
+<p>Adding covariates is straightforward</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(a_colitis <span class="sc">~</span> nivolumab <span class="sc">+</span> sex <span class="sc">+</span> age,</span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>            <span class="at">data =</span> demo,</span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>            <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span>)</span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a><span class="fu">summary</span>(mod2)</span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a><span class="co">#&gt; Call:</span></span>
+<span id="cb28-8"><a href="#cb28-8" tabindex="-1"></a><span class="co">#&gt; glm(formula = a_colitis ~ nivolumab + sex + age, family = &quot;binomial&quot;, </span></span>
+<span id="cb28-9"><a href="#cb28-9" tabindex="-1"></a><span class="co">#&gt;     data = demo)</span></span>
+<span id="cb28-10"><a href="#cb28-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb28-11"><a href="#cb28-11" tabindex="-1"></a><span class="co">#&gt; Coefficients:</span></span>
+<span id="cb28-12"><a href="#cb28-12" tabindex="-1"></a><span class="co">#&gt;             Estimate Std. Error z value Pr(&gt;|z|)  </span></span>
+<span id="cb28-13"><a href="#cb28-13" tabindex="-1"></a><span class="co">#&gt; (Intercept) -14.8881   882.7435  -0.017   0.9865  </span></span>
+<span id="cb28-14"><a href="#cb28-14" tabindex="-1"></a><span class="co">#&gt; nivolumab     0.4613     0.2679   1.722   0.0851 .</span></span>
+<span id="cb28-15"><a href="#cb28-15" tabindex="-1"></a><span class="co">#&gt; sex           0.1610     0.2517   0.640   0.5223  </span></span>
+<span id="cb28-16"><a href="#cb28-16" tabindex="-1"></a><span class="co">#&gt; age18-45     12.7789   882.7435   0.014   0.9884  </span></span>
+<span id="cb28-17"><a href="#cb28-17" tabindex="-1"></a><span class="co">#&gt; age45-64     12.7362   882.7434   0.014   0.9885  </span></span>
+<span id="cb28-18"><a href="#cb28-18" tabindex="-1"></a><span class="co">#&gt; age65-74     13.1715   882.7434   0.015   0.9881  </span></span>
+<span id="cb28-19"><a href="#cb28-19" tabindex="-1"></a><span class="co">#&gt; age75+       12.6702   882.7434   0.014   0.9885  </span></span>
+<span id="cb28-20"><a href="#cb28-20" tabindex="-1"></a><span class="co">#&gt; ---</span></span>
+<span id="cb28-21"><a href="#cb28-21" tabindex="-1"></a><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb28-22"><a href="#cb28-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb28-23"><a href="#cb28-23" tabindex="-1"></a><span class="co">#&gt; (Dispersion parameter for binomial family taken to be 1)</span></span>
+<span id="cb28-24"><a href="#cb28-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb28-25"><a href="#cb28-25" tabindex="-1"></a><span class="co">#&gt;     Null deviance: 436.14  on 489  degrees of freedom</span></span>
+<span id="cb28-26"><a href="#cb28-26" tabindex="-1"></a><span class="co">#&gt; Residual deviance: 429.24  on 483  degrees of freedom</span></span>
+<span id="cb28-27"><a href="#cb28-27" tabindex="-1"></a><span class="co">#&gt;   (260 observations effacées parce que manquantes)</span></span>
+<span id="cb28-28"><a href="#cb28-28" tabindex="-1"></a><span class="co">#&gt; AIC: 443.24</span></span>
+<span id="cb28-29"><a href="#cb28-29" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb28-30"><a href="#cb28-30" tabindex="-1"></a><span class="co">#&gt; Number of Fisher Scoring iterations: 13</span></span></code></pre></div>
+<div id="extract-odds-ratio-with-compute_or_mod" class="section level3">
+<h3>Extract Odds-Ratio with compute_or_mod()</h3>
+<p>There are several packages that can extract the OR from a model. The
+<code>compute_or_mod()</code> function is just one of many ways to do
+it.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>mod_or <span class="ot">&lt;-</span> </span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>  <span class="fu">compute_or_mod</span>(</span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>    <span class="fu">summary</span>(mod2)<span class="sc">$</span>coefficients,</span>
+<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a>    <span class="at">estimate =</span> Estimate,</span>
+<span id="cb29-5"><a href="#cb29-5" tabindex="-1"></a>    <span class="at">std_er =</span> Std..Error</span>
+<span id="cb29-6"><a href="#cb29-6" tabindex="-1"></a>    )</span>
+<span id="cb29-7"><a href="#cb29-7" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" tabindex="-1"></a>mod_or</span>
+<span id="cb29-9"><a href="#cb29-9" tabindex="-1"></a><span class="co">#&gt;             rn    Estimate  Std..Error     z.value   Pr...z..           or</span></span>
+<span id="cb29-10"><a href="#cb29-10" tabindex="-1"></a><span class="co">#&gt;         &lt;char&gt;       &lt;num&gt;       &lt;num&gt;       &lt;num&gt;      &lt;num&gt;        &lt;num&gt;</span></span>
+<span id="cb29-11"><a href="#cb29-11" tabindex="-1"></a><span class="co">#&gt; 1: (Intercept) -14.8881303 882.7435114 -0.01686575 0.98654372 3.421111e-07</span></span>
+<span id="cb29-12"><a href="#cb29-12" tabindex="-1"></a><span class="co">#&gt; 2:   nivolumab   0.4613151   0.2679460  1.72167184 0.08512898 1.586159e+00</span></span>
+<span id="cb29-13"><a href="#cb29-13" tabindex="-1"></a><span class="co">#&gt; 3:         sex   0.1610313   0.2516929  0.63979269 0.52230739 1.174722e+00</span></span>
+<span id="cb29-14"><a href="#cb29-14" tabindex="-1"></a><span class="co">#&gt; 4:    age18-45  12.7789374 882.7434818  0.01447639 0.98844992 3.546680e+05</span></span>
+<span id="cb29-15"><a href="#cb29-15" tabindex="-1"></a><span class="co">#&gt; 5:    age45-64  12.7361773 882.7434059  0.01442795 0.98848856 3.398220e+05</span></span>
+<span id="cb29-16"><a href="#cb29-16" tabindex="-1"></a><span class="co">#&gt; 6:    age65-74  13.1714980 882.7434060  0.01492109 0.98809513 5.251809e+05</span></span>
+<span id="cb29-17"><a href="#cb29-17" tabindex="-1"></a><span class="co">#&gt; 7:      age75+  12.6701788 882.7434335  0.01435318 0.98854821 3.181184e+05</span></span>
+<span id="cb29-18"><a href="#cb29-18" tabindex="-1"></a><span class="co">#&gt;       low_ci    up_ci        orl          ci ci_level signif_ror</span></span>
+<span id="cb29-19"><a href="#cb29-19" tabindex="-1"></a><span class="co">#&gt;        &lt;num&gt;    &lt;num&gt;     &lt;char&gt;      &lt;char&gt;   &lt;char&gt;      &lt;num&gt;</span></span>
+<span id="cb29-20"><a href="#cb29-20" tabindex="-1"></a><span class="co">#&gt; 1: 0.0000000      Inf       0.00  (0.00-Inf)      95%          0</span></span>
+<span id="cb29-21"><a href="#cb29-21" tabindex="-1"></a><span class="co">#&gt; 2: 0.9381463 2.681777       1.59 (0.94-2.68)      95%          0</span></span>
+<span id="cb29-22"><a href="#cb29-22" tabindex="-1"></a><span class="co">#&gt; 3: 0.7172881 1.923873       1.17 (0.72-1.92)      95%          0</span></span>
+<span id="cb29-23"><a href="#cb29-23" tabindex="-1"></a><span class="co">#&gt; 4: 0.0000000      Inf 354,667.99  (0.00-Inf)      95%          0</span></span>
+<span id="cb29-24"><a href="#cb29-24" tabindex="-1"></a><span class="co">#&gt; 5: 0.0000000      Inf 339,822.03  (0.00-Inf)      95%          0</span></span>
+<span id="cb29-25"><a href="#cb29-25" tabindex="-1"></a><span class="co">#&gt; 6: 0.0000000      Inf 525,180.87  (0.00-Inf)      95%          0</span></span>
+<span id="cb29-26"><a href="#cb29-26" tabindex="-1"></a><span class="co">#&gt; 7: 0.0000000      Inf 318,118.36  (0.00-Inf)      95%          0</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>You’re now all set to create drugs and adrs columns into a
+<code>demo</code> dataset. This is the first step to many modelling
+possibilities!</p>
+<p>Where do you want to go next?</p>
+<ul>
+<li><p>Dive into descriptive features, such as time to onset,
+dechallenge, rechallenge, screening of drugs and adrs.
+<code>vignette(&quot;descriptive&quot;)</code></p></li>
+<li><p>Learn on interactions in pharmacovigilance database
+<code>vignette(&quot;interactions&quot;)</code></p></li>
+</ul>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

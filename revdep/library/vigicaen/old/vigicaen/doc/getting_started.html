@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Getting started</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Getting started</h1>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#purpose" id="toc-purpose">Purpose</a>
+<ul>
+<li><a href="#overview" id="toc-overview">Overview</a></li>
+</ul></li>
+<li><a href="#deploy-tables" id="toc-deploy-tables">Deploy tables</a>
+<ul>
+<li><a href="#folder-and-files" id="toc-folder-and-files">Folder and
+files</a></li>
+<li><a href="#table-builders-tb_-functions" id="toc-table-builders-tb_-functions">Table builders (<code>tb_*</code>
+functions)</a></li>
+<li><a href="#outputs" id="toc-outputs">Outputs</a></li>
+</ul></li>
+<li><a href="#loading-tables-into-r" id="toc-loading-tables-into-r">Loading tables into R</a></li>
+<li><a href="#working-on-a-computer-with-low-specifications" id="toc-working-on-a-computer-with-low-specifications">Working on a
+computer with low specifications</a></li>
+<li><a href="#subsetting-tables" id="toc-subsetting-tables">Subsetting
+tables</a></li>
+</ul>
+</div>
+
+<div id="purpose" class="section level1">
+<h1>Purpose</h1>
+<p>Have you subscribed to <a href="https://who-umc.org/">VigiBase
+Extract Case Level, WHODrug</a> and <a href="https://www.meddra.org/">MedDRA</a>?</p>
+<p>Congratulations! You’ve made it half way to explore VigiBase.</p>
+<p>Now, you need to process those large text/ascii files into R readable
+files. This is the purpose of this vignette.</p>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>The <code>tb_*</code> functions (Table Builders) will help you
+through the process.</p>
+<table>
+<colgroup>
+<col width="27%" />
+<col width="72%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>tb_*</code> function</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>tb_vigibase</code></td>
+<td>Main tables (demo, drugs, adverse drug reactions), and subsidiary
+tables</td>
+</tr>
+<tr class="even">
+<td><code>tb_who</code></td>
+<td>WHODrug tables</td>
+</tr>
+<tr class="odd">
+<td><code>tb_meddra</code></td>
+<td>MedDRA tables</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="deploy-tables" class="section level1">
+<h1>Deploy tables</h1>
+<div id="folder-and-files" class="section level2">
+<h2>Folder and files</h2>
+<p>First, UNZIP the files you received from UMC (beware that you also
+need to unzip <strong>sub-folders</strong>, inside the main zip
+file).</p>
+<p>That will give you a folder structure like this:</p>
+<ul>
+<li>/vigibase_month_year (replace with your version)</li>
+<li>…/main</li>
+<li>…/who</li>
+<li>…/sub</li>
+</ul>
+<p>Gather your meddra files into a single folder, ideally close to the
+vigibase_month_year one.</p>
+<ul>
+<li>/meddra_vx (replace vx)</li>
+</ul>
+<p>Although the names of the subfolders can be longer
+(e.g. “main_sep_1_24”), we <strong>strongly</strong> suggest you shorten
+them to <code>main</code>, <code>who</code>, <code>sub</code> for
+Vigibase, and <code>meddra_vx</code> for MedDRA.</p>
+<p>Short names will make your code easier to read and maintain.</p>
+</div>
+<div id="table-builders-tb_-functions" class="section level2">
+<h2>Table builders (<code>tb_*</code> functions)</h2>
+<p>Provide a path to these files on your computer.</p>
+<p>We usually create <code>path_*</code> objects in R, then use them in
+functions. This is optional, you can also pass path directly to
+<code>tb_*</code> functions.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(vigicaen)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co"># change for the correct paths on your computer</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>path_base   <span class="ot">&lt;-</span> <span class="st">&quot;../vigibase_ecl/main&quot;</span> </span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>path_sub    <span class="ot">&lt;-</span> <span class="st">&quot;../vigibase_ecl/sub&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>path_who    <span class="ot">&lt;-</span> <span class="st">&quot;../vigibase_ecl/who&quot;</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>path_meddra <span class="ot">&lt;-</span> <span class="st">&quot;../meddra&quot;</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="fu">tb_vigibase</span>(</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>  <span class="at">path_base =</span> path_base, </span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>  <span class="at">path_sub  =</span> path_sub</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>  )</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="fu">tb_who</span>(</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>  <span class="at">path_who  =</span> path_who</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>  )</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="fu">tb_meddra</span>(</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>  <span class="at">path_meddra =</span> path_meddra</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>  )</span></code></pre></div>
+<blockquote>
+<p>Deploying table have to be done ONCE per database version.</p>
+</blockquote>
+<p>New parquet files will be created in the same directories as provided
+to <code>path_*</code>.</p>
+<blockquote>
+<p>The suspectedduplicates table is delivered with subsidiary files, but
+the <code>tb_vigibase()</code> function will output it in the main
+directory, under a slightly modified name.</p>
+</blockquote>
+</div>
+<div id="outputs" class="section level2">
+<h2>Outputs</h2>
+<p>The <code>tb_*</code> functions create <a href="https://arrow.apache.org/docs/r/index.html">parquet</a> files.
+Parquet is an open-source format, supported by Arrow.</p>
+<p>Not all tables from each source are created during the process.</p>
+<ul>
+<li><p>Main: All tables + subsidiary tables (from sub): demo, drug, adr,
+link, ind, srce, out, followup, suspdup, AgeGroup, Dechallenge,
+Dechallenge2, Frequency, Gender, Notifier, Outcome, Rechallenge,
+Rechallenge2, Region, RepBasis, ReportType, RouteOfAdm, Seriousness, and
+SizeUnit.</p></li>
+<li><p>WHODrug: All tables: mp, thg, pp, ing, srce, org, ccode, atc,
+sun, pf, str, prg, prt, unitx. Again, check correspondence in the
+delivered files from UMC.</p></li>
+<li><p>Meddra: meddra_hierarchy, smq_list, and smq_content.</p></li>
+</ul>
+<p><code>mp</code> is modified in comparison to the original file, drug
+names were lowered case and trimed, to be more handy. A few columns have
+also been removed.</p>
+</div>
+</div>
+<div id="loading-tables-into-r" class="section level1">
+<h1>Loading tables into R</h1>
+<p>You can use the arrow package built-in readers to load the tables, or
+the <code>dt_parquet()</code> function from this package, which is a
+shorthand for
+<code>data.table::as.data.table(read_parquet())</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>demo   <span class="ot">&lt;-</span> <span class="fu">dt_parquet</span>(path_main, <span class="st">&quot;demo&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>drug   <span class="ot">&lt;-</span> <span class="fu">dt_parquet</span>(path_main, <span class="st">&quot;drug&quot;</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>adr    <span class="ot">&lt;-</span> <span class="fu">dt_parquet</span>(path_main, <span class="st">&quot;adr&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>link   <span class="ot">&lt;-</span> <span class="fu">dt_parquet</span>(path_main, <span class="st">&quot;link&quot;</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co"># etc.</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>mp     <span class="ot">&lt;-</span> <span class="fu">dt_parquet</span>(path_who, <span class="st">&quot;mp&quot;</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>meddra <span class="ot">&lt;-</span> <span class="fu">dt_parquet</span>(path_meddra, <span class="st">&quot;meddra_hierarchy&quot;</span>)</span></code></pre></div>
+<blockquote>
+<p>Parquet files will be loaded IN memory, by default. To change this
+behavior, remember to set <code>in_memory = FALSE</code>. Be careful
+that the output format will be different.</p>
+</blockquote>
+</div>
+<div id="working-on-a-computer-with-low-specifications" class="section level1">
+<h1>Working on a computer with low specifications</h1>
+<p>The main ressource to store objects in R is the RAM. If your computer
+don’t have much RAM (e.g., only 16GB), you will not be able to load all
+Vigibase tables at once in your session.</p>
+<p>In this case, you can use the <code>in_memory</code> argument of
+<code>dt_parquet()</code> to load tables <strong>OUT</strong> of
+memory.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>demo   <span class="ot">&lt;-</span> <span class="fu">dt_parquet</span>(path_main, <span class="st">&quot;demo&quot;</span>, <span class="at">in_memory =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>This will allow you to go through most of the data management
+steps.</p>
+<p>At the time of statistical modelling, you might need to load a table
+and/or use modelling packages that do not rely on RAM (one example: <a href="https://CRAN.R-project.org/package=biglm">biglm</a>)</p>
+</div>
+<div id="subsetting-tables" class="section level1">
+<h1>Subsetting tables</h1>
+<p>If you want to work on a specific subset of VigiBase (e.g. older
+adults, some specific drugs, or adverse drug reaction), you can create a
+dedicated subset with the <code>tb_subset()</code> function.</p>
+<p>Currently, you can subset on</p>
+<ul>
+<li><p>Age groups</p></li>
+<li><p>Drug record numbers (DrecNo) and Medicinal product IDs
+(MedicinalProd_Id)</p></li>
+<li><p>MedDRA codes of adverse drug reactions (MedDRA_Id)</p></li>
+</ul>
+<p>Visit <code>tb_subset()</code> help page for more information.</p>
+<p>You will need to collect drug or reaction <strong>IDs</strong> if you
+want to subset on these. See
+<code>vignette(&quot;basic_workflow&quot;)</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>sv_selection <span class="ot">&lt;-</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    <span class="fu">c</span>(<span class="dv">7</span>, <span class="co">#  65 - 74 years group</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>      <span class="dv">8</span>) <span class="co">#  &gt;= 75 years group</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>wd_in <span class="ot">&lt;-</span> <span class="st">&quot;some/place/on/your/computer/containing/vigibase_ecl/main&quot;</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>wd_out <span class="ot">&lt;-</span> <span class="fu">paste0</span>(wd_in, <span class="st">&quot;/&quot;</span>, <span class="st">&quot;more_than_65_subset&quot;</span>, <span class="st">&quot;/&quot;</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="fu">tb_subset</span>(wd_in, wd_out,</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>          <span class="at">subset_var =</span> <span class="st">&quot;age&quot;</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>          <span class="at">sv_selection =</span> sv_selection)</span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

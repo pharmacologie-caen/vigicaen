@@ -1,14 +1,13 @@
-## Resubmission
-This is a resubmission. Thank you for your comments. In this version I have:
+## vigicaen 0.15.6
 
-* Removed commented code lines in examples in tb_meddra.Rd, tb_who.Rd, and
-tb_subset.Rd
+* r-oldrel-macos-arm64 and r-oldrel-macos-x86_64 have warn status
+on current release (0.15.5) due to
+Non-standard license specification. 
+The current license specification was proposed
+by Uwe Ligges during the initial submission process of vigicaen.
 
-* Replaced those commented code lines by real examples (which required adding
-helper functions)
+* revdepcheck::revdep_check() was run on 2025-03-13. No issues were found.
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
-
-* This is a new release.
+0 errors | 0 warnings | 0 notes

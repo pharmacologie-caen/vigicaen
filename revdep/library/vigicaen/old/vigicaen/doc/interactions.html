@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Interactions</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Interactions</h1>
+
+
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(vigicaen)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(rlang)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>It is possible to explore interactions between drugs on an adr
+reporting.</p>
+<p>This tutorial does not aim at covering the concepts underlying
+interactions in pharmacovigilance. It is about running them in
+practice.</p>
+<p>In particular, we will not cover the differences between additive
+interactions, statistical/synergistic interactions.</p>
+<p><code>compute_interaction()</code> use is shown <a href="#compute_int">at the end of the vignette</a>.</p>
+<p>We use built-in example dataset.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># ---- Tables ---- ####</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>demo <span class="ot">&lt;-</span> demo_</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>drug <span class="ot">&lt;-</span> drug_</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co"># ---- Dictionary step ---- ####</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>d_drecno <span class="ot">&lt;-</span> ex_<span class="sc">$</span>d_drecno</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>a_llt <span class="ot">&lt;-</span> ex_<span class="sc">$</span>a_llt</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co"># #### Data management #### ####</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co"># ---- Drugs ---- ####</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>demo <span class="ot">&lt;-</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>    demo <span class="sc">|&gt;</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>    <span class="fu">add_drug</span>(</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>      <span class="at">d_code =</span> d_drecno,</span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>      <span class="at">drug_data =</span> drug_</span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>    ) </span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `demo` table.</span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co"># ---- Adrs ---- ####</span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a>demo <span class="ot">&lt;-</span> </span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a>  demo <span class="sc">|&gt;</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a>    <span class="fu">add_adr</span>(</span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a>      <span class="at">a_code =</span> a_llt,</span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a>      <span class="at">adr_data =</span> adr_</span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a>    )</span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `demo` table.</span></span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co"># ---- Sex ---- ####</span></span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a>demo <span class="ot">&lt;-</span> </span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a>  demo <span class="sc">|&gt;</span> </span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a>    <span class="at">sex =</span> <span class="fu">case_when</span>(Gender <span class="sc">==</span> <span class="st">&quot;1&quot;</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a>                    Gender <span class="sc">==</span> <span class="st">&quot;2&quot;</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a>                    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_real_</span>)</span>
+<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a>    )</span></code></pre></div>
+</div>
+<div id="additive-interactions" class="section level1">
+<h1>Additive interactions</h1>
+<div id="multivariate-analysis" class="section level2">
+<h2>Multivariate analysis</h2>
+<p>Additive effect of two covariates can be obtained by multiplying the
+Odds-Ratio of each.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>mod3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(a_colitis <span class="sc">~</span> ipilimumab <span class="sc">+</span> sex,</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>            <span class="at">data =</span> demo,</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>            <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>mod_or <span class="ot">&lt;-</span> </span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="fu">compute_or_mod</span>(</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="fu">summary</span>(mod3)<span class="sc">$</span>coefficients,</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>      <span class="at">estimate =</span> Estimate,</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>    <span class="at">std_er =</span> Std..Error</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> <span class="fu">select</span>(rn, orl, ci, up_ci)</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>mod_or</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt;             rn    orl          ci     up_ci</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt;         &lt;char&gt; &lt;char&gt;      &lt;char&gt;     &lt;num&gt;</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; 1: (Intercept)   0.15 (0.08-0.28) 0.2830974</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; 2:  ipilimumab   2.00 (1.14-3.53) 3.5274694</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; 3:         sex   1.06 (0.69-1.62) 1.6167786</span></span></code></pre></div>
+<p>With reporting Odds-Ratio of ipilimumab being 2.00 and the reporting
+Odds-Ratio of sex being 1.06, the additive effect of both is 2.00 *
+1.06.</p>
+</div>
+<div id="subgroup-comparisons" class="section level2">
+<h2>Subgroup comparisons</h2>
+<p>Some way to approach multiplicative interactions is to compare the
+disproportionality signal in subgroups.</p>
+<p>The <code>compute_dispro()</code> function can be used for these
+analyses, assuming the initial dataset is filtered on the appropriate
+subgroup.</p>
+<p>Say we want to investigate the interaction between ipilimumab and
+nivolumab and colitis reporting.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>demo <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">filter</span>(nivolumab <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">compute_dispro</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;a_colitis&quot;</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;ipilimumab&quot;</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    )</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 9</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt;   y         x          n_obs n_exp or    or_ci          ic ic_tail ci_level</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   </span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; 1 a_colitis ipilimumab    18  11.5 2.36  (1.18-4.73) 0.620  -0.123 95%</span></span></code></pre></div>
+<p>The overall analysis implies to perform additional analysis in
+different settings.</p>
+<p>In our example:</p>
+<ul>
+<li>If ipilimumab alone leads to an overreporting of colitis</li>
+<li>If nivolumab, among ipilimumab cases, leads to an overreporting of
+colitis</li>
+<li>If the combination ipilimumab + nivolumab versus any control (or the
+whole dataset) increases the notifications of colitis.</li>
+</ul>
+<p>Both IC and ROR can be used here.</p>
+</div>
+</div>
+<div id="inter_stat" class="section level1">
+<h1>Statistical interactions</h1>
+<div id="logistic-regression-model" class="section level2">
+<h2>Logistic regression model</h2>
+<p>The true statistical interaction is obtained with the following
+model</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>mod4 <span class="ot">&lt;-</span> <span class="fu">glm</span>(a_colitis <span class="sc">~</span> ipilimumab <span class="sc">+</span> sex <span class="sc">+</span> ipilimumab <span class="sc">*</span> sex,</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>            <span class="at">data =</span> demo,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>            <span class="at">family =</span> <span class="st">&quot;binomial&quot;</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="fu">compute_or_mod</span>(</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="fu">summary</span>(mod4)<span class="sc">$</span>coefficients,</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="at">estimate =</span> Estimate,</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  <span class="at">std_er =</span> Std..Error</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>)</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt;                rn   Estimate Std..Error   z.value     Pr...z..         or</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt;            &lt;char&gt;      &lt;num&gt;      &lt;num&gt;     &lt;num&gt;        &lt;num&gt;      &lt;num&gt;</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; 1:    (Intercept) -2.2464633  0.3632657 -6.184077 6.246672e-10  0.1057727</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; 2:     ipilimumab  2.7892022  0.8927900  3.124141 1.783247e-03 16.2680357</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; 3:            sex  0.2910744  0.2363515  1.231532 2.181241e-01  1.3378641</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; 4: ipilimumab:sex -1.4905928  0.6289493 -2.369973 1.778940e-02  0.2252391</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt;        low_ci      up_ci    orl           ci ci_level signif_ror</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt;         &lt;num&gt;      &lt;num&gt; &lt;char&gt;       &lt;char&gt;   &lt;char&gt;      &lt;num&gt;</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; 1: 0.05189925  0.2155687   0.11  (0.05-0.22)      95%          0</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; 2: 2.82742376 93.6007499  16.27 (2.83-93.60)      95%          1</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; 3: 0.84183934  2.1261543   1.34  (0.84-2.13)      95%          0</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt; 4: 0.06565701  0.7726920   0.23  (0.07-0.77)      95%          0</span></span></code></pre></div>
+</div>
+<div id="compute_int" class="section level2">
+<h2>Bayesian Information Component,
+<code>compute_interaction()</code></h2>
+<p>The formula for the interaction between 3 variables (<span class="math inline">\(y\)</span>, the event of interest, <span class="math inline">\(x1\)</span> and <span class="math inline">\(x2\)</span>, two potential explanatory factors) in
+information component is</p>
+<p><span class="math inline">\(log_2\frac{n_{y, x1,
+x2}}{n.expected_{interaction}}\)</span></p>
+<p>with <span class="math inline">\(n.expected_{interaction}\)</span>
+equal to</p>
+<p><span class="math inline">\(\frac{n_{x1, x2} * n_{y, x1} * n_{y, x2}
+* n.total}{n_{x1} * n_{x2} * n_y}\)</span></p>
+<p>The parameters are read as follows</p>
+<table>
+<colgroup>
+<col width="23%" />
+<col width="76%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Case</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(n_{x1}\)</span></td>
+<td>number of cases reporting x1</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(n_{x1, x2}\)</span></td>
+<td>number of cases reporting x1 <strong>AND</strong> x2</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(n_{y, x1, x2}\)</span></td>
+<td>number of cases reporting x1 <strong>AND</strong> x2
+<strong>AND</strong> y</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(n.total\)</span></td>
+<td>total number of cases in the study population</td>
+</tr>
+</tbody>
+</table>
+<p>The credibility interval is calculated as for the usual IC.</p>
+<p><code>compute_interaction()</code> produces this interaction
+statistic.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>demo <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="fu">compute_interaction</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;a_colitis&quot;</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;ipilimumab&quot;</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>    <span class="at">z =</span> <span class="st">&quot;nivolumab&quot;</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  )</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 8</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt;   y         x          z         n_obs n_exp    ic ic_tail ci_level</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   </span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; 1 a_colitis ipilimumab nivolumab    18  7.88  1.14   0.400 95%</span></span></code></pre></div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

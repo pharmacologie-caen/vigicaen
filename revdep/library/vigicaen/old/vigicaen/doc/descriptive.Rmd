@@ -1,0 +1,859 @@
+---
+title: "Descriptive"
+output: 
+  rmarkdown::html_vignette:
+    keep_md: true
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{descriptive}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+## Objectives
+
+-   Compute descriptive statistics on a (vigibase) dataset
+
+-   Understand the structure of the `link` table
+
+## Prerequisite
+
+-   Be familiar with data management on drugs and adrs, with the
+`get_*` and `add_*` functions (see `vignette("basic_workflow")`)
+
+# Demo data: counts of drugs, adrs, case characteristics
+
+## Step 0: Load packages
+
+```{r library, warning=FALSE, message=FALSE}
+library(vigicaen)
+library(rlang)
+library(dplyr)
+```
+
+## Step 1: Load datasets and add drug and adr columns
+
+This vignette uses the preloaded datasets (and a spurious suspdup table).
+
+```{r test_datasets}
+demo     <- demo_
+adr      <- adr_
+drug     <- drug_
+link     <- link_
+out      <- out_
+followup <- followup_
+
+srce     <- srce_
+
+thg      <- thg_
+mp       <- mp_
+meddra   <- meddra_
+smq_list <- smq_list_
+smq_content <- smq_content_
+
+suspdup <- 
+  data.table::data.table(
+    UMCReportId = 1,
+    SuspectedduplicateReportId = NA
+  )
+```
+
+And preloaded drug and adr dictionaries.
+
+```{r codes, eval=TRUE}
+d_drecno <- ex_$d_drecno
+
+a_llt <- ex_$a_llt
+```
+
+```{r demo_dm}
+demo <-
+  demo |>
+  add_drug(
+    d_code = d_drecno,
+    drug_data = drug
+  )
+
+demo <-
+  demo |>
+  add_adr(
+    a_code = a_llt,
+    adr_data = adr
+  )
+
+```
+
+As we aim to describe drug and adr counts, but also other variables
+(age, sex, type of reporter),
+they will be added too.
+
+You can still refer to
+\code{vignette("basic_workflow", package = "vigicaen")}
+
+```{r demo_dm_other_cols}
+# Age, sex
+
+demo <-
+  demo |>
+  mutate(
+    age = cut(as.integer(AgeGroup),
+              breaks = c(0,4,5,6,7,8),
+              include.lowest = TRUE, right = TRUE,
+              labels = c("<18", "18-45","45-64", "65-74", "75+")),
+
+    sex = case_when(Gender == "1" ~ 1,
+                    Gender == "2" ~ 2,
+                    Gender %in% c("-","0","9") ~ NA_real_,
+                    TRUE ~ NA_real_)
+  )
+
+# Death + outcome availability
+
+demo <- 
+  demo |> 
+  mutate(death = 
+           ifelse(UMCReportId %in% out$UMCReportId,
+                  UMCReportId %in% 
+                    (out |> 
+                    filter(Seriousness == "1") |> 
+                    pull(UMCReportId)
+                    ),
+                  NA)
+         )
+
+# follow-up, seriousness
+
+demo <-
+  demo |>
+  mutate(
+    fup = if_else(UMCReportId %in% followup$UMCReportId, 1, 0),
+    serious = 
+      ifelse(
+        UMCReportId %in% out$UMCReportId,
+        UMCReportId %in% 
+          (out |> 
+          filter(Serious == "Y") |> 
+          pull(UMCReportId)
+          ),
+        NA)
+  )
+
+# year
+
+demo <- 
+  demo |> 
+  mutate(
+    year = as.numeric(substr(FirstDateDatabase, start = 1, stop = 4))
+    )
+
+# type of reporter
+
+demo <-
+  demo |>
+  left_join(
+    srce |> transmute(UMCReportId, type_reporter = Type),
+    by = "UMCReportId")
+```
+
+## `desc_facvar()`
+
+`desc_facvar()` generates a summary of categorical
+variables with 2 or more levels.
+
+Its `.data` argument is a dataset to describe. Described variables should be passed to `vf`, as a character vector.
+
+### Multi-level variables
+
+Let's take the `demo` dataset as an example, with variable "age".
+
+```{r desc_fv_age}
+desc_facvar(
+  .data = demo,
+  vf = "age"
+)
+```
+
+The output format is a `data.frame`, of class `tibble`.
+
+The first column, `var`, contains the name of the variable of interest.
+The second column, `level`, contains the level of the variable.
+
+In this example, the first line shows the number of patients whose age
+variable (`var`) is "\<18", i.e. patients under 18 years old.
+
+The percentage appears in the `value` column, after the count of cases
+and the total number of reports for which the information is available.
+
+This number of reports with available information is recalled in the
+`n_avail` column.
+
+### Binary variables
+
+What happens when the variable has only two levels, for example 1 and 0,
+as is often the case for the drug and adr variables?
+
+```{r desc_fv_drug}
+desc_facvar(
+  .data = demo,
+  vf = "nivolumab"
+)
+```
+
+The output format is unchanged, with a data.frame as output.
+
+The reading is unchanged: we get the count of cases of the variable
+nivolumab, by its two levels. There are thus 225 patients exposed to
+nivolumab, out of 750 reports in total, which represents 30% of patients.
+
+Conversely, 525 reports do not mention nivolumab.
+
+In general, when presenting the results, the level 0 of binary variables
+provides little information and can be omitted.
+
+### Logical variables
+
+Let's continue with another example on the "seriousness" status.
+
+```{r desc_fv_serious}
+desc_facvar(
+  .data = demo,
+  vf = "serious"
+)
+```
+
+The "serious" variable takes the values TRUE/FALSE, and not 1/0, but it
+is interpreted in the same way (it is only an artifact of construction).
+
+Thus, 566 cases are considered serious, out of 747 where the information
+is available.
+
+### Exporting raw values
+
+You can export to run plotting or other formatting functions,
+with argument `export_raw_values`.
+
+```{r desc_fv_raw_values}
+desc_facvar(
+  .data = demo,
+  vf = "nivolumab",
+  export_raw_values = TRUE
+)
+```
+
+
+## Grouping several levels of a variable
+
+What if the available categories do not match our final needs?
+
+In the example on age, there is only one patient under 18 years old, and
+few patients under 45 years old. We would like to group all this data
+into a single line for a summary.
+
+The solution is to create the variable with the desired levels upstream,
+in a data management step.
+
+```{r demo_re_dm_age}
+demo <-
+  demo |>
+  mutate(
+    age2 = cut(as.integer(AgeGroup),
+              breaks = c(0, 6, 7, 8),
+              include.lowest = TRUE, right = TRUE,
+              labels = c("<64", "65-74", "75+"))
+  )
+
+
+desc_facvar(
+  demo,
+  vf = "age2"
+)
+```
+
+The same is true for columns like "year".
+
+When studying the "year" column, it is common to get an error message
+
+```{r desc_fv_year, error=TRUE}
+desc_facvar(
+  .data = demo,
+  vf = "year"
+)
+```
+
+The error message "Too many levels detected in year" is
+intentional, to avoid passing continuous variables in the `vf` argument.
+
+The maximum number of categories that can be taken by a variable treated
+by `desc_facvar` is controlled by the `ncat_max` argument.
+
+If a variable has more than `ncat_max` different levels, the function
+stops.
+
+We can therefore solve this problem by adjusting the value of this
+parameter.
+
+```{r desc_fv_year_ncat}
+desc_facvar(
+  .data = demo,
+  vf = "year",
+  ncat_max = 20
+)
+```
+
+This allows to review the main years, but will be less transposable in a
+final table of a manuscript. A categorization of the reporting years may be more informative.
+
+## Explicit categorical variables
+
+Levels of some variables are indicated by numbers.
+
+
+```{r desc_fv_region}
+desc_facvar(
+  .data = demo,
+  vf = "Region"
+)
+```
+
+We know that 389 cases come from Region "2", without being able to say
+which geographical area this region belongs to.
+
+To obtain the correspondence, there are external tables, such as this one
+for the Region: (they can be found in the subsidiary tables of vigibase).
+
+
+| Code | Label                        |
+|------|------------------------------|
+| 1    | African Region               |
+| 2    | Region of the Americas       |
+| 3    | South-East Asia Region       |
+| 4    | European Region              |
+| 5    | Eastern Mediterranean Region |
+| 6    | Western Pacific Region       |
+
+Several options are possible to bring the information back directly into
+demo, the simplest is to use factors
+
+```{r factor_region}
+demo <-
+  demo |> 
+  mutate(
+    Region = factor(Region, levels = c("1", "2", "3", "4", "5", "6"))
+  )
+
+levels(demo$Region) <-
+  c("African Region",                                    
+    "Region of the Americas",                            
+    "South-East Asia Region",                            
+    "European Region",                                   
+    "Eastern Mediterranean Region",                      
+    "Western Pacific Region"  
+  )
+```
+
+Note the transformation in two steps. The first to sort the levels of
+the variable, the second to assign the labels to its levels.
+This sequence is necessary to avoid a random sorting of levels.
+
+This transformation has the effect of modifying the result of
+`desc_facvar()`
+
+```{r desc_fv_region_factor}
+desc_facvar(
+  .data = demo,
+  vf = "Region"
+)
+```
+
+The two other variables mainly affected by this phenomenon are `Type` and
+`type_reporter`. The transformation code is found in
+`vignette("template_main.R")`
+
+## Other arguments of `desc_facvar()`
+
+Three other arguments allow to control the output format of the results.
+
+1.  `format` is a character string that must necessarily contain the
+    values `n`, `N` and `pc`.
+
+This argument allows to customize the way the result is displayed. For
+example, if you want to put the percentage in brackets instead of
+parentheses
+
+```{r desc_fv_format}
+desc_facvar(
+  .data = demo,
+  vf = "nivolumab",
+  format = "n_/N_ [pc_%]"
+)
+```
+
+You can also change all other elements of this argument.
+
+2.  `pad_width` allows to center the results in the middle of a character
+    string. If you have particularly high numbers, you can increase the
+    value of this parameter, so that your results remain well centered.
+
+3.  `digits` controls the number of digits after the decimal point for
+    the percentage. **Warning**, it is not guaranteed that the sum will
+    be exactly 100%.
+
+```{r desc_fv_digits}
+desc_facvar(
+  .data = demo,
+  vf = "nivolumab",
+  digits = 1
+)
+```
+
+# Drug data: drug screening
+
+
+
+# Adr data: adr screening and evolution of adverse events
+
+`screen_drug()` let you screen the most drugs reported in a
+`drug` dataset, sorted by frequency.
+
+```{r screen_drug}
+screen_drug(drug, mp_data = mp, top_n = 5)
+```
+Most of the time, you will have filtered the `drug` data upstream, with some
+`add_*` function, allowing to
+focus on a subset of cases (of a specific drug, adr, or any set of these)
+
+For example, identify colitis cases and screen drugs under this reaction.
+
+```{r screen_drug_add}
+drug |> 
+  add_adr(
+    a_llt,
+    adr_data = adr
+  ) |> 
+  filter(a_colitis == 1) |> 
+  screen_drug(
+    mp_data = mp, top_n = 5
+  )
+
+```
+
+
+## Adr screening
+
+`screen_adr()` let you screen the most frequent reactions reported in an
+`adr` dataset, sorted by frequency.
+
+```{r screen_adr}
+screen_adr(adr_, meddra = meddra_)
+```
+
+Different term levels can be used, according to meddra, with argument `term_level`.
+
+Most of the time, you will have filtered the `adr` data upstream, with some
+`add_*` function, allowing to
+focus on a subset of cases (of a specific drug, adr, or any set of these).
+
+## Outcome
+
+The adr table contains information on the evolution of adverse events.
+
+The possible outcomes (column `Outcome`) are
+
+-   Recovered/resolved
+-   Recovering/resolving
+-   Recovered/resolved with sequelae
+-   Not recovered/not resolved
+-   Fatal
+-   Died- unrelated to reaction
+-   Died- reaction may be contributory
+
+The adr structure is as follows
+
+| UMCReportId | Adr_Id | Outcome |
+|-------------|--------|---------|
+| 1           | a_1    | 1       |
+| 1           | a_2    | 2       |
+| 2           | a_3    | 3       |
+| 2           | a_4    | 1       |
+
+A case, identified by its UMCReportId,
+may have several adverse events (Adr_Id) with different outcomes.
+Summarizing this information requires prioritization.
+
+The logic is as follows: take the "
+worst evolution" possible for each event of each case, in order to count
+each event only once for each case.
+
+In order to filter cases according to a drug exposition, 
+it is necessary to join the drug data to the adr table.
+
+## Step 1: Data management of adr with add_drug and add_adr
+
+`add_drug()` and `add_adr()` can be used on `adr` data.
+
+```{r adr_dm}
+
+adr <-
+  adr |>
+  add_drug(
+    d_code = d_drecno,
+    drug_data = drug
+  )
+
+adr <-
+  adr |>
+  add_adr(
+    a_code = a_llt,
+    adr_data = adr
+  )
+```
+
+This allows to identify drugs and adverse events of interest in the adr table.
+
+Drugs are identified at the case level in this table.
+
+## Step 2: `desc_outcome()` function
+
+The `desc_outcome` function prioritizes data according to the rule:
+
+> Take the "worst evolution" possible for each event of each case, in
+> order to count each event only once for each case.
+
+```{r desc_outcome}
+adr |> 
+  desc_outcome(
+    drug_s = "nivolumab",
+    adr_s = "a_colitis"
+  )
+```
+
+In the case where `adr` was previously filtered to contain
+only data of a specific adverse drug reaction (for example,
+with `tb_subset()`), it is still preferable to recreate the drug column
+with `add_drug` (it will take the value 1 for all cases).
+
+# Link data: time to onset, dechallenge, rechallenge
+
+The link table, as created with `tb_vigibase()`, contains additional
+information than the original link table.
+
+It is augmented with
+
+-   `UMCReportId` the case id
+-   `tto_mean` the average of TimeToOnsetMin, and TimeToOnsetMax, in days
+-   `range` the half-difference between TimeToOnsetMin and TimeToOnsetMax,
+in days
+
+These additional variables are useful to compute the time from drug
+initiation to adverse drug reaction onset, and also to compute
+dechallenge and rechallenge data at case level.
+
+## Step 1: Load the datasets
+
+```{r create_link}
+link <- 
+  link_
+```
+
+## Step 2: Add drug and adr columns
+
+The link table studies the relationship of each drug - adverse event pair,
+within the reports. There are therefore several lines in link for each
+line (case) in demo.
+
+
+`demo` table example
+
+| UMCReportId | Other data (age, sexe...)     |
+|-------------|-------------------------------|
+| 1           | 65-74, Man                    |
+| 2           | 65-74, Woman                  |
+| 3           | 45-64, Woman                  |
+
+The corresponding `link` table would be
+
+| UMCReportId | Drug_Id | Adr_Id | Time to onset |
+|-------------|---------|--------|---------------|
+| 1           | 1_1     | 1_a    | 60            |
+| 1           | 1_2     | 1_a    | 30            |
+| 1           | 1_1     | 1_b    | 45            |
+| 1           | 1_2     | 1_b    | 15            |
+| 2           |         |        |               |
+| 2           |         |        |               |
+| 3           |         |        |               |
+| 3           |         |        |               |
+| 3           |         |        |               |
+
+## Learn the content of link
+
+Let's take a while to read data related to the case no 1, 
+in the previous example.
+
+-   It contains two different Drug_Id `1_1` and `1_2`: this means
+    that this case has two different drugs. Most of the time, it is two
+    different drugs (let's say, paracetamol and ibuprofen for this
+    example). It can also be the same drug, with different
+    administration modalities (paracetamol with two dosages, or at two
+    different times).
+
+-   It contains two different Adr_Id `1_a` and `1_b`: this means that
+    this case has two different adverse events. Mostly, it refers to two different events (e.g. hepatitis and hemorrhage).
+    
+-   Information are available for each combination. 
+The time to onset, i.e. the delay between drug initiation and event onset
+is displayed for each combination
+
+The reading is as follows: 
+
+-   The hepatitis (`1_a`) occurred 60 days after the introduction of
+paracetamol (`1_1`), and 30 days after the introduction of ibuprofen
+(`1_2`).
+
+-   The hemorrhage (`1_b`) occurred 45 days after the introduction
+of paracetamol (`1_1`), and 15 days after the introduction of ibuprofen
+(`1_2`).
+
+In this relatively simple example, everything is coherent: we observe
+that paracetamol and ibuprofen were introduced 30 days apart from each
+other.
+
+The reality is often more complex: as previously announced, there may be
+several lines in `link`for the same drug, with different time to onset.
+
+In this case, it is important to decide how to handle this multiple
+information.
+
+For example, we could have a time to onset at 30 days for paracetamol
+taken at 500mg daily, and a time to onset at 15 days for paracetamol taken at 1000mg daily.
+
+## Identify drugs and adverse events
+
+As for the `demo` and `adr` tables, the `link` table must be completed
+with drug and adr columns, using the `add_*` family functions.
+
+```{r link_dm}
+link <-
+  link |> 
+   add_drug(
+    d_code = d_drecno,
+    drug_data = drug
+  )
+
+link <-
+  link |>
+  add_adr(
+    a_code = a_llt,
+    adr_data = adr
+  )
+```
+
+Counts check
+
+```{r link_check_dm}
+link |> 
+   check_dm(
+     cols = c(names(d_drecno), names(a_llt))
+     )
+```
+
+**!! Warning!!**, counts correspond to the number of lines for each drug
+and each effect. It is not the number of reports containing each drug or
+each effect. If you want to obtain this information, you must query the
+`demo` table.
+
+## Time to onset
+
+The time to onset information is contained in two variables in the
+`link` table: `TimeToOnsetMin` and `TimeToOnsetMax`. These two variables
+reflect the minimum and maximum delay of the adverse event occurrence
+compared to the drug intake, taking into account the uncertainty of the
+input data.
+
+| UMCReportId | Drug_Id | Adr_Id | TimeToOnsetMin | TimeToOnsetMax |
+|-------------|---------|--------|----------------|----------------|
+| 1           | 1_1     | 1_a    | 45             | 75             |
+
+Here, hepatitis occurred between 45 and 75 days after first paracetamol
+intake.
+
+This structure is inherited of the incertitude from the source reporter
+or the case. This case would correspond to data like:
+"Hepatitis occurred 2months after paracetamol introduction".
+
+This sentence contains an imprecision on the exact delay of occurrence:
+what was the exact day of the month? Was it 1 month and 15 days? Or 2
+months and 15 days? More? It is impossible to decide.
+
+By convention, we consider that the true time to onset is +/- 15 days
+from the indicated date (here, between 60 - 15 = 45 days, and 60 + 15 =
+75 days).
+
+Two parameters are derived from this information: the mean time to onset
+`tto_mean` and the `range`. The calculation is as follows:
+
+```{r tto_mean_range, eval = FALSE}
+tto_mean = (TimeToOnsetMax + TimeToOnsetMin) / 2
+
+range = (TimeToOnsetMax + TimeToOnsetMin) / 2 - TimeToOnsetMin
+```
+
+| UMCReportId | Drug_Id | Adr_Id | TimeToOnsetMin | TimeToOnsetMax | tto_mean | range |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| 1           | 1_1     | 1_a    | 45             | 75             | 60       | 30    |
+
+The `tto_mean` is intuitive: it is the average delay between the two
+available values. In our example, we find 60 days, which is the delay
+indicated by the reporter.
+
+The `range` gives the uncertainty: 30 days in our example, meaning that
+we cannot be more precise than 30 days.
+
+> The Uppsala Monitoring Centre recommendation is to
+> use only the time to onset whose range is \<= 1, i.e. the cases where
+> the date is known to the day.
+
+Note: the information on hours and minutes is also present in the time to
+onset, if known.
+
+If we keep on the example of hepatitis,
+we could have a time to onset at 30 days for paracetamol taken at 500mg
+daily, and a time to onset at 15 days for paracetamol taken at 1000mg
+daily.
+
+In this case, it is important to decide how to handle this multiple
+information. Otherwise, we would have two different `tto_mean` values
+for the paracetamol - hepatitis pair.
+
+There is a need for an arbitrary rule to synthetize these data. Our
+habit is to **take the longest delay** between the drug introduction and
+the event occurrence (i.e. the delay between the first drug intake and
+the event).
+Admittedly, this may not meet all needs.
+
+This information, that we call `tto_max`, is obtained with
+`extract_tto()`.
+
+```{r extract_tto_example}
+extract_tto(
+  .data = link,
+  drug_s = "nivolumab",
+  adr_s  = "a_colitis"
+)
+```
+
+The `tto_max` is the longest delay between the drug introduction and the
+event occurrence. There is only one line for each drug - adr pair.
+
+This information can be used for a graphical representation, or to derive
+an average, a range... The second option is possible in many ways,
+notably with `desc_tto()`.
+
+```{r desc_tto_example}
+desc_tto(
+  .data = link,
+  drug_s = "nivolumab",
+  adr_s  = "a_colitis"
+)
+```
+
+Several drugs and reactions can be queried in these two functions.
+
+```{r desc_tto_many_to_many}
+desc_tto(
+  .data = link,
+  drug_s = c("nivolumab", "pembrolizumab"),
+  adr_s  = c("a_colitis", "a_pneumonitis")
+)
+```
+
+## Dechallenge
+
+`desc_dch()` synthesizes the number of positive dechallenges:
+
+> A positive dechallenge occurs when the drug has been stopped or its
+> dosage has been reduced, and the reaction has abatted.
+
+```{r desc_dch_example}
+desc_dch(
+  link,
+  drug_s = "nivolumab",
+  adr_s  = "a_colitis"
+)
+```
+
+```{r desc_dch_many_to_many}
+desc_dch(
+  link,
+  drug_s = c("nivolumab", "pembrolizumab"),
+  adr_s  = c("a_colitis", "a_pneumonitis")
+)
+```
+
+## Rechallenge
+
+Description span from rechallenge cases to informative rechallenge cases
+(those cases where the outcome is known). Drug and Adr identifiers refer
+to DrecNo and MedDRA_Id, respectively. Terminology
+
+-   `overall` as opposed to `rch` for 
+rechallenged (`rch` + `no_rch` = `overall`).
+
+-   Among `rch`, `inf` (informative) as opposed 
+to `non_inf` (`inf` + `non_inf` = `rch`)
+
+-   Among `inf`, `rec` (recurring) as opposed 
+to `non_rec` (`rec` + `non_rec` =  `inf`)
+
+```{r desc_rch_example}
+desc_rch(
+  link,
+  demo_data = demo,
+  drug_s = "nivolumab",
+  adr_s  = "a_colitis"
+)
+```
+
+**The number of cases is counted at the case level in demo.** 
+This explains why the `demo_data` argument is required here.
+
+As with `desc_tto()` and `desc_dch()`, you can query several drug - adr 
+pairs at once.
+
+> Columns passed to arguments `drug_s` and `adr_s` can correspond to sets
+> of drugs or events, or even identify all cases present in your dataset.
+
+Let's say we want to know the number of positive
+rechallenge cases for our entire dataset
+
+We must create a variable that takes the value 1 for all cases.
+
+```{r desc_rch_dm_hack}
+link <-
+  link |> 
+  mutate(
+    all_cases = 1
+  )
+```
+
+We a particular syntax, we can access the information
+
+```{r desc_rch_hack}
+desc_rch(
+  link,
+  demo_data = demo,
+  drug_s = "all_cases",
+  adr_s  = "all_cases"
+)
+```

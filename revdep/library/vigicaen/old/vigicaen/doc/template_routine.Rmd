@@ -1,0 +1,86 @@
+---
+title: "Routine"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{template_routine}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This very short vignette contains a condensed script, based on
+`vignette("routine_pharmacovigilance")`.
+
+You are strongly advised to check it out before using this one.
+
+```{r full_script, eval = FALSE}
+
+library(vigicaen)
+
+# ---- Set paths ---- ####
+
+path_base   <- "~/vigibase/main/"
+path_who    <- "~/vigibase/who/"
+path_meddra <- "~/meddra/"
+
+# ---- Load data ---- ####
+
+demo <- dt_parquet(path_base, "demo", in_memory = FALSE)
+drug <- dt_parquet(path_base, "drug", in_memory = FALSE)
+adr  <- dt_parquet(path_base, "adr",  in_memory = FALSE)
+link <- dt_parquet(path_base, "link", in_memory = FALSE)
+
+mp <- dt_parquet(path_who,  "mp")
+meddra   <- dt_parquet(path_meddra, "meddra")
+
+# ---- Select drug and adverse drug reaction ---- ####
+
+d_sel <- list(
+  nivolumab = "nivolumab"
+)
+
+a_sel <- list(
+  # this is a High Level Term. Could be any term level instead.
+  colitis = "Colitis (excl infective)"
+)
+
+# ---- Collect drug and adr IDs ---- ####
+
+d_code <- 
+  get_drecno(d_sel, mp = mp)
+
+a_code <-
+  get_llt_soc(a_sel, 
+              term_level = "hlt",
+              meddra = meddra)
+
+# see also get_atc_code() and get_llt_smq()
+
+# ---- Run vigi_routine() ---- ####
+
+# Change case_tto for your own case time to onset
+
+# Change export_to to an appropriate path on your computer
+
+# install.packages("svglite") # run this line if you want to use .svg
+
+vigi_routine(
+  case_tto  = 150,
+  demo_data = demo,
+  drug_data = drug,
+  adr_data  = adr,
+  link_data = link,
+  d_code    = d_code,
+  a_code    = a_code,
+  d_label   = "Nivolumab",
+  a_label   = "Colitis (HLT)",
+  vigibase_version = "September 2024",
+  export_to = "~/vigicaen_graph.svg"
+)
+```

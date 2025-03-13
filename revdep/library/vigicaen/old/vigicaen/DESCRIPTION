@@ -1,0 +1,46 @@
+Package: vigicaen
+Title: 'VigiBase' Pharmacovigilance Database Toolbox
+Version: 0.15.5
+Authors@R: c(
+       person("Charles", "Dolladille", email = "cdolladille@hotmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-0449-6261")),
+      person("Basile", "Chrétien", role = c("aut"),
+           comment = c(ORCID = "0000-0002-7483-2489")),
+       person("Universite de Caen Normandie", role = c("cph"), comment = "Caen, France"),
+       person("Unite de pharmaco-epidemiologie", role = c("cph") , comment = "Service de pharmacologie, Centre Hospitalier Universitaire de Caen, Caen, France")
+       )
+Description: Perform the analysis of the World Health Organization
+       (WHO) Pharmacovigilance database 'VigiBase' (Extract Case Level version),
+       <https://who-umc.org/>
+       e.g., load data, perform data management,
+       disproportionality analysis, and descriptive statistics. Intended for
+       pharmacovigilance routine use or studies.
+       This package is NOT supported nor reflect the opinion of the WHO, or the
+       Uppsala Monitoring Centre.
+       Disproportionality methods are described by Norén et 
+       al (2013) <doi:10.1177/0962280211403604>.
+Depends: R (>= 4.1.0),
+License: CeCILL-2.1
+Encoding: UTF-8
+LazyData: true
+LazyDataCompression: xz
+RoxygenNote: 7.3.2
+URL: https://github.com/pharmacologie-caen/vigicaen,
+        https://pharmacologie-caen.github.io/vigicaen/
+BugReports: https://github.com/pharmacologie-caen/vigicaen/issues
+Suggests: here, knitr, rmarkdown, testthat (>= 3.0.0), tzdb, vdiffr
+Config/testthat/edition: 3
+Imports: arrow, cli, dplyr, data.table, fst, ggplot2, gridExtra,
+        lifecycle, purrr, rlang, stringr, tidyr
+VignetteBuilder: knitr
+NeedsCompilation: no
+Packaged: 2025-02-20 13:52:06 UTC; dolladi231
+Author: Charles Dolladille [aut, cre] (<https://orcid.org/0000-0003-0449-6261>),
+  Basile Chrétien [aut] (<https://orcid.org/0000-0002-7483-2489>),
+  Universite de Caen Normandie [cph] (Caen, France),
+  Unite de pharmaco-epidemiologie [cph] (Service de pharmacologie, Centre
+    Hospitalier Universitaire de Caen, Caen, France)
+Maintainer: Charles Dolladille <cdolladille@hotmail.com>
+Repository: CRAN
+Date/Publication: 2025-02-21 11:30:03 UTC
+Built: R 4.4.3; ; 2025-03-11 03:47:09 UTC; windows

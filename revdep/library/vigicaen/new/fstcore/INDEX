@@ -1,0 +1,5 @@
+fstcore-package         R bindings to the fstlib library
+lib_versions            Display versioning information of fstcore
+                        library dependencies
+threads_fstlib          Get or set the number of threads used in
+                        parallel operations

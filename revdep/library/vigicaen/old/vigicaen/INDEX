@@ -1,0 +1,37 @@
+add_adr                 Add ADR column(s) to a dataset
+add_drug                Add DRUG column(s) to a dataset (tidyverse
+                        syntax)
+cff                     Fast formatting of numbers
+check_dm                Check binary variables
+compute_dispro          Compute disproportionality
+compute_interaction     Compute interaction disproportionality
+compute_or_mod          Compute (r)OR from a model summary
+create_example_tables   Example source tables for VigiBase and MedDRA
+demo_                   Data of immune checkpoint inhibitors.
+desc_cont               Summarize continuous variables
+desc_dch                Dechallenge descriptive
+desc_facvar             Summarise categorical variables
+desc_outcome            Outcome descriptive
+desc_rch                Rechallenge descriptive
+desc_tto                Time to onset descriptive
+dt_fst                  Read fst and convert to data.table
+dt_parquet              Read parquet and convert to data.table
+ex_                     Data for the immune checkpoint inhibitors
+                        example
+extract_tto             Time to onset extraction
+get_atc_code            Get ATC codes (DrecNos or MPIs)
+get_drecno              Get DrecNo from drug names or MedicinalProd_Id
+get_llt_smq             Extract low level terms from SMQs
+get_llt_soc             Extract low level terms from soc classification
+ic_tail                 Credibility interval limits for the information
+                        component
+meddra_                 Sample of Meddra.
+mp_                     Sample of WHODrug
+nice_p                  Nice printing of p-values
+screen_adr              Screening of Adverse Drug Reactions
+screen_drug             Screening of Drugs
+tb_meddra               Create MedDRA tables
+tb_subset               Extract of subset of Vigibase
+tb_vigibase             Create main VigiBase ECL tables
+tb_who                  Create main WHO tables
+vigi_routine            Pharmacovigilance routine function
