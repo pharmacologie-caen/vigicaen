@@ -135,7 +135,8 @@ test_that("non WHO names raise appropriate warnings", {
 
   drug8 <- rlang::list2(
     Medi = c("medicament", "medicament2", "enalapril"),
-    mix = c("all-trans retinoic acid", "enalaprilat", "renitec", "enalapril"),
+    # a non-who INN, a who, a non-who commercial, a who
+    mix = c("all-trans retinoic acid", "enalaprilat", "keytruda", "enalapril"),
     notwho2 = c("doliprane"),
     who = "nivolumab"
   )
@@ -643,7 +644,44 @@ test_that("find_drug_and_check_exist returns correct output", {
     vigicaen:::find_isolated,
     mp_
   ))
-})
+
+
+  # there can be more than one who name.
+
+  r_comb_many_who_name <-
+    find_drug_and_check_exist(
+    "ramilex",
+    vigicaen:::find_combination,
+    mp = mp_
+  )
+
+  r_comb_many_who_name_true <-
+    list(
+      drecno_table =
+        data.table::data.table(
+          DrecNo = c(10116627),
+          drug_name_t = c("ramilex"),
+          who = c(FALSE)),
+      d_no_match = NULL,
+      d_not_who = c("ramipril or ramipril;bis" = "ramilex") # see #139
+    )
+
+  expect_equal(
+    r_comb_many_who_name,
+    r_comb_many_who_name_true
+  )
+
+  # a commercial name attributed to >1 DrecNo throws error
+
+  expect_error(
+    find_drug_and_check_exist(
+      "triatec",
+      vigicaen:::find_combination,
+      mp = mp_
+      ),
+    class = "ambiguous_drug_name"
+  )
+  })
 
 test_that("input a data.frame works", {
   # just to confirm that if d_one is data.frame (which are named lists)
@@ -668,4 +706,15 @@ test_that("input a data.frame works", {
     suppressMessages(get_drecno(list_one, mp_))
 
   expect_equal(r1, r2)
+})
+
+test_that_cli("ambiguous drug name format is ok", {
+  expect_snapshot(
+    error = TRUE,
+      find_drug_and_check_exist(
+        "triatec",
+        vigicaen:::find_combination,
+        mp = mp_
+      )
+  )
 })

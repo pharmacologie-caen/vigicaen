@@ -259,7 +259,7 @@
       
       * In `mix`:
         * ! "all-trans retinoic acid" | i tretinoin
-        * ! "renitec" | i enalaprilat
+        * ! "keytruda" | i pembrolizumab
       * In `notwho2`:
         * ! "doliprane" | i paracetamol
       
@@ -305,7 +305,7 @@
       
       * In `mix`:
         * ! "all-trans retinoic acid" | i tretinoin
-        * ! "renitec" | i enalaprilat
+        * ! "keytruda" | i pembrolizumab
       * In `notwho2`:
         * ! "doliprane" | i paracetamol
       
@@ -347,7 +347,7 @@
       
       * In `mix`:
         * ! "all-trans retinoic acid" | i tretinoin
-        * ! "renitec" | i enalaprilat
+        * ! "keytruda" | i pembrolizumab
       * In `notwho2`:
         * ! "doliprane" | i paracetamol
       
@@ -512,4 +512,48 @@
       * `Drug2` > `drug2`
       
       --------------------------------------------------------------------------------
+
+# ambiguous drug name format is ok [plain]
+
+    Code
+      find_drug_and_check_exist("triatec", vigicaen:::find_combination, mp = mp_)
+    Condition
+      Error in `find_drug_and_check_exist()`:
+      ! Drug name must match a single drug.
+      x Ambiguous name: "triatec"
+      ! Matches: ramipril, caffeine;codeine;paracetamol, and ramipril;bis.
+      i Please provide WHO name.
+
+# ambiguous drug name format is ok [ansi]
+
+    Code
+      find_drug_and_check_exist("triatec", vigicaen:::find_combination, mp = mp_)
+    Condition
+      [1m[33mError[39m in `find_drug_and_check_exist()`:[22m
+      [1m[22m[33m![39m Drug name must match a single drug.
+      [31mx[39m Ambiguous name: [34m"triatec"[39m
+      [33m![39m Matches: ramipril, caffeine;codeine;paracetamol, and ramipril;bis.
+      [36mi[39m Please provide WHO name.
+
+# ambiguous drug name format is ok [unicode]
+
+    Code
+      find_drug_and_check_exist("triatec", vigicaen:::find_combination, mp = mp_)
+    Condition
+      Error in `find_drug_and_check_exist()`:
+      ! Drug name must match a single drug.
+      ✖ Ambiguous name: "triatec"
+      ⚠ Matches: ramipril, caffeine;codeine;paracetamol, and ramipril;bis.
+      ℹ Please provide WHO name.
+
+# ambiguous drug name format is ok [fancy]
+
+    Code
+      find_drug_and_check_exist("triatec", vigicaen:::find_combination, mp = mp_)
+    Condition
+      [1m[33mError[39m in `find_drug_and_check_exist()`:[22m
+      [1m[22m[33m![39m Drug name must match a single drug.
+      [31m✖[39m Ambiguous name: [34m"triatec"[39m
+      [33m⚠[39m Matches: ramipril, caffeine;codeine;paracetamol, and ramipril;bis.
+      [36mℹ[39m Please provide WHO name.
 
