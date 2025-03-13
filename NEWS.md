@@ -22,6 +22,11 @@ checkers to `vigi_routine()` for input data type.
 * `compute_or_mod()` now has an informative error message if either args
 `estimate` or `std_er` were not supplied (#123).
 
+* `get_drecno()` now handles non-WHO names matching a unique DrecNo that has
+several WHO names, and throws an error if matching multiple DrecNos (#139).
+
+* Adding dependency to `glue`.
+
 # vigicaen 0.15.5
 
 ## Minor

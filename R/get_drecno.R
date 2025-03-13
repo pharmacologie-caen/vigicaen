@@ -78,6 +78,7 @@
 #' @export
 #' @importFrom rlang .data
 #' @importFrom rlang .env
+#' @importFrom glue glue_collapse
 #' @import cli
 #' @seealso [add_drug()], [get_atc_code()]
 #' @examplesIf interactive()
@@ -427,6 +428,29 @@ find_drug_and_check_exist <-
         dplyr::pull(.data$DrecNo) |>
         unique()
 
+      # drug name should not be ambiguous, i.e. match different DrecNos
+
+      if(length(drecno) > 1){
+        many_who_name <-
+          mp |>
+          dplyr::filter(
+            .data$DrecNo %in% drecno  &
+              .data$Sequence.number.1 == "01" &
+              .data$Sequence.number.2 == "001"
+          ) |>
+          dplyr::pull(.data$drug_name_t) |>
+          unique()
+        cli::cli_abort(
+          c(
+            "Drug name must match a single drug.",
+            "x" = "Ambiguous name: {.val {one_drug_name}}",
+            "{col_yellow(symbol$warning)} Matches: {many_who_name}.",
+            "i" = "Please provide WHO name."
+          ),
+          class = "ambiguous_drug_name"
+        )
+      }
+
       who_name <-
         mp |>
         dplyr::filter(
@@ -436,6 +460,11 @@ find_drug_and_check_exist <-
         ) |>
         dplyr::pull(.data$drug_name_t) |>
         unique() # there can be multiple packagings for a non WHO name drug
+
+      # handle multiple who names
+      if(length(who_name) > 1){
+        who_name <- glue::glue_collapse(who_name, sep = ", ", last = " or ")
+      }
 
       d_not_who <- one_drug_name |> rlang::set_names(who_name)
     }
