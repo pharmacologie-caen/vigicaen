@@ -1,5 +1,9 @@
 # vigicaen (development version)
 
+## Bug fixes
+
+* `vigi_routine()` now has left/right justification of the patient label centered on 3 months (90 days) instead of the observed median. This resolves an issue where the label could be misplaced on the time to onset plot when the median did not match the visual center of the graph.(#145)
+
 # vigicaen 0.15.6
 
 ## New features

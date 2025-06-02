@@ -569,8 +569,9 @@ vigi_routine <-
       pl_label <-
         paste0("Patient: ", round(case_tto), " days")
 
+      # Décision centrée sur 90 jours (3 mois)
       pl_hjust <-
-        if (case_tto < summary_ttos["50%"]) {
+        if (case_tto < 90) {
           0
         } else {
           1
