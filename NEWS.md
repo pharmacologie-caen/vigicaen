@@ -1,5 +1,14 @@
 # vigicaen (development version)
 
+## New features
+
+* `tb_vigibase()` now accepts a new argument `rm_suspdup` (default TRUE) to automatically remove cases identified as suspected duplicates (from `SUSPECTEDDUPLICATES.txt`) when creating the main tables. You can disable this behavior by setting `rm_suspdup = FALSE`.
+
+* `vigi_routine()` now supports two new arguments:
+  - `suspect_only` (default TRUE): controls whether only suspected drug cases are included in IC and TTO analyses.
+  - `d_code_2` (optional): if provided, a single analysis is performed on cases exposed to both drugs in `d_code` and `d_code_2` (variable `both_drugs`).
+  A CLI message is displayed when dual drug analysis is performed.
+
 # vigicaen 0.15.6
 
 ## New features

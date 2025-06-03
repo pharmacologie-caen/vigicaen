@@ -120,6 +120,8 @@ AgeGroup, Dechallenge, Dechallenge2, Frequency,
 Gender, Notifier, Outcome, Rechallenge, Rechallenge2, Region,
 RepBasis, ReportType, RouteOfAdm, Seriousness, and SizeUnit.
 
+> **Note:** By default, the `tb_vigibase()` function removes cases identified as suspected duplicates (present in the file `SUSPECTEDDUPLICATES.txt`). You can disable this behavior with the argument `rm_suspdup = FALSE` if you wish to keep them in the main tables.
+
 -   WHODrug: All tables: mp, thg, pp, 
 ing, srce, org, ccode, atc, sun, pf, str, prg, prt, unitx. Again,
 check correspondence in the delivered files from UMC.

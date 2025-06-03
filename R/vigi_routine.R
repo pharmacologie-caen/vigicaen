@@ -34,6 +34,8 @@
 #' @param export_to A character. The path to export the plot. If NULL, the plot
 #' is not exported. Should end by ".eps", ".ps", ".tex" (pictex), ".pdf", ".jpeg",
 #' ".tiff", ".png", ".bmp", ".svg" or ".wmf" (windows only).
+#' @param suspect_only Logical. If TRUE (default), only cases where the drug is suspected are used for IC and TTO analyses. If FALSE, all cases are used.
+#' @param d_code_2 Optional named list. A second drug code for dual drug analysis. If provided, a single analysis is performed on cases exposed to both drugs.
 #'
 #' @returns A ggplot2 graph, with two panels.
 #' The first panel, on top, is the Information Component (IC) plot.
@@ -126,69 +128,62 @@ vigi_routine <-
     analysis_setting = "All reports",
     d_label = NULL,
     a_label = NULL,
-    export_to = NULL
+    export_to = NULL,
+    suspect_only = TRUE,
+    d_code_2 = NULL
   ){
     # #### 0. checkers #### ####
-
-    # 0.1 d_code and a_code are numeric named lists, with only one item each.
-
     check_id_list_numeric(d_code)
-
     check_id_list_numeric(a_code)
-
     check_length_one(d_code, "vigi_routine()")
-
     check_length_one(a_code, "vigi_routine()")
-
-    # 0.2 d_name and a_name, d_label and a_label
-
     d_name <- names(d_code)
-
     a_name <- names(a_code)
-
-    if(is.null(d_label)){
-      d_label <- d_name
-    }
-
-    if(is.null(a_label)){
-      a_label <- a_name
-    }
-
-    # 0.3 export_to should end by
-    #  "eps", "ps", "tex" (pictex), "pdf", "jpeg", "tiff", "png", "bmp", "svg" or "wmf"
-    # as is guessed by ggplot2::ggsave().
-
+    if(is.null(d_label) & rlang::is_missing(d_code_2)) d_label <- d_name
+    if(is.null(d_label) & !rlang::is_missing(d_code_2)) d_label <- paste0(d_name), " + ", names(d_code_2))
+    if(is.null(a_label)) a_label <- a_name
     if(!is.null(export_to)){
-      if(!grepl("\\.(eps|ps|tex|pdf|jpeg|tiff|png|bmp|svg|wmf)$",
-                export_to)){
+      if(!grepl("\\.(eps|ps|tex|pdf|jpeg|tiff|png|bmp|svg|wmf)$", export_to)){
         cli::cli_abort(
-          paste0("{.arg export_to} must end by '.bmp', '.eps', '.jpeg', '.pdf', '.png', '.ps'",
+          paste0("{.arg export_to} must end by '.bmp', '.eps', '.jpeg', '.pdf', '.png', '.ps'", 
           "'.svg', '.tex', '.tiff', or '.wmf' (windows only)")
         )
       }
     }
-
-    # 0.4 appropriate data type
-
     check_data_demo(demo_data)
-
     check_data_adr(adr_data)
-
     check_data_drug(drug_data)
-
     check_data_link(link_data)
 
-    # #### 1. acquire data #### ####
+    repbasis_sel <- 
+      if (suspect_only) {"s"} else {"sci"}
 
-    # ---- build demo ----
+    use_two_drugs <-
+      !rlang::is_missing(d_code_2)
 
-    suppressMessages(
-      # messages from add_drug and add_adr
-      demo_data <- demo_data |>
-        add_drug(d_code, drug_data = drug_data) |>
-        add_adr(a_code, adr_data = adr_data)
-    )
-
+    # 0.5 check d_code_2 if provided
+    if (use_two_drugs) {
+      check_id_list_numeric(d_code_2)
+      check_length_one(d_code_2, "vigi_routine()")
+      d_name2 <- names(d_code_2)
+      # Ajout des deux variables d'exposition dans demo_data
+      suppressMessages(
+        demo_data <- demo_data |>
+          add_drug(d_code, drug_data = drug_data, repbasis = repbasis_sel) |>
+          add_drug(d_code_2, drug_data = drug_data, repbasis = repbasis_sel) |>
+          add_adr(a_code, adr_data = adr_data)
+      )
+      # Création de la variable both_drugs
+      demo_data <- demo_data |> dplyr::mutate(both_drugs = ifelse(.data[[d_name]] == 1 & .data[[d_name2]] == 1, 1, 0))
+      cli::cli_alert_info("Dual drug analysis: only cases exposed to both '{d_name}' and '{d_name2}' are included.")
+      d_name <- "both_drugs"
+    } else {
+      suppressMessages(
+        demo_data <- demo_data |
+          add_drug(d_code, drug_data = drug_data) |
+          add_adr(a_code, adr_data = adr_data)
+      )
+    }
     n_drug <-
       demo_data |>
       check_dm(d_name)
@@ -223,26 +218,41 @@ vigi_routine <-
         export_raw_values = TRUE
       )
 
-    # ---- obtain drug basis breakdown ----
+    # ---- build link ----
+    suppressMessages(
+      link_data <-
+        link_data |>
+        add_drug(d_code, drug_data = drug_data, repbasis = repbasis_sel) |>
+        add_adr(a_code, adr_data = adr_data)
+  
+    if (use_two_drugs) {
+      link_data <- link_data |> 
+        add_drug(., d_code_2, drug_data = drug_data, repbasis = repbasis_sel) |>
+        dplyr::mutate(both_drugs = (.data[[d_name]] == 1 & .data[[d_name2)]] == 1)
+      link_data <- link_data |> dplyr::filter(.data$both_drugs)
+    }
+           )
 
+    # ---- obtain drug basis breakdown ----
     basis_mask <-
       data.frame(
         label = c("Suspected", "Concomitant", "Interacting"),
         Basis = c("1", "2", "3")
       )
-
-   suppressMessages(drug_basis <-
+    suppressMessages(
+      drug_basis <-
       drug_data |>
       add_adr(a_code, adr_data = adr_data) |>
       dplyr::filter(
         .data[[a_name]] == 1 &
-        .data$DrecNo %in% d_code[[d_name]]
+        .data$DrecNo %in% d_code[[d_name]] &
+          { if (use_both_drugs) {.data$UMCReportId %in% (demo_data |> filter(both_drugs == 1) |> pull(UMCReportId))} else {TRUE}}
+        )
       ) |>
-      # case level count
       dplyr::distinct(.data$UMCReportId, .data$DrecNo, .data$Basis) |>
       dplyr::count(.data$Basis) |>
       dplyr::collect()
-   )
+    )
 
     drug_basis_table <-
       basis_mask |>
@@ -251,18 +261,7 @@ vigi_routine <-
         by = c("Basis")
       )
 
-    # ---- build link ----
-
-    suppressMessages(
-      link_data <-
-        link_data |>
-        add_drug(d_code, drug_data = drug_data, repbasis = "s") |>
-                 # Only suspect cases
-        add_adr(a_code, adr_data = adr_data)
-        )
-
     # ---- extract and summarize ttos ----
-
     ttos <-
       extract_tto(
         link_data,
@@ -270,15 +269,11 @@ vigi_routine <-
         drug_s = d_name
       ) |>
       dplyr::mutate(
-        # capping data
         tto_max =
           dplyr::case_when(
-            .data$tto_max < 1
-            ~ 1,
-            .data$tto_max > 3650
-            ~ 3650,
-            TRUE
-            ~ .data$tto_max
+            .data$tto_max < 1 ~ 1,
+            .data$tto_max > 3650 ~ 3650,
+            TRUE ~ .data$tto_max
           )
       )
 
@@ -287,7 +282,6 @@ vigi_routine <-
                c(0.10, 0.25, 0.5, 0.75, 0.90))
 
     # ---- extract positive rechallenge ----
-
     rch <-
       desc_rch(
         link_data,

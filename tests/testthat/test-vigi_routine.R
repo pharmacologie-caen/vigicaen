@@ -740,3 +740,61 @@ test_that("absence of rechallenge data correctly displayed", {
   )
 
 })
+
+test_that("suspect_only = FALSE includes all bases", {
+  d_drecno <- ex_$d_drecno["nivolumab"]
+  a_llt <- ex_$a_llt["a_colitis"]
+  demo <- demo_
+  adr  <- adr_
+  drug <- drug_
+  link <- link_
+  # Should not error and return a plot
+  expect_silent(
+    vigi_routine(
+      demo_data = demo,
+      drug_data = drug,
+      adr_data  = adr,
+      link_data = link,
+      d_code = d_drecno,
+      a_code = a_llt,
+      vigibase_version = "September 2024",
+      suspect_only = FALSE
+    )
+  )
+})
+
+test_that("d_code_2 triggers both_drugs logic and CLI message", {
+  d1 <- ex_$d_drecno["nivolumab"]
+  d2 <- ex_$d_drecno["ipilimumab"]
+  a_llt <- ex_$a_llt["a_colitis"]
+  demo <- demo_
+  adr  <- adr_
+  drug <- drug_
+  link <- link_
+  expect_message(
+    vigi_routine(
+      demo_data = demo,
+      drug_data = drug,
+      adr_data  = adr,
+      link_data = link,
+      d_code = d1,
+      d_code_2 = d2,
+      a_code = a_llt,
+      vigibase_version = "September 2024"
+    ),
+    regexp = "Dual drug analysis: only cases exposed to both"
+  )
+  # Should not error and return a plot (even if empty)
+  expect_silent(
+    vigi_routine(
+      demo_data = demo,
+      drug_data = drug,
+      adr_data  = adr,
+      link_data = link,
+      d_code = d1,
+      d_code_2 = d2,
+      a_code = a_llt,
+      vigibase_version = "September 2024"
+    )
+  )
+})
