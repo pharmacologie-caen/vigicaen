@@ -17,6 +17,7 @@
 #' @param path_sub  Character string, a directory containing subsidiary tables.
 #' @param force Logical, to be passed to `cli::cli_progress_update()`. Used for internal
 #' purposes.
+#' @param rm_suspdup Logical, should suspected duplicates (from SUSPECTEDDUPLICATES.txt) be removed from main tables? Default is TRUE. Set to FALSE to keep all cases, including suspected duplicates.
 #'
 #' @keywords import
 #' @importFrom stringr str_sub str_trim
@@ -73,7 +74,8 @@
 tb_vigibase <-
   function(path_base,
            path_sub,
-           force = FALSE
+           force = FALSE,
+           rm_suspdup = TRUE
            ){
 
     path_base <-
@@ -92,18 +94,43 @@ tb_vigibase <-
     "Creating vigibase tables.")
 
     msg_tb_onceperdatabase()
-
     cli::cli_inform("It can take up to 30minutes.")
 
-    # ---- demo ---- ####
     cli_progress_bar(
       "Creating vigibase",
       format = "{cli::pb_bar} {cli::pb_percent} | {cli::pb_elapsed} | {cli::pb_status}",
       total = 100
     )
 
-    cli_progress_update(force = force,status = "Read DEMO.txt", set = 3)
+    # ---- suspectedduplicates (toujours créé en premier) ---- ####
+    cli_progress_update(force = force, status = "Read SUSPECTEDDUPLICATES.txt", set = 1)
+    suspdup <- reader("SUSPECTEDDUPLICATES.txt", folder = path_sub)
+    cli_progress_update(force = force, status = "Split suspdup", set = 2)
+    suspdup <- suspdup |>
+      dplyr::transmute(
+        UMCReportId                = str_sub(.data$f0, start = 1L,  end = 11L),
+        SuspectedduplicateReportId = str_sub(.data$f0, start = 12L, end = 22L)
+      ) |>
+      dplyr::mutate(
+        dplyr::across(dplyr::all_of(c("UMCReportId", "SuspectedduplicateReportId")),
+                      ~ .x |> str_trim() |> as.integer())
+      ) |>
+      dplyr::compute()
+    cli_progress_update(force = force, status = "Write suspdup.parquet", set = 3)
+    arrow::write_parquet(suspdup, sink = paste0(path_base, "suspdup.parquet"))
 
+    # Si rm_suspdup, préparer la liste des duplicates
+    if (rm_suspdup) {
+      duplicates <- suspdup$SuspectedduplicateReportId
+    } else {
+      duplicates <- NULL
+    }
+    rm(suspdup)
+    gc()
+
+    # ---- demo ---- ####
+
+    cli_progress_update(force = force, status = "Read DEMO.txt", set = 4)
     demo <- reader("DEMO.txt", path_base)
 
     # ---- split
@@ -128,34 +155,20 @@ tb_vigibase <-
           as.integer()
         ) |>
       dplyr::compute()
-
-    # ---- write
-    cli_progress_update(force = force,
-      status = "Write demo.parquet",
-      set = 12)
-
-    arrow::write_parquet(demo,
-                  sink = paste0(path_base, "demo.parquet")
-    )
-
+    if (rm_suspdup) {
+      demo <- demo |> dplyr::filter(!UMCReportId %in% duplicates)
+      cli_progress_update(force = force, status = "Removing suspected duplicates", set = 7)
+    }
+    cli_progress_update(force = force, status = "Write demo.parquet", set = 8)
+    arrow::write_parquet(demo, sink = paste0(path_base, "demo.parquet"))
     rm(demo)
-
     gc()
 
     # ---- drug ---- ####
-    cli_progress_update(force = force,
-      status = "Read DRUG.txt",
-      set = 16)
-
+    cli_progress_update(force = force, status = "Read DRUG.txt", set = 10)
     drug <- reader("DRUG.txt", path_base)
-
-    # ---- split
-    cli_progress_update(force = force,
-      status = "Split drug",
-      set = 20)
-
-    drug <-
-      drug |>
+    cli_progress_update(force = force, status = "Split drug", set = 12)
+    drug <- drug |>
       dplyr::transmute(
         UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
         Drug_Id     = str_sub(.data$f0, start = 12L, end = 22L),
@@ -180,35 +193,24 @@ tb_vigibase <-
         )
       ) |>
       dplyr::compute()
-
-    # ---- write
-    cli_progress_update(force = force,
-      status = "Write drug.parquet",
-      set = 27)
-
-    arrow::write_parquet(drug,
-                         sink = paste0(path_base, "drug.parquet")
-    )
-
+    # Remove suspected duplicates if requested
+    if (rm_suspdup) {
+      drug <- drug |> dplyr::filter(!UMCReportId %in% duplicates)
+      cli_progress_update(force = force, status = "Removing suspected duplicates from drug", set = 13)
+      drug_ids <- unique(drug$Drug_Id)
+    } else {
+      drug_ids <- NULL
+    }
+    cli_progress_update(force = force, status = "Write drug.parquet", set = 14)
+    arrow::write_parquet(drug, sink = paste0(path_base, "drug.parquet"))
     rm(drug)
-
     gc()
 
-
     # ---- followup ---- ####
-    cli_progress_update(force = force,
-      status = "Read FOLLOWUP.txt",
-      set = 30)
-
+    cli_progress_update(force = force, status = "Read FOLLOWUP.txt", set = 16)
     followup <- reader("FOLLOWUP.txt", path_base)
-
-    # ---- split
-    cli_progress_update(force = force,
-      status = "Split followup",
-      set = 32)
-
-    followup <-
-      followup |>
+    cli_progress_update(force = force, status = "Split followup", set = 18)
+    followup <- followup |>
       dplyr::transmute(
         UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
         ReplacedUMCReportId = str_sub(.data$f0, start = 12L, end = 22L)
@@ -221,154 +223,83 @@ tb_vigibase <-
         )
       ) |>
       dplyr::compute()
-
-    # ---- write
-    cli_progress_update(force = force,
-      status = "Write followup.parquet",
-      set = 34)
-
-    arrow::write_parquet(followup,
-                         sink = paste0(path_base, "followup.parquet")
-    )
-
+    if (rm_suspdup) {
+      followup <- followup |> dplyr::filter(!UMCReportId %in% duplicates)
+      cli_progress_update(force = force, status = "Removing suspected duplicates from followup", set = 19)
+    }
+    cli_progress_update(force = force, status = "Write followup.parquet", set = 20)
+    arrow::write_parquet(followup, sink = paste0(path_base, "followup.parquet"))
     rm(followup)
-
     gc()
 
     # ---- adr ---- ####
-    cli_progress_update(force = force,
-      status = "Read ADR.txt",
-      set = 36)
-
+    cli_progress_update(force = force, status = "Read ADR.txt", set = 22)
     adr <- reader("ADR.txt", path_base)
-
-    # ---- split
-    cli_progress_update(force = force,
-      status = "Split adr",
-      set = 39)
-
-    adr <-
-      adr |>
+    cli_progress_update(force = force, status = "Split adr", set = 24)
+    adr <- adr |>
       dplyr::transmute(
         UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
         Adr_Id      = str_sub(.data$f0, start = 12L, end = 22L),
         MedDRA_Id   = str_sub(.data$f0, start = 23L, end = 30L),
         Outcome     = str_sub(.data$f0, start = 31L, end = 31L)
       ) |>
-      dplyr::mutate(
-        dplyr::across(dplyr::all_of(c("UMCReportId", "Adr_Id", "MedDRA_Id")),
-                      ~ .x |>
-                        str_trim() |>
-                        as.integer()
-        )
-      ) |>
+      dplyr::mutate(dplyr::across(dplyr::all_of(c("UMCReportId", "Adr_Id", "MedDRA_Id")), ~ .x |> str_trim() |> as.integer())) |>
       dplyr::compute()
-
-    # ---- write
-    cli_progress_update(force = force,
-      status = "Write adr.parquet",
-      set = 42)
-
-    arrow::write_parquet(adr,
-                         sink = paste0(path_base, "adr.parquet")
-    )
+    if (rm_suspdup) {
+      adr <- adr |> dplyr::filter(!UMCReportId %in% duplicates)
+      cli_progress_update(force = force, status = "Removing suspected duplicates from adr", set = 25)
+    }
+    cli_progress_update(force = force, status = "Write adr.parquet", set = 26)
+    arrow::write_parquet(adr, sink = paste0(path_base, "adr.parquet"))
+    rm(adr)
+    gc()
 
     # ---- out ---- ####
-    cli_progress_update(force = force,
-      status = "Read OUT.txt",
-      set = 43)
-
+    cli_progress_update(force = force, status = "Read OUT.txt", set = 28)
     out <- reader("OUT.txt", path_base)
-
-    # ---- split
-    cli_progress_update(force = force,
-      status = "Split out",
-      set = 45)
-
-    out <-
-      out |>
+    cli_progress_update(force = force, status = "Split out", set = 30)
+    out <- out |>
       dplyr::transmute(
         UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
         Seriousness = str_trim(str_sub(.data$f0, start = 12L, end = 13L)),
         Serious     = str_sub(.data$f0, start = 14L, end = 14L)
       ) |>
-      dplyr::mutate(
-        dplyr::across(dplyr::all_of(c("UMCReportId")),
-                      ~ .x |>
-                        str_trim() |>
-                        as.integer()
-        )
-      ) |>
+      dplyr::mutate(dplyr::across(dplyr::all_of(c("UMCReportId")), ~ .x |> str_trim() |> as.integer())) |>
       dplyr::compute()
-
-    # ---- write
-    cli_progress_update(force = force,
-      status = "Write out.parquet",
-      set = 46)
-
-    arrow::write_parquet(out,
-                         sink = paste0(path_base, "out.parquet")
-    )
-
-
+    if (rm_suspdup) {
+      out <- out |> dplyr::filter(!UMCReportId %in% duplicates)
+      cli_progress_update(force = force, status = "Removing suspected duplicates from out", set = 31)
+    }
+    cli_progress_update(force = force, status = "Write out.parquet", set = 32)
+    arrow::write_parquet(out, sink = paste0(path_base, "out.parquet"))
     rm(out)
-
     gc()
 
     # ---- srce ---- ####
-    cli_progress_update(force = force,
-      status = "Read SRCE.txt",
-      set = 47)
-
+    cli_progress_update(force = force, status = "Read SRCE.txt", set = 34)
     srce <- reader("SRCE.txt", path_base)
-
-    # ---- split
-    cli_progress_update(force = force,
-      status = "Split srce",
-      set = 48)
-
-    srce <-
-      srce |>
+    cli_progress_update(force = force, status = "Split srce", set = 36)
+    srce <- srce |>
       dplyr::transmute(
         UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
         Type        = str_trim(str_sub(.data$f0, start = 12L, end = 13L))
       ) |>
-      dplyr::mutate(
-        dplyr::across(dplyr::all_of(c("UMCReportId")),
-                      ~ .x |>
-                        str_trim() |>
-                        as.integer()
-        )
-      ) |>
+      dplyr::mutate(dplyr::across(dplyr::all_of(c("UMCReportId")), ~ .x |> str_trim() |> as.integer())) |>
       dplyr::compute()
-
-    # ---- write
-    cli_progress_update(force = force,
-      status = "Write srce.parquet",
-      set = 49)
-
-    arrow::write_parquet(srce,
-                         sink = paste0(path_base, "srce.parquet")
-    )
-
+    if (rm_suspdup) {
+      srce <- srce |> dplyr::filter(!UMCReportId %in% duplicates)
+      cli_progress_update(force = force, status = "Removing suspected duplicates from srce", set = 37)
+    }
+    cli_progress_update(force = force, status = "Write srce.parquet", set = 38)
+    arrow::write_parquet(srce, sink = paste0(path_base, "srce.parquet"))
     rm(srce)
-
     gc()
 
     # ---- link ---- ####
-    cli_progress_update(force = force,
-      status = "Read LINK.txt",
-      set = 50)
-
+    cli_progress_update(force = force, status = "Read LINK.txt", set = 40)
     link <- reader("LINK.txt", path_base)
-
-    # ---- split
-    cli_progress_update(force = force,
-      status = "Split link (longest step)",
-      set = 52)
-
-    link <-
-      link |>
+    cli_progress_update(force = force, status = "Split link (longest step)", set = 42)
+    link <- link |>
       dplyr::transmute(
         Drug_Id        = str_sub(.data$f0, start = 1L,  end = 11L),
         Adr_Id         = str_sub(.data$f0, start = 12L, end = 22L),
@@ -404,105 +335,33 @@ tb_vigibase <-
         by = "Adr_Id"
       ) |>
       dplyr::compute()
-
-    # ---- write
-    cli_progress_update(force = force,
-      status = "Write link.parquet",
-      set = 68)
-
-    arrow::write_parquet(link,
-                         sink = paste0(path_base, "link.parquet")
-    )
-
-    rm(adr, link)
+    if (rm_suspdup) {
+      link <- link |> dplyr::filter(!UMCReportId %in% duplicates)
+      cli_progress_update(force = force, status = "Removing suspected duplicates from link", set = 43)
+    }
+    cli_progress_update(force = force, status = "Write link.parquet", set = 44)
+    arrow::write_parquet(link, sink = paste0(path_base, "link.parquet"))
+    rm(link)
     gc()
 
     # ---- ind ---- ####
-    cli_progress_update(force = force,
-      status = "Read IND.txt",
-      set = 70)
-
-    ind <- arrow::read_delim_arrow(paste0(path_base, "IND.txt"),
-                                   col_names = FALSE,
-                                   as_data_frame = FALSE,
-                                   delim = "\t",
-                                   read_options =
-                                     arrow::csv_read_options(
-                                       column_names = "f0",
-                                       encoding = "ANSI_X3.4-1986")
-    )
-
-    # ---- split
-    cli_progress_update(force = force,
-      status = "Split ind",
-      set = 72)
-
-    ind <-
-      ind |>
+    cli_progress_update(force = force, status = "Read IND.txt", set = 46)
+    ind <- arrow::read_delim_arrow(paste0(path_base, "IND.txt"), col_names = FALSE, as_data_frame = FALSE, delim = "\t", read_options = arrow::csv_read_options(column_names = "f0", encoding = "ANSI_X3.4-1986"))
+    cli_progress_update(force = force, status = "Split ind", set = 48)
+    ind <- ind |>
       dplyr::transmute(
         Drug_Id    = str_sub(.data$f0, start = 1L,  end = 11L),
         Indication = str_trim(str_sub(.data$f0, start = 12L, end = 266L))
       ) |>
-      dplyr::mutate(
-        dplyr::across(dplyr::all_of(c("Drug_Id")),
-                      ~ .x |>
-                        str_trim() |>
-                        as.integer()
-        )
-      ) |>
+      dplyr::mutate(dplyr::across(dplyr::all_of(c("Drug_Id")), ~ .x |> str_trim() |> as.integer())) |>
       dplyr::compute()
-
-    # ---- write
-    cli_progress_update(force = force,
-      status = "Write ind.parquet",
-      set = 78)
-
-    arrow::write_parquet(ind,
-                         sink = paste0(path_base, "ind.parquet")
-    )
-
+    if (rm_suspdup && !is.null(drug_ids)) {
+      ind <- ind |> dplyr::filter(Drug_Id %in% drug_ids)
+      cli_progress_update(force = force, status = "Filtering ind by drug_ids", set = 49)
+    }
+    cli_progress_update(force = force, status = "Write ind.parquet", set = 50)
+    arrow::write_parquet(ind, sink = paste0(path_base, "ind.parquet"))
     rm(ind)
-    gc()
-
-    # ---- suspectedduplicates ---- ####
-    cli_progress_update(force = force,
-      status = "Read SUSPECTEDDUPLICATES.txt",
-      set = 80)
-
-    suspdup <- reader("SUSPECTEDDUPLICATES.txt",
-                      folder = path_sub)
-
-    # ---- split
-    cli_progress_update(force = force,
-      status = "Split suspdup",
-      set = 82)
-
-    suspdup <-
-      suspdup |>
-      dplyr::transmute(
-        UMCReportId                = str_sub(.data$f0, start = 1L,  end = 11L),
-        SuspectedduplicateReportId = str_sub(.data$f0, start = 12L, end = 22L)
-      ) |>
-      dplyr::mutate(
-        dplyr::across(dplyr::all_of(c("UMCReportId", "SuspectedduplicateReportId")),
-                      ~ .x |>
-                        str_trim() |>
-                        as.integer()
-        )
-      ) |>
-      dplyr::compute()
-
-    # ---- write
-    cli_progress_update(force = force,
-      status = "Write suspdup.parquet",
-      set = 84)
-
-    arrow::write_parquet(suspdup,
-                         sink = paste0(path_base, "suspdup.parquet")
-    )
-
-
-    rm(suspdup)
     gc()
 
     # AgeGroup

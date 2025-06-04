@@ -435,3 +435,38 @@ test_that("path_base and path_sub exist before working on tables", {
                   cnd_class = TRUE
                   )
 })
+
+test_that("rm_suspdup removes suspected duplicates in main tables", {
+  # Prepare test files using create_ex_main_txt and create_ex_sub_txt
+  tmp_folder <- tempdir()
+  path_base <- paste0(tmp_folder, "/main_duplicates/")
+  path_sub  <- paste0(tmp_folder, "/sub_duplicates/")
+  dir.create(path_base, showWarnings = FALSE)
+  dir.create(path_sub, showWarnings = FALSE)
+
+ 
+  create_ex_main_txt(path_base)
+  create_ex_sub_txt(path_sub)
+
+  # Call with rm_suspdup = TRUE (default)
+  tb_vigibase(path_base = path_base, path_sub = path_sub, force = TRUE)
+  demo <- arrow::read_parquet(paste0(path_base, "demo.parquet"))
+  drug <- arrow::read_parquet(paste0(path_base, "drug.parquet"))
+  link <- arrow::read_parquet(paste0(path_base, "link.parquet"))
+  expect_false(10000002 %in% demo$UMCReportId)
+  expect_true(10000001 %in% demo$UMCReportId)
+  expect_false(10000002 %in% drug$UMCReportId)
+  expect_true(10000001 %in% drug$UMCReportId)
+  # For link, check that only Drug_Id 8 remains (corresponding to non-duplicate UMCReportId)
+  expect_true(all(link$Drug_Id == 8))
+
+  # Call with rm_suspdup = FALSE
+  tb_vigibase(path_base = path_base, path_sub = path_sub, force = TRUE, rm_suspdup = FALSE)
+  demo2 <- arrow::read_parquet(paste0(path_base, "demo.parquet"))
+  drug2 <- arrow::read_parquet(paste0(path_base, "drug.parquet"))
+  link2 <- arrow::read_parquet(paste0(path_base, "link.parquet"))
+  expect_true(all(c(10000001, 10000002) %in% demo2$UMCReportId))
+  expect_true(all(c(10000001, 10000002) %in% drug2$UMCReportId))
+  expect_true(all(c(8, 9) %in% link2$Drug_Id))
+  unlink(tmp_folder, recursive = TRUE)
+})
