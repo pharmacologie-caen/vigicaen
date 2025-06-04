@@ -229,6 +229,21 @@ test_that("checkers of d_code and a_code work", {
   expect_equal(cnd_vr2$arg, "a_code")
   expect_equal(cnd_vr2$fn, "vigi_routine()")
 
+  # test for d_code_2
+
+  expect_snapshot(error = TRUE, cnd_class = TRUE,
+    vigi_routine(
+      demo_data = demo,
+      drug_data = drug,
+      adr_data  = adr,
+      link_data = link,
+      d_code = d_drecno,
+      d_code_2 = d_drecno_toolong,
+      a_code = a_llt,
+      vigibase_version = "September 2024"
+    )
+  )
+
   # not lists
 
   expect_snapshot(
@@ -253,6 +268,20 @@ test_that("checkers of d_code and a_code work", {
       link_data = link,
       d_code = d_drecno,
       a_code = "a_colitis",
+      vigibase_version = "September 2024"
+    )
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    vigi_routine(
+      demo_data = demo,
+      drug_data = drug,
+      adr_data  = adr,
+      link_data = link,
+      d_code = d_drecno,
+      d_code_2 = "ipilimumab",
+      a_code = a_llt,
       vigibase_version = "September 2024"
     )
   )
@@ -335,7 +364,7 @@ test_that("formatting IC025 with out of bound value works", {
   )
 })
 
-test_that("patient label is left or right justified, depending on tto median", {
+test_that("patient label is left or right justified, depending on 90 days threshold", {
   d_drecno <-
     ex_$d_drecno["nivolumab"]
 
@@ -350,7 +379,7 @@ test_that("patient label is left or right justified, depending on tto median", {
   # run routine
 
   expect_doppelganger(
-    "case_tto below median",
+    "case_tto below 90 days",
     vigi_routine(
       demo_data = demo,
       drug_data = drug,
@@ -364,7 +393,7 @@ test_that("patient label is left or right justified, depending on tto median", {
   )
 
   expect_doppelganger(
-    "case_tto below median",
+    "case_tto above 90 days",
     vigi_routine(
       demo_data = arrow::as_arrow_table(demo),
       drug_data = arrow::as_arrow_table(drug),
@@ -372,7 +401,7 @@ test_that("patient label is left or right justified, depending on tto median", {
       link_data = arrow::as_arrow_table(link),
       d_code = d_drecno,
       a_code = a_llt,
-      case_tto = 30,
+      case_tto = 150,
       vigibase_version = "September 2024"
     )
   )
@@ -422,6 +451,31 @@ test_that("too few time to onset prevents graph drawing", {
       )
     ),
     "Not enough data to plot time to onset"
+  )
+
+  # also warn with 2 drugs
+
+  # slight difference with above test: there are NO ttos here
+  # whereas there is only 1 (i.e, less than 2) above
+
+  expect_message(
+    expect_message(
+    expect_doppelganger(
+      "no time to onset with 2 drugs",
+      vigi_routine(
+        demo_data = demo,
+        drug_data = drug,
+        adr_data  = adr,
+        link_data = link,
+        d_code = d_drecno,
+        d_code_2 = ex_$d_drecno["nivolumab"],
+        a_code = a_llt,
+        vigibase_version = "September 2024"
+      )
+    ),
+    "Not enough data to plot time to onset"
+    ),
+    "Dual drug analysis"
   )
 
   # export is smaller
@@ -610,6 +664,38 @@ test_that("error if no adr or drug cases found", {
     class = "no_cases"
   )
 
+  # with 2 drugs
+
+  expect_snapshot(
+    error = TRUE,
+    vigi_routine(
+      demo_data = demo_,
+      drug_data = drug_,
+      adr_data  = adr_,
+      link_data = link_,
+      d_code = d_drecno_empty,
+      d_code_2 = ex_$d_drecno["nivolumab"],
+      a_code = ex_$a_llt["a_colitis"],
+      case_tto = 50,
+      vigibase_version = "September 2024"
+    )
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    vigi_routine(
+      demo_data = demo_,
+      drug_data = drug_,
+      adr_data  = adr_,
+      link_data = link_,
+      d_code_2 = d_drecno_empty,
+      d_code = ex_$d_drecno["nivolumab"],
+      a_code = ex_$a_llt["a_colitis"],
+      case_tto = 50,
+      vigibase_version = "September 2024"
+    )
+  )
+
 })
 
 test_that("works with arrow tables", {
@@ -739,4 +825,101 @@ test_that("absence of rechallenge data correctly displayed", {
     )
   )
 
+})
+
+test_that("suspect_only = FALSE includes all bases", {
+  d_drecno <- ex_$d_drecno["nivolumab"]
+  a_llt <- ex_$a_llt["a_colitis"]
+  demo <- demo_
+  adr  <- adr_
+  drug <- drug_
+  link <- link_
+  # Should not error and return a plot
+  expect_silent(
+    vigi_routine(
+      demo_data = demo,
+      drug_data = drug,
+      adr_data  = adr,
+      link_data = link,
+      d_code = d_drecno,
+      a_code = a_llt,
+      vigibase_version = "September 2024",
+      suspect_only = FALSE
+    )
+  )
+
+  # suspect_only = TRUE shows good counts and no cases in
+  # conco or interacting
+
+  expect_doppelganger(
+    "suspect_only = TRUE",
+    vigi_routine(
+      demo_data = demo,
+      drug_data = drug,
+      adr_data  = adr,
+      link_data = link,
+      d_code = d_drecno,
+      a_code = a_llt,
+      vigibase_version = "September 2024",
+      suspect_only = TRUE
+    )
+  )
+})
+
+test_that("d_code_2 triggers both_drugs logic and CLI message", {
+  d1 <- ex_$d_drecno["nivolumab"]
+  d2 <- ex_$d_drecno["ipilimumab"]
+  a_llt <- ex_$a_llt["a_colitis"]
+  demo <- demo_
+  adr  <- adr_
+#  drug <- drug_
+#  link <- link_
+
+#  suppressMessages(tmp <-
+#    link_ |>
+#    add_adr(      a_code = a_llt,
+#      adr_data = adr_
+#    ) |> dplyr::filter(a_colitis == 1)
+#  )
+
+  # adding a few cases to plot a time to onset graph
+  tmp_link <-
+    link_ |>
+    dplyr::filter(
+      (Drug_Id == 10227865 & Adr_Id == 107195352) |
+        (Drug_Id == 122421101 & Adr_Id == 112748642) |
+        (Drug_Id == 15077244 & Adr_Id == 8585397)
+    ) |>
+    dplyr::mutate(
+      Drug_Id = 100
+    )
+
+  tmp_drug <-
+    drug_ |>
+    dplyr::filter(
+      Drug_Id == 10227865 | Drug_Id == 122421101 | Drug_Id == 15077244
+    ) |>
+    dplyr::mutate(
+      Drug_Id = 100,
+      DrecNo = 133138448  # ipi
+    )
+
+  drug <- dplyr::bind_rows(drug_, tmp_drug)
+
+  link <- dplyr::bind_rows(link_, tmp_link)
+
+  expect_message(expect_doppelganger(
+    "dual drug analysis",
+    vigi_routine(
+      demo_data = demo,
+      drug_data = drug,
+      adr_data  = adr,
+      link_data = link,
+      d_code = d1,
+      d_code_2 = d2,
+      a_code = a_llt,
+      vigibase_version = "September 2024"
+    )
+  ),
+  "Dual drug analysis: only cases exposed to both")
 })

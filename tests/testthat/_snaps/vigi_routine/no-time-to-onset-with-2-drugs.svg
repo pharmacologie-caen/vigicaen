@@ -37,7 +37,7 @@
 <g clip-path='url(#cpMTQuMTd8NzA1LjgzfDgyLjQ1fDE2MS43NA==)'>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
-<text x='14.17' y='44.53' style='font-size: 11.00px; font-family: sans;' textLength='82.53px' lengthAdjust='spacingAndGlyphs'>Drug: ipilimumab</text>
+<text x='14.17' y='44.53' style='font-size: 11.00px; font-family: sans;' textLength='145.22px' lengthAdjust='spacingAndGlyphs'>Drug: ipilimumab + nivolumab</text>
 <text x='14.17' y='56.41' style='font-size: 11.00px; font-family: sans;' textLength='135.76px' lengthAdjust='spacingAndGlyphs'>Adverse event: a_embolism</text>
 <text x='14.17' y='68.29' style='font-size: 11.00px; font-family: sans;' textLength='89.88px' lengthAdjust='spacingAndGlyphs'>Setting: All reports</text>
 <text x='14.17' y='80.17' style='font-size: 11.00px; font-family: sans;' textLength='169.40px' lengthAdjust='spacingAndGlyphs'>VigiBase version: September 2024</text>
@@ -59,19 +59,19 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMTQuMTd8MzE5LjE0fDE5NC42MnwzMjYuMzE=)'>
-<rect x='28.47' y='200.61' width='85.77' height='119.72' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #262626;' />
-<rect x='123.77' y='320.32' width='85.77' height='0.00' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4D4D4D;' />
-<rect x='219.07' y='320.32' width='85.77' height='0.00' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
+<rect x='28.47' y='260.46' width='85.77' height='0.00' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #262626;' />
+<rect x='123.77' y='260.46' width='85.77' height='0.00' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4D4D4D;' />
+<rect x='219.07' y='260.46' width='85.77' height='0.00' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
 <rect x='14.17' y='194.62' width='304.96' height='131.69' style='stroke-width: 0.75;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <rect x='334.02' y='239.91' width='12.76' height='12.76' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #262626;' />
 <rect x='334.02' y='254.09' width='12.76' height='12.76' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4D4D4D;' />
 <rect x='334.02' y='268.26' width='12.76' height='12.76' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
-<text x='352.96' y='249.32' style='font-size: 8.80px; font-family: sans;' textLength='51.38px' lengthAdjust='spacingAndGlyphs'>Suspected: 1</text>
+<text x='352.96' y='249.32' style='font-size: 8.80px; font-family: sans;' textLength='51.38px' lengthAdjust='spacingAndGlyphs'>Suspected: 0</text>
 <text x='352.96' y='263.49' style='font-size: 8.80px; font-family: sans;' textLength='59.19px' lengthAdjust='spacingAndGlyphs'>Concomitant: 0</text>
 <text x='352.96' y='277.67' style='font-size: 8.80px; font-family: sans;' textLength='50.88px' lengthAdjust='spacingAndGlyphs'>Interacting: 0</text>
-<text x='14.17' y='180.46' style='font-size: 11.00px; font-weight: bold; font-family: sans;' textLength='68.61px' lengthAdjust='spacingAndGlyphs'>N° of cases: 1</text>
+<text x='14.17' y='180.46' style='font-size: 11.00px; font-weight: bold; font-family: sans;' textLength='68.61px' lengthAdjust='spacingAndGlyphs'>N° of cases: 0</text>
 <text x='14.17' y='192.34' style='font-size: 11.00px; font-weight: bold; font-family: sans;' textLength='0.00px' lengthAdjust='spacingAndGlyphs'></text>
 </g>
 <defs>
@@ -128,8 +128,8 @@
 <polyline points='126.44,426.96 135.44,442.55 144.44,426.96 ' style='stroke-width: 4.27; stroke: #AEAC4C; stroke-linecap: butt;' />
 <line x1='135.44' y1='387.41' x2='135.44' y2='442.55' style='stroke-width: 4.27; stroke: #AEAC4C; stroke-linecap: butt;' />
 <polyline points='126.44,426.96 135.44,442.55 144.44,426.96 ' style='stroke-width: 4.27; stroke: #AEAC4C; stroke-linecap: butt;' />
-<polygon points='94.38,396.57 176.49,396.57 176.39,396.57 176.80,396.55 177.21,396.47 177.59,396.32 177.95,396.11 178.27,395.85 178.54,395.55 178.76,395.20 178.92,394.82 179.02,394.42 179.06,394.01 179.06,394.01 179.06,380.80 179.06,380.80 179.02,380.39 178.92,379.99 178.76,379.61 178.54,379.26 178.27,378.96 177.95,378.70 177.59,378.49 177.21,378.34 176.80,378.26 176.49,378.24 94.38,378.24 94.69,378.26 94.28,378.24 93.87,378.29 93.47,378.41 93.10,378.58 92.76,378.82 92.46,379.10 92.22,379.43 92.02,379.80 91.89,380.19 91.83,380.60 91.82,380.80 91.82,394.01 91.83,393.80 91.83,394.21 91.89,394.62 92.02,395.01 92.22,395.38 92.46,395.71 92.76,395.99 93.10,396.23 93.47,396.40 93.87,396.52 94.28,396.57 ' style='stroke-width: 0.53; fill: #FFFFFF;' />
-<text x='135.44' y='392.30' text-anchor='middle' style='font-size: 14.23px; font-weight: bold; font-family: sans;' textLength='78.70px' lengthAdjust='spacingAndGlyphs'>IC025 = -3.8</text>
+<polygon points='90.42,396.57 180.45,396.57 180.35,396.57 180.76,396.55 181.16,396.47 181.55,396.32 181.91,396.11 182.22,395.85 182.50,395.55 182.72,395.20 182.88,394.82 182.98,394.42 183.01,394.01 183.01,394.01 183.01,380.80 183.01,380.80 182.98,380.39 182.88,379.99 182.72,379.61 182.50,379.26 182.22,378.96 181.91,378.70 181.55,378.49 181.16,378.34 180.76,378.26 180.45,378.24 90.42,378.24 90.73,378.26 90.32,378.24 89.91,378.29 89.52,378.41 89.14,378.58 88.80,378.82 88.51,379.10 88.26,379.43 88.07,379.80 87.94,380.19 87.87,380.60 87.86,380.80 87.86,394.01 87.87,393.80 87.87,394.21 87.94,394.62 88.07,395.01 88.26,395.38 88.51,395.71 88.80,395.99 89.14,396.23 89.52,396.40 89.91,396.52 90.32,396.57 ' style='stroke-width: 0.53; fill: #FFFFFF;' />
+<text x='135.44' y='392.30' text-anchor='middle' style='font-size: 14.23px; font-weight: bold; font-family: sans;' textLength='86.61px' lengthAdjust='spacingAndGlyphs'>IC025 = -11.3</text>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <text x='210.29' y='531.14' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='6.12px' lengthAdjust='spacingAndGlyphs'>0</text>
@@ -166,7 +166,7 @@
 <g clip-path='url(#cpMTQuMTd8NzA1LjgzfDgyLjQ1fDE2MS43NA==)'>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
-<text x='14.17' y='44.53' style='font-size: 11.00px; font-family: sans;' textLength='82.53px' lengthAdjust='spacingAndGlyphs'>Drug: ipilimumab</text>
+<text x='14.17' y='44.53' style='font-size: 11.00px; font-family: sans;' textLength='145.22px' lengthAdjust='spacingAndGlyphs'>Drug: ipilimumab + nivolumab</text>
 <text x='14.17' y='56.41' style='font-size: 11.00px; font-family: sans;' textLength='135.76px' lengthAdjust='spacingAndGlyphs'>Adverse event: a_embolism</text>
 <text x='14.17' y='68.29' style='font-size: 11.00px; font-family: sans;' textLength='89.88px' lengthAdjust='spacingAndGlyphs'>Setting: All reports</text>
 <text x='14.17' y='80.17' style='font-size: 11.00px; font-family: sans;' textLength='169.40px' lengthAdjust='spacingAndGlyphs'>VigiBase version: September 2024</text>
@@ -178,19 +178,19 @@
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
 <g clip-path='url(#cpMTQuMTd8MzE5LjE0fDE5NC42MnwzMjYuMzE=)'>
-<rect x='28.47' y='200.61' width='85.77' height='119.72' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #262626;' />
-<rect x='123.77' y='320.32' width='85.77' height='0.00' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4D4D4D;' />
-<rect x='219.07' y='320.32' width='85.77' height='0.00' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
+<rect x='28.47' y='260.46' width='85.77' height='0.00' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #262626;' />
+<rect x='123.77' y='260.46' width='85.77' height='0.00' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4D4D4D;' />
+<rect x='219.07' y='260.46' width='85.77' height='0.00' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
 <rect x='14.17' y='194.62' width='304.96' height='131.69' style='stroke-width: 0.75;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <rect x='334.02' y='239.91' width='12.76' height='12.76' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #262626;' />
 <rect x='334.02' y='254.09' width='12.76' height='12.76' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4D4D4D;' />
 <rect x='334.02' y='268.26' width='12.76' height='12.76' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
-<text x='352.96' y='249.32' style='font-size: 8.80px; font-family: sans;' textLength='51.38px' lengthAdjust='spacingAndGlyphs'>Suspected: 1</text>
+<text x='352.96' y='249.32' style='font-size: 8.80px; font-family: sans;' textLength='51.38px' lengthAdjust='spacingAndGlyphs'>Suspected: 0</text>
 <text x='352.96' y='263.49' style='font-size: 8.80px; font-family: sans;' textLength='59.19px' lengthAdjust='spacingAndGlyphs'>Concomitant: 0</text>
 <text x='352.96' y='277.67' style='font-size: 8.80px; font-family: sans;' textLength='50.88px' lengthAdjust='spacingAndGlyphs'>Interacting: 0</text>
-<text x='14.17' y='180.46' style='font-size: 11.00px; font-weight: bold; font-family: sans;' textLength='68.61px' lengthAdjust='spacingAndGlyphs'>N° of cases: 1</text>
+<text x='14.17' y='180.46' style='font-size: 11.00px; font-weight: bold; font-family: sans;' textLength='68.61px' lengthAdjust='spacingAndGlyphs'>N° of cases: 0</text>
 <text x='14.17' y='192.34' style='font-size: 11.00px; font-weight: bold; font-family: sans;' textLength='0.00px' lengthAdjust='spacingAndGlyphs'></text>
 </g>
 <g clip-path='url(#cpNDMyLjAwfDcyMC4wMHwxNjQuNTd8MzI5LjE0)'>
@@ -227,8 +227,8 @@
 <polyline points='126.44,426.96 135.44,442.55 144.44,426.96 ' style='stroke-width: 4.27; stroke: #AEAC4C; stroke-linecap: butt;' />
 <line x1='135.44' y1='387.41' x2='135.44' y2='442.55' style='stroke-width: 4.27; stroke: #AEAC4C; stroke-linecap: butt;' />
 <polyline points='126.44,426.96 135.44,442.55 144.44,426.96 ' style='stroke-width: 4.27; stroke: #AEAC4C; stroke-linecap: butt;' />
-<polygon points='94.38,396.57 176.49,396.57 176.39,396.57 176.80,396.55 177.21,396.47 177.59,396.32 177.95,396.11 178.27,395.85 178.54,395.55 178.76,395.20 178.92,394.82 179.02,394.42 179.06,394.01 179.06,394.01 179.06,380.80 179.06,380.80 179.02,380.39 178.92,379.99 178.76,379.61 178.54,379.26 178.27,378.96 177.95,378.70 177.59,378.49 177.21,378.34 176.80,378.26 176.49,378.24 94.38,378.24 94.69,378.26 94.28,378.24 93.87,378.29 93.47,378.41 93.10,378.58 92.76,378.82 92.46,379.10 92.22,379.43 92.02,379.80 91.89,380.19 91.83,380.60 91.82,380.80 91.82,394.01 91.83,393.80 91.83,394.21 91.89,394.62 92.02,395.01 92.22,395.38 92.46,395.71 92.76,395.99 93.10,396.23 93.47,396.40 93.87,396.52 94.28,396.57 ' style='stroke-width: 0.53; fill: #FFFFFF;' />
-<text x='135.44' y='392.30' text-anchor='middle' style='font-size: 14.23px; font-weight: bold; font-family: sans;' textLength='78.70px' lengthAdjust='spacingAndGlyphs'>IC025 = -3.8</text>
+<polygon points='90.42,396.57 180.45,396.57 180.35,396.57 180.76,396.55 181.16,396.47 181.55,396.32 181.91,396.11 182.22,395.85 182.50,395.55 182.72,395.20 182.88,394.82 182.98,394.42 183.01,394.01 183.01,394.01 183.01,380.80 183.01,380.80 182.98,380.39 182.88,379.99 182.72,379.61 182.50,379.26 182.22,378.96 181.91,378.70 181.55,378.49 181.16,378.34 180.76,378.26 180.45,378.24 90.42,378.24 90.73,378.26 90.32,378.24 89.91,378.29 89.52,378.41 89.14,378.58 88.80,378.82 88.51,379.10 88.26,379.43 88.07,379.80 87.94,380.19 87.87,380.60 87.86,380.80 87.86,394.01 87.87,393.80 87.87,394.21 87.94,394.62 88.07,395.01 88.26,395.38 88.51,395.71 88.80,395.99 89.14,396.23 89.52,396.40 89.91,396.52 90.32,396.57 ' style='stroke-width: 0.53; fill: #FFFFFF;' />
+<text x='135.44' y='392.30' text-anchor='middle' style='font-size: 14.23px; font-weight: bold; font-family: sans;' textLength='86.61px' lengthAdjust='spacingAndGlyphs'>IC025 = -11.3</text>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <text x='210.29' y='531.14' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='6.12px' lengthAdjust='spacingAndGlyphs'>0</text>

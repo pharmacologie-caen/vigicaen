@@ -22,6 +22,17 @@
 
     Code
       vigi_routine(demo_data = demo, drug_data = drug, adr_data = adr, link_data = link,
+        d_code = d_drecno, d_code_2 = d_drecno_toolong, a_code = a_llt,
+        vigibase_version = "September 2024")
+    Condition <length_one>
+      Error in `vigi_routine()`:
+      ! `d_code_2` must have only one item in `vigi_routine()`.
+      x `d_code_2` has 2 items.
+
+---
+
+    Code
+      vigi_routine(demo_data = demo, drug_data = drug, adr_data = adr, link_data = link,
         d_code = "nivolumab", a_code = a_llt, vigibase_version = "September 2024")
     Condition
       Error in `vigi_routine()`:
@@ -39,6 +50,17 @@
       ! `a_code` must be a named list.
       x `a_code` is of class character.
       > Supply a named list to `a_code`. See ?ex_.
+
+---
+
+    Code
+      vigi_routine(demo_data = demo, drug_data = drug, adr_data = adr, link_data = link,
+        d_code = d_drecno, d_code_2 = "ipilimumab", a_code = a_llt, vigibase_version = "September 2024")
+    Condition
+      Error in `vigi_routine()`:
+      ! `d_code_2` must be a named list.
+      x `d_code_2` is of class character.
+      > Supply a named list to `d_code_2`. See ?ex_.
 
 # length one checker prints nicely [plain]
 
@@ -85,6 +107,30 @@
     Condition
       Error in `vigi_routine()`:
       ! `export_to` must end by '.bmp', '.eps', '.jpeg', '.pdf', '.png', '.ps''.svg', '.tex', '.tiff', or '.wmf' (windows only)
+
+# error if no adr or drug cases found
+
+    Code
+      vigi_routine(demo_data = demo_, drug_data = drug_, adr_data = adr_, link_data = link_,
+        d_code = d_drecno_empty, d_code_2 = ex_$d_drecno["nivolumab"], a_code = ex_$
+          a_llt["a_colitis"], case_tto = 50, vigibase_version = "September 2024")
+    Message
+      i Dual drug analysis: only cases exposed to both 'd1' and 'nivolumab' are included.
+    Condition
+      Error in `vigi_routine()`:
+      ! Drug code(s) in d1 + nivolumab didn't match any cases in `demo_data`.
+
+---
+
+    Code
+      vigi_routine(demo_data = demo_, drug_data = drug_, adr_data = adr_, link_data = link_,
+        d_code_2 = d_drecno_empty, d_code = ex_$d_drecno["nivolumab"], a_code = ex_$
+          a_llt["a_colitis"], case_tto = 50, vigibase_version = "September 2024")
+    Message
+      i Dual drug analysis: only cases exposed to both 'nivolumab' and 'd1' are included.
+    Condition
+      Error in `vigi_routine()`:
+      ! Drug code(s) in nivolumab + d1 didn't match any cases in `demo_data`.
 
 # data type checking prints nicely
 

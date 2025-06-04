@@ -37,8 +37,8 @@
 <g clip-path='url(#cpMTQuMTd8NzA1LjgzfDgyLjQ1fDkwLjU3)'>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
-<text x='14.17' y='44.53' style='font-size: 11.00px; font-family: sans;' textLength='81.93px' lengthAdjust='spacingAndGlyphs'>Drug: Nivolumab</text>
-<text x='14.17' y='56.41' style='font-size: 11.00px; font-family: sans;' textLength='106.40px' lengthAdjust='spacingAndGlyphs'>Adverse event: Colitis</text>
+<text x='14.17' y='44.53' style='font-size: 11.00px; font-family: sans;' textLength='80.10px' lengthAdjust='spacingAndGlyphs'>Drug: nivolumab</text>
+<text x='14.17' y='56.41' style='font-size: 11.00px; font-family: sans;' textLength='116.19px' lengthAdjust='spacingAndGlyphs'>Adverse event: a_colitis</text>
 <text x='14.17' y='68.29' style='font-size: 11.00px; font-family: sans;' textLength='89.88px' lengthAdjust='spacingAndGlyphs'>Setting: All reports</text>
 <text x='14.17' y='80.17' style='font-size: 11.00px; font-family: sans;' textLength='169.40px' lengthAdjust='spacingAndGlyphs'>VigiBase version: September 2024</text>
 <text x='14.17' y='28.74' style='font-size: 13.20px; font-family: sans;' textLength='129.89px' lengthAdjust='spacingAndGlyphs'>VIGIBASE ANALYSIS</text>
@@ -192,9 +192,9 @@
 <rect x='279.23' y='428.77' width='241.56' height='8.31' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #72AEB6;' />
 <rect x='328.37' y='428.77' width='156.50' height='8.31' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #ABC9C8;' />
 <circle cx='368.25' cy='432.10' r='1.95' style='stroke-width: 0.71; fill: #000000;' />
-<line x1='434.74' y1='442.07' x2='434.74' y2='332.35' style='stroke-width: 1.07; stroke: #BF3626; stroke-linecap: butt;' />
-<polygon points='344.78,351.56 432.75,351.56 432.67,351.56 432.99,351.55 433.30,351.48 433.60,351.37 433.88,351.21 434.13,351.01 434.34,350.77 434.51,350.50 434.64,350.20 434.71,349.89 434.74,349.58 434.74,349.58 434.74,339.33 434.74,339.33 434.71,339.01 434.64,338.70 434.51,338.40 434.34,338.13 434.13,337.90 433.88,337.69 433.60,337.53 433.30,337.42 432.99,337.36 432.75,337.34 344.78,337.34 345.02,337.36 344.70,337.34 344.38,337.38 344.08,337.47 343.79,337.61 343.52,337.79 343.29,338.01 343.10,338.27 342.95,338.55 342.85,338.85 342.80,339.17 342.79,339.33 342.79,349.58 342.80,349.42 342.80,349.74 342.85,350.05 342.95,350.35 343.10,350.64 343.29,350.89 343.52,351.11 343.79,351.30 344.08,351.43 344.38,351.52 344.70,351.56 ' style='stroke-width: 0.53; stroke: #BF3626; fill: #FFFFFF;' />
-<text x='431.43' y='348.25' text-anchor='end' style='font-size: 11.04px; fill: #BF3626; font-family: sans;' textLength='85.32px' lengthAdjust='spacingAndGlyphs'>Patient: 150 days</text>
+<line x1='313.61' y1='442.07' x2='313.61' y2='332.35' style='stroke-width: 1.07; stroke: #BF3626; stroke-linecap: butt;' />
+<polygon points='315.60,351.56 397.43,351.56 397.35,351.56 397.67,351.55 397.98,351.48 398.28,351.37 398.56,351.21 398.80,351.01 399.02,350.77 399.19,350.50 399.31,350.20 399.39,349.89 399.42,349.58 399.42,349.58 399.42,339.33 399.42,339.33 399.39,339.01 399.31,338.70 399.19,338.40 399.02,338.13 398.80,337.90 398.56,337.69 398.28,337.53 397.98,337.42 397.67,337.36 397.43,337.34 315.60,337.34 315.84,337.36 315.52,337.34 315.20,337.38 314.89,337.47 314.60,337.61 314.34,337.79 314.11,338.01 313.92,338.27 313.77,338.55 313.67,338.85 313.62,339.17 313.61,339.33 313.61,349.58 313.62,349.42 313.62,349.74 313.67,350.05 313.77,350.35 313.92,350.64 314.11,350.89 314.34,351.11 314.60,351.30 314.89,351.43 315.20,351.52 315.52,351.56 ' style='stroke-width: 0.53; stroke: #BF3626; fill: #FFFFFF;' />
+<text x='316.92' y='348.25' style='font-size: 11.04px; fill: #BF3626; font-family: sans;' textLength='79.18px' lengthAdjust='spacingAndGlyphs'>Patient: 30 days</text>
 <rect x='26.77' y='332.35' width='679.06' height='109.72' style='stroke-width: 1.07; stroke: #333333;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
@@ -262,8 +262,8 @@
 <g clip-path='url(#cpMTQuMTd8NzA1LjgzfDgyLjQ1fDkwLjU3)'>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
-<text x='14.17' y='44.53' style='font-size: 11.00px; font-family: sans;' textLength='81.93px' lengthAdjust='spacingAndGlyphs'>Drug: Nivolumab</text>
-<text x='14.17' y='56.41' style='font-size: 11.00px; font-family: sans;' textLength='106.40px' lengthAdjust='spacingAndGlyphs'>Adverse event: Colitis</text>
+<text x='14.17' y='44.53' style='font-size: 11.00px; font-family: sans;' textLength='80.10px' lengthAdjust='spacingAndGlyphs'>Drug: nivolumab</text>
+<text x='14.17' y='56.41' style='font-size: 11.00px; font-family: sans;' textLength='116.19px' lengthAdjust='spacingAndGlyphs'>Adverse event: a_colitis</text>
 <text x='14.17' y='68.29' style='font-size: 11.00px; font-family: sans;' textLength='89.88px' lengthAdjust='spacingAndGlyphs'>Setting: All reports</text>
 <text x='14.17' y='80.17' style='font-size: 11.00px; font-family: sans;' textLength='169.40px' lengthAdjust='spacingAndGlyphs'>VigiBase version: September 2024</text>
 <text x='14.17' y='28.74' style='font-size: 13.20px; font-family: sans;' textLength='129.89px' lengthAdjust='spacingAndGlyphs'>VIGIBASE ANALYSIS</text>
@@ -377,9 +377,9 @@
 <rect x='279.23' y='428.77' width='241.56' height='8.31' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #72AEB6;' />
 <rect x='328.37' y='428.77' width='156.50' height='8.31' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #ABC9C8;' />
 <circle cx='368.25' cy='432.10' r='1.95' style='stroke-width: 0.71; fill: #000000;' />
-<line x1='434.74' y1='442.07' x2='434.74' y2='332.35' style='stroke-width: 1.07; stroke: #BF3626; stroke-linecap: butt;' />
-<polygon points='344.78,351.56 432.75,351.56 432.67,351.56 432.99,351.55 433.30,351.48 433.60,351.37 433.88,351.21 434.13,351.01 434.34,350.77 434.51,350.50 434.64,350.20 434.71,349.89 434.74,349.58 434.74,349.58 434.74,339.33 434.74,339.33 434.71,339.01 434.64,338.70 434.51,338.40 434.34,338.13 434.13,337.90 433.88,337.69 433.60,337.53 433.30,337.42 432.99,337.36 432.75,337.34 344.78,337.34 345.02,337.36 344.70,337.34 344.38,337.38 344.08,337.47 343.79,337.61 343.52,337.79 343.29,338.01 343.10,338.27 342.95,338.55 342.85,338.85 342.80,339.17 342.79,339.33 342.79,349.58 342.80,349.42 342.80,349.74 342.85,350.05 342.95,350.35 343.10,350.64 343.29,350.89 343.52,351.11 343.79,351.30 344.08,351.43 344.38,351.52 344.70,351.56 ' style='stroke-width: 0.53; stroke: #BF3626; fill: #FFFFFF;' />
-<text x='431.43' y='348.25' text-anchor='end' style='font-size: 11.04px; fill: #BF3626; font-family: sans;' textLength='85.32px' lengthAdjust='spacingAndGlyphs'>Patient: 150 days</text>
+<line x1='313.61' y1='442.07' x2='313.61' y2='332.35' style='stroke-width: 1.07; stroke: #BF3626; stroke-linecap: butt;' />
+<polygon points='315.60,351.56 397.43,351.56 397.35,351.56 397.67,351.55 397.98,351.48 398.28,351.37 398.56,351.21 398.80,351.01 399.02,350.77 399.19,350.50 399.31,350.20 399.39,349.89 399.42,349.58 399.42,349.58 399.42,339.33 399.42,339.33 399.39,339.01 399.31,338.70 399.19,338.40 399.02,338.13 398.80,337.90 398.56,337.69 398.28,337.53 397.98,337.42 397.67,337.36 397.43,337.34 315.60,337.34 315.84,337.36 315.52,337.34 315.20,337.38 314.89,337.47 314.60,337.61 314.34,337.79 314.11,338.01 313.92,338.27 313.77,338.55 313.67,338.85 313.62,339.17 313.61,339.33 313.61,349.58 313.62,349.42 313.62,349.74 313.67,350.05 313.77,350.35 313.92,350.64 314.11,350.89 314.34,351.11 314.60,351.30 314.89,351.43 315.20,351.52 315.52,351.56 ' style='stroke-width: 0.53; stroke: #BF3626; fill: #FFFFFF;' />
+<text x='316.92' y='348.25' style='font-size: 11.04px; fill: #BF3626; font-family: sans;' textLength='79.18px' lengthAdjust='spacingAndGlyphs'>Patient: 30 days</text>
 <rect x='26.77' y='332.35' width='679.06' height='109.72' style='stroke-width: 1.07; stroke: #333333;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
