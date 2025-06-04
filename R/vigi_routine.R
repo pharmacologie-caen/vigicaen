@@ -616,8 +616,9 @@ vigi_routine <-
       pl_label <-
         paste0("Patient: ", round(case_tto), " days")
 
+      # Alignement based on 90 days (x-axis middle)
       pl_hjust <-
-        if (case_tto < summary_ttos["50%"]) {
+        if (case_tto < 90) {
           0
         } else {
           1

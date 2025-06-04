@@ -364,7 +364,7 @@ test_that("formatting IC025 with out of bound value works", {
   )
 })
 
-test_that("patient label is left or right justified, depending on tto median", {
+test_that("patient label is left or right justified, depending on 90 days threshold", {
   d_drecno <-
     ex_$d_drecno["nivolumab"]
 
@@ -379,7 +379,7 @@ test_that("patient label is left or right justified, depending on tto median", {
   # run routine
 
   expect_doppelganger(
-    "case_tto below median",
+    "case_tto below 90 days",
     vigi_routine(
       demo_data = demo,
       drug_data = drug,
@@ -393,7 +393,7 @@ test_that("patient label is left or right justified, depending on tto median", {
   )
 
   expect_doppelganger(
-    "case_tto below median",
+    "case_tto above 90 days",
     vigi_routine(
       demo_data = arrow::as_arrow_table(demo),
       drug_data = arrow::as_arrow_table(drug),
@@ -401,7 +401,7 @@ test_that("patient label is left or right justified, depending on tto median", {
       link_data = arrow::as_arrow_table(link),
       d_code = d_drecno,
       a_code = a_llt,
-      case_tto = 30,
+      case_tto = 150,
       vigibase_version = "September 2024"
     )
   )
