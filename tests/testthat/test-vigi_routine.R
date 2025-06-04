@@ -908,20 +908,6 @@ test_that("d_code_2 triggers both_drugs logic and CLI message", {
 
   link <- dplyr::bind_rows(link_, tmp_link)
 
-  expect_message(
-    vigi_routine(
-      demo_data = demo,
-      drug_data = drug,
-      adr_data  = adr,
-      link_data = link,
-      d_code = d1,
-      d_code_2 = d2,
-      a_code = a_llt,
-      vigibase_version = "September 2024"
-    ),
-    "Dual drug analysis: only cases exposed to both"
-  )
-
   expect_message(expect_doppelganger(
     "dual drug analysis",
     vigi_routine(
