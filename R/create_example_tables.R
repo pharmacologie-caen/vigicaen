@@ -146,15 +146,16 @@ f_sets_main <-
                                 "10000002   9          4901355    064392080055012    32- 807"  # Duplicate
                               )),
       LINK.txt = data.frame(f0 = c(
-        "8          17     51---0.78991   0.98745    ",  # Not duplicate Drug_Id
-        "9          14     51---6.98789   -          "   # Duplicate Drug_Id
+        "8          17         51---0.78991   0.98745    ",  # Not duplicate Drug_Id
+        "9          14         51---6.98789   -          "   # Duplicate Drug_Id
       )),
       FOLLOWUP.txt = data.frame(f0 = c("0548978    0254687    ", "7568798    4565321    ")),
       ADR.txt = data.frame(f0 = c(
-        "96570161   14         100474561", "70578465   17         145078144"
+        "10000001   17         100474561",
+        "10000002   14         145078144" # Duplicate Drug_Id
       )),
-      OUT.txt = data.frame(f0 = c("70547815   - N", "96575661   - Y")),
-      SRCE.txt = data.frame(f0 = c("4898765    1 ", "9804562    1 ")),
+      OUT.txt = data.frame(f0 = c("10000001   - N", "96575661   - Y")),
+      SRCE.txt = data.frame(f0 = c("10000001   1 ", "9804562    1 ")),
       IND.txt = data.frame(
         # 266 length
         f0 = paste0(

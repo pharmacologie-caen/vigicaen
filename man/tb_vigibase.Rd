@@ -4,7 +4,7 @@
 \alias{tb_vigibase}
 \title{Create main VigiBase ECL tables}
 \usage{
-tb_vigibase(path_base, path_sub, force = FALSE)
+tb_vigibase(path_base, path_sub, force = FALSE, rm_suspdup = TRUE)
 }
 \arguments{
 \item{path_base}{Character string, a directory containing vigibase txt tables. It is also the
@@ -14,6 +14,8 @@ output directory.}
 
 \item{force}{Logical, to be passed to \code{cli::cli_progress_update()}. Used for internal
 purposes.}
+
+\item{rm_suspdup}{Logical, should suspected duplicates (from SUSPECTEDDUPLICATES.txt) be removed from main tables? Default is TRUE. Set to FALSE to keep all cases, including suspected duplicates.}
 }
 \value{
 \itemize{

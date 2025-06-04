@@ -15,7 +15,7 @@ test_that("basic use and here package works", {
      SRCE.txt = data.frame(f0 = c("4898765    1 ",
                                   "9804562    1 ")),
      IND.txt = data.frame(# 266 length
-       f0 = "780954     Cutaneous diseases due to other mycobacteria                                                                                                                                                                                                                "
+       f0 = "     8     Cutaneous diseases due to other mycobacteria                                                                                                                                                                                                                "
        ),
      SUSPECTEDDUPLICATES.txt = data.frame(f0 = c("789054     789542     ",
                                                  "780546     654352     ")),
@@ -160,7 +160,7 @@ test_that("basic use and here package works", {
 
    ind_true <-
      dplyr::tibble(
-       Drug_Id = 780954,
+       Drug_Id = 8,
        Indication = "Cutaneous diseases due to other mycobacteria")
 
    expect_equal(demo_res, demo_true)
@@ -439,17 +439,33 @@ test_that("path_base and path_sub exist before working on tables", {
 test_that("rm_suspdup removes suspected duplicates in main tables", {
   # Prepare test files using create_ex_main_txt and create_ex_sub_txt
   tmp_folder <- tempdir()
-  path_base <- paste0(tmp_folder, "/main_duplicates/")
-  path_sub  <- paste0(tmp_folder, "/sub_duplicates/")
+  path_base <- paste0(tmp_folder, "/test_tb_vigibase_duplicates/")
+  path_sub  <- paste0(tmp_folder, "/test_tb_vigibase_duplicates/")
   dir.create(path_base, showWarnings = FALSE)
   dir.create(path_sub, showWarnings = FALSE)
 
- 
+
   create_ex_main_txt(path_base)
   create_ex_sub_txt(path_sub)
 
   # Call with rm_suspdup = TRUE (default)
-  tb_vigibase(path_base = path_base, path_sub = path_sub, force = TRUE)
+
+  expect_snapshot({
+    options(cli.progress_show_after = 0)
+    options(cli.progress_clear = FALSE)
+    tb_vigibase(path_base = path_base,
+                path_sub = path_sub,
+                force = TRUE)
+  },
+  transform =
+    function(chr_line)
+      stringr::str_replace(
+        chr_line,
+        "(?>=\\d{1,3}\\%\\s| ).*(?= \\|)",
+        " percent, seconds"
+      )
+  )
+
   demo <- arrow::read_parquet(paste0(path_base, "demo.parquet"))
   drug <- arrow::read_parquet(paste0(path_base, "drug.parquet"))
   link <- arrow::read_parquet(paste0(path_base, "link.parquet"))
@@ -461,7 +477,26 @@ test_that("rm_suspdup removes suspected duplicates in main tables", {
   expect_true(all(link$Drug_Id == 8))
 
   # Call with rm_suspdup = FALSE
-  tb_vigibase(path_base = path_base, path_sub = path_sub, force = TRUE, rm_suspdup = FALSE)
+
+  expect_snapshot({
+    options(cli.progress_show_after = 0)
+    options(cli.progress_clear = FALSE)
+    tb_vigibase(
+      path_base = path_base,
+      path_sub = path_sub,
+      force = TRUE,
+      rm_suspdup = FALSE
+    )
+  },
+  transform =
+    function(chr_line)
+      stringr::str_replace(
+        chr_line,
+        "(?>=\\d{1,3}\\%\\s| ).*(?= \\|)",
+        " percent, seconds"
+      )
+  )
+
   demo2 <- arrow::read_parquet(paste0(path_base, "demo.parquet"))
   drug2 <- arrow::read_parquet(paste0(path_base, "drug.parquet"))
   link2 <- arrow::read_parquet(paste0(path_base, "link.parquet"))

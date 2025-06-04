@@ -156,8 +156,8 @@ tb_vigibase <-
         ) |>
       dplyr::compute()
     if (rm_suspdup) {
-      demo <- demo |> dplyr::filter(!UMCReportId %in% duplicates)
-      cli_progress_update(force = force, status = "Removing suspected duplicates", set = 7)
+      cli_progress_update(force = force, status = "Remove duplicates", set = 7)
+      demo <- demo |> dplyr::filter(!.data$UMCReportId %in% duplicates)
     }
     cli_progress_update(force = force, status = "Write demo.parquet", set = 8)
     arrow::write_parquet(demo, sink = paste0(path_base, "demo.parquet"))
@@ -195,9 +195,9 @@ tb_vigibase <-
       dplyr::compute()
     # Remove suspected duplicates if requested
     if (rm_suspdup) {
-      drug <- drug |> dplyr::filter(!UMCReportId %in% duplicates)
-      cli_progress_update(force = force, status = "Removing suspected duplicates from drug", set = 13)
-      drug_ids <- unique(drug$Drug_Id)
+      cli_progress_update(force = force, status = "Remove duplicates", set = 13)
+      drug <- drug |> dplyr::filter(!.data$UMCReportId %in% duplicates)
+      drug_ids <- dplyr::pull(drug, .data$Drug_Id, as_vector = TRUE)
     } else {
       drug_ids <- NULL
     }
@@ -224,8 +224,8 @@ tb_vigibase <-
       ) |>
       dplyr::compute()
     if (rm_suspdup) {
-      followup <- followup |> dplyr::filter(!UMCReportId %in% duplicates)
-      cli_progress_update(force = force, status = "Removing suspected duplicates from followup", set = 19)
+      cli_progress_update(force = force, status = "Remove duplicates", set = 19)
+      followup <- followup |> dplyr::filter(!.data$UMCReportId %in% duplicates)
     }
     cli_progress_update(force = force, status = "Write followup.parquet", set = 20)
     arrow::write_parquet(followup, sink = paste0(path_base, "followup.parquet"))
@@ -246,13 +246,11 @@ tb_vigibase <-
       dplyr::mutate(dplyr::across(dplyr::all_of(c("UMCReportId", "Adr_Id", "MedDRA_Id")), ~ .x |> str_trim() |> as.integer())) |>
       dplyr::compute()
     if (rm_suspdup) {
-      adr <- adr |> dplyr::filter(!UMCReportId %in% duplicates)
-      cli_progress_update(force = force, status = "Removing suspected duplicates from adr", set = 25)
+      cli_progress_update(force = force, status = "Remove duplicates", set = 25)
+      adr <- adr |> dplyr::filter(!.data$UMCReportId %in% duplicates)
     }
     cli_progress_update(force = force, status = "Write adr.parquet", set = 26)
     arrow::write_parquet(adr, sink = paste0(path_base, "adr.parquet"))
-    rm(adr)
-    gc()
 
     # ---- out ---- ####
     cli_progress_update(force = force, status = "Read OUT.txt", set = 28)
@@ -267,8 +265,8 @@ tb_vigibase <-
       dplyr::mutate(dplyr::across(dplyr::all_of(c("UMCReportId")), ~ .x |> str_trim() |> as.integer())) |>
       dplyr::compute()
     if (rm_suspdup) {
-      out <- out |> dplyr::filter(!UMCReportId %in% duplicates)
-      cli_progress_update(force = force, status = "Removing suspected duplicates from out", set = 31)
+      cli_progress_update(force = force, status = "Remove duplicates", set = 31)
+      out <- out |> dplyr::filter(!.data$UMCReportId %in% duplicates)
     }
     cli_progress_update(force = force, status = "Write out.parquet", set = 32)
     arrow::write_parquet(out, sink = paste0(path_base, "out.parquet"))
@@ -287,8 +285,8 @@ tb_vigibase <-
       dplyr::mutate(dplyr::across(dplyr::all_of(c("UMCReportId")), ~ .x |> str_trim() |> as.integer())) |>
       dplyr::compute()
     if (rm_suspdup) {
-      srce <- srce |> dplyr::filter(!UMCReportId %in% duplicates)
-      cli_progress_update(force = force, status = "Removing suspected duplicates from srce", set = 37)
+      cli_progress_update(force = force, status = "Remove duplicates", set = 37)
+      srce <- srce |> dplyr::filter(!.data$UMCReportId %in% duplicates)
     }
     cli_progress_update(force = force, status = "Write srce.parquet", set = 38)
     arrow::write_parquet(srce, sink = paste0(path_base, "srce.parquet"))
@@ -336,12 +334,14 @@ tb_vigibase <-
       ) |>
       dplyr::compute()
     if (rm_suspdup) {
-      link <- link |> dplyr::filter(!UMCReportId %in% duplicates)
-      cli_progress_update(force = force, status = "Removing suspected duplicates from link", set = 43)
+      # since joining UMC from adr. If adr duplicates are removed, there will be
+      # unmatched lines in link. Those are the duplicates of link.
+      cli_progress_update(force = force, status = "Remove duplicates", set = 43)
+      link <- link |> dplyr::filter(!is.na(.data$UMCReportId))
     }
     cli_progress_update(force = force, status = "Write link.parquet", set = 44)
     arrow::write_parquet(link, sink = paste0(path_base, "link.parquet"))
-    rm(link)
+    rm(adr, link)
     gc()
 
     # ---- ind ---- ####
@@ -355,10 +355,12 @@ tb_vigibase <-
       ) |>
       dplyr::mutate(dplyr::across(dplyr::all_of(c("Drug_Id")), ~ .x |> str_trim() |> as.integer())) |>
       dplyr::compute()
-    if (rm_suspdup && !is.null(drug_ids)) {
-      ind <- ind |> dplyr::filter(Drug_Id %in% drug_ids)
-      cli_progress_update(force = force, status = "Filtering ind by drug_ids", set = 49)
+
+    if (rm_suspdup) {
+      cli_progress_update(force = force, status = "Remove duplicates", set = 49)
+      ind <- ind |> dplyr::filter(.data$Drug_Id %in% drug_ids)
     }
+
     cli_progress_update(force = force, status = "Write ind.parquet", set = 50)
     arrow::write_parquet(ind, sink = paste0(path_base, "ind.parquet"))
     rm(ind)
