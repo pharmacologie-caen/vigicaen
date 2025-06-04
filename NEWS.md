@@ -21,6 +21,12 @@ centered on 3 months (90 days) instead of the observed median.
 This resolves an issue where the label could be misplaced on the time 
 to onset plot when the median did not match the visual center of the graph.(#145)
 
+* The 'smq' argument in get_llt_smq() no longer requires length 1; documentation updated.
+
+* The example for get_atc_code() now uses explicit names for atc_sel.
+
+* The Value section of desc_tto() now clarifies the default descriptive format and how to change it.
+
 # vigicaen 0.15.6
 
 ## New features
