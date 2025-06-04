@@ -176,7 +176,7 @@ The tables you loaded earlier (as demo, drug, adr, and link)
 in the graph legend. You can use anything, such as "September 2024".
 Just remember to write _something_.
 
-```{r vigi_routine, fig.height=7.5, fig.width=4}
+```{r vigi_routine, fig.height=7.6, fig.width=4}
 #| fig.alt: >
 #|   Example of vigi_routine.
 
@@ -221,7 +221,7 @@ this case, the colitis happened 150days after ipilimumab initiation.
 We can add this information to the graph, using the `case_tto` argument.
 
 
-```{r vigi_routine_case, fig.height=7.5, fig.width=4}
+```{r vigi_routine_case, fig.height=7.6, fig.width=4}
 vigi_routine(
   case_tto  = 150,
   demo_data = demo,
@@ -281,9 +281,12 @@ The `vigi_routine()` function now supports two advanced arguments:
 
 ### Example: Dual drug analysis
 
-Suppose you want to analyze only cases where both nivolumab and ipilimumab were taken, for the same adverse event:
+The example below is not very suitable: The idea is to use `d_code_2` when you want to study
+A fix drug combination, e.g. amoxicillin + clavulanic acid.
 
-```{r}
+However, the syntax would be:
+
+```{r dual_drug, fig.height=7.6, fig.width=4}
 d1 <- ex_$d_drecno["nivolumab"]
 d2 <- ex_$d_drecno["ipilimumab"]
 a_llt <- ex_$a_llt["a_colitis"]

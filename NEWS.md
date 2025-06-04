@@ -2,16 +2,24 @@
 
 ## New features
 
-* `tb_vigibase()` now accepts a new argument `rm_suspdup` (default TRUE) to automatically remove cases identified as suspected duplicates (from `SUSPECTEDDUPLICATES.txt`) when creating the main tables. You can disable this behavior by setting `rm_suspdup = FALSE`.
+* `tb_vigibase()` now accepts a new argument `rm_suspdup` (default TRUE) 
+to automatically remove cases identified as suspected duplicates 
+(from `SUSPECTEDDUPLICATES.txt`) when creating the main tables. 
+You can disable this behavior by setting `rm_suspdup = FALSE`.
 
 * `vigi_routine()` now supports two new arguments:
-  - `suspect_only` (default TRUE): controls whether only suspected drug cases are included in IC and TTO analyses.
-  - `d_code_2` (optional): if provided, a single analysis is performed on cases exposed to both drugs in `d_code` and `d_code_2` (variable `both_drugs`).
+  - `suspect_only` (default FALSE): controls whether only suspected 
+  drug cases are included in IC analysis.
+  - `d_code_2` (optional): if provided, a single analysis is performed 
+  on cases exposed to both drugs in `d_code` and `d_code_2`.
   A CLI message is displayed when dual drug analysis is performed.
 
 ## Bug fixes
 
-* `vigi_routine()` now has left/right justification of the patient label centered on 3 months (90 days) instead of the observed median. This resolves an issue where the label could be misplaced on the time to onset plot when the median did not match the visual center of the graph.(#145)
+* `vigi_routine()` now has left/right justification of the patient label 
+centered on 3 months (90 days) instead of the observed median. 
+This resolves an issue where the label could be misplaced on the time 
+to onset plot when the median did not match the visual center of the graph.(#145)
 
 # vigicaen 0.15.6
 
