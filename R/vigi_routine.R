@@ -285,7 +285,7 @@ vigi_routine <-
                         {
                           if (use_two_drugs) {
                             .data$UMCReportId %in% (demo_data |>
-                                                      dplyr::filter(both_drugs == 1) |>
+                                                      dplyr::filter(.data$both_drugs == 1) |>
                                                       dplyr::pull(UMCReportId))
                           } else {
                             TRUE

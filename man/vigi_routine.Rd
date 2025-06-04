@@ -16,7 +16,9 @@ vigi_routine(
   analysis_setting = "All reports",
   d_label = NULL,
   a_label = NULL,
-  export_to = NULL
+  export_to = NULL,
+  suspect_only = FALSE,
+  d_code_2
 )
 }
 \arguments{
@@ -50,6 +52,10 @@ Defaults to names(a_code).}
 \item{export_to}{A character. The path to export the plot. If NULL, the plot
 is not exported. Should end by ".eps", ".ps", ".tex" (pictex), ".pdf", ".jpeg",
 ".tiff", ".png", ".bmp", ".svg" or ".wmf" (windows only).}
+
+\item{suspect_only}{Logical. If TRUE, only cases where the drug is suspected are used for IC analysis. If FALSE (default), all cases are used.}
+
+\item{d_code_2}{Optional named list. A second drug code for dual drug analysis. If provided, a single analysis is performed on cases exposed to both drugs.}
 }
 \value{
 A ggplot2 graph, with two panels.
@@ -57,7 +63,7 @@ The first panel, on top, is the Information Component (IC) plot.
 The arrow and "IC025 label" indicate the IC value for the selected drug-adr pair.
 The second panel, on the bottom, is the Time to Onset (TTO) density plot.
 It is derived only of cases where the drug was \strong{suspected} to be responsible
-of the adr.
+of the adr (irrespective of the \code{suspect_only} argument).
 If you provide a case_tto value, it is represented by the red line, and the
 label.
 }
