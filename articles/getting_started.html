@@ -6,12 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Getting started • vigicaen</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -195,11 +194,20 @@ directory, under a slightly modified name.</p>
 Parquet is an open-source format, supported by Arrow.</p>
 <p>Not all tables from each source are created during the process.</p>
 <ul>
-<li><p>Main: All tables + subsidiary tables (from sub): demo, drug, adr,
+<li>Main: All tables + subsidiary tables (from sub): demo, drug, adr,
 link, ind, srce, out, followup, suspdup, AgeGroup, Dechallenge,
 Dechallenge2, Frequency, Gender, Notifier, Outcome, Rechallenge,
 Rechallenge2, Region, RepBasis, ReportType, RouteOfAdm, Seriousness, and
-SizeUnit.</p></li>
+SizeUnit.</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> By default, the <code><a href="../reference/tb_vigibase.html">tb_vigibase()</a></code>
+function removes cases identified as suspected duplicates (present in
+the file <code>SUSPECTEDDUPLICATES.txt</code>). You can disable this
+behavior with the argument <code>rm_suspdup = FALSE</code> if you wish
+to keep them in the main tables.</p>
+</blockquote>
+<ul>
 <li><p>WHODrug: All tables: mp, thg, pp, ing, srce, org, ccode, atc,
 sun, pf, str, prg, prt, unitx. Again, check correspondence in the
 delivered files from UMC.</p></li>
@@ -292,7 +300,7 @@ want to subset on these. See
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>
