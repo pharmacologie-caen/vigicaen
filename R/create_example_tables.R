@@ -136,13 +136,18 @@ create_ex_main_pq <-
 f_sets_main <-
   function() {
     list(
-      DEMO.txt = data.frame(f0 = c("96548661   32194501051119460820")),
+      DEMO.txt = data.frame(f0 = c(
+        "10000001   32194501051119460820", # Not duplicate
+        "10000002   32194501051119460820"  # Duplicate
+      )),
       DRUG.txt = data.frame(f0 =
                               c(
-                                "70548965   8          4901354    064392080055011    31- 806"
+                                "10000001   8          4901354    064392080055011    31- 806", # Not duplicate
+                                "10000002   9          4901355    064392080055012    32- 807"  # Duplicate
                               )),
       LINK.txt = data.frame(f0 = c(
-        "2          654654     51---0.78991   0.98745    ", "2          456456     51---6.98789   -          "
+        "8          17     51---0.78991   0.98745    ",  # Not duplicate Drug_Id
+        "9          14     51---6.98789   -          "   # Duplicate Drug_Id
       )),
       FOLLOWUP.txt = data.frame(f0 = c("0548978    0254687    ", "7568798    4565321    ")),
       ADR.txt = data.frame(f0 = c(
@@ -205,7 +210,7 @@ f_sets_main_pq <-
 f_sets_sub <-
   function() {
     list(
-      SUSPECTEDDUPLICATES.txt = data.frame(f0 = c("789054     789542     ", "780546     654352     ")),
+      SUSPECTEDDUPLICATES.txt = data.frame(f0 = c("10000001    10000002 ")),
       AgeGroup_Lx.txt = data.frame(f0 = c("1An age range             ")),
       Dechallenge_Lx.txt = data.frame(f0 = paste0("1Some drug action", rep(" ", 237))),
       Dechallenge2_Lx.txt = data.frame(f0 = paste0("1Some outcome occurring", rep(" ", 231))),
