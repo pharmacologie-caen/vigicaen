@@ -10,7 +10,7 @@
 #' between the narrow and the broad scope of the SMQ.
 #' If you want to work with the SOC hierarchy, use [get_llt_soc()].
 #'
-#' @param smq A named list of character vector of length 1.
+#' @param smq A named list of character vector(s).
 #' @param smq_scope A character vector. One of "narrow" or "broad".
 #' @param smq_list A data.table. A list of SMQs.
 #' @param smq_content A data.table. A list of SMQs content.
@@ -35,7 +35,7 @@
 #' smq_sel2 <-
 #'   rlang::list2(
 #'     sepsis = c("Sepsis (SMQ)","Toxic-septic shock conditions (SMQ)"),
-#'     ischemic_heart_disease = c("Ischaemic heart disease (SMQ)"),
+#'     ischemic_heart_disease = c("Ischaemic heart disease (SMQ)")
 #'   )
 #'
 #' get_llt_smq(smq_sel2,

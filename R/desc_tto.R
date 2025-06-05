@@ -21,6 +21,8 @@
 #' @returns A data.table with one row per drug-adr pair
 #' \itemize{
 #'   \item A descriptive of time to onsets for this combination (column `tto_max`).
+#'   \item It is Median (Quartile 1 - Quartile 3) and min-max by default, change
+#' with `format` arg (passed to [desc_cont()]).
 #' }
 #' @keywords drug-adr-pair descriptive
 #' @export

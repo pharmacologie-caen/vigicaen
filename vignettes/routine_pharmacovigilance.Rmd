@@ -87,7 +87,7 @@ adr  <- dt_parquet(path_base, "adr", in_memory = FALSE)
 link <- dt_parquet(path_base, "link", in_memory = FALSE)
 
 mp <- dt_parquet(path_who,  "mp")
-meddra   <- dt_parquet(path_meddra, "meddra")
+meddra <- dt_parquet(path_meddra, "meddra_hierarchy")
 ```
 
 For this vignette, we will use built-in example tables instead.
@@ -282,7 +282,7 @@ The `vigi_routine()` function now supports two advanced arguments:
 ### Example: Dual drug analysis
 
 The example below is not very suitable: The idea is to use `d_code_2` when you want to study
-A fix drug combination, e.g. amoxicillin + clavulanic acid.
+a fix drug combination, e.g. amoxicillin + clavulanic acid.
 
 However, the syntax would be:
 

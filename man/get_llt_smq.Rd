@@ -13,7 +13,7 @@ get_llt_smq(
 )
 }
 \arguments{
-\item{smq}{A named list of character vector of length 1.}
+\item{smq}{A named list of character vector(s).}
 
 \item{smq_scope}{A character vector. One of "narrow" or "broad".}
 
@@ -55,7 +55,7 @@ get_llt_smq(smq_sel,
 smq_sel2 <-
   rlang::list2(
     sepsis = c("Sepsis (SMQ)","Toxic-septic shock conditions (SMQ)"),
-    ischemic_heart_disease = c("Ischaemic heart disease (SMQ)"),
+    ischemic_heart_disease = c("Ischaemic heart disease (SMQ)")
   )
 
 get_llt_smq(smq_sel2,

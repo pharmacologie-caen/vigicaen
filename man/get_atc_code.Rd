@@ -38,8 +38,8 @@ This is the default behavior in vigilyze.
 # First, define which atc you want to use
 
 atc_sel <-
-     rlang::list2(l03_j01 = c("L03AA", "J01CA"),
-                  c09aa = c("C09AA")
+     rlang::list2(penicillins_GCSF = c("L03AA", "J01CA"),
+                  ACE_inhibitors = c("C09AA")
      )
 
 # You can get DrecNos for you ATCs (if vigilyze is TRUE)

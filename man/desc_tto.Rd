@@ -21,6 +21,8 @@ desc_tto(.data, adr_s, drug_s, tto_time_range = 1, ...)
 A data.table with one row per drug-adr pair
 \itemize{
 \item A descriptive of time to onsets for this combination (column \code{tto_max}).
+\item It is Median (Quartile 1 - Quartile 3) and min-max by default, change
+with \code{format} arg (passed to \code{\link[=desc_cont]{desc_cont()}}).
 }
 }
 \description{
