@@ -56,7 +56,13 @@ files to .parquet files.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tb_vigibase</span><span class="op">(</span><span class="va">path_base</span>, <span class="va">path_sub</span>, force <span class="op">=</span> <span class="cn">FALSE</span>, rm_suspdup <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tb_vigibase</span><span class="op">(</span></span>
+<span>  <span class="va">path_base</span>,</span>
+<span>  <span class="va">path_sub</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  rm_suspdup <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  overwrite_existing_tables <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -79,6 +85,10 @@ purposes.</p></dd>
 
 <dt id="arg-rm-suspdup">rm_suspdup<a class="anchor" aria-label="anchor" href="#arg-rm-suspdup"></a></dt>
 <dd><p>Logical, should suspected duplicates (from SUSPECTEDDUPLICATES.txt) be removed from main tables? Default is TRUE. Set to FALSE to keep all cases, including suspected duplicates.</p></dd>
+
+
+<dt id="arg-overwrite-existing-tables">overwrite_existing_tables<a class="anchor" aria-label="anchor" href="#arg-overwrite-existing-tables"></a></dt>
+<dd><p>Logical, should existing parquet tables be overwritten? Default is FALSE.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -109,6 +119,10 @@ langages.
 The function also creates variables in each table.
 The <code>suspectedduplicates</code> table will be added to the base directory.
 Use <code><a href="dt_parquet.html">dt_parquet()</a></code> to load the tables afterward.</p>
+<p>The argument <code>overwrite_existing_tables</code> is especially useful if the function crashes or is interrupted:
+it allows you to resume the process without rebuilding tables that were already successfully created.
+If set to FALSE (the default), the function will skip the construction of any .parquet tables that already exist,
+so you do not have to start from scratch after a failure. Set to TRUE to force rebuilding all tables.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

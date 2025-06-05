@@ -64,7 +64,9 @@ tables as source text/ascii/parquet files.</p>
 <span></span>
 <span><span class="fu">create_ex_meddra_asc</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">create_ex_main_pq</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">create_ex_main_pq</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">create_ex_sub_pq</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -97,6 +99,12 @@ llt.asc, mdhier.asc, smq_content.asc, smq_list.asc</p></li>
 <li><p>For <code>create_ex_main_pq()</code>,
 demo.parquet, adr.parquet, drug.parquet, link.parquet,
 srce.parquet, ind.parquet, out.parquet, followup.parquet, suspdup.parquet</p></li>
+<li><p>For <code>create_ex_sub_pq()</code>,
+agegroup.parquet, dechallenge.parquet, dechallenge2.parquet,
+frequency.parquet, gender.parquet, notifier.parquet, outcome.parquet,
+rechallenge.parquet, rechallenge2.parquet, region.parquet, repbasis.parquet,
+reporttype.parquet, routeofadm.parquet, seriousness.parquet,
+and sizeunit.parquet</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -113,6 +121,7 @@ same purpose.</p>
 <li><p><code>create_ex_who_txt()</code>: WHO txt tables</p></li>
 <li><p><code>create_ex_meddra_asc()</code>: MedDRA txt tables</p></li>
 <li><p><code>create_ex_main_pq()</code>: main parquet tables</p></li>
+<li><p><code>create_ex_sub_pq()</code>: subsidiary parquet tables</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -136,6 +145,8 @@ same purpose.</p>
 <span class="r-in"><span><span class="fu">create_ex_meddra_asc</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">create_ex_main_pq</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">create_ex_sub_pq</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Remove temporary folders when you're done</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">path</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>

@@ -106,8 +106,8 @@ This is the default behavior in vigilyze.</p>
 <span class="r-in"><span><span class="co"># First, define which atc you want to use</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">atc_sel</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>     <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/list2.html" class="external-link">list2</a></span><span class="op">(</span>penicillins_GCSF <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"L03AA"</span>, <span class="st">"J01CA"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                  ACE_inhibitors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C09AA"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>     <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/list2.html" class="external-link">list2</a></span><span class="op">(</span>penicillins_gcsf <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"L03AA"</span>, <span class="st">"J01CA"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  ace_inhibitors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C09AA"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>     <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># You can get DrecNos for you ATCs (if vigilyze is TRUE)</span></span></span>
@@ -117,7 +117,6 @@ This is the default behavior in vigilyze.</p>
 <span class="r-in"><span>               mp <span class="op">=</span> <span class="va">mp_</span>,</span></span>
 <span class="r-in"><span>               thg_data <span class="op">=</span> <span class="va">thg_</span>,</span></span>
 <span class="r-in"><span>               vigilyze <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>names of atc_sel were tolower-ed and trimed</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or you can get MedicinalProd_Ids (if vigilyze is FALSE)</span></span></span>
@@ -127,7 +126,6 @@ This is the default behavior in vigilyze.</p>
 <span class="r-in"><span>               mp <span class="op">=</span> <span class="va">mp_</span>,</span></span>
 <span class="r-in"><span>               thg_data <span class="op">=</span> <span class="va">thg_</span>,</span></span>
 <span class="r-in"><span>               vigilyze <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>names of atc_sel were tolower-ed and trimed</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> vigilyze set to FALSE, extracting MedicinalProd_ids (?get_atc_code for details)</span>
 </code></pre></div>
     </div>

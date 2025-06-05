@@ -51,6 +51,7 @@
 <div class="section level3">
 <h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
 <ul><li><p><code><a href="../reference/tb_vigibase.html">tb_vigibase()</a></code> now accepts a new argument <code>rm_suspdup</code> (default TRUE) to automatically remove cases identified as suspected duplicates (from <code>SUSPECTEDDUPLICATES.txt</code>) when creating the main tables. You can disable this behavior by setting <code>rm_suspdup = FALSE</code>.</p></li>
+<li><p><code><a href="../reference/tb_vigibase.html">tb_vigibase()</a></code> now supports a new argument <code>overwrite_existing_tables</code> (default FALSE). If set to FALSE, the function will skip the creation of any .parquet tables that already exist, allowing you to resume the process after a crash or interruption without rebuilding completed tables. Set to TRUE to force rebuilding all tables. This makes the table-building process more robust and efficient for large datasets or limited hardware.</p></li>
 <li>
 <p><code><a href="../reference/vigi_routine.html">vigi_routine()</a></code> now supports two new arguments:</p>
 <ul><li>
