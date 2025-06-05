@@ -76,40 +76,6 @@
 #'  unlink(path_base, recursive = TRUE)
 #'  unlink(path_sub, recursive = TRUE)
 
-
-# Helper: scan for main parquet tables
-#' @keywords internal
-#' @noRd
-tb_screen_main_parquet <- function(path_base) {
-  main_tables <- c("demo", "adr", "drug", "link", "ind", "out", "srce", "followup", "suspdup")
-  pattern <- paste0("^(", paste(main_tables, collapse = "|"), ")\\.parquet$")
-  files <- list.files(path_base, pattern = pattern, full.names = FALSE)
-  if (length(files) > 0) {
-    cli::cli_inform("The following tables were already found as parquet files in path_base: {.val {files}}")
-    cli::cli_alert_info("These tables won't be build again.")
-    cli::cli_alert_info("Set {.arg `overwrite_existing_tables`} to TRUE to rewrite those tables.")
-  }
-  return(files)
-}
-
-# Helper: scan for subsidiary parquet tables
-#' @keywords internal
-#' @noRd
-tb_screen_sub_parquet <- function(path_sub) {
-  pattern_tables <- c(
-    "AgeGroup", "Dechallenge", "Dechallenge2", "Frequency", "Gender", "Notifier", "Outcome",
-    "Rechallenge", "Rechallenge2", "Region", "RepBasis", "ReportType", "RouteOfAdm", "Seriousness", "SizeUnit"
-  )
-  pattern <- paste0("^(", paste(pattern_tables, collapse = "|"), ")\\.parquet$")
-  files <- list.files(path_sub, pattern = pattern, full.names = FALSE)
-  if (length(files) == length(pattern_tables)) {
-    cli::cli_inform("Subsidiary files were already found as parquet files")
-    cli::cli_alert_info("These tables won't be build again.")
-    cli::cli_alert_info("Set {.arg overwrite_existing_tables} to TRUE to rewrite those tables")
-  }
-  return(files)
-}
-
 tb_vigibase <-
   function(path_base,
            path_sub,
@@ -123,15 +89,28 @@ tb_vigibase <-
     check_dir_exists(path_base)
     check_dir_exists(path_sub)
 
-    # Scan for existing parquet tables ONLY if overwrite_existing_tables = FALSE
-    if (!overwrite_existing_tables) {
-      main_parquet_tables <- tb_screen_main_parquet(path_base)
-      sub_parquet_tables <- tb_screen_sub_parquet(path_sub)
-    }
-
     cli::cli_h1(
       "tb_vigibase()"
     )
+
+    # Scan for existing parquet tables ONLY if overwrite_existing_tables = FALSE
+
+    if (!overwrite_existing_tables) {
+      cli::cli_alert_info("Checking for existing tables.")
+
+      main_parquet_tables <- tb_screen_main_parquet(path_base)
+      sub_parquet_tables <- tb_screen_sub_parquet(path_sub)
+
+      if(!length(main_parquet_tables) == 0 |
+         !length(sub_parquet_tables) == 0) {
+        cli::cli_alert_info("These tables won't be build again.")
+        cli::cli_inform(c(">" = "Sets {.arg overwrite_existing_tables} to TRUE to rewrite them."))
+      }
+    } else {
+      main_parquet_tables <- character(0)
+      sub_parquet_tables <- character(0)
+    }
+
     cli::cli_alert_info(
     "Creating vigibase tables.")
 
@@ -173,7 +152,7 @@ tb_vigibase <-
       # If not re-reading, need to load duplicates if rm_suspdup
       if (rm_suspdup) {
         suspdup <- dt_parquet(path_base, "suspdup", in_memory = FALSE)
-        duplicates <- suspdup$SuspectedduplicateReportId
+        duplicates <- suspdup |> dplyr::pull(.data$SuspectedduplicateReportId, as_vector = TRUE)
         rm(suspdup)
         gc()
       }
@@ -302,7 +281,10 @@ tb_vigibase <-
           MedDRA_Id   = str_sub(.data$f0, start = 23L, end = 30L),
           Outcome     = str_sub(.data$f0, start = 31L, end = 31L)
         ) |>
-        dplyr::mutate(dplyr::across(dplyr::all_of(c("UMCReportId", "Adr_Id", "MedDRA_Id")), ~ .x |> str_trim() |> as.integer())) |>
+        dplyr::mutate(dplyr::across(
+          dplyr::all_of(c("UMCReportId", "Adr_Id", "MedDRA_Id")), ~ .x |>
+            str_trim() |>
+            as.integer())) |>
         dplyr::compute()
       if (rm_suspdup) {
         cli_progress_update(force = force, status = "Remove duplicates", set = 25)
@@ -327,7 +309,9 @@ tb_vigibase <-
           Seriousness = str_trim(str_sub(.data$f0, start = 12L, end = 13L)),
           Serious     = str_sub(.data$f0, start = 14L, end = 14L)
         ) |>
-        dplyr::mutate(dplyr::across(dplyr::all_of(c("UMCReportId")), ~ .x |> str_trim() |> as.integer())) |>
+        dplyr::mutate(dplyr::across(dplyr::all_of(c("UMCReportId")), ~ .x |>
+                                      str_trim() |>
+                                      as.integer())) |>
         dplyr::compute()
       if (rm_suspdup) {
         cli_progress_update(force = force, status = "Remove duplicates", set = 31)
@@ -348,7 +332,9 @@ tb_vigibase <-
           UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
           Type        = str_trim(str_sub(.data$f0, start = 12L, end = 13L))
         ) |>
-        dplyr::mutate(dplyr::across(dplyr::all_of(c("UMCReportId")), ~ .x |> str_trim() |> as.integer())) |>
+        dplyr::mutate(dplyr::across(dplyr::all_of(c("UMCReportId")), ~ .x |>
+                                      str_trim() |>
+                                      as.integer())) |>
         dplyr::compute()
       if (rm_suspdup) {
         cli_progress_update(force = force, status = "Remove duplicates", set = 37)
@@ -412,22 +398,41 @@ tb_vigibase <-
       gc()
     }
     # ---- ind ---- ####
-    if (overwrite_existing_tables || !("ind.parquet" %in% main_parquet_tables)) {
-      cli_progress_update(force = force, status = "Read IND.txt", set = 46)
-      ind <- arrow::read_delim_arrow(paste0(path_base, "IND.txt"), col_names = FALSE, as_data_frame = FALSE, delim = "\t", read_options = arrow::csv_read_options(column_names = "f0", encoding = "ANSI_X3.4-1986"))
-      cli_progress_update(force = force, status = "Split ind", set = 48)
+    if (overwrite_existing_tables ||
+        !("ind.parquet" %in% main_parquet_tables)) {
+      cli_progress_update(force = force,
+                          status = "Read IND.txt",
+                          set = 46)
+      ind <- arrow::read_delim_arrow(
+        paste0(path_base, "IND.txt"),
+        col_names = FALSE,
+        as_data_frame = FALSE,
+        delim = "\t",
+        read_options = arrow::csv_read_options(column_names = "f0", encoding = "ANSI_X3.4-1986")
+      )
+      cli_progress_update(force = force,
+                          status = "Split ind",
+                          set = 48)
       ind <- ind |>
         dplyr::transmute(
-          Drug_Id    = str_sub(.data$f0, start = 1L,  end = 11L),
-          Indication = str_trim(str_sub(.data$f0, start = 12L, end = 266L))
+          Drug_Id    = str_sub(.data$f0, start = 1L, end = 11L),
+          Indication = str_trim(str_sub(
+            .data$f0, start = 12L, end = 266L
+          ))
         ) |>
-        dplyr::mutate(dplyr::across(dplyr::all_of(c("Drug_Id")), ~ .x |> str_trim() |> as.integer())) |>
+        dplyr::mutate(dplyr::across(dplyr::all_of(c("Drug_Id")), ~ .x |>
+                                      str_trim() |>
+                                      as.integer())) |>
         dplyr::compute()
       if (rm_suspdup) {
-        cli_progress_update(force = force, status = "Remove duplicates", set = 49)
+        cli_progress_update(force = force,
+                            status = "Remove duplicates",
+                            set = 49)
         ind <- ind |> dplyr::filter(.data$Drug_Id %in% drug_ids)
       }
-      cli_progress_update(force = force, status = "Write ind.parquet", set = 50)
+      cli_progress_update(force = force,
+                          status = "Write ind.parquet",
+                          set = 50)
       arrow::write_parquet(ind, sink = paste0(path_base, "ind.parquet"))
       rm(ind)
       gc()
@@ -645,4 +650,57 @@ tb_vigibase <-
         set = 100)
       cli_progress_done()
   }
-           }
+  }
+
+# Helper: scan for main parquet tables
+#' @keywords internal
+#' @noRd
+tb_screen_main_parquet <- function(path_base) {
+  main_tables <- c("demo",
+                   "adr",
+                   "drug",
+                   "link",
+                   "ind",
+                   "out",
+                   "srce",
+                   "followup",
+                   "suspdup")
+  pattern <- paste0("^(", paste(main_tables, collapse = "|"), ")\\.parquet$")
+  files <- list.files(path_base, pattern = pattern, full.names = FALSE)
+  if (length(files) > 0) {
+    cli::cli_inform(
+      "The following tables were already found as parquet files in {.arg path_base}: {.val {files}}"
+    )
+  }
+  return(files)
+}
+
+# Helper: scan for subsidiary parquet tables
+#' @keywords internal
+#' @noRd
+
+tb_screen_sub_parquet <- function(path_sub) {
+  pattern_tables <- c(
+    "AgeGroup",
+    "Dechallenge",
+    "Dechallenge2",
+    "Frequency",
+    "Gender",
+    "Notifier",
+    "Outcome",
+    "Rechallenge",
+    "Rechallenge2",
+    "Region",
+    "RepBasis",
+    "ReportType",
+    "RouteOfAdm",
+    "Seriousness",
+    "SizeUnit"
+  )
+  pattern <- paste0("^(", paste(pattern_tables, collapse = "|"), ")\\.parquet$")
+  files <- list.files(path_sub, pattern = pattern, full.names = FALSE)
+  if (length(files) == length(pattern_tables)) {
+    cli::cli_inform("Subsidiary files were already found as parquet files.")
+  }
+  return(files)
+}
