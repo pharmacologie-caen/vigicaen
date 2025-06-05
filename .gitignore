@@ -11,3 +11,7 @@ docs
 data-raw/my_pkg_data_anonymized.R
 
 data-raw/nums_shuffled.RData
+
+.vs/
+
+.vscode/
