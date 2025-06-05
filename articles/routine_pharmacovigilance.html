@@ -149,7 +149,7 @@ RAM).</p>
 <span><span class="va">link</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dt_parquet.html">dt_parquet</a></span><span class="op">(</span><span class="va">path_base</span>, <span class="st">"link"</span>, in_memory <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dt_parquet.html">dt_parquet</a></span><span class="op">(</span><span class="va">path_who</span>,  <span class="st">"mp"</span><span class="op">)</span></span>
-<span><span class="va">meddra</span>   <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dt_parquet.html">dt_parquet</a></span><span class="op">(</span><span class="va">path_meddra</span>, <span class="st">"meddra"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">meddra</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/dt_parquet.html">dt_parquet</a></span><span class="op">(</span><span class="va">path_meddra</span>, <span class="st">"meddra_hierarchy"</span><span class="op">)</span></span></code></pre></div>
 <p>For this vignette, we will use built-in example tables instead.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demo</span>     <span class="op">&lt;-</span> <span class="va">demo_</span></span>
@@ -367,7 +367,7 @@ performed on cases exposed to both drugs in <code>d_code</code> and
 <h4 id="example-dual-drug-analysis">Example: Dual drug analysis<a class="anchor" aria-label="anchor" href="#example-dual-drug-analysis"></a>
 </h4>
 <p>The example below is not very suitable: The idea is to use
-<code>d_code_2</code> when you want to study A fix drug combination,
+<code>d_code_2</code> when you want to study a fix drug combination,
 e.g. amoxicillin + clavulanic acid.</p>
 <p>However, the syntax would be:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
