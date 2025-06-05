@@ -196,39 +196,39 @@ f_sets_main_pq <-
     rlang::list2(
       demo =
         data.table(
-          UMCReportId = c(1, 2, 3, 4),
+          UMCReportId = c(10000001, 10000002, 3, 4),
           AgeGroup = c(1, 2, 7, 9)
         ),
       drug =
         data.table(
-          UMCReportId = c(1, 2, 3, 4),
-          Drug_Id = c("d1", "d2", "d3", "d4"),
-          DrecNo = c(133138448, 133138448, 111841511, 111841511),
-          MedicinalProd_Id = c(25027716, 97354576, 104264760, 37484408)
+          UMCReportId = c(10000001, 10000002),
+          Drug_Id = c(8, 9),
+          DrecNo = c(133138448, 111841511),
+          MedicinalProd_Id = c(97354576, 104264760)
         ),
       adr  =
         data.table(
-          UMCReportId = c(1, 2, 3, 4),
-          Adr_Id = c("a1", "a2", "a3", "a4"),
-          MedDRA_Id = c(110049083, 146319904, 146319904, 72535511)
+          UMCReportId = c(10000001, 10000002),
+          Adr_Id = c(17L, 14L),
+          MedDRA_Id = c(110049083, 146319904)
         ),
       link =
         data.table(
-          Drug_Id = c("d1", "d2", "d3", "d4"),
-          Adr_Id = c("a1", "a2", "a3", "a4")
+          Drug_Id = c(8, 9),
+          Adr_Id = c(17L, 14L)
         ),
       srce =
-        data.table(UMCReportId = c(1, 2, 3, 4)),
+        data.table(UMCReportId = c(10000001, 10000002)),
       ind  =
-        data.table(Drug_Id = c("d1", "d2", "d3", "d4")),
+        data.table(Drug_Id = c(8, 9)),
       out  =
-        data.table(UMCReportId = c(1, 2, 3, 4)),
+        data.table(UMCReportId = c(10000001, 10000002)),
       followup =
-        data.table(UMCReportId = c(1, 2, 3, 4)),
+        data.table(UMCReportId = c(10000001, 10000002)),
       suspdup =
         data.table(
-          UMCReportId = c(3),
-          SuspectedduplicateReportId = c(4)
+          UMCReportId = c(10000001),
+          SuspectedduplicateReportId = c(10000002)
         )
     )
   }
@@ -281,6 +281,7 @@ f_sets_who <-
     #    "str",  "sun",   "thg",
     #    "unitx"
     #  ) |>
+    #  rlang::set_names(~ paste0(stringr::str_to_upper(.x), ".txt")) |>
     #  purrr::map(
     #    function(d_){
     #
