@@ -300,9 +300,9 @@ tb_vigibase <-
     }
     # ---- out ---- ####
     if (overwrite_existing_tables || !("out.parquet" %in% main_parquet_tables)) {
-      cli_progress_update(force = force, status = "Read OUT.txt", set = 28)
+      cli_progress_update(force = force, status = "Read OUT.txt", set = 27)
       out <- reader("OUT.txt", path_base)
-      cli_progress_update(force = force, status = "Split out", set = 30)
+      cli_progress_update(force = force, status = "Split out", set = 28)
       out <- out |>
         dplyr::transmute(
           UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
@@ -314,19 +314,19 @@ tb_vigibase <-
                                       as.integer())) |>
         dplyr::compute()
       if (rm_suspdup) {
-        cli_progress_update(force = force, status = "Remove duplicates", set = 31)
+        cli_progress_update(force = force, status = "Remove duplicates", set = 29)
         out <- out |> dplyr::filter(!.data$UMCReportId %in% duplicates)
       }
-      cli_progress_update(force = force, status = "Write out.parquet", set = 32)
+      cli_progress_update(force = force, status = "Write out.parquet", set = 30)
       arrow::write_parquet(out, sink = paste0(path_base, "out.parquet"))
       rm(out)
       gc()
     }
     # ---- srce ---- ####
     if (overwrite_existing_tables || !("srce.parquet" %in% main_parquet_tables)) {
-      cli_progress_update(force = force, status = "Read SRCE.txt", set = 34)
+      cli_progress_update(force = force, status = "Read SRCE.txt", set = 31)
       srce <- reader("SRCE.txt", path_base)
-      cli_progress_update(force = force, status = "Split srce", set = 36)
+      cli_progress_update(force = force, status = "Split srce", set = 32)
       srce <- srce |>
         dplyr::transmute(
           UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
@@ -337,19 +337,19 @@ tb_vigibase <-
                                       as.integer())) |>
         dplyr::compute()
       if (rm_suspdup) {
-        cli_progress_update(force = force, status = "Remove duplicates", set = 37)
+        cli_progress_update(force = force, status = "Remove duplicates", set = 33)
         srce <- srce |> dplyr::filter(!.data$UMCReportId %in% duplicates)
       }
-      cli_progress_update(force = force, status = "Write srce.parquet", set = 38)
+      cli_progress_update(force = force, status = "Write srce.parquet", set = 34)
       arrow::write_parquet(srce, sink = paste0(path_base, "srce.parquet"))
       rm(srce)
       gc()
     }
     # ---- link ---- ####
     if (overwrite_existing_tables || !("link.parquet" %in% main_parquet_tables)) {
-      cli_progress_update(force = force, status = "Read LINK.txt", set = 40)
+      cli_progress_update(force = force, status = "Read LINK.txt", set = 35)
       link <- reader("LINK.txt", path_base)
-      cli_progress_update(force = force, status = "Split link (longest step)", set = 42)
+      cli_progress_update(force = force, status = "Split link (longest step)", set = 36)
       link <- link |>
         dplyr::transmute(
           Drug_Id        = str_sub(.data$f0, start = 1L,  end = 11L),
@@ -387,12 +387,10 @@ tb_vigibase <-
         ) |>
         dplyr::compute()
       if (rm_suspdup) {
-        # since joining UMC from adr. If adr duplicates are removed, there will be
-        # unmatched lines in link. Those are the duplicates of link.
-        cli_progress_update(force = force, status = "Remove duplicates", set = 43)
+        cli_progress_update(force = force, status = "Remove duplicates", set = 72)
         link <- link |> dplyr::filter(!is.na(.data$UMCReportId))
       }
-      cli_progress_update(force = force, status = "Write link.parquet", set = 44)
+      cli_progress_update(force = force, status = "Write link.parquet", set = 73)
       arrow::write_parquet(link, sink = paste0(path_base, "link.parquet"))
       rm(adr, link)
       gc()
@@ -402,7 +400,7 @@ tb_vigibase <-
         !("ind.parquet" %in% main_parquet_tables)) {
       cli_progress_update(force = force,
                           status = "Read IND.txt",
-                          set = 46)
+                          set = 74)
       ind <- arrow::read_delim_arrow(
         paste0(path_base, "IND.txt"),
         col_names = FALSE,
@@ -411,8 +409,8 @@ tb_vigibase <-
         read_options = arrow::csv_read_options(column_names = "f0", encoding = "ANSI_X3.4-1986")
       )
       cli_progress_update(force = force,
-                          status = "Split ind",
-                          set = 48)
+                          status = "Split ind (2nd longest step)",
+                          set = 75)
       ind <- ind |>
         dplyr::transmute(
           Drug_Id    = str_sub(.data$f0, start = 1L, end = 11L),
@@ -427,12 +425,12 @@ tb_vigibase <-
       if (rm_suspdup) {
         cli_progress_update(force = force,
                             status = "Remove duplicates",
-                            set = 49)
+                            set = 76)
         ind <- ind |> dplyr::filter(.data$Drug_Id %in% drug_ids)
       }
       cli_progress_update(force = force,
                           status = "Write ind.parquet",
-                          set = 50)
+                          set = 98)
       arrow::write_parquet(ind, sink = paste0(path_base, "ind.parquet"))
       rm(ind)
       gc()
@@ -447,7 +445,7 @@ tb_vigibase <-
     if (overwrite_existing_tables || !all(secondary_tables %in% sub_parquet_tables)) {
       cli_progress_update(force = force,
         status = "Process Subsidiary files",
-        set = 95)
+        set = 99)
 
       AgeGroup <- reader("AgeGroup_Lx.txt", path_sub)
       AgeGroup <-
