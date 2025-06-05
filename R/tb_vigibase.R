@@ -104,7 +104,7 @@ tb_vigibase <-
       if(!length(main_parquet_tables) == 0 |
          !length(sub_parquet_tables) == 0) {
         cli::cli_alert_info("These tables won't be build again.")
-        cli::cli_inform(c(">" = "Sets {.arg overwrite_existing_tables} to TRUE to rewrite them."))
+        cli::cli_inform(c(">" = "Set {.arg overwrite_existing_tables} to TRUE to rewrite them."))
       }
     } else {
       main_parquet_tables <- character(0)
