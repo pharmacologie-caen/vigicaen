@@ -505,3 +505,134 @@ test_that("rm_suspdup removes suspected duplicates in main tables", {
   expect_true(all(c(8, 9) %in% link2$Drug_Id))
   unlink(tmp_folder, recursive = TRUE)
 })
+
+test_that("tb_screen_main_parquet and tb_screen_sub_parquet skip existing tables and overwrite_existing_tables works", {
+  tmp_folder <- tempdir()
+  path_base <- paste0(tmp_folder, "/tb_vigibase_recycler_main/")
+  path_sub  <- paste0(tmp_folder, "/tb_vigibase_recycler_sub/")
+  dir.create(path_base, showWarnings = FALSE)
+  dir.create(path_sub, showWarnings = FALSE)
+
+  # Create example parquet tables for tests
+  create_ex_main_pq(path_base)
+  create_ex_sub_pq(path_sub)
+
+  # Case 1: ind.parquet is missing
+  file.remove(paste0(path_base, "ind.parquet"))
+  main_tables <- tb_screen_main_parquet(path_base)
+  expect_false("ind.parquet" %in% main_tables)
+  expect_true("demo.parquet" %in% main_tables)
+  expect_true("drug.parquet" %in% main_tables)
+  expect_true("adr.parquet" %in% main_tables)
+  expect_true("link.parquet" %in% main_tables)
+  expect_snapshot({
+    options(cli.progress_show_after = 0)
+    options(cli.progress_clear = FALSE)
+    tb_vigibase(path_base = path_base, path_sub = path_sub, overwrite_existing_tables = FALSE, force = TRUE)
+  },
+  transform =
+    function(chr_line)
+      stringr::str_replace(
+        chr_line,
+        "(?>=\\d{1,3}\\%\\s| ).*(?= \\|)",
+        " percent, seconds"
+      )
+  )
+  create_ex_main_pq(path_base)
+
+  # Case 2: link.parquet and ind.parquet are missing
+  file.remove(paste0(path_base, "link.parquet"))
+  file.remove(paste0(path_base, "ind.parquet"))
+  main_tables <- tb_screen_main_parquet(path_base)
+  expect_false("link.parquet" %in% main_tables)
+  expect_false("ind.parquet" %in% main_tables)
+  expect_true("demo.parquet" %in% main_tables)
+  expect_true("drug.parquet" %in% main_tables)
+  expect_true("adr.parquet" %in% main_tables)
+  expect_snapshot({
+    options(cli.progress_show_after = 0)
+    options(cli.progress_clear = FALSE)
+    tb_vigibase(path_base = path_base, path_sub = path_sub, overwrite_existing_tables = FALSE, force = TRUE)
+  },
+  transform =
+    function(chr_line)
+      stringr::str_replace(
+        chr_line,
+        "(?>=\\d{1,3}\\%\\s| ).*(?= \\|)",
+        " percent, seconds"
+      )
+  )
+  create_ex_main_pq(path_base)
+
+  # Case 3: adr.parquet, link.parquet and ind.parquet are missing
+  file.remove(paste0(path_base, "adr.parquet"))
+  file.remove(paste0(path_base, "link.parquet"))
+  file.remove(paste0(path_base, "ind.parquet"))
+  main_tables <- tb_screen_main_parquet(path_base)
+  expect_false("adr.parquet" %in% main_tables)
+  expect_false("link.parquet" %in% main_tables)
+  expect_false("ind.parquet" %in% main_tables)
+  expect_true("demo.parquet" %in% main_tables)
+  expect_true("drug.parquet" %in% main_tables)
+  expect_snapshot({
+    options(cli.progress_show_after = 0)
+    options(cli.progress_clear = FALSE)
+    tb_vigibase(path_base = path_base, path_sub = path_sub, overwrite_existing_tables = FALSE, force = TRUE)
+  },
+  transform =
+    function(chr_line)
+      stringr::str_replace(
+        chr_line,
+        "(?>=\\d{1,3}\\%\\s| ).*(?= \\|)",
+        " percent, seconds"
+      )
+  )
+  create_ex_main_pq(path_base)
+
+  # Case 4: drug.parquet, adr.parquet, link.parquet and ind.parquet are missing
+  file.remove(paste0(path_base, "drug.parquet"))
+  file.remove(paste0(path_base, "adr.parquet"))
+  file.remove(paste0(path_base, "link.parquet"))
+  file.remove(paste0(path_base, "ind.parquet"))
+  main_tables <- tb_screen_main_parquet(path_base)
+  expect_false("drug.parquet" %in% main_tables)
+  expect_false("adr.parquet" %in% main_tables)
+  expect_false("link.parquet" %in% main_tables)
+  expect_false("ind.parquet" %in% main_tables)
+  expect_true("demo.parquet" %in% main_tables)
+  expect_snapshot({
+    options(cli.progress_show_after = 0)
+    options(cli.progress_clear = FALSE)
+    tb_vigibase(path_base = path_base, path_sub = path_sub, overwrite_existing_tables = FALSE, force = TRUE)
+  },
+  transform =
+    function(chr_line)
+      stringr::str_replace(
+        chr_line,
+        "(?>=\\d{1,3}\\%\\s| ).*(?= \\|)",
+        " percent, seconds"
+      )
+  )
+
+  # Also test subsidiary tables (should find all)
+  sub_tables <- tb_screen_sub_parquet(path_sub)
+  expect_true("AgeGroup.parquet" %in% sub_tables)
+
+  # Case overwrite_existing_tables = TRUE with all tables present
+  create_ex_main_pq(path_base)
+  expect_snapshot({
+    options(cli.progress_show_after = 0)
+    options(cli.progress_clear = FALSE)
+    tb_vigibase(path_base = path_base, path_sub = path_sub, overwrite_existing_tables = TRUE, force = TRUE)
+  },
+  transform =
+    function(chr_line)
+      stringr::str_replace(
+        chr_line,
+        "(?>=\\d{1,3}\\%\\s| ).*(?= \\|)",
+        " percent, seconds"
+      )
+  )
+
+  unlink(tmp_folder, recursive = TRUE)
+})
