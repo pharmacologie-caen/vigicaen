@@ -34,6 +34,12 @@
 #'  \item For [create_ex_main_pq()],
 #'  demo.parquet, adr.parquet, drug.parquet, link.parquet,
 #'  srce.parquet, ind.parquet, out.parquet, followup.parquet, suspdup.parquet
+#'  \item For [create_ex_sub_pq()],
+#'  agegroup.parquet, dechallenge.parquet, dechallenge2.parquet,
+#'  frequency.parquet, gender.parquet, notifier.parquet, outcome.parquet,
+#'  rechallenge.parquet, rechallenge2.parquet, region.parquet, repbasis.parquet,
+#'  reporttype.parquet, routeofadm.parquet, seriousness.parquet,
+#'  and sizeunit.parquet
 #'  }
 #' @seealso [tb_vigibase()], [tb_who()], [tb_meddra()]
 #' @export
@@ -56,6 +62,8 @@
 #' create_ex_meddra_asc(path)
 #'
 #' create_ex_main_pq(path)
+#'
+#' create_ex_sub_pq(path)
 #'
 #' # Remove temporary folders when you're done
 #' unlink(path, recursive = TRUE)
@@ -129,6 +137,23 @@ create_ex_main_pq <-
     )
   }
 
+#' @describeIn create_example_tables subsidiary parquet tables
+#' @export
+create_ex_sub_pq <-
+  function(
+    path
+  ){
+    purrr::iwalk(
+      f_sets_sub_pq(),
+      function(dataset, name)
+        arrow::write_parquet(
+          dataset |>
+            arrow::as_arrow_table(),
+          sink = paste0(path, "/", name, ".parquet")
+        )
+    )
+  }
+
 # Helpers ------
 
 # File sets for each type of table
@@ -171,39 +196,39 @@ f_sets_main_pq <-
     rlang::list2(
       demo =
         data.table(
-          UMCReportId = c(1, 2, 3, 4),
+          UMCReportId = c(10000001, 10000002, 3, 4),
           AgeGroup = c(1, 2, 7, 9)
         ),
       drug =
         data.table(
-          UMCReportId = c(1, 2, 3, 4),
-          Drug_Id = c("d1", "d2", "d3", "d4"),
-          DrecNo = c(133138448, 133138448, 111841511, 111841511),
-          MedicinalProd_Id = c(25027716, 97354576, 104264760, 37484408)
+          UMCReportId = c(10000001, 10000002),
+          Drug_Id = c(8, 9),
+          DrecNo = c(133138448, 111841511),
+          MedicinalProd_Id = c(97354576, 104264760)
         ),
       adr  =
         data.table(
-          UMCReportId = c(1, 2, 3, 4),
-          Adr_Id = c("a1", "a2", "a3", "a4"),
-          MedDRA_Id = c(110049083, 146319904, 146319904, 72535511)
+          UMCReportId = c(10000001, 10000002),
+          Adr_Id = c(17L, 14L),
+          MedDRA_Id = c(110049083, 146319904)
         ),
       link =
         data.table(
-          Drug_Id = c("d1", "d2", "d3", "d4"),
-          Adr_Id = c("a1", "a2", "a3", "a4")
+          Drug_Id = c(8, 9),
+          Adr_Id = c(17L, 14L)
         ),
       srce =
-        data.table(UMCReportId = c(1, 2, 3, 4)),
+        data.table(UMCReportId = c(10000001, 10000002)),
       ind  =
-        data.table(Drug_Id = c("d1", "d2", "d3", "d4")),
+        data.table(Drug_Id = c(8, 9)),
       out  =
-        data.table(UMCReportId = c(1, 2, 3, 4)),
+        data.table(UMCReportId = c(10000001, 10000002)),
       followup =
-        data.table(UMCReportId = c(1, 2, 3, 4)),
+        data.table(UMCReportId = c(10000001, 10000002)),
       suspdup =
         data.table(
-          UMCReportId = c(3),
-          SuspectedduplicateReportId = c(4)
+          UMCReportId = c(10000001),
+          SuspectedduplicateReportId = c(10000002)
         )
     )
   }
@@ -312,5 +337,26 @@ f_sets_meddra <-
           "20904441$Another name (SMQ)$1$Another long text$References$$26.1$A$N$"
         )
       )
+    )
+  }
+
+f_sets_sub_pq <-
+  function() {
+    rlang::list2(
+      AgeGroup = data.table(AgeGroup = as.integer(1), Code = c("An age range")),
+      Dechallenge = data.table(Dechallenge1 = as.integer(1), Code = c("Some drug action")),
+      Dechallenge2 = data.table(Dechallenge2 = as.integer(1), Code = c("Some outcome occurring")),
+      Frequency = data.table(FrequencyU = as.integer(123), Code = c("Some frequency of administration")),
+      Gender = data.table(Gender = as.integer(1), Code = c("Some gender")),
+      Notifier = data.table(Type = as.integer(1), Code = c("Some notifier")),
+      Outcome = data.table(Outcome = as.integer(1), Code = c("Some outcome")),
+      Rechallenge = data.table(Rechallenge1 = as.integer(1), Code = c("A rechallenge action")),
+      Rechallenge2 = data.table(Rechallenge2 = as.integer(1), Code = c("A reaction recurrence status")),
+      Region = data.table(Region = as.integer(1), Code = c("A world region")),
+      RepBasis = data.table(Basis = as.integer(1), Code = c("A reputation basis")),
+      ReportType = data.table(ReportType = as.integer(1), Code = c("A type of report")),
+      RouteOfAdm = data.table(RouteOfAdm = as.integer(1), Code = c("A route of admnistration")),
+      Seriousness = data.table(Seriousness = as.integer(1), Code = c("Some seriousness criteria")),
+      SizeUnit = data.table(AmountU = as.integer(1), Code = c("A dosing unit"))
     )
   }

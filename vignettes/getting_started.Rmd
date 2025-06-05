@@ -209,3 +209,29 @@ tb_subset(wd_in, wd_out,
           subset_var = "age",
           sv_selection = sv_selection)
 ```
+
+# Handling interruptions and resuming table creation
+
+Building all VigiBase tables can be a long process, especially on large datasets 
+or computers with limited resources. There is a risk that the `tb_vigibase()` 
+may crash or be interrupted (for example, due to insufficient memory issue) before all tables are created.
+
+To address this, `tb_vigibase()` provides the 
+argument `overwrite_existing_tables` (default: `FALSE`). 
+When set to `FALSE`, the function will automatically skip any .parquet tables 
+that already exist in the output directory. This means you can re-run `tb_vigibase()` 
+after a crash or interruption, and it will resume from where it left off, only building the missing tables. 
+This saves time and avoids unnecessary recomputation.
+
+If you want to force the rebuilding of all
+tables (for example, if you suspect a table is corrupted or want to refresh everything), set `overwrite_existing_tables = TRUE`.
+
+```{r resume_example, eval = FALSE}
+# Example: resume after a crash
+# (only missing tables will be created)
+tb_vigibase(
+  path_base = path_base,
+  path_sub  = path_sub,
+  overwrite_existing_tables = FALSE
+)
+```

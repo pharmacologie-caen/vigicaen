@@ -7,6 +7,7 @@
 \alias{create_ex_who_txt}
 \alias{create_ex_meddra_asc}
 \alias{create_ex_main_pq}
+\alias{create_ex_sub_pq}
 \title{Example source tables for VigiBase and MedDRA}
 \usage{
 create_ex_main_txt(path)
@@ -18,6 +19,8 @@ create_ex_who_txt(path)
 create_ex_meddra_asc(path)
 
 create_ex_main_pq(path)
+
+create_ex_sub_pq(path)
 }
 \arguments{
 \item{path}{Character string. A folder on your computer where the tables should
@@ -45,6 +48,12 @@ llt.asc, mdhier.asc, smq_content.asc, smq_list.asc
 \item For \code{\link[=create_ex_main_pq]{create_ex_main_pq()}},
 demo.parquet, adr.parquet, drug.parquet, link.parquet,
 srce.parquet, ind.parquet, out.parquet, followup.parquet, suspdup.parquet
+\item For \code{\link[=create_ex_sub_pq]{create_ex_sub_pq()}},
+agegroup.parquet, dechallenge.parquet, dechallenge2.parquet,
+frequency.parquet, gender.parquet, notifier.parquet, outcome.parquet,
+rechallenge.parquet, rechallenge2.parquet, region.parquet, repbasis.parquet,
+reporttype.parquet, routeofadm.parquet, seriousness.parquet,
+and sizeunit.parquet
 }
 }
 \description{
@@ -68,6 +77,8 @@ same purpose.
 
 \item \code{create_ex_main_pq()}: main parquet tables
 
+\item \code{create_ex_sub_pq()}: subsidiary parquet tables
+
 }}
 \examples{
 
@@ -85,6 +96,8 @@ create_ex_who_txt(path)
 create_ex_meddra_asc(path)
 
 create_ex_main_pq(path)
+
+create_ex_sub_pq(path)
 
 # Remove temporary folders when you're done
 unlink(path, recursive = TRUE)
