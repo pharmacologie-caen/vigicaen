@@ -4,7 +4,13 @@
 \alias{tb_vigibase}
 \title{Create main VigiBase ECL tables}
 \usage{
-tb_vigibase(path_base, path_sub, force = FALSE, rm_suspdup = TRUE)
+tb_vigibase(
+  path_base,
+  path_sub,
+  force = FALSE,
+  rm_suspdup = TRUE,
+  overwrite_existing_tables = FALSE
+)
 }
 \arguments{
 \item{path_base}{Character string, a directory containing vigibase txt tables. It is also the
@@ -16,6 +22,8 @@ output directory.}
 purposes.}
 
 \item{rm_suspdup}{Logical, should suspected duplicates (from SUSPECTEDDUPLICATES.txt) be removed from main tables? Default is TRUE. Set to FALSE to keep all cases, including suspected duplicates.}
+
+\item{overwrite_existing_tables}{Logical, should existing parquet tables be overwritten? Default is FALSE.}
 }
 \value{
 \itemize{
@@ -49,6 +57,11 @@ langages.
 The function also creates variables in each table.
 The \code{suspectedduplicates} table will be added to the base directory.
 Use \code{\link[=dt_parquet]{dt_parquet()}} to load the tables afterward.
+
+The argument \code{overwrite_existing_tables} is especially useful if the function crashes or is interrupted:
+it allows you to resume the process without rebuilding tables that were already successfully created.
+If set to FALSE (the default), the function will skip the construction of any .parquet tables that already exist,
+so you do not have to start from scratch after a failure. Set to TRUE to force rebuilding all tables.
 }
 \examples{
 \dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
