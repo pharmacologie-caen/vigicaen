@@ -73,7 +73,7 @@ add_adr <-
     if (lifecycle::is_present(data_type)) {
 
       # Signal the deprecation to the user
-      lifecycle::deprecate_soft(
+      lifecycle::deprecate_warn(
         when = "0.14.1",
         what = "add_adr(data_type)",
         details = c("i" = "data_type is now internally detected")

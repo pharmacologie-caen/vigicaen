@@ -1,4 +1,4 @@
-# vigicaen (development version)
+# vigicaen 0.16.0
 
 ## New features
 

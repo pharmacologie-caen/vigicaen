@@ -93,7 +93,7 @@ get_llt_smq <-
     if (lifecycle::is_present(smq_list_content)) {
 
       # Signal the deprecation to the user
-      lifecycle::deprecate_soft(
+      lifecycle::deprecate_warn(
         when = "0.14.1",
         what = "get_llt_smq(smq_list_content)",
         with = "get_llt_smq(smq_list)",

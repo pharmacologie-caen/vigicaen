@@ -16,29 +16,13 @@
 #' @seealso [dt_parquet()], [tb_vigibase()], [tb_who()], [tb_meddra()]
 #' @examples
 #'
-#' # Say you have a data.frame stored in an fst format, such as this one
-#' df <- data.frame(a = 1:10)
-#'
-#' path <- paste0(tempdir(), "/dtfstex")
-#' dir.create(path)
-#'
-#' fst::write_fst(x = df,
-#'               path = paste0(path, "/", "df.fst")
-#'               )
-#' # Now you have a new session without df.
-#' rm(df)
-#'
-#' # You may import the file directly to data.table format with dt_fst
-#' df <- dt_fst(path, "df")
-#'
-#' # Clean up (required for CRAN checks)
-#' unlink(path, recursive = TRUE)
+#' # dt_fst is deprecated and will generate an error
 
 dt_fst <- function(path_base,
                    name = NULL,
                    ext = ".fst"){
 
-  lifecycle::deprecate_warn("0.12.0", "dt_fst()", "dt_parquet()")
+  lifecycle::deprecate_stop("0.12.0", "dt_fst()", "dt_parquet()")
 
   ext <-
     if(!is.null(name) && !grepl(".fst$", name, perl = TRUE)) {

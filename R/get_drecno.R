@@ -147,7 +147,7 @@ get_drecno <- function(
   if (lifecycle::is_present(inspect)) {
 
     # Signal the deprecation to the user
-    lifecycle::deprecate_soft(
+    lifecycle::deprecate_warn(
       when = "0.14.1",
       what = "get_drecno(inspect)",
       with = "get_drecno(verbose)"
@@ -158,7 +158,7 @@ get_drecno <- function(
   if (lifecycle::is_present(show_all)) {
 
     # Signal the deprecation to the user
-    lifecycle::deprecate_soft(
+    lifecycle::deprecate_warn(
       when = "0.14.1",
       what = "get_drecno(show_all)",
       details = c("i" = "Unmatching DrecNos or MedicinalProd_Ids will be shown by default.")

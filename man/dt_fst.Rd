@@ -27,23 +27,7 @@ be loaded \strong{IN}-memory or \strong{OUT} of memory with \code{\link{dt_parqu
 }
 \examples{
 
-# Say you have a data.frame stored in an fst format, such as this one
-df <- data.frame(a = 1:10)
-
-path <- paste0(tempdir(), "/dtfstex")
-dir.create(path)
-
-fst::write_fst(x = df,
-              path = paste0(path, "/", "df.fst")
-              )
-# Now you have a new session without df.
-rm(df)
-
-# You may import the file directly to data.table format with dt_fst
-df <- dt_fst(path, "df")
-
-# Clean up (required for CRAN checks)
-unlink(path, recursive = TRUE)
+# dt_fst is deprecated and will generate an error
 }
 \seealso{
 \code{\link[=dt_parquet]{dt_parquet()}}, \code{\link[=tb_vigibase]{tb_vigibase()}}, \code{\link[=tb_who]{tb_who()}}, \code{\link[=tb_meddra]{tb_meddra()}}
