@@ -323,7 +323,6 @@ desc_dch(
 ## ----desc_rch_example---------------------------------------------------------
 desc_rch(
   link,
-  demo_data = demo,
   drug_s = "nivolumab",
   adr_s  = "a_colitis"
 )
@@ -338,7 +337,6 @@ link <-
 ## ----desc_rch_hack------------------------------------------------------------
 desc_rch(
   link,
-  demo_data = demo,
   drug_s = "all_cases",
   adr_s  = "all_cases"
 )

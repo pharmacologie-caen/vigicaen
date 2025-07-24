@@ -68,6 +68,7 @@ invoke_map_dfr	invoke
 invoke_map_int	invoke
 invoke_map_lgl	invoke
 invoke_map_raw	invoke
+in_parallel	in_parallel
 is_atomic	reexports
 is_bare_atomic	reexports
 is_bare_character	reexports
@@ -150,6 +151,7 @@ modify_in	modify_in
 modify_tree	modify_tree
 negate	negate
 none	every
+parallelization	in_parallel
 partial	partial
 pluck	pluck
 pluck<-	pluck

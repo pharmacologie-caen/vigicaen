@@ -661,11 +661,22 @@ message</p>
 <span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>  <span class="at">.data =</span> demo,</span>
 <span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>  <span class="at">vf =</span> <span class="st">&quot;year&quot;</span></span>
 <span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>)</span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt; Error in `desc_facvar()`:</span></span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; ! Too many levels detected in: year</span></span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt; ✖ Number of levels: 13 exceeded `ncat_max`(10)</span></span>
-<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt; ℹ Did you pass a continuous variable to `desc_facvar()`?</span></span>
-<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co">#&gt; → Set `ncat_max` to suppress this error.</span></span></code></pre></div>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt; # A tibble: 13 × 4</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt;    var   level value           n_avail</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;             &lt;int&gt;</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt;  1 year  2011  &quot; 1/750 (0%) &quot;      750</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co">#&gt;  2 year  2012  &quot; 1/750 (0%) &quot;      750</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt;  3 year  2013  &quot; 2/750 (0%) &quot;      750</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co">#&gt;  4 year  2014  &quot;10/750 (1%) &quot;      750</span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="co">#&gt;  5 year  2015  &quot; 8/750 (1%) &quot;      750</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt;  6 year  2016  &quot;15/750 (2%) &quot;      750</span></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt;  7 year  2017  &quot;116/750 (15%)&quot;     750</span></span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="co">#&gt;  8 year  2018  &quot;150/750 (20%)&quot;     750</span></span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="co">#&gt;  9 year  2019  &quot;116/750 (15%)&quot;     750</span></span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a><span class="co">#&gt; 10 year  2020  &quot;72/750 (10%)&quot;      750</span></span>
+<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a><span class="co">#&gt; 11 year  2021  &quot;99/750 (13%)&quot;      750</span></span>
+<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a><span class="co">#&gt; 12 year  2022  &quot;119/750 (16%)&quot;     750</span></span>
+<span id="cb11-20"><a href="#cb11-20" tabindex="-1"></a><span class="co">#&gt; 13 year  2023  &quot;41/750 (5%) &quot;      750</span></span></code></pre></div>
 <p>The error message “Too many levels detected in year” is intentional,
 to avoid passing continuous variables in the <code>vf</code>
 argument.</p>
@@ -848,7 +859,7 @@ a <code>drug</code> dataset, sorted by frequency.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">screen_drug</span>(drug, <span class="at">mp_data =</span> mp, <span class="at">top_n =</span> <span class="dv">5</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 4</span></span>
 <span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="co">#&gt;   `Drug name`      DrecNo     N percentage</span></span>
-<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;             &lt;int&gt; &lt;int&gt;      &lt;dbl&gt;</span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;             &lt;dbl&gt; &lt;int&gt;      &lt;dbl&gt;</span></span>
 <span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="co">#&gt; 1 pembrolizumab  20116296   298      39.7 </span></span>
 <span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="co">#&gt; 2 nivolumab     111841511   225      30   </span></span>
 <span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="co">#&gt; 3 ipilimumab    133138448    86      11.5 </span></span>
@@ -871,7 +882,7 @@ reaction.</p>
 <span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a><span class="co">#&gt; ℹ `.data` detected as `drug` table.</span></span>
 <span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 4</span></span>
 <span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a><span class="co">#&gt;   `Drug name`      DrecNo     N percentage</span></span>
-<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;             &lt;int&gt; &lt;int&gt;      &lt;dbl&gt;</span></span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;             &lt;dbl&gt; &lt;int&gt;      &lt;dbl&gt;</span></span>
 <span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a><span class="co">#&gt; 1 nivolumab     111841511    44       42.3</span></span>
 <span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a><span class="co">#&gt; 2 pembrolizumab  20116296    40       38.5</span></span>
 <span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a><span class="co">#&gt; 3 ipilimumab    133138448    20       19.2</span></span>
@@ -1408,16 +1419,14 @@ to <code>non_rec</code> (<code>rec</code> + <code>non_rec</code> =
 </ul>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="fu">desc_rch</span>(</span>
 <span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a>  link,</span>
-<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>  <span class="at">demo_data =</span> demo,</span>
-<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a>  <span class="at">drug_s =</span> <span class="st">&quot;nivolumab&quot;</span>,</span>
-<span id="cb32-5"><a href="#cb32-5" tabindex="-1"></a>  <span class="at">adr_s  =</span> <span class="st">&quot;a_colitis&quot;</span></span>
-<span id="cb32-6"><a href="#cb32-6" tabindex="-1"></a>)</span>
-<span id="cb32-7"><a href="#cb32-7" tabindex="-1"></a><span class="co">#&gt;       drug_s     adr_s n_overall n_rch n_inf n_rec</span></span>
-<span id="cb32-8"><a href="#cb32-8" tabindex="-1"></a><span class="co">#&gt;       &lt;char&gt;    &lt;char&gt;     &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;</span></span>
-<span id="cb32-9"><a href="#cb32-9" tabindex="-1"></a><span class="co">#&gt; 1: nivolumab a_colitis        44    26    19    12</span></span></code></pre></div>
-<p><strong>The number of cases is counted at the case level in
-demo.</strong> This explains why the <code>demo_data</code> argument is
-required here.</p>
+<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>  <span class="at">drug_s =</span> <span class="st">&quot;nivolumab&quot;</span>,</span>
+<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a>  <span class="at">adr_s  =</span> <span class="st">&quot;a_colitis&quot;</span></span>
+<span id="cb32-5"><a href="#cb32-5" tabindex="-1"></a>)</span>
+<span id="cb32-6"><a href="#cb32-6" tabindex="-1"></a><span class="co">#&gt;       drug_s     adr_s n_overall n_rch n_inf n_rec</span></span>
+<span id="cb32-7"><a href="#cb32-7" tabindex="-1"></a><span class="co">#&gt;       &lt;char&gt;    &lt;char&gt;     &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;</span></span>
+<span id="cb32-8"><a href="#cb32-8" tabindex="-1"></a><span class="co">#&gt; 1: nivolumab a_colitis        44    26    19    12</span></span></code></pre></div>
+<p><strong>The number of cases is counted at the case
+level.</strong></p>
 <p>As with <code>desc_tto()</code> and <code>desc_dch()</code>, you can
 query several drug - adr pairs at once.</p>
 <blockquote>
@@ -1436,13 +1445,12 @@ for our entire dataset</p>
 <p>We a particular syntax, we can access the information</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="fu">desc_rch</span>(</span>
 <span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a>  link,</span>
-<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a>  <span class="at">demo_data =</span> demo,</span>
-<span id="cb34-4"><a href="#cb34-4" tabindex="-1"></a>  <span class="at">drug_s =</span> <span class="st">&quot;all_cases&quot;</span>,</span>
-<span id="cb34-5"><a href="#cb34-5" tabindex="-1"></a>  <span class="at">adr_s  =</span> <span class="st">&quot;all_cases&quot;</span></span>
-<span id="cb34-6"><a href="#cb34-6" tabindex="-1"></a>)</span>
-<span id="cb34-7"><a href="#cb34-7" tabindex="-1"></a><span class="co">#&gt;       drug_s     adr_s n_overall n_rch n_inf n_rec</span></span>
-<span id="cb34-8"><a href="#cb34-8" tabindex="-1"></a><span class="co">#&gt;       &lt;char&gt;    &lt;char&gt;     &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;</span></span>
-<span id="cb34-9"><a href="#cb34-9" tabindex="-1"></a><span class="co">#&gt; 1: all_cases all_cases       707   297   106    28</span></span></code></pre></div>
+<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a>  <span class="at">drug_s =</span> <span class="st">&quot;all_cases&quot;</span>,</span>
+<span id="cb34-4"><a href="#cb34-4" tabindex="-1"></a>  <span class="at">adr_s  =</span> <span class="st">&quot;all_cases&quot;</span></span>
+<span id="cb34-5"><a href="#cb34-5" tabindex="-1"></a>)</span>
+<span id="cb34-6"><a href="#cb34-6" tabindex="-1"></a><span class="co">#&gt;       drug_s     adr_s n_overall n_rch n_inf n_rec</span></span>
+<span id="cb34-7"><a href="#cb34-7" tabindex="-1"></a><span class="co">#&gt;       &lt;char&gt;    &lt;char&gt;     &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;</span></span>
+<span id="cb34-8"><a href="#cb34-8" tabindex="-1"></a><span class="co">#&gt; 1: all_cases all_cases       707   297   106    28</span></span></code></pre></div>
 </div>
 </div>
 

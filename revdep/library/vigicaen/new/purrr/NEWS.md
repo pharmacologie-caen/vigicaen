@@ -1,3 +1,11 @@
+# purrr 1.1.0
+
+* purrr now requires R >= 4.1, so we can rely on the base pipe and lambda
+  syntax (#1177).
+
+* purrr gains `in_parallel()` to support parallel and distributed maps, powered 
+  by {mirai}. See `?in_parallel` for more details (@shikokuchuo, #1163, #1185).
+
 # purrr 1.0.4
 
 # purrr 1.0.3

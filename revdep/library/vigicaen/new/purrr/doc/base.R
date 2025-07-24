@@ -94,15 +94,9 @@ walk(samples, ~ hist(.x, xlab = "value", main = ""))
 
 ## -----------------------------------------------------------------------------
 set.seed(2020)
-means %>%
-  map(rnorm, n = 5, sd = 1) %>%
+means |>
+  map(rnorm, n = 5, sd = 1) |>
   map_dbl(median)
-
-## ----eval = modern_r----------------------------------------------------------
-set.seed(2020)
-means |> 
-  lapply(rnorm, n = 5, sd = 1) |> 
-  sapply(median)
 
 ## ----eval = modern_r----------------------------------------------------------
 mtcars |>

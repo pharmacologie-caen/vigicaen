@@ -24,20 +24,4 @@ dt_fst <- function(path_base,
 
   lifecycle::deprecate_stop("0.12.0", "dt_fst()", "dt_parquet()")
 
-  ext <-
-    if(!is.null(name) && !grepl(".fst$", name, perl = TRUE)) {
-      ext
-    } else if(is.null(name) && !grepl(".fst$", path_base, perl = TRUE)){
-      ext
-    }
-
-  # helps working with the "here" package, or tempdir
-
-  if(!is.null(name) && !grepl("(/|\\\\)$", path_base, perl = TRUE)){
-    path_base <-
-      paste0(path_base, "/")
-  }
-
-  path <- paste0(path_base, name, ext)
-  data.table::as.data.table(fst::read_fst(path))
 }

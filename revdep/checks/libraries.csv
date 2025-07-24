@@ -1,10 +1,6 @@
 package,old,new,delta
-vigicaen,0.15.5,0.15.6,*
-arrow,NA,19.0.1,*
-bit,NA,4.6.0,*
-cli,NA,3.6.4,*
-cpp11,NA,0.5.2,*
-data.table,NA,1.17.0,*
-fstcore,NA,0.10.0,*
-purrr,NA,1.0.4,*
-R6,NA,2.6.1,*
+vigicaen,0.15.6,0.16.0,*
+data.table,NA,1.17.8,*
+pillar,NA,1.11.0,*
+purrr,NA,1.1.0,*
+Rcpp,NA,1.1.0,*

@@ -1,6 +1,6 @@
 Package: vigicaen
 Title: 'VigiBase' Pharmacovigilance Database Toolbox
-Version: 0.15.6
+Version: 0.16.0
 Authors@R: c(
        person("Charles", "Dolladille", email = "cdolladille@hotmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-0449-6261")),
@@ -37,11 +37,12 @@ VignetteBuilder: knitr
 RemoteType: local
 RemoteUrl: C:\Data\Nextcloud\STAT\vigicaen
 NeedsCompilation: no
-Packaged: 2025-03-13 14:48:00 UTC; dolladi231
-Author: Charles Dolladille [aut, cre] (<https://orcid.org/0000-0003-0449-6261>),
-  Basile Chrétien [aut] (<https://orcid.org/0000-0002-7483-2489>),
+Packaged: 2025-07-23 15:35:56 UTC; dolladi231
+Author: Charles Dolladille [aut, cre] (ORCID:
+    <https://orcid.org/0000-0003-0449-6261>),
+  Basile Chrétien [aut] (ORCID: <https://orcid.org/0000-0002-7483-2489>),
   Universite de Caen Normandie [cph] (Caen, France),
   Unite de pharmaco-epidemiologie [cph] (Service de pharmacologie, Centre
     Hospitalier Universitaire de Caen, Caen, France)
 Maintainer: Charles Dolladille <cdolladille@hotmail.com>
-Built: R 4.4.2; ; 2025-03-13 14:48:01 UTC; windows
+Built: R 4.5.0; ; 2025-07-23 15:35:58 UTC; windows

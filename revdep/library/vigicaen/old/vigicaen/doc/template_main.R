@@ -285,7 +285,6 @@ r_dch <-
 r_rch <-
   desc_rch(
     link,
-    demo_data = demo,
     adr_s = names(a_llt),
     drug_s = names(d_drecno)
   )

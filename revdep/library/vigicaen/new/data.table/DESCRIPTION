@@ -1,5 +1,5 @@
 Package: data.table
-Version: 1.17.0
+Version: 1.17.8
 Title: Extension of `data.frame`
 Depends: R (>= 3.3.0)
 Imports: methods
@@ -105,15 +105,17 @@ Authors@R: c(
   person("Bill", "Evans",          role="ctb")
   )
 NeedsCompilation: yes
-Packaged: 2025-02-21 01:19:45 UTC; tysonbarrett
-Author: Tyson Barrett [aut, cre] (<https://orcid.org/0000-0002-2137-1391>),
+Packaged: 2025-07-07 16:02:15 UTC; root
+Author: Tyson Barrett [aut, cre] (ORCID:
+    <https://orcid.org/0000-0002-2137-1391>),
   Matt Dowle [aut],
   Arun Srinivasan [aut],
   Jan Gorecki [aut],
-  Michael Chirico [aut] (<https://orcid.org/0000-0003-0787-087X>),
-  Toby Hocking [aut] (<https://orcid.org/0000-0002-3146-0865>),
-  Benjamin Schwendinger [aut] (<https://orcid.org/0000-0003-3315-8114>),
-  Ivan Krylov [aut] (<https://orcid.org/0000-0002-0172-3812>),
+  Michael Chirico [aut] (ORCID: <https://orcid.org/0000-0003-0787-087X>),
+  Toby Hocking [aut] (ORCID: <https://orcid.org/0000-0002-3146-0865>),
+  Benjamin Schwendinger [aut] (ORCID:
+    <https://orcid.org/0000-0003-3315-8114>),
+  Ivan Krylov [aut] (ORCID: <https://orcid.org/0000-0002-0172-3812>),
   Pasha Stetsenko [ctb],
   Tom Short [ctb],
   Steve Lianoglou [ctb],
@@ -197,6 +199,6 @@ Author: Tyson Barrett [aut, cre] (<https://orcid.org/0000-0002-2137-1391>),
   Bill Evans [ctb]
 Maintainer: Tyson Barrett <t.barrett88@gmail.com>
 Repository: CRAN
-Date/Publication: 2025-02-22 06:10:02 UTC
-Built: R 4.4.3; x86_64-w64-mingw32; 2025-03-11 01:34:40 UTC; windows
+Date/Publication: 2025-07-10 10:30:05 UTC
+Built: R 4.5.1; x86_64-w64-mingw32; 2025-07-21 00:27:45 UTC; windows
 Archs: x64

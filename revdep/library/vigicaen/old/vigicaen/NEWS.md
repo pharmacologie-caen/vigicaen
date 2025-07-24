@@ -1,3 +1,32 @@
+# vigicaen 0.15.6
+
+## New features
+
+* `vigi_routine()` now plots details on drug liability and rechallenge
+when available (#119).
+
+* `desc_rch()`, `desc_dch()` and `desc_outcome()` now handle out of 
+memory arrow Table (#127).
+
+* `compute_dispro()` now handles factors as `x` or `y` arguments,
+if levels are strictly equal to 0 and 1 (#134).
+
+## Minor
+
+* Error and warnings all turned into `cli` syntax. Gathered redundant checkers
+internally (#133).
+
+* `vigi_routine()` now works with out of memory arrow Tables. Additional
+checkers to `vigi_routine()` for input data type.
+
+* `compute_or_mod()` now has an informative error message if either args
+`estimate` or `std_er` were not supplied (#123).
+
+* `get_drecno()` now handles non-WHO names matching a unique DrecNo that has
+several WHO names, and throws an error if matching multiple DrecNos (#139).
+
+* Adding dependency to `glue`.
+
 # vigicaen 0.15.5
 
 ## Minor

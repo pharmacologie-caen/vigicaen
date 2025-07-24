@@ -1,32 +1,29 @@
 # Platform
 
-|field    |value                                    |
-|:--------|:----------------------------------------|
-|version  |R version 4.4.2 (2024-10-31 ucrt)        |
-|os       |Windows 10 x64 (build 19045)             |
-|system   |x86_64, mingw32                          |
-|ui       |RStudio                                  |
-|language |(EN)                                     |
-|collate  |French_France.utf8                       |
-|ctype    |French_France.utf8                       |
-|tz       |Europe/Paris                             |
-|date     |2025-03-13                               |
-|rstudio  |2024.04.2+764 Chocolate Cosmos (desktop) |
-|pandoc   |NA                                       |
+|field    |value                                                                                                                                                                                            |
+|:--------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|version  |R version 4.5.0 (2025-04-11 ucrt)                                                                                                                                                                |
+|os       |Windows 11 x64 (build 26100)                                                                                                                                                                     |
+|system   |x86_64, mingw32                                                                                                                                                                                  |
+|ui       |RStudio                                                                                                                                                                                          |
+|language |(EN)                                                                                                                                                                                             |
+|collate  |French_France.utf8                                                                                                                                                                               |
+|ctype    |French_France.utf8                                                                                                                                                                               |
+|tz       |Europe/Paris                                                                                                                                                                                     |
+|date     |2025-07-23                                                                                                                                                                                       |
+|rstudio  |2025.05.1+513 Mariposa Orchid (desktop)                                                                                                                                                          |
+|pandoc   |NA                                                                                                                                                                                               |
+|quarto   |ERROR: Unknown command "TMPDIR=C:/Users/dolladi231/AppData/Local/Temp/RtmpmUXJuN/file857c13ec4c1f". Did you mean command "install"? @ C:\PROGRA~1\RStudio\RESOUR~1\app\bin\quarto\bin\quarto.exe |
 
 # Dependencies
 
 |package    |old    |new    |Δ  |
 |:----------|:------|:------|:--|
-|vigicaen   |0.15.5 |0.15.6 |*  |
-|arrow      |NA     |19.0.1 |*  |
-|bit        |NA     |4.6.0  |*  |
-|cli        |NA     |3.6.4  |*  |
-|cpp11      |NA     |0.5.2  |*  |
-|data.table |NA     |1.17.0 |*  |
-|fstcore    |NA     |0.10.0 |*  |
-|purrr      |NA     |1.0.4  |*  |
-|R6         |NA     |2.6.1  |*  |
+|vigicaen   |0.15.6 |0.16.0 |*  |
+|data.table |NA     |1.17.8 |*  |
+|pillar     |NA     |1.11.0 |*  |
+|purrr      |NA     |1.1.0  |*  |
+|Rcpp       |NA     |1.1.0  |*  |
 
 # Revdeps
 

@@ -32,7 +32,7 @@ meddra   <- meddra_
 
 ## ----a_sel_d_sel--------------------------------------------------------------
 d_sel <- list(
-  nivolumab = "nivolumab"
+  ipilimumab = "ipilimumab"
 )
 
 a_sel <- list(
@@ -47,7 +47,7 @@ d_code <-
 a_code <-
   get_llt_soc(a_sel, term_level = "hlt", meddra = meddra)
 
-## ----vigi_routine, fig.height=6.7, fig.width=4--------------------------------
+## ----vigi_routine, fig.height=7.5, fig.width=4--------------------------------
 vigi_routine(
   demo_data = demo,
   drug_data = drug,
@@ -58,7 +58,7 @@ vigi_routine(
   vigibase_version = "September 2024"
 )
 
-## ----vigi_routine_case, fig.height=6.7, fig.width=4---------------------------
+## ----vigi_routine_case, fig.height=7.5, fig.width=4---------------------------
 vigi_routine(
   case_tto  = 150,
   demo_data = demo,
@@ -79,7 +79,7 @@ vigi_routine(
 #   link_data = link,
 #   d_code    = d_code,
 #   a_code    = a_code,
-#   d_label   = "Nivolumab",
+#   d_label   = "Ipilimumab",
 #   a_label   = "Colitis (HLT)",
 #   vigibase_version = "September 2024",
 #   export_to = "~/vigicaen_graph.png"
