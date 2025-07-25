@@ -48,11 +48,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.16.1" id="vigicaen-0161">vigicaen 0.16.1<a class="anchor" aria-label="anchor" href="#vigicaen-0161"></a></h2>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.16.0" id="vigicaen-0160">vigicaen 0.16.0<a class="anchor" aria-label="anchor" href="#vigicaen-0160"></a></h2>
 <div class="section level3">
-<h3 id="new-features-0-16-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-16-0"></a></h3>
+<h3 id="new-features-0-16-1">New features<a class="anchor" aria-label="anchor" href="#new-features-0-16-1"></a></h3>
 <ul><li><p><code><a href="../reference/tb_vigibase.html">tb_vigibase()</a></code> now accepts a new argument <code>rm_suspdup</code> (default TRUE) to automatically remove cases identified as suspected duplicates (from <code>SUSPECTEDDUPLICATES.txt</code>) when creating the main tables. You can disable this behavior by setting <code>rm_suspdup = FALSE</code>.</p></li>
 <li><p><code><a href="../reference/tb_vigibase.html">tb_vigibase()</a></code> now supports a new argument <code>overwrite_existing_tables</code> (default FALSE). If set to FALSE, the function will skip the creation of any .parquet tables that already exist, allowing you to resume the process after a crash or interruption without rebuilding completed tables. Set to TRUE to force rebuilding all tables. This makes the table-building process more robust and efficient for large datasets or limited hardware.</p></li>
 <li>
@@ -64,12 +61,12 @@
 </ul></li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-0-16-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-16-0"></a></h3>
+<h3 id="bug-fixes-0-16-1">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-16-1"></a></h3>
 <ul><li>
 <code><a href="../reference/vigi_routine.html">vigi_routine()</a></code> now has left/right justification of the patient label centered on 3 months (90 days) instead of the observed median. This resolves an issue where the label could be misplaced on the time to onset plot when the median did not match the visual center of the graph.(<a href="https://github.com/pharmacologie-caen/vigicaen/issues/145" class="external-link">#145</a>)</li>
 </ul></div>
 <div class="section level3">
-<h3 id="documenting-0-16-0">Documenting<a class="anchor" aria-label="anchor" href="#documenting-0-16-0"></a></h3>
+<h3 id="documenting-0-16-1">Documenting<a class="anchor" aria-label="anchor" href="#documenting-0-16-1"></a></h3>
 <ul><li><p>The ‘smq’ argument in <code><a href="../reference/get_llt_smq.html">get_llt_smq()</a></code> no longer requires length 1.(<a href="https://github.com/pharmacologie-caen/vigicaen/issues/126" class="external-link">#126</a>)</p></li>
 <li><p>The example for <code><a href="../reference/get_atc_code.html">get_atc_code()</a></code> now uses explicit names for atc_sel.(<a href="https://github.com/pharmacologie-caen/vigicaen/issues/126" class="external-link">#126</a>)</p></li>
 <li><p>The Value section of <code><a href="../reference/desc_tto.html">desc_tto()</a></code> now clarifies the default descriptive format and how to change it.(<a href="https://github.com/pharmacologie-caen/vigicaen/issues/126" class="external-link">#126</a>)</p></li>
