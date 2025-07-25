@@ -1,7 +1,5 @@
 # vigicaen 0.16.1
 
-# vigicaen 0.16.0
-
 ## New features
 
 * `tb_vigibase()` now accepts a new argument `rm_suspdup` (default TRUE) 
