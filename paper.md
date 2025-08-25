@@ -25,8 +25,9 @@ date: "2025-08-25"
 bibliography: RJreferences.bib
 type: package
 output: 
-  rmarkdown::html_vignette:
+  pdf_document: 
     keep_md: true
+  rmarkdown::html_vignette: default
 editor_options: 
   markdown: 
     wrap: 72
@@ -38,22 +39,21 @@ editor_options:
 
 # Summary
 
-Advanced methodologies are essential when conducting disproportionality 
-analyses using pharmacovigilance data, as traditional approaches are 
-susceptible to various biases such as reporting bias and confounding. 
-The aim of vigicaen is to provide a toolbox for the
-VigiBase&reg; Extract Case Level database, resolving technical challenges
-related to the database large size, and providing easier and reproducible
-access to advanced features. The package is built on top of the parquet
-file format. Functions related to drug and adverse event identification,
+Advanced methodologies are essential when conducting disproportionality
+analyses using pharmacovigilance data, as traditional approaches are
+susceptible to various biases such as reporting bias and confounding.
+The aim of vigicaen is to provide a toolbox for the VigiBase® Extract
+Case Level database, resolving technical challenges related to the
+database large size, and providing easier and reproducible access to
+advanced features. The package is built on top of the parquet file
+format. Functions related to drug and adverse event identification,
 descriptive features such as time to onset, dechallenge and rechallenge
-outcomes are provided. Command line side-effect outputs aim at
-fast resolving of common issues related to drug and adverse event 
-identification.
-The package is intended for pharmacovigilance
+outcomes are provided. Command line side-effect outputs aim at fast
+resolving of common issues related to drug and adverse event
+identification. The package is intended for pharmacovigilance
 practitioners, clinicians and researchers with or without advanced
-biostatistical skills. A graphical output can be produced for
-routine use, to support daily assessment of causality.
+biostatistical skills. A graphical output can be produced for routine
+use, to support daily assessment of causality.
 
 # Statement of need
 
@@ -98,10 +98,10 @@ typically lack these skills, and therefore struggle to use the VigiBase®
 data for their research. As a result, they would often rely in partial
 data, with limited statistical modelling options.
 
-The \CRANpkg{vigicaen} package aims at providing a toolbox for the
-VigiBase® Extract Case Level database, tackling a few technical
-challenges to run on low-specification computers, and provide easy and
-reproducible access to advanced features. This article will explain the
+The vigicaen package aims at providing a toolbox for the VigiBase®
+Extract Case Level database, tackling a few technical challenges to run
+on low-specification computers, and provide easy and reproducible access
+to advanced features.[@dolladille2025] This article will explain the
 technical choices and data management logic underlying the package, and
 provide some examples of its main features. Additional examples and use
 cases are treated in the package vignettes, which can be found on the
@@ -121,16 +121,16 @@ large data files in R.[@22arro] VigiBase® Extract Case Level files
 currently exceed 30GB once unpacked, which is way too large to be loaded
 in-memory for mainstream readers like `read.table()`.
 
-\CRANpkg{vigicaen} relies on `parquet` files a recent format based on
-open standards.[@parquet] Arrow is a cross-language development platform
-that allows for manipulation of large datasets.[@apachea] It is
-implemented in R via the \CRANpkg{arrow} package. Datasets remain out of
+Vigicaen relies on `parquet` files a recent format based on open
+standards.[@parquet] Arrow is a cross-language development platform that
+allows for manipulation of large datasets.[@apachea] It is implemented
+in R via the arrow package.[@richardson2025] Datasets remain out of
 memory, allowing for processing of large files on low-specification
-computers. Various tests of \CRANpkg{vigicaen} on 16GB RAM computers
-succeeded in processing the source files. This, in combination with
-an as close as possible alignment with the \CRANpkg{tidyverse} style guide,
-is also aimed at providing a modern and more rigorous approach as compared 
-to base R.
+computers. Various tests of vigicaen on 16GB RAM computers succeeded in
+processing the source files. This, in combination with an as close as
+possible alignment with the tidyverse style guide, is also aimed at
+providing a modern and more rigorous approach as compared to base
+R.[@wickham2023]
 
 Sourcing VigiBase® Extract Case Level files is done with the `tb_*`
 family functions.
@@ -163,7 +163,29 @@ Then, we run the related `tb_*` function, `tb_vigibase()`.
 tb_vigibase(path_base, path_sub)
 ```
 
-![](paper_files/figure-html//tb_vigibase_cast.svg)<!-- -->
+```
+## 
+```
+
+```
+## -- tb_vigibase() ---------------------------------------------------------------
+```
+
+```
+## i Checking for existing tables.
+```
+
+```
+## i Creating vigibase tables.
+```
+
+```
+## This process must only be done once per database version.
+## It can take up to 30minutes.
+## ==========>--------------------   33% | 1s | Remove duplicates 
+##                                                                 
+```
+
 
 
 With an average computer, the real running time is around 20-30minutes
@@ -183,9 +205,9 @@ Regulatory Activities (MedDRA), respectively. Disproportionality
 analysis requires a dataset with one row per ICSR, with the
 corresponding drugs and adverse events.
 
-The following logic is implemented in \CRANpkg{vigicaen}:
-  
-  1 Use drug and adverse event names to collect their IDs.
+The following logic is implemented in vigicaen:
+
+1 Use drug and adverse event names to collect their IDs.
 
 2 Match the IDs in `drug` and `adr` tables to identify the cases.
 
@@ -217,7 +239,48 @@ d_drecno <-
     d_sel,
     mp = mp
   )
+```
 
+```
+## 
+```
+
+```
+## -- get_drecno() ----------------------------------------------------------------
+```
+
+```
+## 
+```
+
+```
+## -- `d_sel`: Matching drugs --
+```
+
+```
+## 
+```
+
+```
+## -- v Matched drugs
+```
+
+```
+## 
+```
+
+```
+## > `ipilimumab`: "ipilimumab" and "ipilimumab;nivolumab"
+## 
+## 
+## i Set `verbose` to FALSE to suppress this section.
+## 
+## 
+## 
+## --------------------------------------------------------------------------------
+```
+
+``` r
 # report into demo
 demo <- 
   demo |> 
@@ -227,7 +290,11 @@ demo <-
   )
 ```
 
-![](paper_files/figure-html//get_drecno_cast.svg)<!-- -->
+```
+## i `.data` detected as `demo` table.
+```
+
+
 
 ## Displaying information at the command line
 
@@ -250,7 +317,47 @@ a_sel <-
 a_llt <- get_llt_soc(a_sel, term_level = "pt", meddra = meddra)
 ```
 
-![](paper_files/figure-html//get_llt_soc_cast.svg)<!-- -->
+```
+## 
+```
+
+```
+## -- get_llt_soc() ---------------------------------------------------------------
+```
+
+```
+## 
+```
+
+```
+## -- v Matched reactions at `pt` level (number of codes) --
+```
+
+```
+## 
+```
+
+```
+## > `colitis_term`: "Autoimmune colitis (1)" and "Colitis (25)"
+## > `pneumonitis_term`: x No match
+## 
+## 
+## i Set `verbose` to FALSE to suppress this section.
+## 
+## 
+## 
+## -- x Unmatched reactions --
+## 
+## 
+## 
+## -- ! Some reactions did not start with a Capital letter 
+## 
+## 
+## 
+## * In `pneumonitis_term`: x "pneumonitis"
+```
+
+
 
 ## The named list for inputting drug and adverse event names
 
@@ -295,10 +402,10 @@ estimates, confidence and credibility intervals. [@norén2013]
 # Routine use
 
 As a routine pharmacovigilance practitioner, key information on a drug -
-  adverse event pair may be needed out-of-the-box, without further need
+adverse event pair may be needed out-of-the-box, without further need
 for manipulating the underlying tables. To adress the typical needs
 (disproportionality estimand, time to onset, dechallenge and rechallenge
-  outcomes), `vigi_routine()` creates a graphical output for a given pair.
+outcomes), `vigi_routine()` creates a graphical output for a given pair.
 It is intended as a daily practice tool, to support routine assessment
 of causality. The graph can easily be exported to an external file with
 the `export_to` argument.
@@ -316,20 +423,21 @@ vigi_routine(
 )
 ```
 
-<img src="paper_files/figure-html/vigi_routine-1.png" alt="Example of vigi_routine with case data."  />
+
+\includegraphics[alt={Example of vigi_routine with case data.}]{paper_files/figure-latex/vigi_routine-1} 
 
 # Conclusion
 
 Easier, reproducible research in pharmacovigilance databases is key to
-appropriate safety signal detection. \CRANpkg{vigicaen} proposes a set
-of tools based on popular open standards to facilitate pharmacovigilance
-analysis in R.
+appropriate safety signal detection. Vigicaen proposes a set of tools
+based on popular open standards to facilitate pharmacovigilance analysis
+in R.
 
 # Acknowledgements
 
-The information presented in this study does not represent the 
-opinion of the Uppsala Monitoring Centre or the World Health Organization. 
-We thank the research team at the Uppsala Monitoring Centre (Uppsala, Sweden) 
-who provided case-level data from VigiBase®.
+The information presented in this study does not represent the opinion
+of the Uppsala Monitoring Centre or the World Health Organization. We
+thank the research team at the Uppsala Monitoring Centre (Uppsala,
+Sweden) who provided case-level data from VigiBase®.
 
 # References
