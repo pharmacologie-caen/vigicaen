@@ -81,12 +81,12 @@ Load tables into R. Preferably, let them out of memory, especially
 if you have a computer with rather low specifications (e.g., 16GB of RAM).
 
 ```{r load_tables, eval=FALSE}
-demo <- dt_parquet(path_base, "demo", in_memory = FALSE)
-drug <- dt_parquet(path_base, "drug", in_memory = FALSE)
-adr  <- dt_parquet(path_base, "adr", in_memory = FALSE)
-link <- dt_parquet(path_base, "link", in_memory = FALSE)
+demo <- open_dataset(paste0(path_base, "demo.parquet"))
+drug <- open_dataset(paste0(path_base, "drug.parquet"))
+adr  <- open_dataset(paste0(path_base, "adr.parquet" ))
+link <- open_dataset(paste0(path_base, "link.parquet"))
 
-mp <- dt_parquet(path_who,  "mp")
+mp     <- dt_parquet(path_who,    "mp")
 meddra <- dt_parquet(path_meddra, "meddra_hierarchy")
 ```
 

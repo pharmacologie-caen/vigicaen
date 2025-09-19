@@ -1,5 +1,15 @@
 # vigicaen (development version)
 
+## Enhancements for low specification computers
+
+*  `vigi_routine()` is internally optimized to minimize memory use,
+making it more likely to success on low spec computers <16GB RAM (#158)
+
+*  `dt_parquet()` now internally calls 
+`arrow::open_dataset()` rather than `arrow::read_parquet()`
+if arg `in_memory = FALSE`, to increase chances of success on low spec
+computers <16GB RAM (#158)
+
 # vigicaen 0.16.1
 
 ## New features
