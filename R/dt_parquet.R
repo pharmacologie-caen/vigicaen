@@ -77,6 +77,6 @@ dt_parquet <- function(path_base,
     data.table::as.data.table()
   } else {
     path |>
-      arrow::open_dataset(as_data_frame = FALSE)
+      arrow::open_dataset()
   }
 }

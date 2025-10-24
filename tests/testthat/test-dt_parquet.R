@@ -24,11 +24,14 @@ test_that("basic load of dt_parquet", {
 
   # out of memory
 
+
+
   demo_out <-
     dt_parquet(path_data, "demo", in_memory = FALSE)
 
+  # there is no strict equivalent with in memory objects.
   expect_equal(
-    class(demo),
+    c("FileSystemDataset", "Dataset", "ArrowObject", "R6"),
     class(demo_out)
   )
   # cannot perform full equal, since "pointer"s aren't the same.

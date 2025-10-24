@@ -98,7 +98,7 @@ a_llt <-
 
 # But you could also use get_drecno() and get_llt_soc()
 
-# load tables drug, adr, and link
+# load tables demo, drug, adr, and link (real tables with open_dataset())
 
 demo <- demo_
 adr  <- adr_
