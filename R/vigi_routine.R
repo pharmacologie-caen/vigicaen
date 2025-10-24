@@ -134,6 +134,10 @@ vigi_routine <-
   ){
     # #### 0. arrow options #### ####
 
+    # keep original user option, then set it
+
+    original_user_option <- options("arrow.pull_as_vector")
+
     options(arrow.pull_as_vector = FALSE)
 
     # #### 0. checkers #### ####
@@ -878,7 +882,14 @@ vigi_routine <-
       cli::cli_alert_info("Not enough data to plot time to onset")
     }
 
+    # #### 7. restore user option #### ####
+
+    options(arrow.pull_as_vector = original_user_option)
+
+
+    # #### 8.Display #### ####
     invisible(g_assembled)
+
   }
 
 # Helpers -------------------------
