@@ -65,7 +65,8 @@
 #'
 #' # But you could also use get_drecno() and get_llt_soc()
 #'
-#' # load tables demo, drug, adr, and link (real tables with open_dataset() or dt_parquet("x", in_memory = FALSE))
+#' # load tables demo, drug, adr, and link (real tables with
+#' # open_dataset() or dt_parquet("x", in_memory = FALSE))
 #'
 #' demo <- demo_
 #' adr  <- adr_
@@ -660,6 +661,7 @@ vigi_routine <-
                y = 2.5,
                label = ic_label,
                fontface = "bold",
+               fill = "white",
                size = 5) +
 
       guides(fill = "none") +
