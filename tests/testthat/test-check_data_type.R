@@ -18,6 +18,10 @@ test_that("cli format and basic use work", {
     range = 1
   )
 
+  ind_valid <- data.frame(
+    Drug_Id = 1, Indication = ""
+  )
+
   meddra_valid <- data.frame(
     llt_code = 1, llt_name = 1, pt_name = 1,
     hlt_name = 1, hlgt_name = 1, soc_name = 1
@@ -37,9 +41,13 @@ test_that("cli format and basic use work", {
   r3 <-
     check_data_demo(demo_valid, ".data")
 
+  r4 <-
+    check_data_ind(ind_valid, ".data")
+
   expect_null(r1)
   expect_null(r2)
   expect_null(r3)
+  expect_null(r4)
 
   expect_invisible(
     check_data_link(link_valid, ".data")
@@ -50,7 +58,7 @@ test_that("cli format and basic use work", {
   )
 
   purrr::map(
-    list(drug_valid, link_valid, adr_valid),
+    list(drug_valid, link_valid, adr_valid, ind_valid),
     function(d_)
       expect_snapshot(
         error = TRUE, {
@@ -59,22 +67,24 @@ test_that("cli format and basic use work", {
       )
   )
 
-  expect_snapshot(
-    error = TRUE, {
-      check_data_link(drug_valid, ".data")
-    }
+  purrr::map(
+    list(demo_valid, drug_valid, adr_valid, ind_valid),
+    function(d_)
+      expect_snapshot(
+        error = TRUE, {
+          check_data_link(d_, ".data")
+        }
+      )
   )
 
-  expect_snapshot(
-    error = TRUE, {
-      check_data_link(adr_valid, ".data")
-    }
-  )
-
-  expect_snapshot(
-    error = TRUE, {
-      check_data_link(demo_valid, ".data")
-    }
+  purrr::map(
+    list(demo_valid, drug_valid, adr_valid, link_valid),
+    function(d_)
+      expect_snapshot(
+        error = TRUE, {
+          check_data_ind(d_, ".data")
+        }
+      )
   )
 
   expect_snapshot(

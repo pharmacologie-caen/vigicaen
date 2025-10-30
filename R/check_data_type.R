@@ -120,6 +120,31 @@ check_data_link <-
     }
   }
 
+check_data_ind <-
+  function(.data,
+           arg = rlang::caller_arg(.data),
+           call = rlang::caller_env()){
+
+    ind_cols <-
+      c("Indication",
+        "Drug_Id")
+
+    if (!all(ind_cols %in% names(.data))) {
+
+      missing_cols <-
+        ind_cols[!ind_cols %in% names(.data)]
+
+      cli::cli_abort(
+        c(
+          "{.arg {arg}} must be an {.arg ind} table.",
+          "x" = "Missing columns: {missing_cols}",
+          ">" = "Supply an {.arg ind} table to {.arg {arg}}. See ?ind_."
+        ),
+        call = call
+      )
+    }
+  }
+
 check_data_mp <-
   function(.data,
            arg = rlang::caller_arg(.data),

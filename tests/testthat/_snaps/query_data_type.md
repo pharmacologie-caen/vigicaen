@@ -6,7 +6,7 @@
       Error:
       ! `invalid_data` must match an expected data type.
       ! Column names are not those of expected data types.
-      > Supported types are demo, drug, adr, and link. See ?demo_.
+      > Supported types are demo, drug, adr, ind, and link. See ?demo_.
 
 # format is ok [plain]
 
@@ -47,11 +47,12 @@
 ---
 
     Code
-      dtype <- purrr::map(list(drug_valid, demo_valid, adr_valid, link_valid),
-      function(data_) vigicaen:::query_data_type(data_, ".data"))
+      dtype <- purrr::map(list(drug_valid, demo_valid, adr_valid, link_valid,
+        ind_valid), function(data_) vigicaen:::query_data_type(data_, ".data"))
     Message
       i `.data` detected as `drug` table.
       i `.data` detected as `demo` table.
       i `.data` detected as `adr` table.
       i `.data` detected as `link` table.
+      i `.data` detected as `ind` table.
 
