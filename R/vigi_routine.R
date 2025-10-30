@@ -11,7 +11,7 @@
 #' The function only works if there is one item in `d_code` and `a_code`.
 #' If you are working on a specific case, you can provide a `case_tto` value.
 #' This value will be displayed on the Time to Onset plot.
-#' If you're demo table was filtered on specific cases (e.g. older adults,
+#' If your demo table was filtered on specific cases (e.g. older adults,
 #' a subset of all drugs), then you may want to indicate this setting on the
 #' plot legend, with arg `analysis_setting`.
 #'
@@ -65,7 +65,7 @@
 #'
 #' # But you could also use get_drecno() and get_llt_soc()
 #'
-#' # load tables demo, drug, adr, and link (real tables with open_dataset())
+#' # load tables demo, drug, adr, and link (real tables with open_dataset() or dt_parquet("x", in_memory = FALSE))
 #'
 #' demo <- demo_
 #' adr  <- adr_
