@@ -48,6 +48,11 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="vigicaen-development-version">vigicaen (development version)<a class="anchor" aria-label="anchor" href="#vigicaen-development-version"></a></h2>
+<div class="section level3">
+<h3 id="enhancements-for-low-specification-computers-development-version">Enhancements for low specification computers<a class="anchor" aria-label="anchor" href="#enhancements-for-low-specification-computers-development-version"></a></h3>
+<ul><li><p><code><a href="../reference/vigi_routine.html">vigi_routine()</a></code> is internally optimized to minimize memory use, making it more likely to success on low spec computers &lt;16GB RAM (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/158" class="external-link">#158</a>)</p></li>
+<li><p><code><a href="../reference/dt_parquet.html">dt_parquet()</a></code> now internally calls <code><a href="https://arrow.apache.org/docs/r/reference/open_dataset.html" class="external-link">arrow::open_dataset()</a></code> rather than <code><a href="https://arrow.apache.org/docs/r/reference/read_parquet.html" class="external-link">arrow::read_parquet()</a></code> if arg <code>in_memory = FALSE</code>, to increase chances of success on low spec computers &lt;16GB RAM (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/158" class="external-link">#158</a>)</p></li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.16.1" id="vigicaen-0161">vigicaen 0.16.1<a class="anchor" aria-label="anchor" href="#vigicaen-0161"></a></h2><p class="text-muted">CRAN release: 2025-07-25</p>

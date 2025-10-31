@@ -164,7 +164,7 @@ years value, respectively.
 The function only works if there is one item in <code>d_code</code> and <code>a_code</code>.
 If you are working on a specific case, you can provide a <code>case_tto</code> value.
 This value will be displayed on the Time to Onset plot.
-If you're demo table was filtered on specific cases (e.g. older adults,
+If your demo table was filtered on specific cases (e.g. older adults,
 a subset of all drugs), then you may want to indicate this setting on the
 plot legend, with arg <code>analysis_setting</code>.</p>
     </div>
@@ -184,7 +184,8 @@ plot legend, with arg <code>analysis_setting</code>.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># But you could also use get_drecno() and get_llt_soc()</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># load tables demo, drug, adr, and link</span></span></span>
+<span class="r-in"><span><span class="co"># load tables demo, drug, adr, and link (real tables with</span></span></span>
+<span class="r-in"><span><span class="co"># open_dataset() or dt_parquet("x", in_memory = FALSE))</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">demo</span> <span class="op">&lt;-</span> <span class="va">demo_</span></span></span>
 <span class="r-in"><span><span class="va">adr</span>  <span class="op">&lt;-</span> <span class="va">adr_</span></span></span>
@@ -236,7 +237,7 @@ plot legend, with arg <code>analysis_setting</code>.</p>
 <span class="r-in"><span>  export_to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"/"</span>, <span class="st">"vigicaen_graph.png"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="vigi_routine-3.png" alt="" width="700" height="433"></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Plot exported to /tmp/Rtmp0oSJPt/vigicaen_graph.png</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Plot exported to /tmp/RtmpxA3DxQ/vigicaen_graph.png</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
