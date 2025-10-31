@@ -25,7 +25,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHwxNjQuNTc=)'>
-<rect x='0.00' y='-0.000000000000085' width='720.00' height='164.57' style='stroke-width: 0.75; stroke: none; fill: #F7F7F7;' />
+<rect x='0.00' y='-0.000000000000085' width='720.00' height='164.57' style='stroke-width: 0.00; stroke: none; fill: #F7F7F7;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -49,7 +49,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMC4wMHw0MzIuMDB8MTY0LjU3fDMyOS4xNA==)'>
-<rect x='0.00' y='164.57' width='432.00' height='164.57' style='stroke-width: 0.75; stroke: none; fill: #F7F7F7;' />
+<rect x='0.00' y='164.57' width='432.00' height='164.57' style='stroke-width: 0.00; stroke: none; fill: #F7F7F7;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -62,7 +62,7 @@
 <rect x='28.47' y='260.46' width='85.77' height='0.00' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #262626;' />
 <rect x='123.77' y='260.46' width='85.77' height='0.00' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4D4D4D;' />
 <rect x='219.07' y='260.46' width='85.77' height='0.00' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
-<rect x='14.17' y='194.62' width='304.96' height='131.69' style='stroke-width: 0.75;' />
+<rect x='14.17' y='194.62' width='304.96' height='131.69' style='stroke-width: 0.00;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <rect x='334.02' y='239.91' width='12.76' height='12.76' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #262626;' />
@@ -80,7 +80,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpNDMyLjAwfDcyMC4wMHwxNjQuNTd8MzI5LjE0)'>
-<rect x='432.00' y='164.57' width='288.00' height='164.57' style='stroke-width: 0.75; stroke: none; fill: #F7F7F7;' />
+<rect x='432.00' y='164.57' width='288.00' height='164.57' style='stroke-width: 0.00; stroke: none; fill: #F7F7F7;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -90,7 +90,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpNDMyLjAwfDcwNS44M3wxOTQuNjJ8MzI2LjMx)'>
-<text x='568.91' y='264.26' text-anchor='middle' style='font-size: 11.04px; font-family: sans;' textLength='38.67px' lengthAdjust='spacingAndGlyphs'>No data</text>
+<text x='568.91' y='264.25' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='38.53px' lengthAdjust='spacingAndGlyphs'>No data</text>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <text x='432.00' y='180.46' style='font-size: 11.00px; font-weight: bold; font-family: sans;' textLength='61.16px' lengthAdjust='spacingAndGlyphs'>Rechallenge</text>
@@ -102,7 +102,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MzI5LjE0fDU0OC41Nw==)'>
-<rect x='0.00' y='329.14' width='720.00' height='219.43' style='stroke-width: 0.75; stroke: none; fill: #F7F7F7;' />
+<rect x='0.00' y='329.14' width='720.00' height='219.43' style='stroke-width: 0.00; stroke: none; fill: #F7F7F7;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -144,7 +144,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8NTQ4LjUyfDU3Ni4wMA==)'>
-<rect x='0.00' y='548.52' width='720.00' height='27.54' style='stroke-width: 0.75; stroke: none; fill: #F7F7F7;' />
+<rect x='0.00' y='548.52' width='720.00' height='27.54' style='stroke-width: 0.00; stroke: none; fill: #F7F7F7;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -159,7 +159,7 @@
 <text x='705.83' y='560.05' text-anchor='end' style='font-size: 8.80px; font-family: sans;' textLength='202.17px' lengthAdjust='spacingAndGlyphs'>Created with vigicaen, the R package for VigiBase®</text>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHwxNjQuNTc=)'>
-<rect x='0.00' y='-0.000000000000085' width='720.00' height='164.57' style='stroke-width: 0.75; stroke: none; fill: #F7F7F7;' />
+<rect x='0.00' y='-0.000000000000085' width='720.00' height='164.57' style='stroke-width: 0.00; stroke: none; fill: #F7F7F7;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -173,7 +173,7 @@
 <text x='14.17' y='28.74' style='font-size: 13.20px; font-family: sans;' textLength='129.89px' lengthAdjust='spacingAndGlyphs'>VIGIBASE ANALYSIS</text>
 </g>
 <g clip-path='url(#cpMC4wMHw0MzIuMDB8MTY0LjU3fDMyOS4xNA==)'>
-<rect x='0.00' y='164.57' width='432.00' height='164.57' style='stroke-width: 0.75; stroke: none; fill: #F7F7F7;' />
+<rect x='0.00' y='164.57' width='432.00' height='164.57' style='stroke-width: 0.00; stroke: none; fill: #F7F7F7;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -181,7 +181,7 @@
 <rect x='28.47' y='260.46' width='85.77' height='0.00' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #262626;' />
 <rect x='123.77' y='260.46' width='85.77' height='0.00' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #4D4D4D;' />
 <rect x='219.07' y='260.46' width='85.77' height='0.00' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #CCCCCC;' />
-<rect x='14.17' y='194.62' width='304.96' height='131.69' style='stroke-width: 0.75;' />
+<rect x='14.17' y='194.62' width='304.96' height='131.69' style='stroke-width: 0.00;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <rect x='334.02' y='239.91' width='12.76' height='12.76' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #262626;' />
@@ -194,19 +194,19 @@
 <text x='14.17' y='192.34' style='font-size: 11.00px; font-weight: bold; font-family: sans;' textLength='0.00px' lengthAdjust='spacingAndGlyphs'></text>
 </g>
 <g clip-path='url(#cpNDMyLjAwfDcyMC4wMHwxNjQuNTd8MzI5LjE0)'>
-<rect x='432.00' y='164.57' width='288.00' height='164.57' style='stroke-width: 0.75; stroke: none; fill: #F7F7F7;' />
+<rect x='432.00' y='164.57' width='288.00' height='164.57' style='stroke-width: 0.00; stroke: none; fill: #F7F7F7;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
 <g clip-path='url(#cpNDMyLjAwfDcwNS44M3wxOTQuNjJ8MzI2LjMx)'>
-<text x='568.91' y='264.26' text-anchor='middle' style='font-size: 11.04px; font-family: sans;' textLength='38.67px' lengthAdjust='spacingAndGlyphs'>No data</text>
+<text x='568.91' y='264.25' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='38.53px' lengthAdjust='spacingAndGlyphs'>No data</text>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <text x='432.00' y='180.46' style='font-size: 11.00px; font-weight: bold; font-family: sans;' textLength='61.16px' lengthAdjust='spacingAndGlyphs'>Rechallenge</text>
 <text x='432.00' y='192.34' style='font-size: 11.00px; font-weight: bold; font-family: sans;' textLength='0.00px' lengthAdjust='spacingAndGlyphs'></text>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MzI5LjE0fDU0OC41Nw==)'>
-<rect x='0.00' y='329.14' width='720.00' height='219.43' style='stroke-width: 0.75; stroke: none; fill: #F7F7F7;' />
+<rect x='0.00' y='329.14' width='720.00' height='219.43' style='stroke-width: 0.00; stroke: none; fill: #F7F7F7;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>
@@ -238,7 +238,7 @@
 <text x='14.17' y='349.28' style='font-size: 11.00px; font-weight: bold; font-family: sans;' textLength='129.02px' lengthAdjust='spacingAndGlyphs'>Disproportionality Analysis</text>
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8NTQ4LjUyfDU3Ni4wMA==)'>
-<rect x='0.00' y='548.52' width='720.00' height='27.54' style='stroke-width: 0.75; stroke: none; fill: #F7F7F7;' />
+<rect x='0.00' y='548.52' width='720.00' height='27.54' style='stroke-width: 0.00; stroke: none; fill: #F7F7F7;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 </g>

@@ -11,7 +11,7 @@
 #' The function only works if there is one item in `d_code` and `a_code`.
 #' If you are working on a specific case, you can provide a `case_tto` value.
 #' This value will be displayed on the Time to Onset plot.
-#' If you're demo table was filtered on specific cases (e.g. older adults,
+#' If your demo table was filtered on specific cases (e.g. older adults,
 #' a subset of all drugs), then you may want to indicate this setting on the
 #' plot legend, with arg `analysis_setting`.
 #'
@@ -65,7 +65,8 @@
 #'
 #' # But you could also use get_drecno() and get_llt_soc()
 #'
-#' # load tables demo, drug, adr, and link
+#' # load tables demo, drug, adr, and link (real tables with
+#' # open_dataset() or dt_parquet("x", in_memory = FALSE))
 #'
 #' demo <- demo_
 #' adr  <- adr_
@@ -132,6 +133,14 @@ vigi_routine <-
     suspect_only = FALSE,
     d_code_2
   ){
+    # #### 0. arrow options #### ####
+
+    # keep original user option, then set it
+
+    original_user_option <- options("arrow.pull_as_vector")
+
+    options(arrow.pull_as_vector = FALSE)
+
     # #### 0. checkers #### ####
     check_id_list_numeric(d_code)
     check_id_list_numeric(a_code)
@@ -148,7 +157,7 @@ vigi_routine <-
         )
       }
     }
-    check_data_demo(demo_data)
+
     check_data_adr(adr_data)
     check_data_drug(drug_data)
     check_data_link(link_data)
@@ -165,6 +174,14 @@ vigi_routine <-
     repbasis_sel <-
       if (suspect_only) {"s"} else {"sci"}
 
+    basis_sel <-
+      c(
+        if(grepl("s", repbasis_sel)){ 1 },
+        # subsidiary_files / Repbasis_Lx
+        if(grepl("c", repbasis_sel)){ 2 },
+        if(grepl("i", repbasis_sel)){ 3 }
+      )
+
     use_two_drugs <-
       !rlang::is_missing(d_code_2)
 
@@ -174,42 +191,63 @@ vigi_routine <-
       check_length_one(d_code_2, "vigi_routine()")
       d_name2 <- names(d_code_2)
 
-      # Demo data management with 2 drugs
-      suppressMessages(
-        demo_data <- demo_data |>
-          add_drug(d_code, drug_data = drug_data, repbasis = repbasis_sel) |>
-          add_drug(d_code_2, drug_data = drug_data, repbasis = repbasis_sel) |>
-          add_adr(a_code, adr_data = adr_data)
-      )
-      # Variable both_drugs to replace d_name, if d_code_2 provided
-      demo_data <-
-        demo_data |>
-        dplyr::mutate(both_drugs = ifelse(.data[[d_name]] == 1 &
-                                            .data[[d_name2]] == 1, 1, 0))
+      umc_drug_1 <-
+        drug_data |>
+        dplyr::filter(.data$DrecNo %in% d_code[[1]] &
+                        .data$Basis %in% basis_sel) |>
+        dplyr::pull(.data$UMCReportId) |>
+        unique()
+
+      umc_drug_2 <-
+        drug_data |>
+        dplyr::filter(.data$DrecNo %in% d_code_2[[1]] &
+                        .data$Basis %in% basis_sel) |>
+        dplyr::pull(.data$UMCReportId) |>
+        unique()
+
+      umc_drug <- intersect(umc_drug_1, umc_drug_2)
+
+      umc_adr <-
+        adr_data |>
+        dplyr::filter(.data$MedDRA_Id %in% a_code[[1]])  |>
+        dplyr::pull(.data$UMCReportId) |>
+        unique()
+
+
+      umc_cases <- intersect(umc_drug, umc_adr)
+
       cli::cli_alert_info(
         "Dual drug analysis: only cases exposed to both '{d_name}' and '{d_name2}' are included.")
 
       d_name_after_dm <- "both_drugs"
 
     } else {
-      # else, demo data management with 1 drug
-      suppressMessages(
-        demo_data <- demo_data |>
-          add_drug(d_code, drug_data = drug_data, repbasis = repbasis_sel) |>
-          add_adr(a_code, adr_data = adr_data)
-      )
+
+      umc_drug <-
+        drug_data |>
+        dplyr::filter(.data$DrecNo %in% d_code[[1]] &
+                        .data$Basis %in% basis_sel) |>
+        dplyr::pull(.data$UMCReportId) |>
+        unique()
+
+      umc_adr <-
+        adr_data |>
+        dplyr::filter(.data$MedDRA_Id %in% a_code[[1]]) |>
+        dplyr::pull(.data$UMCReportId) |>
+        unique()
+
+      umc_cases <- intersect(umc_drug, umc_adr)
 
       d_name_after_dm <- d_name
     }
+
     n_drug <-
-      demo_data |>
-      check_dm(d_name_after_dm)
+      length(umc_drug)
 
     n_adr <-
-      demo_data |>
-      check_dm(a_name)
+      length(umc_adr)
 
-    if(n_drug[, 1] == 0){
+    if(n_drug == 0){
 
       d_display_in_error <-
         if (use_two_drugs) {
@@ -225,7 +263,7 @@ vigi_routine <-
       )
     }
 
-    if(n_adr[, 1] == 0){
+    if(n_adr == 0){
       error_vigiroutine_nocases(
         a_name,
         "adr",
@@ -233,24 +271,74 @@ vigi_routine <-
       )
     }
 
+    a <- length(umc_cases)
+    b <- n_drug - a
+    c <- n_adr  - a
+    d <- nrow(demo_data) - a - b - c
+
     # ---- compute ic ----
 
+    # args of compute_dispro
+    alpha <- 0.05
+
+    min_n_obs <- 0
+
+    na_format = "-"
+
+    dig = 2
+
     res_ic <-
-      demo_data |>
-      compute_dispro(
-        y = a_name,
-        x = d_name_after_dm,
-        export_raw_values = TRUE
+      data.frame(a = a, b = b, c = c, d = d) |>
+      dplyr::mutate(
+        dplyr::across(dplyr::all_of(c("a", "b", "c", "d")), ~ as.numeric(.x)),
+        n_obs = .data$a,
+        n_exp = (.data$a + .data$b) * # n drug
+          (.data$a + .data$c) / # n event
+          (.data$a + .data$b + .data$c + .data$d), # n pop
+        ic = log((.data$a + .5) / (.data$n_exp + .5), base = 2),
+        ic_tail = ic_tail(
+          n_obs = .data$a,
+          n_exp = .data$n_exp,
+          p = .env$alpha / 2
+        ),
+        ci_level  = paste0((1 - .env$alpha) * 100, "%"),
+        signif_ic = ifelse(.data$ic_tail > 0, 1, 0),
+        # don't show results for pairs with less than min_n_obs
+        dplyr::across(
+          dplyr::all_of(
+            c("n_exp", "ic", "ic_tail",
+              "a", "b", "c", "d",
+              "signif_ic")
+          ),
+          function(num_col)
+            dplyr::if_else(.data$a < .env$min_n_obs,
+                           NA_real_,
+                           num_col)
+        ),
+        dplyr::across(
+          dplyr::all_of(
+            c("ci_level"
+            )
+          ),
+          function(chr_col)
+            dplyr::if_else(.data$a < .env$min_n_obs,
+                           .env$na_format,
+                           chr_col)
+        )
       )
 
     # ---- build link ----
+
+
+
     suppressMessages({
       link_data <-
         link_data |>
+        dplyr::filter(.data$UMCReportId %in% umc_cases) |>
         add_drug(d_code, drug_data = drug_data, repbasis = "s") |>
         add_adr(a_code, adr_data = adr_data)
 
-      if (use_two_drugs) {
+      if (nrow(link_data) > 0 && use_two_drugs) {
         link_data <-
           link_data |>
           add_drug(d_code_2,
@@ -259,8 +347,8 @@ vigi_routine <-
           dplyr::group_by(.data$UMCReportId) |>
           dplyr::mutate(both_drugs =
                           ifelse(
-                            max(.data[[d_name]]) == 1 &
-                              max(.data[[d_name2]]) == 1,
+                            max(.data[[d_name]], na.rm = TRUE) == 1 &
+                              max(.data[[d_name2]], na.rm = TRUE) == 1,
                             1,
                             0
                           )
@@ -279,18 +367,16 @@ vigi_routine <-
     suppressMessages({
       drug_basis <-
         drug_data |>
-        add_adr(a_code, adr_data = adr_data) |>
-        dplyr::filter(.data[[a_name]] == 1 &
-                        .data$DrecNo %in% d_code[[d_name]] &
+        dplyr::filter(.data$DrecNo %in% d_code[[d_name]] &
                         {
                           if (use_two_drugs) {
-                            .data$UMCReportId %in% (demo_data |>
-                                                      dplyr::filter(.data$both_drugs == 1) |>
-                                                      dplyr::pull(UMCReportId))
+                            .data$UMCReportId %in% (umc_cases)
                           } else {
                             TRUE
                           }
                         }) |>
+        add_adr(a_code, adr_data = adr_data) |>
+        dplyr::filter(.data[[a_name]] == 1) |>
         dplyr::distinct(.data$UMCReportId, .data$DrecNo, .data$Basis) |>
         dplyr::count(.data$Basis) |>
         dplyr::collect()
@@ -575,6 +661,7 @@ vigi_routine <-
                y = 2.5,
                label = ic_label,
                fontface = "bold",
+               fill = "white",
                size = 5) +
 
       guides(fill = "none") +
@@ -797,7 +884,14 @@ vigi_routine <-
       cli::cli_alert_info("Not enough data to plot time to onset")
     }
 
+    # #### 7. restore user option #### ####
+
+    options(arrow.pull_as_vector = original_user_option)
+
+
+    # #### 8.Display #### ####
     invisible(g_assembled)
+
   }
 
 # Helpers -------------------------
