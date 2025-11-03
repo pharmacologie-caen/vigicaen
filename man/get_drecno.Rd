@@ -113,7 +113,7 @@ drug alone drecno is not found, hence the cases related to this drug will not be
 }
 
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 
 # ## Get drecnos for a list a drugs. Check spelling and use WHO name,
 # in lowercase

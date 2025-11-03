@@ -60,7 +60,7 @@ as \code{sv_selection}.
 Use \code{\link[=dt_parquet]{dt_parquet()}} to load the tables afterward.
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 
 # --- technical steps ---- #
 

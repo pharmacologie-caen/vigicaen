@@ -2,6 +2,10 @@
 
 ## Enhancements for low specification computers
 
+* *New* `add_ind()` complements the `add_*` family, to add indication columns
+to a demo, drug, adr, link or ind table. It's process is slightly simpler
+than the other add functions, as their is no `get_` step at the moment.
+
 *  `vigi_routine()` is internally optimized to minimize memory use,
 making it more likely to success on low spec computers <16GB RAM (#158)
 

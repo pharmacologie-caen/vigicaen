@@ -35,7 +35,7 @@ In \code{term_sel}, all terms should come from the same hierarchical level,
 e.g. all preferred terms, all high level terms, etc.
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 
 ## Finding llt codes for colitis
 

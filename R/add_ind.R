@@ -31,7 +31,6 @@
 #'
 #' @importFrom rlang .data
 #' @importFrom rlang .env
-#' @importFrom dplyr if_else
 #' @seealso [add_adr()], [add_drug()]
 #'
 #' @examples
