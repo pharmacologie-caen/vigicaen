@@ -1,22 +1,50 @@
-library(testthat)
-library(dplyr)
-library(purrr)
+test_that("finding or not finding drug dose displays correctly", {
+  d_code <- list(paracetamol = c(97818920, 97409107),
+                 unknown_drug = c(99999999))
 
-# Dummy Data Setup
-demo <- demo_
-drug <- drug_
+  expect_snapshot(
+      demo <-
+        add_dose(
+        .data = demo_,
+        d_code = d_code[1],
+        drug_data = drug_
+      )
+  )
 
-# Unit Tests
+  # with no dose
+  expect_snapshot(
+    demo <-
+      add_dose(
+        .data = demo_,
+        d_code = d_code[2],
+        drug_data = drug_
+      )
+  )
+
+  # both
+
+  expect_snapshot(
+    demo <-
+      add_dose(
+        .data = demo_,
+        d_code = d_code,
+        drug_data = drug_
+      )
+  )
+})
+
 test_that("add_dose correctly adds daily dose columns", {
   d_code <- list(paracetamol = c(97818920, 97409107))
 
-  result <- add_dose(
-    .data = demo,
-    d_code = d_code,
-    d_names = names(d_code),
-    repbasis = "sci",
-    method = "DrecNo",
-    drug_data = drug
+  suppressMessages(
+    result <- add_dose(
+      .data = demo_,
+      d_code = d_code,
+      d_dose_names = names(d_code),
+      repbasis = "sci",
+      method = "DrecNo",
+      drug_data = drug_
+    )
   )
 
   expect_true("paracetamol_dose_mg_per_day" %in% colnames(result))
@@ -29,13 +57,15 @@ test_that("works with irregular drug and demo names", {
   dema <- demo_
   druga <- drug_
 
-  result <- add_dose(
-    .data = dema,
-    d_code = d_code,
-    d_names = names(d_code),
-    repbasis = "sci",
-    method = "DrecNo",
-    drug_data = druga
+  suppressMessages(
+    result <- add_dose(
+      .data = dema,
+      d_code = d_code,
+      d_dose_names = names(d_code),
+      repbasis = "sci",
+      method = "DrecNo",
+      drug_data = druga
+    )
   )
 
   expect_true("paracetamol_dose_mg_per_day" %in% colnames(result))
@@ -56,13 +86,15 @@ test_that("add_dose handles empty dataset gracefully", {
 
   d_code <- list(paracetamol = c(97818920, 97409107))
 
-  result <- add_dose(
-    .data = empty_demo,
-    d_code = d_code,
-    d_names = names(d_code),
-    repbasis = "sci",
-    method = "DrecNo",
-    drug_data = drug
+  suppressMessages(
+    result <- add_dose(
+      .data = empty_demo,
+      d_code = d_code,
+      d_dose_names = names(d_code),
+      repbasis = "sci",
+      method = "DrecNo",
+      drug_data = drug_
+    )
   )
 
   expect_equal(nrow(result), 0)  # Should return an empty dataset
@@ -73,12 +105,11 @@ test_that("add_dose correctly filters and calculates doses", {
   d_code <- list(paracetamol = c(97818920, 97409107))
 
   result <- add_dose(
-    .data = demo,
+    .data = demo_,
     d_code = d_code,
-    d_names = names(d_code),
     repbasis = "sci",
     method = "DrecNo",
-    drug_data = drug
+    drug_data = drug_
   )
 
   # Check if the dose is calculated correctly (based on the example in the function)
@@ -89,21 +120,21 @@ test_that("add_dose works for different `repbasis` values", {
   d_code <- list(paracetamol = c(97818920, 97409107))
 
   result_suspect <- add_dose(
-    .data = demo,
+    .data = demo_,
     d_code = d_code,
-    d_names = names(d_code),
+    d_dose_names = names(d_code),
     repbasis = "s",
     method = "DrecNo",
-    drug_data = drug
+    drug_data = drug_
   )
 
   result_concomitant <- add_dose(
-    .data = demo,
+    .data = demo_,
     d_code = d_code,
-    d_names = names(d_code),
+    d_dose_names = names(d_code),
     repbasis = "c",
     method = "DrecNo",
-    drug_data = drug
+    drug_data = drug_
   )
 
   # The column names should differ
@@ -127,35 +158,24 @@ test_that("add_dose handles invalid dose values correctly", {
 
   d_code <- list(paracetamol = c(001))
 
-  result <- add_dose(
-    .data = demo,
-    d_code = d_code,
-    d_names = names(d_code),
-    repbasis = "sci",
-    method = "DrecNo",
-    drug_data = drug_invalid
+  suppressMessages(
+    result <- add_dose(
+      .data = demo_,
+      d_code = d_code,
+      d_dose_names = names(d_code),
+      repbasis = "sci",
+      method = "DrecNo",
+      drug_data = drug_invalid
+    )
   )
 
   # The dose should not be added due to invalid frequency
   expect_true(is.na(result$paracetamol_dose_mg_per_day[1]))
 })
 
-library(testthat)
-library(dplyr)
-library(purrr)
-
-# Dummy Data Setup
-demo <- demo_
-drug <- drug_
-
-# Unit Tests for add_dose
-
-
-
 test_that("you can use arrow/parquet format", {
 
   d_drecno_test <- rlang::list2("nivolumab" = c(001, 002))
-
 
   drug_test <-
     data.table(
@@ -181,51 +201,49 @@ test_that("you can use arrow/parquet format", {
       drug_test = c(0, 0, 0, 0, 1)
     )
 
-  tmp_folder <- tempdir()
+  tmp_folder <- paste0(tempdir(), "/", "add_ind_t1")
 
-  # Clean up existing files if they exist
-  demo_parquet_path <- paste0(tmp_folder, "/demo.parquet")
-  drug_parquet_path <- paste0(tmp_folder, "/drug.parquet")
-
-  if (file.exists(demo_parquet_path)) {
-    file.remove(demo_parquet_path)
-  }
-  if (file.exists(drug_parquet_path)) {
-    file.remove(drug_parquet_path)
-  }
+  dir.create(path = tmp_folder)
 
   # Write parquet files
-  arrow::write_parquet(demo_test, sink = demo_parquet_path)
-  arrow::write_parquet(drug_test, sink = drug_parquet_path)
+  arrow::write_parquet(demo_test,
+                       sink = paste0(tmp_folder, "\\demo.parquet"))
+  arrow::write_parquet(drug_test,
+                       sink = paste0(tmp_folder, "\\drug.parquet"))
 
-  demo_parquet <- arrow::read_parquet(demo_parquet_path)
-  drug_parquet <- arrow::read_parquet(drug_parquet_path)
+  demo_parquet <- arrow::read_parquet(paste0(tmp_folder, "\\demo.parquet"))
+  drug_parquet <- arrow::read_parquet(paste0(tmp_folder, "\\drug.parquet"))
 
-  expect_snapshot({
+  suppressMessages(
     res <-
       demo_parquet |>
       add_dose(
         d_code = d_drecno_test,
-        d_names = names(d_drecno_test),
+        d_dose_names = names(d_drecno_test),
         method = "DrecNo",
         repbasis = "sci",
         drug_data = drug_parquet
       )
-  })
+  )
 
-  expect_snapshot({
+  suppressMessages(
     res_a <-
       demo_test |>
       add_dose(
         d_code = d_drecno_test,
-        d_names = names(d_drecno_test),
+        d_dose_names = names(d_drecno_test),
         method = "DrecNo",
         repbasis = "sci",
         drug_data = drug_test
       )
-  })
+  )
 
   expect_equal(res, res_a)
+
+  unlink(tmp_folder, recursive = TRUE)
+
+  if(dir.exists(tmp_folder) & Sys.info()[["sysname"]] != "Windows")
+    file.remove(tmp_folder)
 })
 
 
@@ -235,23 +253,23 @@ test_that("add_dose validates drug_data structure", {
 
   expect_error(
     add_dose(
-      .data = demo,
+      .data = demo_,
       d_code = list(test = 1),
       drug_data = invalid_drug_data
     ),
-    regexp = "drug_data` is not a `drug` table"
+    regexp = "drug_data` must be a `drug` table"
   )
 })
 
 
-test_that("d_code must be numeric validates drug_data structure", {
+test_that("d_code must be numeric", {
 
   expect_error(
     add_dose(
-      .data = demo,
+      .data = demo_,
       d_code = list(test = "x"),
     ),
-    regexp = "Type of `d_code` is not numeric or integer"
+    regexp = "Type of `d_code` must be numeric or integer"
   )
 })
 
@@ -267,15 +285,13 @@ test_that("works with mpi_list", {
       demo_ |>
       add_dose(
         d_code = mpi,
-        d_names = names(mpi),
+        d_dose_names = names(mpi),
         method = "MedicinalProd_Id",
         repbasis = "sci",
         drug_data = drug_
       )
   })
 
-
   expect_equal(mean(demo$para_dose_mg_per_day, na.rm = TRUE), 1087.5)
-
 
 })

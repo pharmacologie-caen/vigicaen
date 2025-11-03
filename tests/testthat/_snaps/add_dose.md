@@ -1,63 +1,76 @@
-# you can use arrow/parquet format
+# finding or not finding drug dose displays correctly
 
     Code
-      res <- add_dose(demo_parquet, d_code = d_drecno_test, d_names = names(
-        d_drecno_test), method = "DrecNo", repbasis = "sci", drug_data = drug_parquet)
+      demo <- add_dose(.data = demo_, d_code = d_code[1], drug_data = drug_)
     Message
       i `.data` detected as `demo` table.
-      i Number of lines with a posology in mg/day found per drug:
-      i nivolumab: 1 lines with a posology in mg/day
-      i Important: Please check the results for posology, as coding issues are common. Some results may seem unbelievable and should be carefully reviewed and trimmed.
+      
+      -- v Drug dose found in mg/day 
+      
+      * `paracetamol`: 4 rows
+      i Important: Please check the results for posology,
+      as coding issues are common.
+      Some results may seem unreliable.
+      
       i Summary of added dose columns:
     Output
-       nivolumab_dose_mg_per_day
-       Min.   :246              
-       1st Qu.:246              
-       Median :246              
-       Mean   :246              
-       3rd Qu.:246              
-       Max.   :246              
-       NA's   :4                
+                                var level                               value n_avail
+      1 paracetamol_dose_mg_per_day  <NA> 512.0 (24.0-1,250.0) [24.0-2,000.0]       4
 
 ---
 
     Code
-      res_a <- add_dose(demo_test, d_code = d_drecno_test, d_names = names(
-        d_drecno_test), method = "DrecNo", repbasis = "sci", drug_data = drug_test)
+      demo <- add_dose(.data = demo_, d_code = d_code[2], drug_data = drug_)
     Message
       i `.data` detected as `demo` table.
-      i Number of lines with a posology in mg/day found per drug:
-      i nivolumab: 1 lines with a posology in mg/day
-      i Important: Please check the results for posology, as coding issues are common. Some results may seem unbelievable and should be carefully reviewed and trimmed.
+      
+      -- x No drug dose found in mg/day 
+      
+      * `unknown_drug`
+      i Other posology schemas are not supported in add_dose()).
+      
+
+---
+
+    Code
+      demo <- add_dose(.data = demo_, d_code = d_code, drug_data = drug_)
+    Message
+      i `.data` detected as `demo` table.
+      
+      -- x No drug dose found in mg/day 
+      
+      * `unknown_drug`
+      i Other posology schemas are not supported in add_dose()).
+      
+      -- v Drug dose found in mg/day 
+      
+      * `paracetamol`: 4 rows
+      i Important: Please check the results for posology,
+      as coding issues are common.
+      Some results may seem unreliable.
+      
       i Summary of added dose columns:
     Output
-       nivolumab_dose_mg_per_day
-       Min.   :246              
-       1st Qu.:246              
-       Median :246              
-       Mean   :246              
-       3rd Qu.:246              
-       Max.   :246              
-       NA's   :4                
+                                var level                               value n_avail
+      1 paracetamol_dose_mg_per_day  <NA> 512.0 (24.0-1,250.0) [24.0-2,000.0]       4
 
 # works with mpi_list
 
     Code
-      demo <- add_dose(demo_, d_code = mpi, d_names = names(mpi), method = "MedicinalProd_Id",
+      demo <- add_dose(demo_, d_code = mpi, d_dose_names = names(mpi), method = "MedicinalProd_Id",
       repbasis = "sci", drug_data = drug_)
     Message
       i `.data` detected as `demo` table.
-      i Number of lines with a posology in mg/day found per drug:
-      i para: 2 lines with a posology in mg/day
-      i Important: Please check the results for posology, as coding issues are common. Some results may seem unbelievable and should be carefully reviewed and trimmed.
+      
+      -- v Drug dose found in mg/day 
+      
+      * `para`: 2 rows
+      i Important: Please check the results for posology,
+      as coding issues are common.
+      Some results may seem unreliable.
+      
       i Summary of added dose columns:
     Output
-       para_dose_mg_per_day
-       Min.   : 975        
-       1st Qu.:1031        
-       Median :1088        
-       Mean   :1088        
-       3rd Qu.:1144        
-       Max.   :1200        
-       NA's   :748         
+                         var level                                     value n_avail
+      1 para_dose_mg_per_day  <NA> 1,087.5 (1,031.2-1,143.8) [975.0-1,200.0]       2
 

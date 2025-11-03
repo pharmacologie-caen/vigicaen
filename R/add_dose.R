@@ -1,34 +1,36 @@
 #' Add Dose in mg to a dataset
 #'
 #' @description `r lifecycle::badge('experimental')`
-#' `add_dose()` creates dynamic columns representing drug doses (in mg)
+#' `add_dose()` creates drug dose columns in vigibase
+#' datasets (demo, link, adr, drug, ind)
 #' for specified drugs in a dataset. It calculates daily dose values
 #' based on dose amount, frequency, and their corresponding units.
-#' The function is #' compatible with `demo`, `link`, and `adr` datasets.
+#' The function is compatible with `demo`, `link`, `adr`, `drug` and `ind`
+#'  datasets.
 #'
 #' @details
+#' Currently, only drug doses in **mg per day** are handled.
 #' The function identifies drug doses in a dataset by cross-referencing
-#' with a drug data table. Drug codes can be specified using either
-#' DrecNos or MedicinalProd_Id. Doses are filtered based on reputation
+#' with a drug data table. Drugs may be filtered based on reputation
 #' bases (suspect, concomitant, or interacting).
-#' `d_code` is a named list containing drug codes.
 #' Either drug record numbers (e.g., from [get_drecno()]), or
-#' medicinalprod_ids (e.g., from [get_atc_code()]). Default method is to DrecNos.
+#' medicinalprod_ids (e.g., from [get_atc_code()]) can be used to
+#' identify drugs. Default method is to DrecNos.
 #'
-#' **Important:** Ensure the dataset's structure aligns with the `data_type`
-#' argument to avoid errors.
 #'
 #' **Note:** It is very important to check the results obtained, as coding problems
-#' are very frequent for posology data. Some results might appear unbelievable due
-#' to these issues and should be carefully reviewed and trimmed accordingly.
+#' are very frequent for dose data, and some results might appear unreliable.
 #'
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
 #' @param d_code A named list of drug codes (DrecNos or MPI). See Details.
-#' @param d_names A character vector. Names for drug columns (must be the same length as d_code), default to `names(d_code)`
+#' @param d_dose_names A character vector. Names for drug dose
+#' columns (must be the same length as d_code), default to `names(d_code)`.
+#' Will be followed by a fixed suffix "_dose_mg_per_day".
 #' @param repbasis Suspect, interacting and/or concomitant.
 #' Type initial of those you wish to select ("s" for suspect, "c" for concomitant
 #' and "i" for interacting ; default to all, e.g. "sci").
-#' @param method A character string. The type of drug code (DrecNo or MedicinalProd_Id). See details.
+#' @param method A character string.
+#' The type of drug code (DrecNo or MedicinalProd_Id). See details.
 #' @param drug_data A data.frame containing the drug data (usually, it is `drug`)
 #'
 #'
@@ -38,25 +40,28 @@
 #' @seealso [add_drug()], [get_drecno()], [get_atc_code()]
 #' @examples
 #' # Example: Adding doses for paracetamol
-#' d_code <- list(paracetamol = c(001, 002))
-#' demo_updated <- add_dose(
-#'   .data = demo_,
-#'   d_code = d_code,
-#'   d_names = "paracetamol",
-#'   repbasis = "sci",
-#'   method = "DrecNo",
-#'   drug_data = drug_
-#' )
+#' d_code <- list(paracetamol = c(97818920, 97409107))
+#' demo <-
+#'   add_dose(
+#'     .data = demo_,
+#'     d_code = d_code,
+#'     d_dose_names = "paracetamol",
+#'     drug_data = drug_
+#'     )
 #'
-#' # Example: Restricting to "suspect" reputation base
-#' demo_suspect <- add_dose(
-#'   .data = demo_,
-#'   d_code = d_code,
-#'   d_names = "paracetamol_suspected",
-#'   repbasis = "s",
-#'   method = "DrecNo",
-#'   drug_data = drug_
-#' )
+#'  desc_facvar(demo, "paracetamol_dose_mg_per_day")
+#'
+#' # Use only drug dose where paracetamol had a "suspect" reputation base.
+#' demo <-
+#'   add_dose(
+#'     .data = demo_,
+#'     d_code = d_code,
+#'     d_dose_names = "para_susp",
+#'     repbasis = "s",
+#'     drug_data = drug_
+#'   )
+#'
+#'   desc_facvar(demo, "para_susp_dose_mg_per_day")
 
 
 ###########
@@ -64,7 +69,7 @@
 add_dose <-
   function(.data,
            d_code,
-           d_names = names(d_code),
+           d_dose_names = names(d_code),
            repbasis = "sci",
            method = c("DrecNo", "MedicinalProd_Id"),
            drug_data
@@ -84,17 +89,26 @@ add_dose <-
       if (grepl("i", repbasis)) { 3 }
     )
 
+    d_d_names_full <-
+      paste0(d_dose_names, "_dose_mg_per_day")
+
+
     dd_rb <- drug_data |>
       dplyr::filter(.data$Basis %in% basis_sel)
 
     renamer_did <- c("did_col" = method)
     dd_rb <- dd_rb |> dplyr::rename(dplyr::all_of(renamer_did))
 
-    t_id <- switch(data_type,
-                   demo = "UMCReportId",
-                   adr  = "UMCReportId",
-                   link = "Drug_Id"
-    )
+    # identify table_ids to collect
+
+    t_id <-
+      switch(data_type,
+             demo = "UMCReportId",
+             adr  = "UMCReportId",
+             link = "Drug_Id",
+             drug = "Drug_Id",
+             ind  = "Drug_Id"
+      )
 
     renamer_tid <- c("t_id" = t_id)
     dd_rb <- dd_rb |> dplyr::rename(dplyr::all_of(renamer_tid))
@@ -160,7 +174,7 @@ add_dose <-
               { \(e) { e$lookup <- lookup; e } }()
           )
       }) |>
-      rlang::set_names(paste0(d_names, "_dose_mg_per_day"))
+      rlang::set_names(d_d_names_full)
 
     # Prepare destination table with renamed columns
     dest_data <- .data |> dplyr::rename(dplyr::all_of(renamer_tid))
@@ -168,39 +182,141 @@ add_dose <-
     # Add new columns using the quosures
     dest_data_withcols <- dest_data |> dplyr::mutate(!!!e_l)
 
-    .data <- dest_data_withcols
-
-
     # Count the number of rows with a valid dose in mg/day for each drug
-    dose_counts <- purrr::map_dfr(d_names, ~ {
-      drug_col <- paste0( .x, "_dose_mg_per_day")
-      count <- sum(!is.na(.data[[drug_col]]))
-      data.frame(drug = .x, count = count)
-    })
+    dose_counts <-
+      d_dose_names |>
+      rlang::set_names() |>
+      purrr::map( ~ {
+        drug_col <- paste0( .x, "_dose_mg_per_day")
+        sum(!is.na(dest_data_withcols[[drug_col]]))
+        })
+
+    drug_with_dose_data <-
+      dose_counts |>
+      purrr::keep(~ .x > 0)
+
+    drug_without_dose_data <-
+      dose_counts |>
+      purrr::discard(~ .x > 0)
+
+    # booleans to check if there is any of each cases (drugs with/without data)
+    any_with_dose <-
+      drug_with_dose_data |> purrr::map(function(x)
+        ! is.null(x)) |>
+      unlist() |> any()
+
+    any_no_dose <-
+      drug_without_dose_data |> purrr::map(function(x)
+        ! is.null(x)) |>
+      unlist() |> any()
+
+
 
     # Display results
-    if (sum(dose_counts$count) == 0) {
-      cli::cli_alert_danger("No dose data in mg/day were found for any drug (other schemas not supported in add_dose()).")
-    } else {
-      cli::cli_alert_info("Number of lines with a posology in mg/day found per drug:")
-      # Display each drug with its corresponding count
-      purrr::walk(dose_counts$drug, ~{
-        count <- dose_counts$count[dose_counts$drug == .]
-        cli::cli_alert_info("{.x}: {count} lines with a posology in mg/day")
-      })
+    if (any_no_dose) {
+      msg_addind_no_match(drug_without_dose_data)
     }
 
-    # Display a message about checking results and trimming
-    cli::cli_alert_info("Important: Please check the results for posology, as coding issues are common. Some results may seem unbelievable and should be carefully reviewed and trimmed.")
-
-    dose_cols <- .data |> dplyr::select(contains("dose_mg_per_day"))
+    if(any_with_dose) {
+      msg_addind_match(drug_with_dose_data)
+    }
 
     # Check if any of the columns have non-NA values
-    if (any(purrr::map_lgl(dose_cols, ~ any(!is.na(.))))) {
+    if (any_with_dose) {
       cli::cli_alert_info("Summary of added dose columns:")
-      print(summary(dose_cols))
+      print(desc_cont(dest_data_withcols,
+                      paste0(names(drug_with_dose_data), "_dose_mg_per_day"))
+      )
     }
 
-    # Return final data
-    .data
+    # compute everything (this is strictly required only for arrow objects)
+
+    if(any(c("Table", "Dataset") %in% class(.data))){
+      return(dest_data_withcols |>
+        dplyr::compute()
+      )
+    } else {
+      return(dest_data_withcols)
+    }
+
+  }
+
+
+# Helpers --------------------
+
+
+msg_addind_no_match <-
+  function(drug_without_dose_data
+  ){
+
+    res_list_no_match_compact <-
+      purrr::compact(drug_without_dose_data)
+
+    msg_no_match <-
+      function() {
+
+        cli_par()
+
+        cli_h3(paste0(col_red("x"), " No drug dose found in mg/day"))
+
+        cli_end()
+        cli_par()
+
+        lid <- cli_ul()
+        for (i in seq_along(res_list_no_match_compact)) {
+          cli_li(paste0(
+            '{.code {names(res_list_no_match_compact)[i]}}',
+            ''
+          ))
+
+        }
+
+        cli_end(lid)
+
+        cli_par()
+
+        cli_alert_info(
+          "Other posology schemas are not supported in add_dose())."
+        )
+        cli_end()
+      }
+
+    msg_no_match()
+  }
+
+msg_addind_match <-
+  function(drug_with_dose_data){
+
+    res_list_match_compact <-
+      purrr::compact(drug_with_dose_data)
+
+    msg_match <-
+      function() {
+
+        cli_par()
+
+        cli_h3(paste0(col_green("{symbol$tick}"), " Drug dose found in mg/day"))
+
+        cli_end()
+        cli_par()
+
+        lid <- cli_ul()
+        for (i in seq_along(res_list_match_compact)) {
+          cli_li(paste0(
+            '{.code {names(res_list_match_compact)[i]}}: ',
+            '{res_list_match_compact[i]} rows',
+            ''
+          ))
+
+        }
+
+        cli_end(lid)
+
+        # Display a message about checking results and trimming
+        cli::cli_alert_info("Important: Please check the results for posology,
+                        as coding issues are common.
+                        Some results may seem unreliable.")
+      }
+
+    msg_match()
   }
