@@ -15,6 +15,10 @@ test_that("cli formatting", {
     Dechallenge1 = 1, TimeToOnsetMin = 1
   )
 
+  ind_valid <- data.frame(
+    Drug_Id = 1, Indication = ""
+  )
+
   invalid_data <- data.frame(
     UMCReportId = 1
   )
@@ -29,11 +33,11 @@ test_that("cli formatting", {
 
   expect_snapshot({
     dtype <-
-      purrr::map(list(drug_valid, demo_valid, adr_valid, link_valid),
+      purrr::map(list(drug_valid, demo_valid, adr_valid, link_valid, ind_valid),
           function(data_)
       vigicaen:::query_data_type(data_, ".data")
       )
     })
 
-  expect_equal(dtype, list("drug", "demo", "adr", "link"))
+  expect_equal(dtype, list("drug", "demo", "adr", "link", "ind"))
 })

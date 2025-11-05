@@ -33,7 +33,7 @@ The function also creates variables in each table. See \code{\link[=tb_vigibase]
 Use \code{\link[=dt_parquet]{dt_parquet()}} to load the tables afterward.
 }
 \examples{
-\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 
 # Use the examples from tb_main if you want to see these functions in action.
 

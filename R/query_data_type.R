@@ -42,6 +42,9 @@ query_data_type <-
         all(c("Drug_Id", "Adr_Id", "Dechallenge1", "TimeToOnsetMin") %in%
               names(.data))
         ~ "link",
+        all(c("Drug_Id", "Indication") %in%
+              names(.data))
+        ~ "ind",
         TRUE ~ "unknown"
       )
 
@@ -51,7 +54,7 @@ query_data_type <-
         c(
           "{.arg {arg}} must match an expected data type.",
           "!" = "Column names are not those of expected data types.",
-          ">" = "Supported types are demo, drug, adr, and link. See ?demo_."
+          ">" = "Supported types are demo, drug, adr, ind, and link. See ?demo_."
         ),
         call = call
       )

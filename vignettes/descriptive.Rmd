@@ -138,7 +138,7 @@ demo <-
 demo <-
   demo |>
   mutate(
-    fup = if_else(UMCReportId %in% followup$UMCReportId, 1, 0),
+    fup = ifelse(UMCReportId %in% followup$UMCReportId, 1, 0),
     serious = 
       ifelse(
         UMCReportId %in% out$UMCReportId,

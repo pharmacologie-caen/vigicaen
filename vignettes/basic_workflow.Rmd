@@ -546,10 +546,63 @@ demo |>
   check_dm("a_colitis")
 ```
 
+
 ## Other variables
 
 We may need to create other variables to perform our analysis,
 for example age and sex in a multivariable analysis.
+
+### Indications
+
+The `ind` table contains the indication data at the drug level.
+Indications are encoded using either MedDRA or International 
+Classification of Diseases (ICD) codes. The exact ICD version
+depends on the date of the report.
+
+> If you wish to perform a full search of indications, you must
+enclose terms from both MedDRA and ICD.
+
+You can add the indication columns to `demo` or other tables
+(`drug`, `adr`, `link`, or even `ind`) with `add_ind()`.
+
+The process is simpler than for drugs and reactions, since there is no
+`get_` step.
+
+First, load the tables and pick the indication terms of interest.
+
+```{r i_list}
+# You need ind and drug, plus the table you will be working on, here demo.
+ind <- ind_
+
+i_list <-
+  list2(
+    melanoma = c("Malignant melanoma", "Metastatic malignant melanoma")
+  )
+```
+
+Then, run `add_ind()`.
+
+```{r add_ind_modal_case}
+demo <- 
+  add_ind(
+    .data = demo,
+    i_list = i_list,
+    drug_data = drug,
+    ind_data  = ind
+    )
+```
+
+As all drugs from all reports do not appear in the ind table, there might be
+missing data in the columns created with `add_ind()` (which couldn't happen 
+with `add_drug()` or `add_adr()`.
+
+Thus, you can't use `check_dm()`, which doesn't work in case of missing data.
+`desc_facvar()` will do the job instead.
+
+```{r check_dm_ind}
+demo |> 
+  desc_facvar("melanoma")
+```
 
 ### Age
 

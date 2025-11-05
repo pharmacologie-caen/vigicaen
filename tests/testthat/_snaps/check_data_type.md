@@ -31,9 +31,29 @@
 ---
 
     Code
-      check_data_link(drug_valid, ".data")
+      check_data_demo(d_, ".data")
     Condition
-      Error:
+      Error in `.f()`:
+      ! `.data` must be a `demo` table.
+      x Missing columns: UMCReportId, Type, DateDatabase, and Region
+      > Supply a `demo` table to `.data`. See ?demo_.
+
+---
+
+    Code
+      check_data_link(d_, ".data")
+    Condition
+      Error in `.f()`:
+      ! `.data` must be a `link` table.
+      x Missing columns: Drug_Id, Adr_Id, Dechallenge1, tto_mean, and range
+      > Supply a `link` table to `.data`. See ?link_.
+
+---
+
+    Code
+      check_data_link(d_, ".data")
+    Condition
+      Error in `.f()`:
       ! `.data` must be a `link` table.
       x Missing columns: Adr_Id, Dechallenge1, tto_mean, and range
       > Supply a `link` table to `.data`. See ?link_.
@@ -41,9 +61,9 @@
 ---
 
     Code
-      check_data_link(adr_valid, ".data")
+      check_data_link(d_, ".data")
     Condition
-      Error:
+      Error in `.f()`:
       ! `.data` must be a `link` table.
       x Missing columns: Drug_Id, Dechallenge1, tto_mean, and range
       > Supply a `link` table to `.data`. See ?link_.
@@ -51,12 +71,52 @@
 ---
 
     Code
-      check_data_link(demo_valid, ".data")
+      check_data_link(d_, ".data")
     Condition
-      Error:
+      Error in `.f()`:
       ! `.data` must be a `link` table.
-      x Missing columns: Drug_Id, Adr_Id, Dechallenge1, tto_mean, and range
+      x Missing columns: Adr_Id, Dechallenge1, tto_mean, and range
       > Supply a `link` table to `.data`. See ?link_.
+
+---
+
+    Code
+      check_data_ind(d_, ".data")
+    Condition
+      Error in `.f()`:
+      ! `.data` must be an `ind` table.
+      x Missing columns: Indication and Drug_Id
+      > Supply an `ind` table to `.data`. See ?ind_.
+
+---
+
+    Code
+      check_data_ind(d_, ".data")
+    Condition
+      Error in `.f()`:
+      ! `.data` must be an `ind` table.
+      x Missing columns: Indication
+      > Supply an `ind` table to `.data`. See ?ind_.
+
+---
+
+    Code
+      check_data_ind(d_, ".data")
+    Condition
+      Error in `.f()`:
+      ! `.data` must be an `ind` table.
+      x Missing columns: Indication and Drug_Id
+      > Supply an `ind` table to `.data`. See ?ind_.
+
+---
+
+    Code
+      check_data_ind(d_, ".data")
+    Condition
+      Error in `.f()`:
+      ! `.data` must be an `ind` table.
+      x Missing columns: Indication
+      > Supply an `ind` table to `.data`. See ?ind_.
 
 ---
 
