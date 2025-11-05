@@ -169,6 +169,16 @@ the beginning of your main script.</p>
 <span>    adr_data <span class="op">=</span> <span class="va">adr</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
+<span><span class="co"># ---- Indications ---- ####</span></span>
+<span></span>
+<span><span class="va">demo</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">demo</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/add_ind.html">add_ind</a></span><span class="op">(</span></span>
+<span>    <span class="va">i_list</span>,</span>
+<span>    drug_data <span class="op">=</span> <span class="va">drug</span>,</span>
+<span>    ind_data <span class="op">=</span> <span class="va">ind</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
 <span><span class="co"># ---- Demographics ---- ####</span></span>
 <span></span>
 <span><span class="co"># Age, sex</span></span>
@@ -206,7 +216,7 @@ the beginning of your main script.</p>
 <span><span class="va">demo</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">demo</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    fup <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">UMCReportId</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">followup</span><span class="op">$</span><span class="va">UMCReportId</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span>    fup <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">UMCReportId</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">followup</span><span class="op">$</span><span class="va">UMCReportId</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
 <span>    serious <span class="op">=</span> </span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
 <span>        <span class="va">UMCReportId</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">out</span><span class="op">$</span><span class="va">UMCReportId</span>,</span>
