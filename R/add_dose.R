@@ -93,11 +93,11 @@ add_dose <-
       paste0(d_dose_names, "_dose_mg_per_day")
 
 
-    dd_rb <- drug_data |>
-      dplyr::filter(.data$Basis %in% basis_sel)
+    # dd_rb <- drug_data |>
+    #   dplyr::filter(.data$Basis %in% basis_sel)
 
     renamer_did <- c("did_col" = method)
-    dd_rb <- dd_rb |> dplyr::rename(dplyr::all_of(renamer_did))
+    # dd_rb <- dd_rb |> dplyr::rename(dplyr::all_of(renamer_did))
 
     # identify table_ids to collect
 
@@ -111,84 +111,63 @@ add_dose <-
       )
 
     renamer_tid <- c("t_id" = t_id)
-    dd_rb <- dd_rb |> dplyr::rename(dplyr::all_of(renamer_tid))
 
-    # Collect table_ids with doses
-    t_ids <- purrr::map(d_code, function(d_code_batch) {
-      dd_rb |>
-        dplyr::filter(.data$did_col %in% d_code_batch) |>
-        dplyr::select(t_id, Amount, AmountU, Frequency, FrequencyU) |>
-        dplyr::mutate(
-          AmountU = gsub("\\s+", "", AmountU),
-          FrequencyU = gsub("\\s+", "", FrequencyU),
-          Amount = gsub("\\s+", "", Amount),
-          Frequency = gsub("\\s+", "", Frequency)
-        ) |>
-        dplyr::filter(Amount != "-") |>
-        dplyr::filter(trimws(AmountU) %in% c("1", "2", "3", "4", "5", "6")) |>
-        dplyr::filter(Frequency != "-") |>
-        dplyr::filter(trimws(FrequencyU) %in% c("801", "802", "803", "804", "805", "806")) |>
-        dplyr::filter(Frequency != 0) |>
-        dplyr::mutate(
-          Amount = as.numeric(Amount),
-          Frequency = as.numeric(Frequency),
-          multiplicator_amount = dplyr::case_when(
-            AmountU == "1" ~ 1000000,
-            AmountU == "2" ~ 1000,
-            AmountU == "3" ~ 1,
-            AmountU == "4" ~ 1 / 1000,
-            AmountU == "5" ~ 1 / 1000000,
-            AmountU == "6" ~ 1 / 1000000000,
-            TRUE ~ NA_real_
-          ),
-          multiplicator_frequency = dplyr::case_when(
-            FrequencyU == "806" ~ 1440,
-            FrequencyU == "805" ~ 24,
-            FrequencyU == "804" ~ 1,
-            FrequencyU == "803" ~ 1 / 7,
-            FrequencyU == "802" ~ 1 / 30,
-            FrequencyU == "801" ~ 1 / 365.25,
-            TRUE ~ NA_real_
-          ),
-          dose_mg_per_day = (Amount * multiplicator_amount * multiplicator_frequency * Frequency
-          )) |>
-        dplyr::filter(!is.na(dose_mg_per_day)) |>
-        dplyr::group_by(t_id) |>
-        dplyr::slice_max(dose_mg_per_day, with_ties = FALSE) |>
-        dplyr::ungroup()|>
-        dplyr::select(t_id, dose_mg_per_day) # Only keep relevant columns
-    })
+    back_renamer_tid <-
+      "t_id" |> rlang::set_names(t_id)
+    # dd_rb <- dd_rb |> dplyr::rename(dplyr::all_of(renamer_tid))
+
+    # Collect doses for each t_id
 
 
-    e_l <-
-      t_ids |>
-      purrr::map(function(t_id_subset) {
-        # Create a lookup vector for t_id to dose
-        lookup <- setNames(t_id_subset$dose_mg_per_day, t_id_subset$t_id)
-        # Return a quosure that performs the lookup
-        rlang::quo(
-          lookup[as.character(t_id)]
-        ) |>
-          rlang::quo_set_env(
-            new.env(parent = rlang::caller_env()) |>
-              { \(e) { e$lookup <- lookup; e } }()
+    dose_by_tid <-
+      purrr::pmap(
+        list(
+          d_code_batch = d_code,
+          d_dose_one_name = d_d_names_full
+        ),
+        function(d_code_batch, d_dose_one_name)
+          core_add_dose_one_drug_mg_day(
+            d_code_batch = d_code_batch,
+            d_dose_one_name = d_dose_one_name,
+            drug_data = drug_data,
+            basis_sel = basis_sel,
+            renamer_did = renamer_did,
+            renamer_tid = renamer_tid
           )
-      }) |>
-      rlang::set_names(d_d_names_full)
+      )
 
-    # Prepare destination table with renamed columns
-    dest_data <- .data |> dplyr::rename(dplyr::all_of(renamer_tid))
+    for(dose_data in seq_along(dose_by_tid)){
+      if(d_d_names_full[dose_data] %in%
+         names(.data)) {
+        .data <-
+          .data |>
+        dplyr::select(-dplyr::all_of( # remove col if existing
+          d_d_names_full[dose_data])) |>
+        dplyr::left_join( # then "add" it via join
+          dose_by_tid[[dose_data]],
+          by = back_renamer_tid # name of this
+          # is not optimal
+        )
+         } else {
+           .data <-
+             .data |>
+             dplyr::left_join( # then "add" it via join
+               dose_by_tid[[dose_data]],
+               by = back_renamer_tid # name of this
+               # is not optimal
+             )
+         }
+    }
 
-    # Add new columns using the quosures
-    dest_data_withcols <- dest_data |> dplyr::mutate(!!!e_l)
+    # Count the number of rows with a valid dose
+    # in mg/day for each drug
 
-    # Count the number of rows with a valid dose in mg/day for each drug
     dose_counts <-
       d_dose_names |>
       rlang::set_names() |>
       purrr::map( ~ {
         drug_col <- paste0( .x, "_dose_mg_per_day")
-        sum(!is.na(dest_data_withcols[[drug_col]]))
+        sum(!is.na(.data[[drug_col]]))
         })
 
     drug_with_dose_data <-
@@ -199,7 +178,9 @@ add_dose <-
       dose_counts |>
       purrr::discard(~ .x > 0)
 
-    # booleans to check if there is any of each cases (drugs with/without data)
+    # booleans to check if there is any of
+    # each cases (drugs with/without data)
+
     any_with_dose <-
       drug_with_dose_data |> purrr::map(function(x)
         ! is.null(x)) |>
@@ -209,8 +190,6 @@ add_dose <-
       drug_without_dose_data |> purrr::map(function(x)
         ! is.null(x)) |>
       unlist() |> any()
-
-
 
     # Display results
     if (any_no_dose) {
@@ -224,25 +203,130 @@ add_dose <-
     # Check if any of the columns have non-NA values
     if (any_with_dose) {
       cli::cli_alert_info("Summary of added dose columns:")
-      print(desc_cont(dest_data_withcols,
-                      paste0(names(drug_with_dose_data), "_dose_mg_per_day"))
-      )
+
+      dose_desc <-
+        desc_cont(.data,
+                      paste0(names(drug_with_dose_data),
+                             "_dose_mg_per_day")
+        ) |>
+        dplyr::mutate(
+          var_i =
+            stringr::str_replace(
+              .data$var,
+              "_dose_mg_per_day",
+              ""
+            )
+        )
+
+      cli_h3("Dose description (mg/day)")
+
+      cli_end()
+      cli_par()
+
+      lid <- cli_ul()
+      for (i in nrow(dose_desc)) {
+        cli_li(paste0(
+          '{.code {dose_desc[i, "var_i"]}}: ',
+          '',
+          '{dose_desc[i, "value"]}'
+        ))
+
+      }
+
+      cli_end(lid)
+
+
     }
 
-    # compute everything (this is strictly required only for arrow objects)
+    # compute everything (this is strictly
+    # required only for arrow objects)
 
     if(any(c("Table", "Dataset") %in% class(.data))){
-      return(dest_data_withcols |>
+      return(.data |>
         dplyr::compute()
       )
     } else {
-      return(dest_data_withcols)
+      return(.data)
     }
 
   }
 
 
 # Helpers --------------------
+
+core_add_dose_one_drug_mg_day <-
+  function(d_code_batch, d_dose_one_name,
+           drug_data,
+           basis_sel,
+           renamer_did,
+           renamer_tid
+  ){
+
+    renamer_dose_column <-
+      c("dose_mg_per_day") |>
+      rlang::set_names(d_dose_one_name)
+
+    drug_data |>
+      dplyr::rename(dplyr::all_of(
+        c(renamer_did, renamer_tid)
+      )) |>
+      dplyr::filter(
+        .data$Basis %in% basis_sel,
+        .data$did_col %in% d_code_batch
+      ) |>
+      dplyr::select(dplyr::all_of(
+        c("t_id", "Amount", "AmountU", "Frequency",
+          "FrequencyU"))
+      ) |>
+      dplyr::mutate(
+        AmountU    = str_trim(.data$AmountU),
+        FrequencyU = str_trim(.data$FrequencyU),
+        Amount     = str_trim(.data$Amount),
+        Frequency  = str_trim(.data$Frequency)
+      ) |>
+      dplyr::filter(
+        .data$Amount != "-",
+        .data$AmountU %in%
+          c("1", "2", "3", "4", "5", "6"),
+        .data$Frequency != "-",
+        .data$Frequency != 0,
+        .data$FrequencyU %in%
+          c("801", "802", "803", "804", "805", "806")
+      ) |>
+      dplyr::mutate(
+        Amount    = as.numeric(.data$Amount),
+        Frequency = as.numeric(.data$Frequency),
+        multiplicator_amount = dplyr::case_when(
+          .data$AmountU == "1" ~ 1000000,
+          .data$AmountU == "2" ~ 1000,
+          .data$AmountU == "3" ~ 1,
+          .data$AmountU == "4" ~ 1 / 1000,
+          .data$AmountU == "5" ~ 1 / 1000000,
+          .data$AmountU == "6" ~ 1 / 1000000000,
+          TRUE ~ NA_real_
+        ),
+        multiplicator_frequency = dplyr::case_when(
+          .data$FrequencyU == "806" ~ 1440,
+          .data$FrequencyU == "805" ~ 24,
+          .data$FrequencyU == "804" ~ 1,
+          .data$FrequencyU == "803" ~ 1 / 7,
+          .data$FrequencyU == "802" ~ 1 / 30,
+          .data$FrequencyU == "801" ~ 1 / 365.25,
+          TRUE ~ NA_real_
+        ),
+        dose_mg_per_day =
+          (.data$Amount * .data$multiplicator_amount *
+             .data$multiplicator_frequency * .data$Frequency
+          )) |>
+      dplyr::filter(!is.na(.data$dose_mg_per_day)) |>
+      dplyr::group_by(.data$t_id) |>
+      dplyr::slice_max(.data$dose_mg_per_day,
+                       with_ties = FALSE) |>
+      dplyr::ungroup()|>
+      dplyr::select(
+        dplyr::all_of(c("t_id", "dose_mg_per_day"))) |>
+      dplyr::rename(dplyr::all_of(renamer_dose_column))
+  }
 
 
 msg_addind_no_match <-

@@ -7,7 +7,7 @@
 add_dose(
   .data,
   d_code,
-  d_names = names(d_code),
+  d_dose_names = names(d_code),
   repbasis = "sci",
   method = c("DrecNo", "MedicinalProd_Id"),
   drug_data
@@ -18,60 +18,64 @@ add_dose(
 
 \item{d_code}{A named list of drug codes (DrecNos or MPI). See Details.}
 
-\item{d_names}{A character vector. Names for drug columns (must be the same length as d_code), default to \code{names(d_code)}}
+\item{d_dose_names}{A character vector. Names for drug dose
+columns (must be the same length as d_code), default to \code{names(d_code)}.
+Will be followed by a fixed suffix "_dose_mg_per_day".}
 
 \item{repbasis}{Suspect, interacting and/or concomitant.
 Type initial of those you wish to select ("s" for suspect, "c" for concomitant
 and "i" for interacting ; default to all, e.g. "sci").}
 
-\item{method}{A character string. The type of drug code (DrecNo or MedicinalProd_Id). See details.}
+\item{method}{A character string.
+The type of drug code (DrecNo or MedicinalProd_Id). See details.}
 
 \item{drug_data}{A data.frame containing the drug data (usually, it is \code{drug})}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-\code{add_dose()} creates dynamic columns representing drug doses (in mg)
+\code{add_dose()} creates drug dose columns in vigibase
+datasets (demo, link, adr, drug, ind)
 for specified drugs in a dataset. It calculates daily dose values
 based on dose amount, frequency, and their corresponding units.
-The function is #' compatible with \code{demo}, \code{link}, and \code{adr} datasets.
+The function is compatible with \code{demo}, \code{link}, \code{adr}, \code{drug} and \code{ind}
+datasets.
 }
 \details{
+Currently, only drug doses in \strong{mg per day} are handled.
 The function identifies drug doses in a dataset by cross-referencing
-with a drug data table. Drug codes can be specified using either
-DrecNos or MedicinalProd_Id. Doses are filtered based on reputation
+with a drug data table. Drugs may be filtered based on reputation
 bases (suspect, concomitant, or interacting).
-\code{d_code} is a named list containing drug codes.
 Either drug record numbers (e.g., from \code{\link[=get_drecno]{get_drecno()}}), or
-medicinalprod_ids (e.g., from \code{\link[=get_atc_code]{get_atc_code()}}). Default method is to DrecNos.
-
-\strong{Important:} Ensure the dataset's structure aligns with the \code{data_type}
-argument to avoid errors.
+medicinalprod_ids (e.g., from \code{\link[=get_atc_code]{get_atc_code()}}) can be used to
+identify drugs. Default method is to DrecNos.
 
 \strong{Note:} It is very important to check the results obtained, as coding problems
-are very frequent for posology data. Some results might appear unbelievable due
-to these issues and should be carefully reviewed and trimmed accordingly.
+are very frequent for dose data, and some results might appear unreliable.
 }
 \examples{
 # Example: Adding doses for paracetamol
-d_code <- list(paracetamol = c(001, 002))
-demo_updated <- add_dose(
-  .data = demo_,
-  d_code = d_code,
-  d_names = "paracetamol",
-  repbasis = "sci",
-  method = "DrecNo",
-  drug_data = drug_
-)
+d_code <- list(paracetamol = c(97818920, 97409107))
+demo <-
+  add_dose(
+    .data = demo_,
+    d_code = d_code,
+    d_dose_names = "paracetamol",
+    drug_data = drug_
+    )
 
-# Example: Restricting to "suspect" reputation base
-demo_suspect <- add_dose(
-  .data = demo_,
-  d_code = d_code,
-  d_names = "paracetamol_suspected",
-  repbasis = "s",
-  method = "DrecNo",
-  drug_data = drug_
-)
+ desc_facvar(demo, "paracetamol_dose_mg_per_day")
+
+# Use only drug dose where paracetamol had a "suspect" reputation base.
+demo <-
+  add_dose(
+    .data = demo_,
+    d_code = d_code,
+    d_dose_names = "para_susp",
+    repbasis = "s",
+    drug_data = drug_
+  )
+
+  desc_facvar(demo, "para_susp_dose_mg_per_day")
 }
 \seealso{
 \code{\link[=add_drug]{add_drug()}}, \code{\link[=get_drecno]{get_drecno()}}, \code{\link[=get_atc_code]{get_atc_code()}}
