@@ -79,6 +79,17 @@
     Message
       i `.data` detected as `drug` table.
 
+# doesn't work with ind as .data
+
+    Code
+      ind_try <- add_adr(ind_test, a_code = adr_list_test, adr_data = adr_test)
+    Message
+      i `.data` detected as `ind` table.
+    Condition
+      Error in `add_adr()`:
+      ! `.data` must be one of `demo`, `drug`, `adr`, and `link`.
+      x `ind` tables not supported in `add_adr()`.
+
 # handle ambiguous names in .data
 
     Code

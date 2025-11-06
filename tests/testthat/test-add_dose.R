@@ -1,6 +1,7 @@
 test_that("finding or not finding drug dose displays correctly", {
   d_code <- list(paracetamol = c(97818920, 97409107),
-                 unknown_drug = c(99999999))
+                 unknown_drug = c(99999999),
+                 para2 = c(97818920, 97409107))
 
   expect_snapshot(
       demo <-
@@ -29,6 +30,40 @@ test_that("finding or not finding drug dose displays correctly", {
         .data = demo_,
         d_code = d_code,
         drug_data = drug_
+      )
+  )
+
+  # arbitrarily complex combination
+
+  expect_snapshot(
+    demo <-
+      add_dose(
+        .data = demo_,
+        d_code = d_code[c(1, 2, 3, 1, 2)],
+        drug_data = drug_
+      )
+  )
+
+  # with verbose to FALSE
+
+  expect_snapshot(
+    demo <-
+      add_dose(
+        .data = demo_,
+        d_code = d_code[1],
+        drug_data = drug_,
+        verbose = FALSE
+      )
+  )
+
+  expect_snapshot( # verbose is not affecting
+    # warning about no dose found
+    demo <-
+      add_dose(
+        .data = demo_,
+        d_code = d_code[2],
+        drug_data = drug_,
+        verbose = FALSE
       )
   )
 })
@@ -104,12 +139,14 @@ test_that("add_dose handles empty dataset gracefully", {
 test_that("add_dose correctly filters and calculates doses", {
   d_code <- list(paracetamol = c(97818920, 97409107))
 
-  result <- add_dose(
-    .data = demo_,
-    d_code = d_code,
-    repbasis = "sci",
-    method = "DrecNo",
-    drug_data = drug_
+  suppressMessages(
+    result <- add_dose(
+      .data = demo_,
+      d_code = d_code,
+      repbasis = "sci",
+      method = "DrecNo",
+      drug_data = drug_
+    )
   )
 
   # Check if the dose is calculated correctly (based on the example in the function)
@@ -119,22 +156,26 @@ test_that("add_dose correctly filters and calculates doses", {
 test_that("add_dose works for different `repbasis` values", {
   d_code <- list(paracetamol = c(97818920, 97409107))
 
-  result_suspect <- add_dose(
-    .data = demo_,
-    d_code = d_code,
-    d_dose_names = names(d_code),
-    repbasis = "s",
-    method = "DrecNo",
-    drug_data = drug_
+  suppressMessages(
+    result_suspect <- add_dose(
+      .data = demo_,
+      d_code = d_code,
+      d_dose_names = names(d_code),
+      repbasis = "s",
+      method = "DrecNo",
+      drug_data = drug_
+    )
   )
 
-  result_concomitant <- add_dose(
-    .data = demo_,
-    d_code = d_code,
-    d_dose_names = names(d_code),
-    repbasis = "c",
-    method = "DrecNo",
-    drug_data = drug_
+  suppressMessages(
+    result_concomitant <- add_dose(
+      .data = demo_,
+      d_code = d_code,
+      d_dose_names = names(d_code),
+      repbasis = "c",
+      method = "DrecNo",
+      drug_data = drug_
+    )
   )
 
   # The column names should differ
@@ -142,7 +183,7 @@ test_that("add_dose works for different `repbasis` values", {
   expect_equal(sum(result_suspect$paracetamol_dose_mg_per_day, na.rm = TRUE), 2000)
 })
 
-test_that("add_dose handles invalid dose values correctly", {
+test_that("handles invalid dose values correctly", {
   drug_invalid <- data.frame(
     UMCReportId = c(1),
     Drug_Id = c(1),
@@ -173,6 +214,195 @@ test_that("add_dose handles invalid dose values correctly", {
   expect_true(is.na(result$paracetamol_dose_mg_per_day[1]))
 })
 
+test_that("works with case and drug level tables", {
+  d_drecno_test <- rlang::list2("drug1" = c(001, 002))
+
+  drug_test <-
+    data.table(
+      UMCReportId = c(1, 2, 3, 4, 5, 1),
+      Drug_Id = c(1, 2, 3, 4, 5, 6),
+      MedicinalProd_Id = c(1, 2, 3, 4, 5, 6),
+      DrecNo = c(001, 002, 003, 001, 002, 001),
+      Basis = c(1, 1, 0, 0, 1, 1),
+      Amount = c(300, 123, 456, 789, 758, 600),
+      AmountU = c("3", "3", "3", "3", "3", "3"), # mg
+      Frequency = c("1", "2", "3", "1", "1", "2"),
+      FrequencyU = c("804", "804", "803", "801", "803", "804")
+    )
+
+  demo_test <-
+    data.table(
+      UMCReportId = c(1, 2, 3, 4, 5),
+      Region = NA,
+      DateDatabase = NA,
+      Type = NA
+    )
+
+  adr_test <-
+    data.table(
+      Adr_Id = c(11, 12, 13, 14, 15, 16),
+      UMCReportId = c(1, 2, 3, 4, 5, 1),
+      MedDRA_Id = c(1001, 1002, 1003, 1004, 1005, 1006),
+      Outcome = c(1, 2, 3, 4, 5, 6)
+    )
+
+
+  ind_test <-
+    data.table(
+      Drug_Id = c(1, 2, 3),
+      Indication = c("Diabetes mellitus",
+                     "Type 2 diabetes mellitus",
+                     "Another indication")
+    )
+
+  suppressMessages(
+    res <-
+      drug_test |>
+      add_dose(
+        d_code = d_drecno_test,
+        drug_data = drug_test
+      )
+  )
+
+  drug_true <-
+    data.table(
+      UMCReportId = c(1, 2, 3, 4, 5, 1),
+      Drug_Id = c(1, 2, 3, 4, 5, 6),
+      MedicinalProd_Id = c(1, 2, 3, 4, 5, 6),
+      DrecNo = c(001, 002, 003, 001, 002, 001),
+      Basis = c(1, 1, 0, 0, 1, 1),
+      Amount = c(300, 123, 456, 789, 758, 600),
+      AmountU = c("3", "3", "3", "3", "3", "3"), # mg
+      Frequency = c("1", "2", "3", "1", "1", "2"),
+      FrequencyU = c("804", "804", "803", "801", "803", "804"),
+      drug1_dose_mg_per_day =
+        c(300,
+          246,
+          NA_real_,
+          NA_real_,
+          108.2857,
+          1200
+        )
+    )
+
+  expect_equal(res, drug_true, tolerance = 0.01)
+
+  link_test <-
+    data.table(
+      Drug_Id =   c(1, 2, 3, 4, 5, 6),
+      Adr_Id = c(11, 12, 13, 14, 15, 16),
+      UMCReportId = c(1, 2, 3, 4, 5, 1),
+      Dechallenge1 = NA,
+      TimeToOnsetMin = NA
+    )
+
+  suppressMessages(
+    res_link <-
+      link_test |>
+      add_dose(
+        d_code = d_drecno_test,
+        drug_data = drug_test
+      )
+  )
+
+  link_true <-
+    data.table(
+      Drug_Id =   c(1, 2, 3, 4, 5, 6),
+      Adr_Id = c(11, 12, 13, 14, 15, 16),
+      UMCReportId = c(1, 2, 3, 4, 5, 1),
+      Dechallenge1 = NA,
+      TimeToOnsetMin = NA,
+      drug1_dose_mg_per_day =
+        c(300,
+          246,
+          NA_real_,
+          NA_real_,
+          108.2857,
+          1200
+          )
+    )
+
+  expect_equal(res_link, link_true, tolerance = 0.01)
+
+  suppressMessages(
+    res_ind <-
+      ind_test |>
+      add_dose(
+        d_code = d_drecno_test,
+        drug_data = drug_test
+      )
+  )
+
+  ind_true <-
+    data.table(
+      Drug_Id = c(1, 2, 3),
+      Indication = c("Diabetes mellitus",
+                     "Type 2 diabetes mellitus",
+                     "Another indication"),
+      drug1_dose_mg_per_day =
+        c(300,
+          246,
+          NA_real_
+        )
+    )
+
+  expect_equal(res_ind, ind_true, tolerance = 0.01)
+
+  # expect to pick the maximum dose at case level
+  suppressMessages(
+    res_demo <-
+      demo_test |>
+      add_dose(
+        d_code = d_drecno_test,
+        drug_data = drug_test
+      )
+  )
+
+  demo_true <-
+    data.table(
+      UMCReportId = c(1, 2, 3, 4, 5),
+      Region = NA,
+      DateDatabase = NA,
+      Type = NA,
+      drug1_dose_mg_per_day =
+        c(1200,
+          246,
+          NA_real_,
+          NA_real_,
+          108.2857
+          )
+    )
+
+  expect_equal(res_demo, demo_true, tolerance = 0.01)
+
+  suppressMessages(
+    res_adr <-
+      adr_test |>
+      add_dose(
+        d_code = d_drecno_test,
+        drug_data = drug_test
+      )
+  )
+
+  adr_true <-
+    data.table(
+      Adr_Id = c(11, 12, 13, 14, 15, 16),
+      UMCReportId = c(1, 2, 3, 4, 5, 1),
+      MedDRA_Id = c(1001, 1002, 1003, 1004, 1005, 1006),
+      Outcome = c(1, 2, 3, 4, 5, 6),
+      drug1_dose_mg_per_day =
+        c(1200,
+          246,
+          NA_real_,
+          NA_real_,
+          108.2857,
+          1200
+        )
+    )
+
+  expect_equal(res_adr, adr_true, tolerance = 0.01)
+})
+
 test_that("you can use arrow/parquet format", {
 
   d_drecno_test <- rlang::list2("nivolumab" = c(001, 002))
@@ -187,8 +417,7 @@ test_that("you can use arrow/parquet format", {
       Amount = c("-", 123, 456, 789, 758),
       AmountU = c("3", "3", "3", "3", "3"), # mg
       Frequency = c("1", "2", "3", "1", "1"),
-      FrequencyU = c("804", "804", "803", "801","801"),
-      stringsAsFactors = FALSE
+      FrequencyU = c("804", "804", "803", "801","801")
     )
 
   demo_test <-
@@ -280,7 +509,7 @@ test_that("works with mpi_list", {
     para = mp_[DrecNo == "42225260", MedicinalProd_Id]
   )
 
-  expect_snapshot({
+  suppressMessages(
     demo <-
       demo_ |>
       add_dose(
@@ -290,7 +519,7 @@ test_that("works with mpi_list", {
         repbasis = "sci",
         drug_data = drug_
       )
-  })
+  )
 
   expect_equal(mean(demo$para_dose_mg_per_day, na.rm = TRUE), 1087.5)
 

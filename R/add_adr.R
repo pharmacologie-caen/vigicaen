@@ -1,7 +1,7 @@
 #' Add ADR column(s) to a dataset
 #'
 #' @description `r lifecycle::badge('stable')`Creates adr columns
-#' in vigibase datasets (demo, link, drug, but also adr).
+#' in vigibase datasets (demo, link, drug, and adr).
 #'
 #' @details Low-level term codes are the preferred level of requesting in
 #' Vigibase extract case level since they capture all possible codes for a given
@@ -84,6 +84,15 @@ add_adr <-
       query_data_type(.data, ".data")
 
     # identify table_ids to collect
+
+    if(data_type == "ind"){
+      cli::cli_abort(
+        c(
+          '{.arg .data} must be one of {.code {c("demo", "drug", "adr", "link")}}.',
+          "x" = "{.code ind} tables not supported in {.code add_adr()}."
+        )
+      )
+    }
 
     t_id <-
       switch(data_type,

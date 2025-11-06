@@ -308,7 +308,7 @@ test_that("selecting only s, c, i works and provide less cases than sci altogeth
 })
 
 
-test_that("works with link and drug data, drug identification is Drug_Id wise, not UMCReportId wise", {
+test_that("works with link, drug and ind data, drug identification is Drug_Id wise, not UMCReportId wise", {
   d_drecno_test <-
     rlang::list2(
       ici1 = 21,
@@ -324,6 +324,36 @@ test_that("works with link and drug data, drug identification is Drug_Id wise, n
       MedicinalProd_Id = NA,
       UMCReportId = c(1, 1, 2, 2, 3)
     )
+
+  expect_snapshot({
+    ind_test <-
+    data.table(
+      Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3"),
+      # no ind for d4_ici3 and so on
+      Indication = c("Diabetes mellitus",
+                     "Type 2 diabetes mellitus",
+                     "Another indication")
+    ) |>
+    add_drug(d_code = d_drecno_test,
+             drug_data = drug_test)
+  })
+
+  ind_correct <-
+    data.table(
+      Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3"),
+      # no ind for d4_ici3 and so on
+      Indication = c("Diabetes mellitus",
+                     "Type 2 diabetes mellitus",
+                     "Another indication"),
+      ici1 = c(1, 0, 0),
+      ici2 = c(0, 1, 0),
+      ici3 = c(0, 0, 1)
+    )
+
+  expect_equal(
+    ind_test,
+    ind_correct
+  )
 
   expect_snapshot({
     link_test <-

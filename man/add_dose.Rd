@@ -10,7 +10,8 @@ add_dose(
   d_dose_names = names(d_code),
   repbasis = "sci",
   method = c("DrecNo", "MedicinalProd_Id"),
-  drug_data
+  drug_data,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -30,6 +31,8 @@ and "i" for interacting ; default to all, e.g. "sci").}
 The type of drug code (DrecNo or MedicinalProd_Id). See details.}
 
 \item{drug_data}{A data.frame containing the drug data (usually, it is \code{drug})}
+
+\item{verbose}{Logical, whether to display messages about added doses.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

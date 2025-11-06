@@ -32,6 +32,7 @@
 #' @param method A character string.
 #' The type of drug code (DrecNo or MedicinalProd_Id). See details.
 #' @param drug_data A data.frame containing the drug data (usually, it is `drug`)
+#' @param verbose Logical, whether to display messages about added doses.
 #'
 #'
 #' @keywords data_management drug doses
@@ -72,7 +73,8 @@ add_dose <-
            d_dose_names = names(d_code),
            repbasis = "sci",
            method = c("DrecNo", "MedicinalProd_Id"),
-           drug_data
+           drug_data,
+           verbose = TRUE
   )
   {
 
@@ -196,13 +198,12 @@ add_dose <-
       msg_addind_no_match(drug_without_dose_data)
     }
 
-    if(any_with_dose) {
+    if(verbose == TRUE && any_with_dose) {
       msg_addind_match(drug_with_dose_data)
     }
 
     # Check if any of the columns have non-NA values
-    if (any_with_dose) {
-      cli::cli_alert_info("Summary of added dose columns:")
+    if (verbose == TRUE && any_with_dose) {
 
       dose_desc <-
         desc_cont(.data,
@@ -218,23 +219,7 @@ add_dose <-
             )
         )
 
-      cli_h3("Dose description (mg/day)")
-
-      cli_end()
-      cli_par()
-
-      lid <- cli_ul()
-      for (i in nrow(dose_desc)) {
-        cli_li(paste0(
-          '{.code {dose_desc[i, "var_i"]}}: ',
-          '',
-          '{dose_desc[i, "value"]}'
-        ))
-
-      }
-
-      cli_end(lid)
-
+      msg_addind_dose_desc(dose_desc)
 
     }
 
@@ -310,7 +295,8 @@ core_add_dose_one_drug_mg_day <-
           .data$FrequencyU == "805" ~ 24,
           .data$FrequencyU == "804" ~ 1,
           .data$FrequencyU == "803" ~ 1 / 7,
-          .data$FrequencyU == "802" ~ 1 / 30,
+          .data$FrequencyU == "802" ~ 1 / (365.25 / 12), # average number
+          # of days in a month
           .data$FrequencyU == "801" ~ 1 / 365.25,
           TRUE ~ NA_real_
         ),
@@ -360,7 +346,7 @@ msg_addind_no_match <-
         cli_par()
 
         cli_alert_info(
-          "Other posology schemas are not supported in add_dose())."
+          "Other dosage regimens not supported in {.code add_dose()}."
         )
         cli_end()
       }
@@ -397,10 +383,36 @@ msg_addind_match <-
         cli_end(lid)
 
         # Display a message about checking results and trimming
-        cli::cli_alert_info("Important: Please check the results for posology,
-                        as coding issues are common.
-                        Some results may seem unreliable.")
+        cli::cli_alert_info("Important: Check dose results,
+                            coding issues are common for drug dose.
+                            Some values may seem unreliable.")
       }
 
     msg_match()
+  }
+
+msg_addind_dose_desc <-
+  function(dose_desc) {
+    msg_dose <-
+      function() {
+
+        cli_text(paste0(col_cyan("{symbol$info}"),
+                        " Dose summary (mg/day) - median (Q1-Q3) [min-max]"))
+
+        cli_end()
+        cli_par()
+
+        lid <- cli_ul()
+        for (i in 1 : nrow(dose_desc)) {
+          cli_li(paste0(
+            '{.code {dose_desc[i, "var_i"]}}: ',
+            '',
+            '{dose_desc[i, "value"]}'
+          ))
+        }
+
+        cli_end(lid)
+      }
+
+    msg_dose()
   }
