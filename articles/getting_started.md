@@ -1,0 +1,236 @@
+# Getting started
+
+## Purpose
+
+Have you subscribed to [VigiBase Extract Case Level,
+WHODrug](https://who-umc.org/) and [MedDRA](https://www.meddra.org/)?
+
+Congratulations! You’ve made it half way to explore VigiBase.
+
+Now, you need to process those large text/ascii files into R readable
+files. This is the purpose of this vignette.
+
+### Overview
+
+The `tb_*` functions (Table Builders) will help you through the process.
+
+| `tb_*` function | Usage                                                                    |
+|-----------------|--------------------------------------------------------------------------|
+| `tb_vigibase`   | Main tables (demo, drugs, adverse drug reactions), and subsidiary tables |
+| `tb_who`        | WHODrug tables                                                           |
+| `tb_meddra`     | MedDRA tables                                                            |
+
+## Deploy tables
+
+### Folder and files
+
+First, UNZIP the files you received from UMC (beware that you also need
+to unzip **sub-folders**, inside the main zip file).
+
+That will give you a folder structure like this:
+
+- /vigibase_month_year (replace with your version)
+- …/main
+- …/who
+- …/sub
+
+Gather your meddra files into a single folder, ideally close to the
+vigibase_month_year one.
+
+- /meddra_vx (replace vx)
+
+Although the names of the subfolders can be longer
+(e.g. “main_sep_1_24”), we **strongly** suggest you shorten them to
+`main`, `who`, `sub` for Vigibase, and `meddra_vx` for MedDRA.
+
+Short names will make your code easier to read and maintain.
+
+### Table builders (`tb_*` functions)
+
+Provide a path to these files on your computer.
+
+We usually create `path_*` objects in R, then use them in functions.
+This is optional, you can also pass path directly to `tb_*` functions.
+
+``` r
+library(vigicaen)
+
+# change for the correct paths on your computer
+path_base   <- "../vigibase_ecl/main" 
+path_sub    <- "../vigibase_ecl/sub"
+path_who    <- "../vigibase_ecl/who"
+path_meddra <- "../meddra"
+
+tb_vigibase(
+  path_base = path_base, 
+  path_sub  = path_sub
+  )
+
+tb_who(
+  path_who  = path_who
+  )
+
+tb_meddra(
+  path_meddra = path_meddra
+  )
+```
+
+> Deploying table have to be done ONCE per database version.
+
+New parquet files will be created in the same directories as provided to
+`path_*`.
+
+> The suspectedduplicates table is delivered with subsidiary files, but
+> the
+> [`tb_vigibase()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_vigibase.md)
+> function will output it in the main directory, under a slightly
+> modified name.
+
+### Outputs
+
+The `tb_*` functions create
+[parquet](https://arrow.apache.org/docs/r/index.html) files. Parquet is
+an open-source format, supported by Arrow.
+
+Not all tables from each source are created during the process.
+
+- Main: All tables + subsidiary tables (from sub): demo, drug, adr,
+  link, ind, srce, out, followup, suspdup, AgeGroup, Dechallenge,
+  Dechallenge2, Frequency, Gender, Notifier, Outcome, Rechallenge,
+  Rechallenge2, Region, RepBasis, ReportType, RouteOfAdm, Seriousness,
+  and SizeUnit.
+
+> **Note:** By default, the
+> [`tb_vigibase()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_vigibase.md)
+> function removes cases identified as suspected duplicates (present in
+> the file `SUSPECTEDDUPLICATES.txt`). You can disable this behavior
+> with the argument `rm_suspdup = FALSE` if you wish to keep them in the
+> main tables.
+
+- WHODrug: All tables: mp, thg, pp, ing, srce, org, ccode, atc, sun, pf,
+  str, prg, prt, unitx. Again, check correspondence in the delivered
+  files from UMC.
+
+- Meddra: meddra_hierarchy, smq_list, and smq_content.
+
+`mp` is modified in comparison to the original file, drug names were
+lowered case and trimed, to be more handy. A few columns have also been
+removed.
+
+## Loading tables into R
+
+You can use the arrow package built-in readers to load the tables, or
+the
+[`dt_parquet()`](https://pharmacologie-caen.github.io/vigicaen/reference/dt_parquet.md)
+function from this package, which is a shorthand for
+`data.table::as.data.table(read_parquet())`.
+
+``` r
+
+demo   <- dt_parquet(path_main, "demo")
+drug   <- dt_parquet(path_main, "drug")
+adr    <- dt_parquet(path_main, "adr")
+link   <- dt_parquet(path_main, "link")
+# etc.
+
+mp     <- dt_parquet(path_who, "mp")
+
+meddra <- dt_parquet(path_meddra, "meddra_hierarchy")
+```
+
+> Parquet files will be loaded IN memory, by default. To change this
+> behavior, remember to set `in_memory = FALSE`. Be careful that the
+> output format will be different.
+
+## Working on a computer with low specifications
+
+The main ressource to store objects in R is the RAM. If your computer
+don’t have much RAM (e.g., only 16GB), you will not be able to load all
+Vigibase tables at once in your session.
+
+In this case, you can use the `in_memory` argument of
+[`dt_parquet()`](https://pharmacologie-caen.github.io/vigicaen/reference/dt_parquet.md)
+to load tables **OUT** of memory.
+
+``` r
+demo   <- dt_parquet(path_main, "demo", in_memory = FALSE)
+```
+
+This will allow you to go through most of the data management steps.
+
+At the time of statistical modelling, you might need to load a table
+and/or use modelling packages that do not rely on RAM (one example:
+[biglm](https://CRAN.R-project.org/package=biglm))
+
+## Subsetting tables
+
+If you want to work on a specific subset of VigiBase (e.g. older adults,
+some specific drugs, or adverse drug reaction), you can create a
+dedicated subset with the
+[`tb_subset()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_subset.md)
+function.
+
+Currently, you can subset on
+
+- Age groups
+
+- Drug record numbers (DrecNo) and Medicinal product IDs
+  (MedicinalProd_Id)
+
+- MedDRA codes of adverse drug reactions (MedDRA_Id)
+
+Visit
+[`tb_subset()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_subset.md)
+help page for more information.
+
+You will need to collect drug or reaction **IDs** if you want to subset
+on these. See
+[`vignette("basic_workflow")`](https://pharmacologie-caen.github.io/vigicaen/articles/basic_workflow.md).
+
+``` r
+
+sv_selection <-
+    c(7, #  65 - 74 years group
+      8) #  >= 75 years group
+
+wd_in <- "some/place/on/your/computer/containing/vigibase_ecl/main"
+
+wd_out <- paste0(wd_in, "/", "more_than_65_subset", "/")
+
+tb_subset(wd_in, wd_out,
+          subset_var = "age",
+          sv_selection = sv_selection)
+```
+
+## Handling interruptions and resuming table creation
+
+Building all VigiBase tables can be a long process, especially on large
+datasets or computers with limited resources. There is a risk that the
+[`tb_vigibase()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_vigibase.md)
+may crash or be interrupted (for example, due to insufficient memory
+issue) before all tables are created.
+
+To address this,
+[`tb_vigibase()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_vigibase.md)
+provides the argument `overwrite_existing_tables` (default: `FALSE`).
+When set to `FALSE`, the function will automatically skip any .parquet
+tables that already exist in the output directory. This means you can
+re-run
+[`tb_vigibase()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_vigibase.md)
+after a crash or interruption, and it will resume from where it left
+off, only building the missing tables. This saves time and avoids
+unnecessary recomputation.
+
+If you want to force the rebuilding of all tables (for example, if you
+suspect a table is corrupted or want to refresh everything), set
+`overwrite_existing_tables = TRUE`.
+
+``` r
+# Example: resume after a crash
+# (only missing tables will be created)
+tb_vigibase(
+  path_base = path_base,
+  path_sub  = path_sub,
+  overwrite_existing_tables = FALSE
+)
+```

@@ -1,0 +1,347 @@
+# Routine pharmacovigilance
+
+``` r
+library(vigicaen)
+```
+
+## Motivation
+
+The aim of this vignette is to describe how to use vigicaen in the
+context of routine pharmacovigilance.
+
+In a hurry? Check the condensed script of this vignette at
+[`vignette("template_routine")`](https://pharmacologie-caen.github.io/vigicaen/articles/template_routine.md).
+
+The standard user of this vignette is:
+
+- A pharmacovigilance practitioner
+- Interested in R, but not necessarily willing to become an R expert,
+  nor a data management expert.
+- Working on a pharmacovigilance case, and seeking for additional data,
+  to improve his/her case report: Disproportionality Estimates, possibly
+  refined to a certain context, and time from drug initiation to
+  reaction onset.
+
+Meeting these criteria? Then this vignette is for you!
+
+## The whole game
+
+The idea is to reduce to the minimum steps to get data from VigiBase.
+
+1.  Load VigiBase data into R
+
+2.  Identify the drug and reaction of interest
+
+3.  Run
+    [`vigi_routine()`](https://pharmacologie-caen.github.io/vigicaen/reference/vigi_routine.md)
+
+4.  Save the results, in order to insert them into your
+    pharmacovigilance report.
+
+[`vigi_routine()`](https://pharmacologie-caen.github.io/vigicaen/reference/vigi_routine.md)
+is intended as the cornerstone function in this workflow.
+
+> We will use the following example: Say a physician reported a case of
+> colitis with ipilimumab. We would like to know if there is a reporting
+> association between colitis and ipilimumab, and we would like to
+> analyze time to onset.
+
+Obviously, the first part is more interesting if the association between
+colitis and ipilimumab is not well established.
+
+## Load tables
+
+If you haven’t already, you should build tables in an R compatible
+format, using the
+[`tb_vigibase()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_vigibase.md)
+and
+[`tb_who()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_who.md)
+functions. More information can be found in
+[`vignette("getting_started")`](https://pharmacologie-caen.github.io/vigicaen/articles/getting_started.md).
+
+This rather long step must only be done once per database version.
+
+Then, you need to set up the paths to your tables, and use
+[`dt_parquet()`](https://pharmacologie-caen.github.io/vigicaen/reference/dt_parquet.md).
+
+``` r
+path_base   <- "~/vigibase/main/"
+path_who    <- "~/vigibase/who/"
+path_meddra <- "~/meddra/"
+```
+
+Load tables into R. Preferably, let them out of memory, especially if
+you have a computer with rather low specifications (e.g., 16GB of RAM).
+
+``` r
+demo <- dt_parquet(path_base, "demo", in_memory = FALSE)
+drug <- dt_parquet(path_base, "drug", in_memory = FALSE)
+adr  <- dt_parquet(path_base, "adr", in_memory = FALSE)
+link <- dt_parquet(path_base, "link", in_memory = FALSE)
+
+mp     <- dt_parquet(path_who,    "mp")
+meddra <- dt_parquet(path_meddra, "meddra_hierarchy")
+```
+
+For this vignette, we will use built-in example tables instead.
+
+``` r
+demo     <- demo_
+adr      <- adr_
+drug     <- drug_
+link     <- link_
+
+mp <- mp_
+meddra   <- meddra_
+```
+
+## Identify drug and reaction of interest
+
+### Select the drug and reaction
+
+First, create named lists of the drug and reaction of interest. This is
+exactly similar to the
+[`vignette("basic_workflow")`](https://pharmacologie-caen.github.io/vigicaen/articles/basic_workflow.md).
+
+``` r
+d_sel <- list(
+  ipilimumab = "ipilimumab"
+)
+
+a_sel <- list(
+  # this is a High Level Term
+  colitis = "Colitis (excl infective)"
+)
+```
+
+When working with vigicaen, we always need to tell R which drug and
+which reaction we are interested in. Here, we create the `d_sel` object,
+which is a list, with one item. The item name is ipilimumab, and the
+content of this item is “ipilimumab”. The same goes for `a_sel`.
+
+> Use lower case for drugs: Good : “ipilimumab”, Wrong : “Ipilimumab”,
+> “IPILIMUMAB”
+
+> Mind the capital letter at the beginning of reactions (“**C**olitis”):
+> It must match exactly to the MedDRA term of this reaction.
+
+The `d_sel` must contains an “active ingredient”, which is the same as
+the international non-proprietary name, in a majority of cases.
+
+The `a_sel` must contain a MedDRA term, that can be either an Preferred
+Term, or any other Term level in MedDRA. It could also be an SMQ.
+
+> In order to use
+> [`vigi_routine()`](https://pharmacologie-caen.github.io/vigicaen/reference/vigi_routine.md),
+> both `d_sel` and `a_sel` must contain one, and only one, item each.
+
+### Collect IDs of drug and reaction
+
+The `get_*` functions family let you convert these terms into IDs, that
+can be used in VigiBase tables.
+
+For drugs, we need to get DrecNos (Drug Record Numbers). For reactions,
+we need low-level term codes.
+
+In this example, we will use
+[`get_drecno()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_drecno.md)
+and
+[`get_llt_soc()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_llt_soc.md).
+
+Feel free to browse the other `get_*` functions:
+[`get_llt_smq()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_llt_smq.md),
+[`get_atc_code()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_atc_code.md).
+
+``` r
+d_code <- 
+  get_drecno(d_sel, mp = mp)
+#> 
+#> ── get_drecno() ────────────────────────────────────────────────────────────────
+#> 
+#> ── `d_sel`: Matching drugs ──
+#> 
+#> ── ✔ Matched drugs
+#> 
+#> → `ipilimumab`: "ipilimumab" and "ipilimumab;nivolumab"
+#> 
+#> 
+#> ℹ Set `verbose` to FALSE to suppress this section.
+#> 
+#> 
+#> 
+#> ────────────────────────────────────────────────────────────────────────────────
+
+a_code <-
+  get_llt_soc(a_sel, term_level = "hlt", meddra = meddra)
+#> 
+#> ── get_llt_soc() ───────────────────────────────────────────────────────────────
+#> 
+#> ── ✔ Matched reactions at `hlt` level (number of codes) ──
+#> 
+#> → `colitis`: "Colitis (excl infective) (39)"
+#> ℹ Set `verbose` to FALSE to suppress this section.
+```
+
+## Use `vigi_routine()`
+
+You’re almost done, the last thing you need to do is run
+[`vigi_routine()`](https://pharmacologie-caen.github.io/vigicaen/reference/vigi_routine.md).
+
+It takes several arguments:
+
+- `demo_data`, `drug_data`, `adr_data`, `link_data`: The tables you
+  loaded earlier (as demo, drug, adr, and link)
+
+- `d_code`, `a_code`: The IDs of the drug and reaction of interest
+
+- `vigibase_version`: It’s a character string that will be printed in
+  the graph legend. You can use anything, such as “September 2024”. Just
+  remember to write *something*.
+
+``` r
+vigi_routine(
+  demo_data = demo,
+  drug_data = drug,
+  adr_data  = adr,
+  link_data = link,
+  d_code    = d_code,
+  a_code    = a_code,
+  vigibase_version = "September 2024"
+)
+```
+
+![Example of
+vigi_routine.](routine_pharmacovigilance_files/figure-html/vigi_routine-1.png)
+
+Lets take a look at the results. There are several sections.
+
+- The number of cases: It displays the number of cases where the drug
+  was suspected, interacting, or concomitant. Data are displayed with
+  bar charts and numerically.
+
+- The Rechallenge: Number of informative rechallenges (i.e.,
+  rechallenges where the outcome is known). It’s not displayed if no
+  cases were found.
+
+- The disproportionality analysis, using the Information Component. The
+  color scale is purely indicative and should not be considered as
+  standard.
+
+- The time to onset analysis. It shows the distribution of time to onset
+  from drug initiation (here, ipilimumab), to reaction onset (colitis).
+  The scale is log-transformed, and span from 1 day to … 10 years! The
+  pale blue and sustained blue bars at the bottom indicate the number of
+  limits where 50% and 80% of the patients fall. We can roughly see that
+  50% of the patients had a time to onset comprised between ~1.5 month
+  and 1 year. This second graph uses only cases where the drug was
+  **suspected** to be responsible for the reaction.
+
+### Add your own case time to onset
+
+As we said earlier, we are working on a case reported by a physician. In
+this case, the colitis happened 150days after ipilimumab initiation.
+
+We can add this information to the graph, using the `case_tto` argument.
+
+``` r
+vigi_routine(
+  case_tto  = 150,
+  demo_data = demo,
+  drug_data = drug,
+  adr_data  = adr,
+  link_data = link,
+  d_code    = d_code,
+  a_code    = a_code,
+  vigibase_version = "September 2024"
+)
+```
+
+![](routine_pharmacovigilance_files/figure-html/vigi_routine_case-1.png)
+
+### Customize the graph
+
+There are a few options to customize the output of this graph.
+
+You can use the `d_label` and `a_label` arguments to change the display
+in the legend.
+
+### Exporting your results
+
+You can save the results of
+[`vigi_routine()`](https://pharmacologie-caen.github.io/vigicaen/reference/vigi_routine.md)
+in a separate file, using the `export_to` argument.
+
+`export_to` must be a character string, indicating the path on your
+computer where you want to file to be saved. It **must** end with one of
+the following extensions:
+
+> “.eps”, “.ps”, “.tex” (pictex), “.pdf”, “.jpeg”, “.tiff”, “.png”,
+> “.bmp”, “.svg” or “.wmf” (windows only)
+
+Some of these extensions (like .svg) require additional packages to
+work. (e.g. svglite for “.svg”).
+
+``` r
+vigi_routine(
+  case_tto  = 150,
+  demo_data = demo,
+  drug_data = drug,
+  adr_data  = adr,
+  link_data = link,
+  d_code    = d_code,
+  a_code    = a_code,
+  d_label   = "Ipilimumab",
+  a_label   = "Colitis (HLT)",
+  vigibase_version = "September 2024",
+  export_to = "~/vigicaen_graph.png"
+)
+```
+
+### Advanced options: suspect_only and d_code_2
+
+The
+[`vigi_routine()`](https://pharmacologie-caen.github.io/vigicaen/reference/vigi_routine.md)
+function now supports two advanced arguments:
+
+- `suspect_only` (default TRUE): If TRUE, only cases where the drug is
+  suspected (Basis == “1”) are used for IC and TTO analyses. If FALSE,
+  all cases are included.
+- `d_code_2` (optional): If provided, a single analysis is performed on
+  cases exposed to both drugs in `d_code` and `d_code_2`. This is useful
+  for drugs with two compounds (e.g., amoxicillin plus clavulanic acid).
+
+#### Example: Dual drug analysis
+
+The example below is not very suitable: The idea is to use `d_code_2`
+when you want to study a fix drug combination, e.g. amoxicillin +
+clavulanic acid.
+
+However, the syntax would be:
+
+``` r
+d1 <- ex_$d_drecno["nivolumab"]
+d2 <- ex_$d_drecno["ipilimumab"]
+a_llt <- ex_$a_llt["a_colitis"]
+
+demo <- demo_
+adr  <- adr_
+drug <- drug_
+link <- link_
+
+vigi_routine(
+  demo_data = demo,
+  drug_data = drug,
+  adr_data  = adr,
+  link_data = link,
+  d_code = d1,
+  d_code_2 = d2,
+  a_code = a_llt,
+  vigibase_version = "September 2024"
+)
+#> ℹ Dual drug analysis: only cases exposed to both 'nivolumab' and 'ipilimumab' are included.
+```
+
+![](routine_pharmacovigilance_files/figure-html/dual_drug-1.png)
+
+A CLI message will indicate that only cases exposed to both drugs are
+included in the analysis.

@@ -51,6 +51,9 @@
 <div class="section level3">
 <h3 id="enhancements-for-low-specification-computers-development-version">Enhancements for low specification computers<a class="anchor" aria-label="anchor" href="#enhancements-for-low-specification-computers-development-version"></a></h3>
 <ul><li><p><em>New</em> <code><a href="../reference/add_ind.html">add_ind()</a></code> complements the <code>add_*</code> family, to add indication columns to a demo, drug, adr, link or ind table. It’s process is slightly simpler than the other add functions, as their is no <code>get_</code> step at the moment.</p></li>
+<li><p><em>New</em> <code><a href="../reference/add_dose.html">add_dose()</a></code> complements the <code>add_*</code> family, to add drug dose in mg per day columns to a demo, drug, adr, link or ind table. It calculates daily dose values based on dose amount, frequency, and their corresponding units.</p></li>
+<li><p><code><a href="../reference/add_drug.html">add_drug()</a></code> now supports <code>ind</code> tables as .data argument.</p></li>
+<li><p>An error message is raised if trying to pass an <code>ind</code> table to <code><a href="../reference/add_adr.html">add_adr()</a></code> as .data argument.</p></li>
 <li><p><code><a href="../reference/vigi_routine.html">vigi_routine()</a></code> is internally optimized to minimize memory use, making it more likely to success on low spec computers &lt;16GB RAM (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/158" class="external-link">#158</a>)</p></li>
 <li><p><code><a href="../reference/dt_parquet.html">dt_parquet()</a></code> now internally calls <code><a href="https://arrow.apache.org/docs/r/reference/open_dataset.html" class="external-link">arrow::open_dataset()</a></code> rather than <code><a href="https://arrow.apache.org/docs/r/reference/read_parquet.html" class="external-link">arrow::read_parquet()</a></code> if arg <code>in_memory = FALSE</code>, to increase chances of success on low spec computers &lt;16GB RAM (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/158" class="external-link">#158</a>)</p></li>
 </ul></div>
@@ -135,13 +138,10 @@
 <h3 id="new-features-0-15-1">New features<a class="anchor" aria-label="anchor" href="#new-features-0-15-1"></a></h3>
 <ul><li><p><code>tb_*</code> family now has a <code>cli</code> style progress bar</p></li>
 <li><p><code><a href="../reference/get_llt_soc.html">get_llt_soc()</a></code> output is reworked with <code>cli</code> features. The function also now correctly supports non-data.table data.frame.</p></li>
-<li><p><code><a href="../reference/vigi_routine.html">vigi_routine()</a></code> fails if there are no drug or adr cases found in <code>demo_data</code>.</p></li>
+<li><p><code><a href="../reference/vigi_routine.html">vigi_routine()</a></code> fails if there are no drug or adr cases found in <code>demo_data</code>. # vigicaen 0.15.0</p></li>
 </ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.15.0" id="vigicaen-0150">vigicaen 0.15.0<a class="anchor" aria-label="anchor" href="#vigicaen-0150"></a></h2>
 <div class="section level3">
-<h3 id="breaking-changes-0-15-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-15-0"></a></h3>
+<h3 id="breaking-changes-0-15-1">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-15-1"></a></h3>
 <ul><li>
 <p><code>mp</code> replaces <code>mp_short</code> throughout the package (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/110" class="external-link">#110</a>). Users will have to change existing code to replace calls to <code>mp_short</code> with <code>mp</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -179,7 +179,7 @@
 <li><p><code><a href="../reference/compute_dispro.html">compute_dispro()</a></code> is the new name of <code>compute_or_abcd()</code>, to reflect that other disproportionality measures are available.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="new-features-0-15-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-15-0"></a></h3>
+<h3 id="new-features-0-15-1-1">New features<a class="anchor" aria-label="anchor" href="#new-features-0-15-1-1"></a></h3>
 <ul><li><p>Args <code>inspect</code> and <code>show_all</code> of <code><a href="../reference/get_drecno.html">get_drecno()</a></code> are replaced by <code>verbose</code> (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/102" class="external-link">#102</a>).</p></li>
 <li><p><code><a href="../reference/get_drecno.html">get_drecno()</a></code> and <code><a href="../reference/get_llt_smq.html">get_llt_smq()</a></code> messages are cleaner and written with the <code>cli</code> package.</p></li>
 <li><p>New <code>top_n</code> argument added to <code><a href="../reference/screen_adr.html">screen_adr()</a></code> (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/86" class="external-link">#86</a>).</p></li>
@@ -189,13 +189,13 @@
 <li><p><code><a href="../reference/tb_subset.html">tb_subset()</a></code> handles ID code lists as input, instead of numeric vectors, to make workflow more consistent with other processes like <code>add_*</code>. (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/112" class="external-link">#112</a>)</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-and-bug-fixes-0-15-0">Minor and bug Fixes<a class="anchor" aria-label="anchor" href="#minor-and-bug-fixes-0-15-0"></a></h3>
+<h3 id="minor-and-bug-fixes-0-15-1">Minor and bug Fixes<a class="anchor" aria-label="anchor" href="#minor-and-bug-fixes-0-15-1"></a></h3>
 <ul><li><p><code><a href="../reference/screen_adr.html">screen_adr()</a></code> now counts effects at the case level (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/86" class="external-link">#86</a>).</p></li>
 <li><p>arg <code>data_type</code> of <code>add_*</code> functions is now deprecated. Data_type is internally detected.</p></li>
 <li><p><code><a href="../reference/add_drug.html">add_drug()</a></code> and <code><a href="../reference/add_adr.html">add_adr()</a></code> have informative error if id code list is incorrect (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/88" class="external-link">#88</a>).</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="documenting-0-15-0">Documenting<a class="anchor" aria-label="anchor" href="#documenting-0-15-0"></a></h3>
+<h3 id="documenting-0-15-1">Documenting<a class="anchor" aria-label="anchor" href="#documenting-0-15-1"></a></h3>
 <ul><li>Several documenting issues were adressed (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/64" class="external-link">#64</a>, <a href="https://github.com/pharmacologie-caen/vigicaen/issues/77" class="external-link">#77</a>, <a href="https://github.com/pharmacologie-caen/vigicaen/issues/82" class="external-link">#82</a>, <a href="https://github.com/pharmacologie-caen/vigicaen/issues/106" class="external-link">#106</a>, <a href="https://github.com/pharmacologie-caen/vigicaen/issues/108" class="external-link">#108</a>, <a href="https://github.com/pharmacologie-caen/vigicaen/issues/109" class="external-link">#109</a>, <a href="https://github.com/pharmacologie-caen/vigicaen/issues/111" class="external-link">#111</a>)</li>
 </ul></div>
 </div>
@@ -276,7 +276,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

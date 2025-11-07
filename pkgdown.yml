@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.1.3
+pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   basic_workflow: basic_workflow.html
@@ -10,7 +10,7 @@ articles:
   template_dictionary: template_dictionary.html
   template_main: template_main.html
   template_routine: template_routine.html
-last_built: 2025-11-05T09:52Z
+last_built: 2025-11-07T19:25Z
 urls:
   reference: https://pharmacologie-caen.github.io/vigicaen/reference
   article: https://pharmacologie-caen.github.io/vigicaen/articles
