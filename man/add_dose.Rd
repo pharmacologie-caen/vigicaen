@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_dose.R
 \name{add_dose}
 \alias{add_dose}
-\title{Add Dose in mg to a dataset}
+\title{Add drug dose in milligram per day}
 \usage{
 add_dose(
   .data,
@@ -44,16 +44,27 @@ The function is compatible with \code{demo}, \code{link}, \code{adr}, \code{drug
 datasets.
 }
 \details{
-Currently, only drug doses in \strong{mg per day} are handled.
+Actual supported dosage regimens are any combination of:
+\itemize{
+\item Kilograms, grams, milligrams, micrograms, nanograms, or picograms
+\item Per minute, hour, day, week, month, or year.
+}
+Note that the result will be expressed in \strong{milligrams per day}, whatever the
+aforementioned combination is. This may lead to very small or very large amounts
+in \code{drug_dose_mg_per_day} columns,
+depending on the actual dosage regimen.
 The function identifies drug doses in a dataset by cross-referencing
-with a drug data table. Drugs may be filtered based on reputation
+with a \code{drug_data} table.
+If either the amount unit (grams, etc.) \emph{or} the frequency (days, etc.) is missing
+in \code{drug_data}, the corresponding row will be omitted.
+Drugs may be filtered based on reputation
 bases (suspect, concomitant, or interacting).
 Either drug record numbers (e.g., from \code{\link[=get_drecno]{get_drecno()}}), or
 medicinalprod_ids (e.g., from \code{\link[=get_atc_code]{get_atc_code()}}) can be used to
 identify drugs. Default method is to DrecNos.
 
-\strong{Note:} It is very important to check the results obtained, as coding problems
-are very frequent for dose data, and some results might appear unreliable.
+\strong{It is very important to check the results}, as coding issues
+are common for dose data, and some results may seem unreliable.
 }
 \examples{
 # Example: Adding doses for paracetamol
@@ -66,7 +77,7 @@ demo <-
     drug_data = drug_
     )
 
- desc_facvar(demo, "paracetamol_dose_mg_per_day")
+desc_cont(demo, "paracetamol_dose_mg_per_day")
 
 # Use only drug dose where paracetamol had a "suspect" reputation base.
 demo <-
@@ -78,7 +89,7 @@ demo <-
     drug_data = drug_
   )
 
-  desc_facvar(demo, "para_susp_dose_mg_per_day")
+desc_cont(demo, "para_susp_dose_mg_per_day")
 }
 \seealso{
 \code{\link[=add_drug]{add_drug()}}, \code{\link[=get_drecno]{get_drecno()}}, \code{\link[=get_atc_code]{get_atc_code()}}

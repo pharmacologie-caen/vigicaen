@@ -440,19 +440,20 @@ test_that("you can use arrow/parquet format", {
   arrow::write_parquet(drug_test,
                        sink = paste0(tmp_folder, "\\drug.parquet"))
 
-  demo_parquet <- arrow::read_parquet(paste0(tmp_folder, "\\demo.parquet"))
-  drug_parquet <- arrow::read_parquet(paste0(tmp_folder, "\\drug.parquet"))
+  demo_parquet <- dt_parquet(paste0(tmp_folder, "\\demo.parquet"),
+                                      in_memory = FALSE)
+  drug_parquet <- dt_parquet(paste0(tmp_folder, "\\drug.parquet"),
+                                      in_memory = FALSE)
 
   suppressMessages(
     res <-
       demo_parquet |>
       add_dose(
         d_code = d_drecno_test,
-        d_dose_names = names(d_drecno_test),
-        method = "DrecNo",
-        repbasis = "sci",
         drug_data = drug_parquet
-      )
+      ) |>
+      dplyr::collect() |>
+      dplyr::arrange(.data$UMCReportId)
   )
 
   suppressMessages(
@@ -460,14 +461,26 @@ test_that("you can use arrow/parquet format", {
       demo_test |>
       add_dose(
         d_code = d_drecno_test,
-        d_dose_names = names(d_drecno_test),
-        method = "DrecNo",
-        repbasis = "sci",
         drug_data = drug_test
       )
   )
 
+  suppressMessages(
+    res_at <-
+      demo_test |>
+      arrow::as_arrow_table() |>
+      add_dose(
+        d_code = d_drecno_test,
+        drug_data = drug_test |>
+          arrow::as_arrow_table()
+      ) |>
+      dplyr::collect() |>
+      dplyr::arrange(.data$UMCReportId)
+  )
+
   expect_equal(res, res_a)
+
+  expect_equal(res, res_at)
 
   unlink(tmp_folder, recursive = TRUE)
 

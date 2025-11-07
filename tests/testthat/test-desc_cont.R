@@ -424,3 +424,78 @@ test_that("error columns not numeric/integer prints nicely", {
     cnd_class = TRUE
   )
 })
+
+test_that("checking column type integer/numeric works with arrow", {
+  d1 <-
+    data.frame(v1 = as.numeric(1), v2 = "a", v3 = 2L, v4 = "b") |>
+    arrow::as_arrow_table()
+
+  vf <- c("v1", "v2")
+
+  expect_silent(check_columns_numeric_integer(d1, "v1"))
+
+  expect_snapshot(check_columns_numeric_integer(d1, vf),
+                  error = TRUE,
+                  cnd_class = TRUE)
+
+
+  demo_test <-
+    data.table(
+      UMCReportId = c(1, 2, 3, 4, 5),
+      Region = NA,
+      DateDatabase = NA,
+      Type = NA,
+      # ambiguous column name
+      drug_test = c(0, 0, 0, 0, 1)
+    )
+
+  tmp_folder <- paste0(tempdir(), "/", "check_col_num_int_t1")
+
+  dir.create(path = tmp_folder)
+
+  # Write parquet files
+  arrow::write_parquet(demo_test,
+                       sink = paste0(tmp_folder, "\\demo.parquet"))
+
+
+  demo_parquet <- dt_parquet(paste0(tmp_folder, "\\demo.parquet"),
+                             in_memory = FALSE)
+
+  demo_query <-
+    demo_parquet |>
+    dplyr::mutate(a = 1)
+
+  expect_silent(
+    check_columns_numeric_integer(demo_parquet, c("UMCReportId", "drug_test"))
+  )
+
+  vf_cols <- c("UMCReportId", "Region")
+
+  expect_snapshot(check_columns_numeric_integer(demo_parquet, vf_cols),
+                  error = TRUE,
+                  cnd_class = TRUE)
+
+  expect_silent(
+    check_columns_numeric_integer(demo_query, c("UMCReportId", "drug_test"))
+  )
+
+  expect_snapshot(check_columns_numeric_integer(demo_query, vf_cols),
+                  error = TRUE,
+                  cnd_class = TRUE)
+
+
+  expect_equal(
+    desc_cont(demo_test, "UMCReportId"),
+    desc_cont(demo_query, "UMCReportId")
+  )
+
+  expect_equal(
+    desc_cont(demo_test, "UMCReportId"),
+    desc_cont(demo_parquet, "UMCReportId")
+  )
+
+  unlink(tmp_folder, recursive = TRUE)
+
+  if(dir.exists(tmp_folder) & Sys.info()[["sysname"]] != "Windows")
+    file.remove(tmp_folder)
+})

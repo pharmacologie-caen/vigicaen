@@ -6,11 +6,15 @@
 to a demo, drug, adr, link or ind table. It's process is slightly simpler
 than the other add functions, as their is no `get_` step at the moment.
 
-* Added a `add_dose()` function, according to tidyverse style
-`add_dose()` creates dynamic columns representing drug doses (in mg)
-#' for specified drugs in a dataset. It calculates daily dose values
-#' based on dose amount, frequency, and their corresponding units.
-#' The function is #' compatible with `demo`, `link`, and `adr` datasets.
+* *New* `add_dose()` complements the `add_*` family, to add drug dose
+in mg per day columns to a demo, drug, adr, link or ind table. 
+It calculates daily dose values based on dose amount, frequency, 
+and their corresponding units.
+
+* `add_drug()` now supports `ind` tables as .data argument.
+
+* An error message is raised if trying to pass an `ind` table to `add_adr()`
+as .data argument.
 
 *  `vigi_routine()` is internally optimized to minimize memory use,
 making it more likely to success on low spec computers <16GB RAM (#158)

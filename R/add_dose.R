@@ -1,4 +1,4 @@
-#' Add Dose in mg to a dataset
+#' Add drug dose in milligram per day
 #'
 #' @description `r lifecycle::badge('experimental')`
 #' `add_dose()` creates drug dose columns in vigibase
@@ -6,20 +6,30 @@
 #' for specified drugs in a dataset. It calculates daily dose values
 #' based on dose amount, frequency, and their corresponding units.
 #' The function is compatible with `demo`, `link`, `adr`, `drug` and `ind`
-#'  datasets.
+#' datasets.
 #'
 #' @details
-#' Currently, only drug doses in **mg per day** are handled.
+#' Actual supported dosage regimens are any combination of:
+#' \itemize{
+#'   \item Kilograms, grams, milligrams, micrograms, nanograms, or picograms
+#'   \item Per minute, hour, day, week, month, or year.
+#'   }
+#' Note that the result will be expressed in **milligrams per day**, whatever the
+#' aforementioned combination is. This may lead to very small or very large amounts
+#' in `drug_dose_mg_per_day` columns,
+#' depending on the actual dosage regimen.
 #' The function identifies drug doses in a dataset by cross-referencing
-#' with a drug data table. Drugs may be filtered based on reputation
+#' with a `drug_data` table.
+#' If either the amount unit (grams, etc.) *or* the frequency (days, etc.) is missing
+#' in `drug_data`, the corresponding row will be omitted.
+#' Drugs may be filtered based on reputation
 #' bases (suspect, concomitant, or interacting).
 #' Either drug record numbers (e.g., from [get_drecno()]), or
 #' medicinalprod_ids (e.g., from [get_atc_code()]) can be used to
 #' identify drugs. Default method is to DrecNos.
 #'
-#'
-#' **Note:** It is very important to check the results obtained, as coding problems
-#' are very frequent for dose data, and some results might appear unreliable.
+#' **It is very important to check the results**, as coding issues
+#' are common for dose data, and some results may seem unreliable.
 #'
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
 #' @param d_code A named list of drug codes (DrecNos or MPI). See Details.
@@ -50,7 +60,7 @@
 #'     drug_data = drug_
 #'     )
 #'
-#'  desc_facvar(demo, "paracetamol_dose_mg_per_day")
+#' desc_cont(demo, "paracetamol_dose_mg_per_day")
 #'
 #' # Use only drug dose where paracetamol had a "suspect" reputation base.
 #' demo <-
@@ -62,7 +72,7 @@
 #'     drug_data = drug_
 #'   )
 #'
-#'   desc_facvar(demo, "para_susp_dose_mg_per_day")
+#' desc_cont(demo, "para_susp_dose_mg_per_day")
 
 
 ###########
@@ -77,6 +87,17 @@ add_dose <-
            verbose = TRUE
   )
   {
+
+    # 0. arrow options
+
+    # keep original user option, then set it
+
+    original_user_option <- options("arrow.pull_as_vector")
+
+    options(arrow.pull_as_vector = TRUE) # ! different from other add_* functions
+    # as purpose is different (only used for a summary table)
+
+    # 1. checkers
 
     check_id_list_numeric(d_code)
     method <- rlang::arg_match(method)
@@ -169,7 +190,10 @@ add_dose <-
       rlang::set_names() |>
       purrr::map( ~ {
         drug_col <- paste0( .x, "_dose_mg_per_day")
-        sum(!is.na(.data[[drug_col]]))
+        .data |>
+          dplyr::filter(!is.na(.data[[drug_col]])) |>
+          dplyr::count() |>
+          dplyr::pull(.data$n)
         })
 
     drug_with_dose_data <-
@@ -223,10 +247,14 @@ add_dose <-
 
     }
 
+    # 8. restore user option
+
+    options(arrow.pull_as_vector = original_user_option)
+
     # compute everything (this is strictly
     # required only for arrow objects)
 
-    if(any(c("Table", "Dataset") %in% class(.data))){
+    if(any(c("Table", "Dataset", "arrow_dplyr_query") %in% class(.data))){
       return(.data |>
         dplyr::compute()
       )
@@ -244,14 +272,16 @@ core_add_dose_one_drug_mg_day <-
            drug_data,
            basis_sel,
            renamer_did,
-           renamer_tid
-  ){
+           renamer_tid,
+           t_id = {{ t_id }}
+           ){
 
     renamer_dose_column <-
-      c("dose_mg_per_day") |>
+      c("dose_mg_per_day_max") |>
       rlang::set_names(d_dose_one_name)
 
-    drug_data |>
+    dd_dose <-
+      drug_data |>
       dplyr::rename(dplyr::all_of(
         c(renamer_did, renamer_tid)
       )) |>
@@ -278,9 +308,13 @@ core_add_dose_one_drug_mg_day <-
         .data$FrequencyU %in%
           c("801", "802", "803", "804", "805", "806")
       ) |>
+      dplyr::collect() |> # required as a workaround for arrow failing to deal with the
+      # "-" entry in Amount or Frequency, together with converting to numeric
+      # as it, somehow, loose the order of the filter/mutate commands in the battle.
       dplyr::mutate(
         Amount    = as.numeric(.data$Amount),
         Frequency = as.numeric(.data$Frequency),
+
         multiplicator_amount = dplyr::case_when(
           .data$AmountU == "1" ~ 1000000,
           .data$AmountU == "2" ~ 1000,
@@ -304,14 +338,25 @@ core_add_dose_one_drug_mg_day <-
           (.data$Amount * .data$multiplicator_amount *
              .data$multiplicator_frequency * .data$Frequency
           )) |>
-      dplyr::filter(!is.na(.data$dose_mg_per_day)) |>
-      dplyr::group_by(.data$t_id) |>
-      dplyr::slice_max(.data$dose_mg_per_day,
-                       with_ties = FALSE) |>
-      dplyr::ungroup()|>
-      dplyr::select(
-        dplyr::all_of(c("t_id", "dose_mg_per_day"))) |>
-      dplyr::rename(dplyr::all_of(renamer_dose_column))
+      dplyr::filter(!is.na(.data$dose_mg_per_day))
+
+    n_dd_dose <-
+      dplyr::collect(dplyr::count(dd_dose))$n
+
+    if (n_dd_dose > 0) {
+      dd_dose |>
+        dplyr::summarise(
+          dose_mg_per_day_max = max(.data$dose_mg_per_day, na.rm = TRUE),
+          .by = t_id
+        ) |>
+        dplyr::select(dplyr::all_of(c("t_id", "dose_mg_per_day_max"))) |>
+        dplyr::rename(dplyr::all_of(renamer_dose_column))
+    } else {
+      dd_dose |>
+        dplyr::select(dplyr::all_of(c("t_id"))) |>
+        dplyr::mutate(dose_mg_per_day_max = numeric(0)) |>
+        dplyr::rename(dplyr::all_of(renamer_dose_column))
+    }
   }
 
 
