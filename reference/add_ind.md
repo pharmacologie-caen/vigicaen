@@ -1,4 +1,4 @@
-# Add indication
+# Add indication column(s) to a dataset
 
 **\[experimental\]** Creates indication columns. in vigibase datasets
 (demo, link, adr, drug, or ind).

@@ -1,4 +1,4 @@
-# Screening of Drugs
+# Screening of drugs
 
 **\[experimental\]** The `screen_drug()` function identifies and ranks
 the most frequently reported drugs (by active ingredient) in a dataset.

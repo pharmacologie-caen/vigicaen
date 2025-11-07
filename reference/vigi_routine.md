@@ -1,4 +1,4 @@
-# Pharmacovigilance routine function
+# Display routine pharmacovigilance summary
 
 **\[experimental\]** `vigi_routine()` draws an Information Component
 plot and a Time to Onset plot for a given drug-adr pair.
@@ -184,5 +184,5 @@ vigi_routine(
   export_to = paste0(tempdir(), "/", "vigicaen_graph.png")
 )
 
-#> Plot exported to /tmp/RtmpCZfF3M/vigicaen_graph.png
+#> Plot exported to /tmp/Rtmp4HacYT/vigicaen_graph.png
 ```

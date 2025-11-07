@@ -1,7 +1,7 @@
 # Example source tables for VigiBase and MedDRA
 
-**\[experimental\]** Write some example tables as source
-text/ascii/parquet files.
+**\[stable\]** Write some example tables as source text/ascii/parquet
+files.
 
 ## Usage
 

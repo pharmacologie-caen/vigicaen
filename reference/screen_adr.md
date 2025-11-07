@@ -1,4 +1,4 @@
-# Screening of Adverse Drug Reactions
+# Screening of adverse drug reactions
 
 **\[experimental\]** Identify and rank the most frequently reported
 adverse drug reaction (ADR) terms in a dataset, based on a specified

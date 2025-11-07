@@ -212,13 +212,14 @@ By contributing to this project, you agree to abide by its terms.
 ## All functions
 
 - [`add_adr()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_adr.md)
-  **\[stable\]** : Add ADR column(s) to a dataset
+  **\[stable\]** : Add adverse drug reaction column(s) to a dataset
 - [`add_dose()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_dose.md)
-  **\[experimental\]** : Add drug dose in milligram per day
+  **\[experimental\]** : Add drug dose column(s) to a dataset, in
+  milligram per day
 - [`add_drug()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_drug.md)
-  **\[stable\]** : Add DRUG column(s) to a dataset (tidyverse syntax)
+  **\[stable\]** : Add drug column(s) to a dataset (tidyverse syntax)
 - [`add_ind()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_ind.md)
-  **\[experimental\]** : Add indication
+  **\[experimental\]** : Add indication column(s) to a dataset
 - [`cff()`](https://pharmacologie-caen.github.io/vigicaen/reference/cff.md)
   : Fast formatting of numbers
 - [`check_dm()`](https://pharmacologie-caen.github.io/vigicaen/reference/check_dm.md)
@@ -235,7 +236,7 @@ By contributing to this project, you agree to abide by its terms.
   [`create_ex_meddra_asc()`](https://pharmacologie-caen.github.io/vigicaen/reference/create_example_tables.md)
   [`create_ex_main_pq()`](https://pharmacologie-caen.github.io/vigicaen/reference/create_example_tables.md)
   [`create_ex_sub_pq()`](https://pharmacologie-caen.github.io/vigicaen/reference/create_example_tables.md)
-  **\[experimental\]** : Example source tables for VigiBase and MedDRA
+  **\[stable\]** : Example source tables for VigiBase and MedDRA
 - [`demo_`](https://pharmacologie-caen.github.io/vigicaen/reference/demo_.md)
   [`drug_`](https://pharmacologie-caen.github.io/vigicaen/reference/demo_.md)
   [`adr_`](https://pharmacologie-caen.github.io/vigicaen/reference/demo_.md)
@@ -246,7 +247,7 @@ By contributing to this project, you agree to abide by its terms.
   [`srce_`](https://pharmacologie-caen.github.io/vigicaen/reference/demo_.md)
   : Data of immune checkpoint inhibitors.
 - [`desc_cont()`](https://pharmacologie-caen.github.io/vigicaen/reference/desc_cont.md)
-  **\[stable\]** : Summarize continuous variables
+  **\[stable\]** : Summarise continuous variables
 - [`desc_dch()`](https://pharmacologie-caen.github.io/vigicaen/reference/desc_dch.md)
   **\[stable\]** : Dechallenge descriptive
 - [`desc_facvar()`](https://pharmacologie-caen.github.io/vigicaen/reference/desc_facvar.md)
@@ -270,9 +271,9 @@ By contributing to this project, you agree to abide by its terms.
 - [`get_drecno()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_drecno.md)
   **\[stable\]** : Get DrecNo from drug names or MedicinalProd_Id
 - [`get_llt_smq()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_llt_smq.md)
-  **\[stable\]** : Extract low level terms from SMQs
+  **\[stable\]** : Get low level term codes from SMQs
 - [`get_llt_soc()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_llt_soc.md)
-  **\[stable\]** : Extract low level terms from soc classification
+  **\[stable\]** : Get low level term codes from soc classification
 - [`ic_tail()`](https://pharmacologie-caen.github.io/vigicaen/reference/ic_tail.md)
   **\[stable\]** : Credibility interval limits for the information
   component
@@ -280,26 +281,26 @@ By contributing to this project, you agree to abide by its terms.
   [`smq_list_content_`](https://pharmacologie-caen.github.io/vigicaen/reference/meddra_.md)
   [`smq_list_`](https://pharmacologie-caen.github.io/vigicaen/reference/meddra_.md)
   [`smq_content_`](https://pharmacologie-caen.github.io/vigicaen/reference/meddra_.md)
-  : Sample of Meddra.
+  : Sample of MedDRA
 - [`mp_`](https://pharmacologie-caen.github.io/vigicaen/reference/mp_.md)
   [`thg_`](https://pharmacologie-caen.github.io/vigicaen/reference/mp_.md)
   : Sample of WHODrug
 - [`nice_p()`](https://pharmacologie-caen.github.io/vigicaen/reference/nice_p.md)
   **\[stable\]** : Nice printing of p-values
 - [`screen_adr`](https://pharmacologie-caen.github.io/vigicaen/reference/screen_adr.md)
-  **\[experimental\]** : Screening of Adverse Drug Reactions
+  **\[experimental\]** : Screening of adverse drug reactions
 - [`screen_drug()`](https://pharmacologie-caen.github.io/vigicaen/reference/screen_drug.md)
-  **\[experimental\]** : Screening of Drugs
+  **\[experimental\]** : Screening of drugs
 - [`tb_meddra()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_meddra.md)
   **\[stable\]** : Create MedDRA tables
 - [`tb_subset()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_subset.md)
   **\[stable\]** : Extract of subset of Vigibase
 - [`tb_vigibase()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_vigibase.md)
-  **\[stable\]** : Create main VigiBase ECL tables
+  **\[stable\]** : Create VigiBase ECL tables
 - [`tb_who()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_who.md)
-  **\[stable\]** : Create main WHO tables
+  **\[stable\]** : Create WHO tables
 - [`vigi_routine()`](https://pharmacologie-caen.github.io/vigicaen/reference/vigi_routine.md)
-  **\[experimental\]** : Pharmacovigilance routine function
+  **\[experimental\]** : Display routine pharmacovigilance summary
 
 # Articles
 

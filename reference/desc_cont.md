@@ -1,4 +1,4 @@
-# Summarize continuous variables
+# Summarise continuous variables
 
 **\[stable\]** Summarize continuous data and handle output format.
 

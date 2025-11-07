@@ -1,4 +1,4 @@
-# Add drug dose in milligram per day
+# Add drug dose column(s) to a dataset, in milligram per day
 
 **\[experimental\]** `add_dose()` creates drug dose columns in vigibase
 datasets (demo, link, adr, drug, ind) for specified drugs in a dataset.

@@ -2,7 +2,7 @@
 
 ## vigicaen (development version)
 
-### Enhancements for low specification computers
+### New features
 
 - *New*
   [`add_ind()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_ind.md)
@@ -19,9 +19,14 @@
 - [`add_drug()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_drug.md)
   now supports `ind` tables as .data argument.
 
+- [`desc_cont()`](https://pharmacologie-caen.github.io/vigicaen/reference/desc_cont.md)
+  now supports arrow style tables.
+
 - An error message is raised if trying to pass an `ind` table to
   [`add_adr()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_adr.md)
   as .data argument.
+
+### Enhancements for low specification computers
 
 - [`vigi_routine()`](https://pharmacologie-caen.github.io/vigicaen/reference/vigi_routine.md)
   is internally optimized to minimize memory use, making it more likely

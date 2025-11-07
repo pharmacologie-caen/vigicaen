@@ -1,4 +1,4 @@
-# Extract low level terms from SMQs
+# Get low level term codes from SMQs
 
 **\[stable\]** Collect llts from `smq_list` and `smq_content`
 data.tables, given an SMQ.

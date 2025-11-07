@@ -1,4 +1,4 @@
-# Extract low level terms from soc classification
+# Get low level term codes from soc classification
 
 **\[stable\]** Collect llt codes from a `meddra` data.table, given
 another term of the MedDRA SOC Hierarchy.
