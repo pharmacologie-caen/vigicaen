@@ -1,4 +1,4 @@
-#' Create main WHO tables
+#' Create WHO tables
 #'
 #' @description `r lifecycle::badge('stable')` Transform Vigibase WHO .txt files
 #' to .parquet files

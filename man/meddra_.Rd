@@ -6,7 +6,7 @@
 \alias{smq_list_content_}
 \alias{smq_list_}
 \alias{smq_content_}
-\title{Sample of Meddra.}
+\title{Sample of MedDRA}
 \format{
 \code{meddra_} is a data.table with 15 variables and 677 rows.
 \itemize{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_drug.R
 \name{add_drug}
 \alias{add_drug}
-\title{Add DRUG column(s) to a dataset (tidyverse syntax)}
+\title{Add drug column(s) to a dataset (tidyverse syntax)}
 \usage{
 add_drug(
   .data,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tb_who.R
 \name{tb_who}
 \alias{tb_who}
-\title{Create main WHO tables}
+\title{Create WHO tables}
 \usage{
 tb_who(path_who, force = FALSE)
 }

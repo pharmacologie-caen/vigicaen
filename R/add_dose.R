@@ -1,4 +1,4 @@
-#' Add drug dose in milligram per day
+#' Add drug dose column(s) to a dataset, in milligram per day
 #'
 #' @description `r lifecycle::badge('experimental')`
 #' `add_dose()` creates drug dose columns in vigibase

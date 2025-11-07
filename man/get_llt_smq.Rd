@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_llt_smq.R
 \name{get_llt_smq}
 \alias{get_llt_smq}
-\title{Extract low level terms from SMQs}
+\title{Get low level term codes from SMQs}
 \usage{
 get_llt_smq(
   smq,

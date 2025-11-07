@@ -1,6 +1,6 @@
 #' @name screen_drug
 #'
-#' @title Screening of Drugs
+#' @title Screening of drugs
 #'
 #' @description `r lifecycle::badge('experimental')`
 #' The `screen_drug()` function identifies and ranks the most frequently

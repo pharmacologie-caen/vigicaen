@@ -1,4 +1,4 @@
-#' Add DRUG column(s) to a dataset (tidyverse syntax)
+#' Add drug column(s) to a dataset (tidyverse syntax)
 #'
 #' @description `r lifecycle::badge('stable')` Creates drug columns.
 #' in vigibase datasets (demo, link, adr, drug, and ind).

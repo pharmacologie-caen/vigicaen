@@ -1,6 +1,6 @@
 # vigicaen (development version)
 
-## Enhancements for low specification computers
+## New features
 
 * *New* `add_ind()` complements the `add_*` family, to add indication columns
 to a demo, drug, adr, link or ind table. It's process is slightly simpler
@@ -13,8 +13,12 @@ and their corresponding units.
 
 * `add_drug()` now supports `ind` tables as .data argument.
 
+* `desc_cont()` now supports arrow style tables.
+
 * An error message is raised if trying to pass an `ind` table to `add_adr()`
 as .data argument.
+
+## Enhancements for low specification computers
 
 *  `vigi_routine()` is internally optimized to minimize memory use,
 making it more likely to success on low spec computers <16GB RAM (#158)

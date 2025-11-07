@@ -1,6 +1,6 @@
 #' @name screen_adr
 #'
-#' @title Screening of Adverse Drug Reactions
+#' @title Screening of adverse drug reactions
 #'
 #' @description `r lifecycle::badge('experimental')`
 #' Identify and rank the

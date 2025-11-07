@@ -1,4 +1,4 @@
-#' Add ADR column(s) to a dataset
+#' Add adverse drug reaction column(s) to a dataset
 #'
 #' @description `r lifecycle::badge('stable')`Creates adr columns
 #' in vigibase datasets (demo, link, drug, and adr).

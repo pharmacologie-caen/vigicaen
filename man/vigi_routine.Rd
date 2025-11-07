@@ -2,7 +2,7 @@
 % Please edit documentation in R/vigi_routine.R
 \name{vigi_routine}
 \alias{vigi_routine}
-\title{Pharmacovigilance routine function}
+\title{Display routine pharmacovigilance summary}
 \usage{
 vigi_routine(
   demo_data,

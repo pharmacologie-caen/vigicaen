@@ -1,4 +1,4 @@
-#' Add indication
+#' Add indication column(s) to a dataset
 #'
 #' @description `r lifecycle::badge('experimental')` Creates indication columns.
 #' in vigibase datasets (demo, link, adr, drug, or ind).

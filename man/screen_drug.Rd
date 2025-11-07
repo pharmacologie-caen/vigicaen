@@ -2,7 +2,7 @@
 % Please edit documentation in R/screen_drug.R
 \name{screen_drug}
 \alias{screen_drug}
-\title{Screening of Drugs}
+\title{Screening of drugs}
 \usage{
 screen_drug(.data, mp_data, freq_threshold = NULL, top_n = NULL)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_llt_soc.R
 \name{get_llt_soc}
 \alias{get_llt_soc}
-\title{Extract low level terms from soc classification}
+\title{Get low level term codes from soc classification}
 \usage{
 get_llt_soc(
   term_sel,

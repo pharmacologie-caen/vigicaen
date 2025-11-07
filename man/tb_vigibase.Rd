@@ -2,7 +2,7 @@
 % Please edit documentation in R/tb_vigibase.R
 \name{tb_vigibase}
 \alias{tb_vigibase}
-\title{Create main VigiBase ECL tables}
+\title{Create VigiBase ECL tables}
 \usage{
 tb_vigibase(
   path_base,

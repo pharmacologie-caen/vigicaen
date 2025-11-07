@@ -157,7 +157,7 @@
 
 "srce_"
 
-#' Sample of Meddra.
+#' Sample of MedDRA
 #'
 #' Anonymized data from MedDRA, used to illustrate the package examples and vignettes.
 #' You can find term codes related to colitis, pneumonitis, hepatitis, a SMQ of

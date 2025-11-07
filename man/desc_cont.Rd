@@ -2,7 +2,7 @@
 % Please edit documentation in R/desc_cont.R
 \name{desc_cont}
 \alias{desc_cont}
-\title{Summarize continuous variables}
+\title{Summarise continuous variables}
 \usage{
 desc_cont(
   .data,

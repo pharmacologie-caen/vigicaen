@@ -1,4 +1,4 @@
-#' Create main VigiBase ECL tables
+#' Create VigiBase ECL tables
 #'
 #' @description `r lifecycle::badge('stable')` Transform VigiBase .txt
 #' files to .parquet files.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/screen_adr.R
 \name{screen_adr}
 \alias{screen_adr}
-\title{Screening of Adverse Drug Reactions}
+\title{Screening of adverse drug reactions}
 \arguments{
 \item{.data, }{An \code{adr} data.table. See \code{\link{adr_}}}
 

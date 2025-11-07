@@ -1,6 +1,6 @@
 #' Example source tables for VigiBase and MedDRA
 #'
-#' @description `r lifecycle::badge('experimental')` Write some example
+#' @description `r lifecycle::badge('stable')` Write some example
 #' tables as source text/ascii/parquet files.
 #'
 #' @details VigiBase tables and MedDRA tables are provided respectively

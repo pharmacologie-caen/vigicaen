@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_ind.R
 \name{add_ind}
 \alias{add_ind}
-\title{Add indication}
+\title{Add indication column(s) to a dataset}
 \usage{
 add_ind(.data, i_list, i_names = names(i_list), drug_data, ind_data)
 }

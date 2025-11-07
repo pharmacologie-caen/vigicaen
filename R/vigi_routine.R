@@ -1,4 +1,4 @@
-#' Pharmacovigilance routine function
+#' Display routine pharmacovigilance summary
 #'
 #' @description `r lifecycle::badge('experimental')` `vigi_routine()` draws
 #' an Information Component plot and

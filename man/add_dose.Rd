@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_dose.R
 \name{add_dose}
 \alias{add_dose}
-\title{Add drug dose in milligram per day}
+\title{Add drug dose column(s) to a dataset, in milligram per day}
 \usage{
 add_dose(
   .data,
