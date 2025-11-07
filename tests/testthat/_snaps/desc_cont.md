@@ -43,3 +43,30 @@
       ! `vc` columns must be numeric or integer.
       x The following is not numeric/integer: "v2".
 
+# checking column type integer/numeric works with arrow
+
+    Code
+      check_columns_numeric_integer(d1, vf)
+    Condition <columns_not_numeric_integer>
+      Error:
+      ! `vf` columns must be numeric or integer.
+      x The following is not numeric/integer: "v2".
+
+---
+
+    Code
+      check_columns_numeric_integer(demo_parquet, vf_cols)
+    Condition <columns_not_numeric_integer>
+      Error:
+      ! `vf_cols` columns must be numeric or integer.
+      x The following is not numeric/integer: "Region".
+
+---
+
+    Code
+      check_columns_numeric_integer(demo_query, vf_cols)
+    Condition <columns_not_numeric_integer>
+      Error:
+      ! `vf_cols` columns must be numeric or integer.
+      x The following is not numeric/integer: "Region".
+

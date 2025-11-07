@@ -283,6 +283,38 @@ test_that("works with drug data as the .data argument", {
 
 })
 
+test_that("doesn't work with ind as .data", {
+  adr_list_test <-
+    rlang::list2(
+      adr1 = 12,
+      adr2 = 13,
+      adr3 = 14,
+      adr4 = 15
+    )
+
+  ind_test <-
+    data.table(
+      Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
+      Indication = c("ind1", "ind2", "ind3", "ind1", "ind1")
+    )
+
+  adr_test <-
+    data.table(
+      UMCReportId = c(1, 1, 2, 2, 3),
+      Adr_Id = c("a1_adr1", "a2_adr4", "a3_adr2", "a4_adr4", "a5_adr2"),
+      MedDRA_Id = c(12, 15, 13,  15, 13),
+      Outcome = c(1, 2, 3, 2, 2)
+    )
+
+  expect_snapshot(error = TRUE,
+                  {
+                    ind_try <-
+                      ind_test |>
+                      add_adr(a_code = adr_list_test,
+                              adr_data = adr_test)
+                  })
+})
+
 test_that("handle ambiguous names in .data", {
   adr_list_test <-
     rlang::list2(

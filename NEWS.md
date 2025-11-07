@@ -6,6 +6,16 @@
 to a demo, drug, adr, link or ind table. It's process is slightly simpler
 than the other add functions, as their is no `get_` step at the moment.
 
+* *New* `add_dose()` complements the `add_*` family, to add drug dose
+in mg per day columns to a demo, drug, adr, link or ind table. 
+It calculates daily dose values based on dose amount, frequency, 
+and their corresponding units.
+
+* `add_drug()` now supports `ind` tables as .data argument.
+
+* An error message is raised if trying to pass an `ind` table to `add_adr()`
+as .data argument.
+
 *  `vigi_routine()` is internally optimized to minimize memory use,
 making it more likely to success on low spec computers <16GB RAM (#158)
 
@@ -110,13 +120,13 @@ several WHO names, and throws an error if matching multiple DrecNos (#139).
 
 ## New features
 
+
 * `tb_*` family now has a `cli` style progress bar
 
 * `get_llt_soc()` output is reworked with `cli` features.
 The function also now correctly supports non-data.table data.frame.
 
 * `vigi_routine()` fails if there are no drug or adr cases found in `demo_data`.
-
 # vigicaen 0.15.0
 
 ## Breaking changes

@@ -75,7 +75,16 @@
     Message
       i `.data` detected as `demo` table.
 
-# works with link and drug data, drug identification is Drug_Id wise, not UMCReportId wise
+# works with link, drug and ind data, drug identification is Drug_Id wise, not UMCReportId wise
+
+    Code
+      ind_test <- add_drug(data.table(Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3"),
+      Indication = c("Diabetes mellitus", "Type 2 diabetes mellitus",
+        "Another indication")), d_code = d_drecno_test, drug_data = drug_test)
+    Message
+      i `.data` detected as `ind` table.
+
+---
 
     Code
       link_test <- add_drug(data.table(Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3",

@@ -41,7 +41,7 @@ or "this row correspond to this drug", if \code{.data} is \code{drug} or \code{l
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Creates drug columns.
-in vigibase datasets (demo, link, adr, but also drug).
+in vigibase datasets (demo, link, adr, drug, and ind).
 }
 \details{
 \code{d_code} is a named list containing drug codes.
@@ -60,8 +60,8 @@ in the occurrence of the adverse drug reaction. To study only one of these
 reputation basis, type only the corresponding letter in \code{repbasis},
 e.g. "s" for suspects, or "si" for suspect \strong{or} interacting.
 
-You can add drug identification to a \code{demo}, \code{link}, \code{adr} or even \code{drug}
-dataset.(in this latter case, you must provide \code{adr} twice,
+You can add drug identification to a \code{demo}, \code{link}, \code{adr}, \code{drug} or \code{ind}
+dataset.(if working with \code{drug}, you must provide \code{drug} twice,
 as \code{.data} and \code{drug_data})
 }
 

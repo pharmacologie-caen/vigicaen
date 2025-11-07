@@ -130,7 +130,22 @@ desc_cont <-
       vc_s <- rlang::ensym(one_var)
 
       check_all_na <-
-        all(is.na(.data[[one_var]]))
+        if (any(c("Table", "Dataset", "arrow_dplyr_query") %in% class(.data))) {
+
+          n_na <-
+            .data |>
+            dplyr::summarise(
+              all_na = all(is.na({{ vc_s }}))
+            ) |>
+            dplyr::collect()
+
+          n_na$all_na
+
+          } else {
+
+          all(is.na(.data[[one_var]]))
+
+        }
 
       if (check_all_na)
         message("var ", one_var, " is empty")
@@ -138,6 +153,7 @@ desc_cont <-
       r1 <-
         if (!check_all_na) {
           .data |>
+            dplyr::collect() |> # compatibility with arrow
             dplyr::summarise(
               var = one_var,
               level = NA_character_,
@@ -199,7 +215,8 @@ desc_cont <-
             )
         }
 
-      r1
+      r1 |>
+        dplyr::collect()
     }
 
     # ---- apply cc_core ----
@@ -270,19 +287,30 @@ error_columns_numeric_integer <-
 
 check_columns_numeric_integer <-
   function(.data, cols, call = rlang::caller_env())  {
-    col_classes <-
-      purrr::map(.data, class) |>
-      purrr::keep_at(cols) |>
-      purrr::list_simplify()
 
-    if (!all(col_classes %in% c("numeric", "integer"))) {
+    if (any(c("Table", "Dataset", "arrow_dplyr_query") %in% class(.data))) {
+      # for arrow objects, extract type from schema
+      col_classes <-
+        arrow::schema(.data)$fields |>
+        purrr::map( ~ .x$type$ToString()) |>
+        rlang::set_names(purrr::map_chr(arrow::schema(.data)$fields, ~ .x$name)) |>
+        purrr::keep_at(cols) |>
+        purrr::list_simplify()
+    } else {
+      col_classes <-
+        purrr::map(.data, class) |>
+        purrr::keep_at(cols) |>
+        purrr::list_simplify()
+    }
+
+    if (!all(col_classes %in% c("numeric", "integer", "double"))) {
       not_numeric_integer <-
-        cols[!(col_classes %in% c("numeric", "integer"))]
+        cols[!(col_classes %in% c("numeric", "integer", "double"))]
 
 
-      not_numeric_integer <-
-        cols[!(purrr::map_lgl(.data[cols], is.numeric) |
-                 purrr::map_lgl(.data[cols], is.integer))]
+      # not_numeric_integer <-
+      #   cols[!(purrr::map_lgl(.data[cols], is.numeric) |
+      #            purrr::map_lgl(.data[cols], is.integer))]
 
       error_columns_numeric_integer(
         col_arg = rlang::caller_arg(cols),

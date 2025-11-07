@@ -1,7 +1,7 @@
 #' Add DRUG column(s) to a dataset (tidyverse syntax)
 #'
 #' @description `r lifecycle::badge('stable')` Creates drug columns.
-#' in vigibase datasets (demo, link, adr, but also drug).
+#' in vigibase datasets (demo, link, adr, drug, and ind).
 #'
 #' @details `d_code` is a named list containing drug codes.
 #' Either drug record numbers (e.g., from [get_drecno()]), or
@@ -18,8 +18,8 @@
 #' reputation basis, type only the corresponding letter in `repbasis`,
 #' e.g. "s" for suspects, or "si" for suspect **or** interacting.
 #'
-#' You can add drug identification to a `demo`, `link`, `adr` or even `drug`
-#' dataset.(in this latter case, you must provide `adr` twice,
+#' You can add drug identification to a `demo`, `link`, `adr`, `drug` or `ind`
+#' dataset.(if working with `drug`, you must provide `drug` twice,
 #' as `.data` and `drug_data`)
 #'
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
@@ -133,7 +133,8 @@ add_drug <-
              demo = "UMCReportId",
              adr  = "UMCReportId",
              link = "Drug_Id",
-             drug = "Drug_Id"
+             drug = "Drug_Id",
+             ind  = "Drug_Id"
       )
 
     renamer_tid <-
