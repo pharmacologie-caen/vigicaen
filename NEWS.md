@@ -23,10 +23,13 @@ as .data argument.
 *  `vigi_routine()` is internally optimized to minimize memory use,
 making it more likely to success on low spec computers <16GB RAM (#158)
 
-*  `dt_parquet()` now internally calls 
+*  `dt_parquet()` and now internally calls 
 `arrow::open_dataset()` rather than `arrow::read_parquet()`
 if arg `in_memory = FALSE`, to increase chances of success on low spec
 computers <16GB RAM (#158)
+
+*   `tb_subset()` now internally calls `arrow::open_dataset()` 
+rather than `arrow::read_parquet()` for the same reason.
 
 # vigicaen 0.16.1
 
