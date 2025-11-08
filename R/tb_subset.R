@@ -165,9 +165,8 @@ tb_subset <-
     # rm_suspdup condition
     suspdup_list <-
       if(rm_suspdup){
-        arrow::read_parquet(
-          paste0(wd_in, "suspdup.parquet"),
-          as_data_frame = FALSE
+        arrow::open_dataset(
+          paste0(wd_in, "suspdup.parquet")
         ) |>
           dplyr::pull(.data$SuspectedduplicateReportId,
                       as_vector = FALSE)
@@ -191,9 +190,9 @@ tb_subset <-
                         status = "Reading source tables",
                         set = 15)
 
-    drug <- arrow::read_parquet(paste0(wd_in, "drug.parquet"), as_data_frame = FALSE)
-    adr  <- arrow::read_parquet(paste0(wd_in, "adr.parquet"),  as_data_frame = FALSE)
-    demo <- arrow::read_parquet(paste0(wd_in, "demo.parquet"), as_data_frame = FALSE)
+    drug <- arrow::open_dataset(paste0(wd_in, "drug.parquet"))
+    adr  <- arrow::open_dataset(paste0(wd_in, "adr.parquet"))
+    demo <- arrow::open_dataset(paste0(wd_in, "demo.parquet"))
 
     # Create subset from drug or adr (or demo for age) and collect
     # UMCreportID & DrugId
@@ -259,8 +258,7 @@ tb_subset <-
         if (grepl("adr", parquet_file)) {
           adr
         } else {
-          arrow::read_parquet(paste0(wd_in, parquet_file),
-                              as_data_frame = FALSE)
+          arrow::open_dataset(paste0(wd_in, parquet_file))
         }
 
       df <-
@@ -301,8 +299,7 @@ tb_subset <-
         if (grepl("drug", parquet_file)) {
           drug
         } else {
-          arrow::read_parquet(paste0(wd_in, parquet_file),
-                              as_data_frame = FALSE)
+          arrow::open_dataset(paste0(wd_in, parquet_file))
         }
 
       df <-
