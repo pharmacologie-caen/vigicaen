@@ -9,7 +9,7 @@ than the other add functions, as their is no `get_` step at the moment.
 * *New* `add_dose()` complements the `add_*` family, to add drug dose
 in mg per day columns to a demo, drug, adr, link or ind table. 
 It calculates daily dose values based on dose amount, frequency, 
-and their corresponding units.
+and their corresponding units.(#104)
 
 * `add_drug()` now supports `ind` tables as .data argument.
 
