@@ -14,7 +14,8 @@
   [`add_dose()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_dose.md)
   complements the `add_*` family, to add drug dose in mg per day columns
   to a demo, drug, adr, link or ind table. It calculates daily dose
-  values based on dose amount, frequency, and their corresponding units.
+  values based on dose amount, frequency, and their corresponding
+  units.([\#104](https://github.com/pharmacologie-caen/vigicaen/issues/104))
 
 - [`add_drug()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_drug.md)
   now supports `ind` tables as .data argument.
