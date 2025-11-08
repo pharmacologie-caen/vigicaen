@@ -8,7 +8,7 @@
   **\[experimental\]** : Add drug dose column(s) to a dataset, in
   milligram per day
 - [`add_drug()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_drug.md)
-  **\[stable\]** : Add drug column(s) to a dataset (tidyverse syntax)
+  **\[stable\]** : Add drug column(s) to a dataset
 - [`add_ind()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_ind.md)
   **\[experimental\]** : Add indication column(s) to a dataset
 - [`cff()`](https://pharmacologie-caen.github.io/vigicaen/reference/cff.md)

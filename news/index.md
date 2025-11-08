@@ -34,13 +34,20 @@
   ([\#158](https://github.com/pharmacologie-caen/vigicaen/issues/158))
 
 - [`dt_parquet()`](https://pharmacologie-caen.github.io/vigicaen/reference/dt_parquet.md)
-  now internally calls
+  and now internally calls
   [`arrow::open_dataset()`](https://arrow.apache.org/docs/r/reference/open_dataset.html)
   rather than
   [`arrow::read_parquet()`](https://arrow.apache.org/docs/r/reference/read_parquet.html)
   if arg `in_memory = FALSE`, to increase chances of success on low spec
   computers \<16GB RAM
   ([\#158](https://github.com/pharmacologie-caen/vigicaen/issues/158))
+
+- [`tb_subset()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_subset.md)
+  now internally calls
+  [`arrow::open_dataset()`](https://arrow.apache.org/docs/r/reference/open_dataset.html)
+  rather than
+  [`arrow::read_parquet()`](https://arrow.apache.org/docs/r/reference/read_parquet.html)
+  for the same reason.
 
 ## vigicaen 0.16.1
 
