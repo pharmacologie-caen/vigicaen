@@ -1,35 +1,39 @@
 ---
-title: "Vigicaen: A `vigibase®' Pharmacovigilance Database Toolbox."
+title: 'Vigicaen: A `vigibase®` Pharmacovigilance Database Toolbox.'
 tags:
-  - R
-  - Pharmacovigilance
-  - Database
-  - Disproportionality analysis
-authors:  
-  - name: Charles Dolladille
-    orcid: 0000-0003-0449-6261
-    affiliation: 1
-    url: https://www.linkedin.com/in/charles-dolladille-30090b2b0/
-    email:  dolladille-c@chu-caen.fr
-  - name: Basile Chrétien
-    orcid: 0000-0002-7483-2489
-    affiliation: 2
-    url: https://www.linkedin.com/in/basile-chretien/
-    email: basile.chretien@outlook.com
-affiliations:
-  - name: University of Caen Normandy, Pharmacology Department, Centre Hospitalier Universitaire de Caen, Caen, France
-    index: 1
-  - name: University of Nagoya, Department of biostatistics, Nagoya University Hospital, Nagoya, Japan
-    index: 2
-date: "2025-08-25"
-bibliography: RJreferences.bib
-type: package
-output: 
-  pdf_document: 
+- R
+- Pharmacovigilance
+- Database
+- Disproportionality analysis
+date: "2026-02-02"
+output:
+  pdf_document:
     keep_md: true
   rmarkdown::html_vignette: default
-editor_options: 
-  markdown: 
+  html_document:
+    df_print: paged
+authors:
+- name: Charles Dolladille
+  orcid: "0000-0003-0449-6261"
+  affiliation: 1
+  url: "https://www.linkedin.com/in/charles-dolladille-30090b2b0/"
+  email: "dolladille-c@chu-caen.fr"
+- name: Basile Chrétien
+  orcid: "0000-0002-7483-2489"
+  affiliation: 2
+  url: "https://www.linkedin.com/in/basile-chretien/"
+  email: basile.chretien@outlook.com
+bibliography: RJreferences.bib
+type: package
+affiliations:
+- name: University of Caen Normandy, Pharmacology Department, Centre Hospitalier Universitaire
+    de Caen, Caen, France
+  index: 1
+- name: University of Nagoya, Department of biostatistics, Nagoya University Hospital,
+    Nagoya, Japan
+  index: 2
+editor_options:
+  markdown:
     wrap: 72
 ---
 
@@ -53,7 +57,7 @@ resolving of common issues related to drug and adverse event
 identification. The package is intended for pharmacovigilance
 practitioners, clinicians and researchers with or without advanced
 biostatistical skills. A graphical output can be produced for routine
-use, to support daily assessment of causality.
+use, to support daily assessment of drug liability.
 
 # Statement of need
 
@@ -62,8 +66,8 @@ domain of drug safety signal detection. Advanced methodologies are
 required to address common biases within pharmacovigilance databases.
 These analyses necessitate expertise in biostatistical software, such as
 R, which may present substantial challenges in terms of acquiring and
-maintaining the requisite skills—in addition to a solid understanding of
-pharmacovigilance principles and reporting systems.
+maintaining the requisite skills — in addition to a solid understanding
+of pharmacovigilance principles and reporting systems.
 
 For decades, the World Health Organization (WHO) has been collecting
 adverse drug reaction reports, called Individual Case Safety Reports
@@ -84,7 +88,7 @@ chance alone. Together with an incertitude margin, these estimators are
 used to raise safety signals on drugs.[@montastruc2011]
 
 The Uppsala Monitoring Centre grants access to VigiBase® to researchers,
-either academic or industrial, under a licence contract. The most
+either academics or industrials, under a licence contract. The most
 extensive available version is called Extract Case Level: It contains
 all the ICSRs, with information such as the patient demographics, the
 drug intake, the adverse events, the outcome, the dechallenge and
@@ -95,8 +99,10 @@ challenging to use in R, as they would often exceed the size of the
 available Random Access Memory, thus requiring advanced knowledge of R
 computing techniques. Clinicians and pharmacovigilance practitioners
 typically lack these skills, and therefore struggle to use the VigiBase®
-data for their research. As a result, they would often rely in partial
-data, with limited statistical modelling options.
+data for their research. As a result, they would often rely on partial
+data, with limited statistical modelling options. Or, they could develop
+home-made biostatistic scripts that would typically be used once, often
+left undocumented, and highly heterogeneous across research teams.
 
 The vigicaen package aims at providing a toolbox for the VigiBase®
 Extract Case Level database, tackling a few technical challenges to run
@@ -111,6 +117,74 @@ the WHO. The Uppsala Monitoring Centre, in charge of maintaining
 VigiBase®, was informed of the package development and kindly allowed
 its publication, acknowledging the potential benefit to promote the use
 of VigiBase®.
+
+# Research impact and significance
+
+Our team and collaborators have already published several
+pharmacovigilance studies using vigicaen. [@legallois2025,
+@dolladille2020, @alexandre2021, @chretien2025, @nishida2025,
+@minoc2025]. Vigicaen streamlines the data management process of
+pharmacovigilance studies, allowing for easier collaboration across
+centers around the world. The potential gain has already convinced
+several academic centres. The French Network of Regional
+Pharmacovigilance Centres is on its way to implement vigicaen as part of
+the routine practice across the 31 Pharmacovigilance Centres in France.
+The University of Nagoya has functional routines relying on vigicaen for
+disproportionality analyses. Vigicaen is not getting in any concurrence
+with existing open source tools, but rather addresses an unmet need.
+
+# Design thinking
+
+Key concepts were fundamental to building vigicaen: First, it should be
+open source, build on top of state-of-the-art practices to deal with
+large datasets (e.g. arrow), especially on low specification computers,
+using widespread and consistent syntax R users would be familiar with
+(e.g. tidyverse). Although other syntaxes like `data.table` were once at
+the core of the package, they are now generally left over, as they were
+thought less fit to the project when considering the balance between
+performance and user facing interace. Second, it should address the most
+technically challenging issues for beginners in R or biostatistical
+softwares in general. Third, it should keep as much rigor and
+consistency as possible in the function naming, expected input formats,
+and outputs. Fourth, it should provide help, e.g. messages to users, to
+allow external checking of what is produced by the package. Fifth, it is
+not purposed to implement model functions (like `glm`) per se, but
+rather to prepare the dataset so as to let the user run any model of
+his/her choice. Simple computations are nevertheless in the scope (like
+bivariate disproportionality analysis, or basic interaction analysis).
+
+# Open-source software practice
+
+The package was developed according to best practices as promoted by R
+Packages, 2nd edition. @rpackag It is accompanied by a comprehensive set
+of unitary tests (covering 100% of the code), in-depth documentation for
+each function and object, and several tutorial vignettes for both
+new-comers and advanced users. The source code is available on
+GitHub.com, so as to provide a unique platform to submit issues and
+propose pull requests. It is made available under the open source CeCILL
+2.1 license.
+
+# Development history
+
+The first iteration of the package was built in 2020, as a local
+software designed for internal use at Caen University Hospital. Later,
+it was called pharmacocaen and posted as a private repository on GitHub
+on 2022, due to intellectual property concerns with Uppsala Monitoring
+Centre. After resolution of property concerns, the package became
+available as a public repository on GitHub under the name vigicaen in
+2024, and was accepted on CRAN in 2025. In the first versions, the
+package was mainly focused on performing vectorized data management so
+as to identify a large number of drugs and reactions in a compiled way.
+As there was a wide variety of settings under which drugs and reactions
+could be identified, bug fixing and edge cases were the main concerns
+during several years. Then, additional functionalities like building
+datasets from text files and descriptives were added. Contacts were made
+with members from the Uppsala Monitoring Centre, regarding their own
+work on other topics. These exchanges helped defining the exact
+perimeter of vigicaen, as well as its potential articulation with other
+open source softwares in the future. Also, vigicaen was discussed with
+end-users from pharmacovigilance centres in France, which led to the
+development of specific functions like `vigi_routine`.
 
 # Processing `vigibase®` source files.
 
@@ -182,8 +256,9 @@ tb_vigibase(path_base, path_sub)
 ```
 ## This process must only be done once per database version.
 ## It can take up to 30minutes.
-## ==========>--------------------   33% | 1s | Remove duplicates 
-##                                                                 
+## =========>---------------------   31% | 1.1s | Read SRCE.txt 
+## ==========>--------------------   34% | 1.2s | Write srce.parquet 
+##                                                                    
 ```
 
 
@@ -364,7 +439,7 @@ a_llt <- get_llt_soc(a_sel, term_level = "pt", meddra = meddra)
 The `get_*` and `add_*` functions are built on top of named list as
 first argument. This structure may seem a bit busy, especially for new
 comers, but it allows for genuine flexibility when analyses plan
-increment. As an example, one may create
+increments. As an example, one may create
 `list(drug_group_1 = c("ipilimumab", "nivolumab"))` to automatically
 gather all ICSRs reporting one of these two drugs, through
 `get_drecno()` and `add_drug()`.
