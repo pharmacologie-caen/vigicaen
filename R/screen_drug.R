@@ -2,7 +2,7 @@
 #'
 #' @title Screening of drugs
 #'
-#' @description `r lifecycle::badge('experimental')`
+#' @description `r lifecycle::badge('stable')`
 #' The `screen_drug()` function identifies and ranks the most frequently
 #' reported drugs (by active ingredient) in a dataset.
 #'

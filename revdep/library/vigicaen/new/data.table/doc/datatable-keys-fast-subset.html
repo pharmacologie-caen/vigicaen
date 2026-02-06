@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="generator" content="litedown 0.7">
+<meta name="generator" content="litedown 0.8">
 <title>Keys and fast binary search based subset</title>
 <style type="text/css">
 body {
@@ -114,13 +114,10 @@ section.footnotes {
 <body>
 <div class="frontmatter">
 <div class="title"><h1>Keys and fast binary search based subset</h1></div>
-<div class="date"><h3>2025-07-07</h3></div>
+<div class="date"><h3>2026-01-24</h3></div>
 </div>
 <div class="body">
-<p>Translations of this document are available in</p>
-<ul>
-<li><a href="https://rdatatable.gitlab.io/data.table/articles/fr/datatable-keys-fast-subset.html">French</a></li>
-</ul>
+<p>Translations of this document are available in: en | <a href="https://rdatatable.gitlab.io/data.table/articles/fr/datatable-keys-fast-subset.html">fr</a></p>
 <p>This vignette is aimed at those who are already familiar with <em>data.table</em> syntax, its general form, how to subset rows in <code>i</code>, select and compute on columns, add/modify/delete columns <em>by reference</em> in <code>j</code> and group by using <code>by</code>. If you’re not familiar with these concepts, please read the vignettes <a href="datatable-intro.html"><code>vignette(&quot;datatable-intro&quot;, package=&quot;data.table&quot;)</code></a> and <a href="datatable-reference-semantics.html"><code>vignette(&quot;datatable-reference-semantics&quot;, package=&quot;data.table&quot;)</code></a> first.</p>
 <hr />
 <h2 id="data">Data</h2>
@@ -623,10 +620,10 @@ N = 2e7L
 DT = data.table(x = sample(letters, N, TRUE),
                 y = sample(1000L, N, TRUE),
                 val = runif(N))
-print(object.size(DT), units = &quot;Mb&quot;)
-# 381.5 Mb
+print(object.size(DT), units = &quot;MiB&quot;)
+# 381.5 MiB
 </code></pre>
-<p><code>DT</code> is ~380MB. It is not really huge, but this will do to illustrate the point.</p>
+<p><code>DT</code> is ~380MiB. It is not really huge, but this will do to illustrate the point.</p>
 <p>From what we have seen in the Introduction to data.table section, we can subset those rows where columns <code>x = &quot;g&quot;</code> and <code>y = 877</code> as follows:</p>
 <pre><code class="language-r">key(DT)
 # NULL
@@ -634,7 +631,7 @@ print(object.size(DT), units = &quot;Mb&quot;)
 t1 &lt;- system.time(ans1 &lt;- DT[x == &quot;g&quot; &amp; y == 877L])
 t1
 #    user  system elapsed 
-#   0.340   0.013   0.353
+#   0.215   0.017   0.232
 head(ans1)
 #         x     y        val
 #    &lt;char&gt; &lt;int&gt;      &lt;num&gt;
@@ -673,7 +670,7 @@ identical(ans1$val, ans2$val)
 # [1] TRUE
 </code></pre>
 <ul>
-<li>The speed-up is <strong>~353x</strong>!</li>
+<li>The speed-up is <strong>~232x</strong>!</li>
 </ul>
 <h3 id="sec:b-why-does-keying-a-data-table-result-in-blazing-fast-subsets">b) Why does keying a <em>data.table</em> result in blazing fast subsets?</h3>
 <p>To understand that, let’s first look at what <em>vector scan approach</em> (method 1) does.</p>

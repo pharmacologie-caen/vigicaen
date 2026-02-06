@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="generator" content="litedown 0.7">
+<meta name="generator" content="litedown 0.8">
 <title>Secondary indices and auto indexing</title>
 <style type="text/css">
 body {
@@ -114,14 +114,16 @@ section.footnotes {
 <body>
 <div class="frontmatter">
 <div class="title"><h1>Secondary indices and auto indexing</h1></div>
-<div class="date"><h3>2025-07-07</h3></div>
+<div class="date"><h3>2026-01-24</h3></div>
 </div>
 <div class="body">
-<p>Translations of this document are available in</p>
+<p>Translations of this document are available in: en | <a href="https://rdatatable.gitlab.io/data.table/articles/fr/datatable-secondary-indices-and-auto-indexing.html">fr</a></p>
+<p>This vignette assumes that the reader is familiar with data.table’s <code>[i, j, by]</code> syntax, and how to perform fast key based subsets. If you’re not familiar with these concepts, please read the following vignettes first:</p>
 <ul>
-<li><a href="https://rdatatable.gitlab.io/data.table/articles/fr/datatable-secondary-indices-and-auto-indexing.html">French</a></li>
+<li><a href="datatable-intro.html"><code>vignette(&quot;datatable-intro&quot;, package=&quot;data.table&quot;)</code></a></li>
+<li><a href="datatable-reference-semantics.html"><code>vignette(&quot;datatable-reference-semantics&quot;, package=&quot;data.table&quot;)</code></a></li>
+<li><a href="datatable-keys-fast-subset.html"><code>vignette(&quot;datatable-keys-fast-subset&quot;, package=&quot;data.table&quot;)</code></a></li>
 </ul>
-<p>This vignette assumes that the reader is familiar with data.table’s <code>[i, j, by]</code> syntax, and how to perform fast key based subsets. If you’re not familiar with these concepts, please read the <a href="datatable-intro.html"><code>vignette(&quot;datatable-intro&quot;, package=&quot;data.table&quot;)</code></a>, <a href="datatable-reference-semantics.html"><code>vignette(&quot;datatable-reference-semantics&quot;, package=&quot;data.table&quot;)</code></a>, and <a href="datatable-keys-fast-subset.html"><code>vignette(&quot;datatable-keys-fast-subset&quot;, package=&quot;data.table&quot;)</code></a> vignettes first.</p>
 <hr />
 <h2 id="data">Data</h2>
 <p>We will use the same <code>flights</code> data as in the <a href="datatable-intro.html"><code>vignette(&quot;datatable-intro&quot;, package=&quot;data.table&quot;)</code></a> vignette.</p>
@@ -162,6 +164,25 @@ dim(flights)
 <p>There can be more than one secondary index for a data.table (as we will see below).</p>
 </li>
 </ul>
+<h4 id="sec:keyed-vs-indexed-subsetting">Keyed vs. Indexed Subsetting</h4>
+<p>While both <strong>keys</strong> and <strong>indices</strong> enable fast binary search subsetting, they differ significantly in usage:</p>
+<p><strong>Keyed subsetting</strong> (implicit column matching)</p>
+<pre><code class="language-r">DT = data.table(a = c(TRUE, FALSE), b = 1:2)
+setkey(DT, a)                # Set key, reordering DT
+DT[.(TRUE)]                  # 'on' is optional; if omitted, the key is used
+# Key: &lt;a&gt;
+#         a     b
+#    &lt;lgcl&gt; &lt;int&gt;
+# 1:   TRUE     1
+</code></pre>
+<p><strong>Indexed subsetting</strong> (explicit column specification)</p>
+<pre><code class="language-r">DT = data.table(a = c(TRUE, FALSE), b = 1:2)
+setindex(DT, a)              # Set index only (no reorder)
+DT[.(TRUE), on = &quot;a&quot;]        # 'on' is required
+#         a     b
+#    &lt;lgcl&gt; &lt;int&gt;
+# 1:   TRUE     1
+</code></pre>
 <h3 id="sec:b-set-and-get-secondary-indices">b) Set and get secondary indices</h3>
 <h4 id="sec:how-can-we-set-the-column-origin-as-a-secondary-index-in-the-data-table-flights">– How can we set the column <code>origin</code> as a secondary index in the <em>data.table</em> <code>flights</code>?</h4>
 <pre><code class="language-r">setindex(flights, origin)
@@ -289,7 +310,7 @@ flights[&quot;JFK&quot;, on = &quot;origin&quot;, verbose = TRUE][1:5]
 # forderReuseSorting: opt=-1, took 0.000s
 # bmerge: looping bmerge_r took 0.000s
 # bmerge: took 0.000s
-# bmerge done in 0.000s elapsed (0.001s cpu)
+# bmerge done in 0.000s elapsed (0.000s cpu)
 # Constructing irows for '!byjoin || nqbyjoin' ... 0.000s elapsed (0.000s cpu)
 #     year month   day dep_delay arr_delay carrier origin   dest air_time distance  hour
 #    &lt;int&gt; &lt;int&gt; &lt;int&gt;     &lt;int&gt;     &lt;int&gt;  &lt;char&gt; &lt;char&gt; &lt;char&gt;    &lt;int&gt;    &lt;int&gt; &lt;int&gt;
@@ -319,7 +340,26 @@ flights[&quot;JFK&quot;, on = &quot;origin&quot;, verbose = TRUE][1:5]
 <li>
 <p>Since the time to compute the secondary index is quite small, we don’t have to use <code>setindex()</code>, unless, once again, the task involves repeated subsetting on the same column.</p>
 </li>
+<li>
+<p>For clarity/readability, it might help to name the inputs in <code>i</code>, e.g.,</p>
+</li>
 </ul>
+<pre><code class="language-r">flights[.(origin = &quot;JFK&quot;, dest = &quot;LAX&quot;), on = c(&quot;origin&quot;, &quot;dest&quot;)]
+#         year month   day dep_delay arr_delay carrier origin   dest air_time distance  hour
+#        &lt;int&gt; &lt;int&gt; &lt;int&gt;     &lt;int&gt;     &lt;int&gt;  &lt;char&gt; &lt;char&gt; &lt;char&gt;    &lt;int&gt;    &lt;int&gt; &lt;int&gt;
+#     1:  2014     1     1        14        13      AA    JFK    LAX      359     2475     9
+#     2:  2014     1     1        -3        13      AA    JFK    LAX      363     2475    11
+#     3:  2014     1     1         2         9      AA    JFK    LAX      351     2475    19
+#     4:  2014     1     1         2         1      AA    JFK    LAX      350     2475    13
+#     5:  2014     1     1        -2       -18      AA    JFK    LAX      338     2475    21
+#    ---                                                                                    
+# 10204:  2014    10    31        -4        -9      VX    JFK    LAX      327     2475    20
+# 10205:  2014    10    31         0       -38      UA    JFK    LAX      320     2475     6
+# 10206:  2014    10    31        85        62      UA    JFK    LAX      323     2475     9
+# 10207:  2014    10    31         0       -33      UA    JFK    LAX      320     2475    17
+# 10208:  2014    10    31        -6       -38      UA    JFK    LAX      323     2475    11
+</code></pre>
+<p>This makes it clear which entries in <code>j</code> correspond to which element of <code>on</code>.</p>
 <h3 id="sec:b-select-in-j">b) Select in <code>j</code></h3>
 <p>All the operations we will discuss below are no different to the ones we already saw in the <a href="datatable-keys-fast-subset.html"><code>vignette(&quot;datatable-keys-fast-subset&quot;, package=&quot;data.table&quot;)</code></a> vignette. Except we’ll be using the <code>on</code> argument instead of setting keys.</p>
 <h4 id="sec:return-arr-delay-column-alone-as-a-data-table-corresponding-to-origin-quot-lga-quot-and-dest-quot-tpa-quot">– Return <code>arr_delay</code> column alone as a data.table corresponding to <code>origin = &quot;LGA&quot;</code> and <code>dest = &quot;TPA&quot;</code></h4>
@@ -439,7 +479,7 @@ names(attributes(dt))
 ## run thefirst time
 (t1 &lt;- system.time(ans &lt;- dt[x == 989L]))
 #    user  system elapsed 
-#   0.339   0.013   0.352
+#   0.254   0.007   0.262
 head(ans)
 #        x         y
 #    &lt;int&gt;     &lt;num&gt;
@@ -462,14 +502,14 @@ indices(dt)
 <pre><code class="language-r">## successive subsets
 (t2 &lt;- system.time(dt[x == 989L]))
 #    user  system elapsed 
-#   0.019   0.003   0.021
+#   0.010   0.002   0.011
 system.time(dt[x %in% 1989:2012])
 #    user  system elapsed 
-#   0.017   0.000   0.016
+#   0.010   0.002   0.012
 </code></pre>
 <ul>
 <li>
-<p>Running the first time took 0.352 seconds where as the second time took 0.021 seconds.</p>
+<p>Running the first time took 0.262 seconds where as the second time took 0.011 seconds.</p>
 </li>
 <li>
 <p>Auto indexing can be disabled by setting the global argument <code>options(datatable.auto.index = FALSE)</code>.</p>

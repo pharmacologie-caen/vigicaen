@@ -19,7 +19,7 @@ path_meddra <- "~/meddra/"
 # link <- dt_parquet(path_base, "link", in_memory = FALSE)
 # 
 # mp <- dt_parquet(path_who,  "mp")
-# meddra   <- dt_parquet(path_meddra, "meddra")
+# meddra <- dt_parquet(path_meddra, "meddra_hierarchy")
 
 ## ----load_example_tables------------------------------------------------------
 demo     <- demo_
@@ -47,7 +47,7 @@ d_code <-
 a_code <-
   get_llt_soc(a_sel, term_level = "hlt", meddra = meddra)
 
-## ----vigi_routine, fig.height=7.5, fig.width=4--------------------------------
+## ----vigi_routine, fig.height=7.6, fig.width=4--------------------------------
 vigi_routine(
   demo_data = demo,
   drug_data = drug,
@@ -58,7 +58,7 @@ vigi_routine(
   vigibase_version = "September 2024"
 )
 
-## ----vigi_routine_case, fig.height=7.5, fig.width=4---------------------------
+## ----vigi_routine_case, fig.height=7.6, fig.width=4---------------------------
 vigi_routine(
   case_tto  = 150,
   demo_data = demo,
@@ -84,4 +84,25 @@ vigi_routine(
 #   vigibase_version = "September 2024",
 #   export_to = "~/vigicaen_graph.png"
 # )
+
+## ----dual_drug, fig.height=7.6, fig.width=4-----------------------------------
+d1 <- ex_$d_drecno["nivolumab"]
+d2 <- ex_$d_drecno["ipilimumab"]
+a_llt <- ex_$a_llt["a_colitis"]
+
+demo <- demo_
+adr  <- adr_
+drug <- drug_
+link <- link_
+
+vigi_routine(
+  demo_data = demo,
+  drug_data = drug,
+  adr_data  = adr,
+  link_data = link,
+  d_code = d1,
+  d_code_2 = d2,
+  a_code = a_llt,
+  vigibase_version = "September 2024"
+)
 

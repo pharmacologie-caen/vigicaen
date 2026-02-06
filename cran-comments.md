@@ -1,6 +1,6 @@
-## vigicaen 0.16.0
+## vigicaen 1.0.0
 
-* revdepcheck::revdep_check() was run on 2025-07-23. No issues were found.
+* revdepcheck::revdep_check() was run on 2026-02-06. No issues were found.
 
 ## R CMD check results
 

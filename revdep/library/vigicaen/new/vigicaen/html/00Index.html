@@ -12,7 +12,7 @@
 <div style="text-align: center;">
 <a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
 <a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
-</div><h2>Documentation for package &lsquo;vigicaen&rsquo; version 0.16.0</h2>
+</div><h2>Documentation for package &lsquo;vigicaen&rsquo; version 1.0.0</h2>
 
 <ul><li><a href="../DESCRIPTION" type="text/plain; charset=utf-8">DESCRIPTION file</a>.</li>
 <li><a href="../NEWS.md">Package NEWS</a>.</li>
@@ -23,9 +23,13 @@
 
 <table style="width: 100%;">
 <tr><td style="width: 25%;"><a href="add_adr.html">add_adr</a></td>
-<td>Add ADR column(s) to a dataset</td></tr>
+<td>Add adverse drug reaction column(s) to a dataset</td></tr>
+<tr><td style="width: 25%;"><a href="add_dose.html">add_dose</a></td>
+<td>Add drug dose column(s) to a dataset, in milligram per day</td></tr>
 <tr><td style="width: 25%;"><a href="add_drug.html">add_drug</a></td>
-<td>Add DRUG column(s) to a dataset (tidyverse syntax)</td></tr>
+<td>Add drug column(s) to a dataset</td></tr>
+<tr><td style="width: 25%;"><a href="add_ind.html">add_ind</a></td>
+<td>Add indication column(s) to a dataset</td></tr>
 <tr><td style="width: 25%;"><a href="demo_.html">adr_</a></td>
 <td>Data of immune checkpoint inhibitors.</td></tr>
 <tr><td style="width: 25%;"><a href="cff.html">cff</a></td>
@@ -55,7 +59,7 @@
 <tr><td style="width: 25%;"><a href="demo_.html">demo_</a></td>
 <td>Data of immune checkpoint inhibitors.</td></tr>
 <tr><td style="width: 25%;"><a href="desc_cont.html">desc_cont</a></td>
-<td>Summarize continuous variables</td></tr>
+<td>Summarise continuous variables</td></tr>
 <tr><td style="width: 25%;"><a href="desc_dch.html">desc_dch</a></td>
 <td>Dechallenge descriptive</td></tr>
 <tr><td style="width: 25%;"><a href="desc_facvar.html">desc_facvar</a></td>
@@ -68,8 +72,6 @@
 <td>Time to onset descriptive</td></tr>
 <tr><td style="width: 25%;"><a href="demo_.html">drug_</a></td>
 <td>Data of immune checkpoint inhibitors.</td></tr>
-<tr><td style="width: 25%;"><a href="dt_fst.html">dt_fst</a></td>
-<td>Read fst and convert to data.table</td></tr>
 <tr><td style="width: 25%;"><a href="dt_parquet.html">dt_parquet</a></td>
 <td>Read parquet and convert to data.table</td></tr>
 <tr><td style="width: 25%;"><a href="extract_tto.html">extract_tto</a></td>
@@ -83,9 +85,9 @@
 <tr><td style="width: 25%;"><a href="get_drecno.html">get_drecno</a></td>
 <td>Get DrecNo from drug names or MedicinalProd_Id</td></tr>
 <tr><td style="width: 25%;"><a href="get_llt_smq.html">get_llt_smq</a></td>
-<td>Extract low level terms from SMQs</td></tr>
+<td>Get low level term codes from SMQs</td></tr>
 <tr><td style="width: 25%;"><a href="get_llt_soc.html">get_llt_soc</a></td>
-<td>Extract low level terms from soc classification</td></tr>
+<td>Get low level term codes from soc classification</td></tr>
 <tr><td style="width: 25%;"><a href="ic_tail.html">ic_tail</a></td>
 <td>Credibility interval limits for the information component</td></tr>
 <tr><td style="width: 25%;"><a href="demo_.html">ind_</a></td>
@@ -93,7 +95,7 @@
 <tr><td style="width: 25%;"><a href="demo_.html">link_</a></td>
 <td>Data of immune checkpoint inhibitors.</td></tr>
 <tr><td style="width: 25%;"><a href="meddra_.html">meddra_</a></td>
-<td>Sample of Meddra.</td></tr>
+<td>Sample of MedDRA</td></tr>
 <tr><td style="width: 25%;"><a href="mp_.html">mp_</a></td>
 <td>Sample of WHODrug</td></tr>
 <tr><td style="width: 25%;"><a href="nice_p.html">nice_p</a></td>
@@ -101,15 +103,15 @@
 <tr><td style="width: 25%;"><a href="demo_.html">out_</a></td>
 <td>Data of immune checkpoint inhibitors.</td></tr>
 <tr><td style="width: 25%;"><a href="screen_adr.html">screen_adr</a></td>
-<td>Screening of Adverse Drug Reactions</td></tr>
+<td>Screening of adverse drug reactions</td></tr>
 <tr><td style="width: 25%;"><a href="screen_drug.html">screen_drug</a></td>
-<td>Screening of Drugs</td></tr>
+<td>Screening of drugs</td></tr>
 <tr><td style="width: 25%;"><a href="meddra_.html">smq_content_</a></td>
-<td>Sample of Meddra.</td></tr>
+<td>Sample of MedDRA</td></tr>
 <tr><td style="width: 25%;"><a href="meddra_.html">smq_list_</a></td>
-<td>Sample of Meddra.</td></tr>
+<td>Sample of MedDRA</td></tr>
 <tr><td style="width: 25%;"><a href="meddra_.html">smq_list_content_</a></td>
-<td>Sample of Meddra.</td></tr>
+<td>Sample of MedDRA</td></tr>
 <tr><td style="width: 25%;"><a href="demo_.html">srce_</a></td>
 <td>Data of immune checkpoint inhibitors.</td></tr>
 <tr><td style="width: 25%;"><a href="tb_meddra.html">tb_meddra</a></td>
@@ -117,12 +119,12 @@
 <tr><td style="width: 25%;"><a href="tb_subset.html">tb_subset</a></td>
 <td>Extract of subset of Vigibase</td></tr>
 <tr><td style="width: 25%;"><a href="tb_vigibase.html">tb_vigibase</a></td>
-<td>Create main VigiBase ECL tables</td></tr>
+<td>Create VigiBase ECL tables</td></tr>
 <tr><td style="width: 25%;"><a href="tb_who.html">tb_who</a></td>
-<td>Create main WHO tables</td></tr>
+<td>Create WHO tables</td></tr>
 <tr><td style="width: 25%;"><a href="mp_.html">thg_</a></td>
 <td>Sample of WHODrug</td></tr>
 <tr><td style="width: 25%;"><a href="vigi_routine.html">vigi_routine</a></td>
-<td>Pharmacovigilance routine function</td></tr>
+<td>Display routine pharmacovigilance summary</td></tr>
 </table>
 </div></body></html>

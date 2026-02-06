@@ -1,3 +1,37 @@
+# purrr 1.2.1
+
+* Tweaks for compatibility with upcoming vctrs 0.7.0.
+
+# purrr 1.2.0
+
+## Breaking changes
+
+* All functions and arguments deprecated in purrr 0.3.0 have now been removed. This includes `%@%`, `accumulate_right()`, `at_depth()`, `cross_d()`, `cross_n()`, `reduce2_right()`, and `reduce_right()`.
+
+* All functions that were soft-deprecated in purrr 1.0.0 are now fully deprecated. They will be removed in a future release. This includes: `invoke_*()`, `lift_*()`, `cross*()`, `prepend()`, `splice()`, `rbernoulli()`, `rdunif()`, `when()`, `update_list()`, `*_raw()`, `vec_depth()`.
+
+* `map_chr()` no longer coereces from logical, integer, or double to strings.
+
+* `every()`, `some()`, and `none()` now require that `.p` return logical scalar `TRUE`, `FALSE`, or `NA`. Previously, `NA` was allowed to be a non-logical `NA`, and would be coerced to a logical `NA`.
+
+## Minor improvements and bug fixes
+
+* New "getting started" vignette, `vignette("purrr")` (#915, @ogolovkina).
+
+* `every()`, `some()`, and `none()` are now more performant. They are now as fast as or faster than their equivalent `any(map_lgl())` or `all(map_lgl())` calls (#1036, @ErdaradunGaztea).
+
+* `as_mapper.default()` optimized by removing special named argument handling for primitive functions (@mtcarsalot, #1088).
+
+* `list_flatten()` gains an `is_node` parameter taking a predicate function that determines whether an input element is a node or a leaf (@salim-b, #1179).
+
+* `in_parallel()` now accepts objects, including helper functions, supplied to `...` for all locally-defined functions (#1208).
+
+* `in_parallel()` now works in conjunction with string and list values supplied to the `.progress` argument of map functions (#1203).
+
+* `map()`, `map2()`, and `pmap()` now automatically set the correct environment so that `format` strings to access to local variables (@jcolt45, #1078).
+
+* `map_vec()` no longer fails on empty named lists (#1206).
+
 # purrr 1.1.0
 
 * purrr now requires R >= 4.1, so we can rely on the base pipe and lambda

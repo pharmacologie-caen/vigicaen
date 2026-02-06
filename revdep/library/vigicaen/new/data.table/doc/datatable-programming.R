@@ -1,3 +1,28 @@
+## ----echo=FALSE, file='_translation_links.R'------------------------------------------------------
+# build a link list of alternative languages (may be character(0))
+# idea is to look like 'Other languages: en | fr | de'
+.write.translation.links <- function(fmt) {
+    url = "https://rdatatable.gitlab.io/data.table/articles"
+    path = dirname(knitr::current_input(TRUE))
+    if (basename(path) == "vignettes") {
+      lang = "en"
+    } else {
+      lang = basename(path)
+      path = dirname(path)
+    }
+    translation = dir(path,
+      recursive = TRUE,
+      pattern = glob2rx(knitr::current_input(FALSE))
+    )
+    transl_lang = ifelse(dirname(translation) == ".", "en", dirname(translation))
+    block = if (!all(transl_lang == lang)) {
+      linked_transl = sprintf("[%s](%s)", transl_lang, file.path(url, sub("(?i)\\.Rmd$", ".html", translation)))
+      linked_transl[transl_lang == lang] = lang
+      sprintf(fmt, paste(linked_transl, collapse = " | "))
+    } else ""
+    knitr::asis_output(block)
+}
+
 ## ----init, include = FALSE------------------------------------------------------------------------
 require(data.table)
 knitr::opts_chunk$set(
@@ -98,6 +123,23 @@ DT[filter_col %in% filter_val,
      filter_val = I(c("versicolor", "virginica")),
      by_col =  "Species"
   )]
+
+## ----substitute_fun1, result='hide'---------------------------------------------------------------
+DT[, outer(Sepal.Length), env = list(outer="sqrt"), verbose=TRUE]
+#Argument 'j' after substitute: sqrt(Sepal.Length)
+## DT[, sqrt(Sepal.Length)]
+
+DT[, outer(Sepal.Length), env = list(outer=sqrt), verbose=TRUE]
+#Argument 'j' after substitute: .Primitive("sqrt")(Sepal.Length)
+## DT[, .Primitive("sqrt")(Sepal.Length)]
+
+## ----substitute_fun2, result='hide'---------------------------------------------------------------
+DT[, sqrt(Sepal.Length)]
+
+## ----substitute_fun3, result='hide', eval=FALSE---------------------------------------------------
+# DT[, ns::fun(Sepal.Length), env = list(ns="base", fun="sqrt"), verbose=TRUE]
+# #Argument 'j' after substitute: base::sqrt(Sepal.Length)
+# ## DT[, base::sqrt(Sepal.Length)]
 
 ## ----rank-----------------------------------------------------------------------------------------
 substitute(    # base R behaviour
@@ -213,6 +255,25 @@ j = as.call(c(
 ))
 print(j)
 DT[, j, env = list(j = j)]
+
+## ----obj_vs_objname-------------------------------------------------------------------------------
+DT[, fun(Petal.Width), env = list(fun = mean), verbose=TRUE]
+DT[, fun(Petal.Width), env = list(fun = "mean"), verbose=TRUE]
+
+## ----env_se---------------------------------------------------------------------------------------
+fun = function(x, col.mean) {
+  stopifnot(is.character(col.mean), is.data.table(x))
+  x[, .(col_avg = mean(.col)), env = list(.col = col.mean)]
+}
+fun(DT, col.mean="Petal.Length")
+
+## ----env_nse--------------------------------------------------------------------------------------
+fun = function(x, col.mean) {
+  col.mean = substitute(col.mean)
+  stopifnot(is.name(col.mean), is.data.table(x))
+  x[, .(col_avg = mean(.col)), env = list(.col = col.mean)]
+}
+fun(DT, col.mean=Petal.Length)
 
 ## ----old_get--------------------------------------------------------------------------------------
 v1 = "Petal.Width"

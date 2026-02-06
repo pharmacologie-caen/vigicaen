@@ -1,34 +1,38 @@
 ## code to prepare `my_pkg_data` dataset goes here
 
-path_ici_data <-
-  "C:/Users/dolladille-c/vigibase_2023_sep/main/ici/"
+# First step of my_pkg_data is no longer relevant (not pointing
+# to actual file locations, using defunct functions).
+# It's kept here as comments for memorial use.
 
-demo <-
-  dt_fst(path_ici_data, "demo")
-
-drug <-     dt_fst(path_ici_data, "drug")
-adr  <-     dt_fst(path_ici_data, "adr")
-out  <-     dt_fst(path_ici_data, "out")
-srce <-     dt_fst(path_ici_data, "srce")
-link <-     dt_fst(path_ici_data, "link")
-ind  <-     dt_fst(path_ici_data, "ind")
-followup <- dt_fst(path_ici_data, "followup")
-
-mp <- dt_fst("C:/Users/dolladille-c/vigibase_2023_sep/who/",
-                   "mp")
-
-path_meddra <-
-  "C:/Users/dolladille-c/meddra_26_1/MedAscii/"
-
-meddra <-
-  dt_fst(
-    path_meddra, "meddra_hierarchy"
-  )
-
-smq_list <- dt_fst(path_meddra, "meddra_smq_list")
-
-
-smq_content <- dt_fst(path_meddra, "meddra_smq_content.fst")
+# path_ici_data <-
+#   "C:/Users/dolladille-c/vigibase_2023_sep/main/ici/"
+#
+# demo <-
+#   dt_fst(path_ici_data, "demo")
+#
+# drug <-     dt_fst(path_ici_data, "drug")
+# adr  <-     dt_fst(path_ici_data, "adr")
+# out  <-     dt_fst(path_ici_data, "out")
+# srce <-     dt_fst(path_ici_data, "srce")
+# link <-     dt_fst(path_ici_data, "link")
+# ind  <-     dt_fst(path_ici_data, "ind")
+# followup <- dt_fst(path_ici_data, "followup")
+#
+# mp <- dt_fst("C:/Users/dolladille-c/vigibase_2023_sep/who/",
+#                    "mp")
+#
+# path_meddra <-
+#   "C:/Users/dolladille-c/meddra_26_1/MedAscii/"
+#
+# meddra <-
+#   dt_fst(
+#     path_meddra, "meddra_hierarchy"
+#   )
+#
+# smq_list <- dt_fst(path_meddra, "meddra_smq_list")
+#
+#
+# smq_content <- dt_fst(path_meddra, "meddra_smq_content.fst")
 
 
 smq_list_content <-

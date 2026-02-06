@@ -87,7 +87,7 @@ adr  <- dt_parquet(path_base, "adr", in_memory = FALSE)
 link <- dt_parquet(path_base, "link", in_memory = FALSE)
 
 mp <- dt_parquet(path_who,  "mp")
-meddra   <- dt_parquet(path_meddra, "meddra")
+meddra <- dt_parquet(path_meddra, "meddra_hierarchy")
 ```
 
 For this vignette, we will use built-in example tables instead.
@@ -176,7 +176,7 @@ The tables you loaded earlier (as demo, drug, adr, and link)
 in the graph legend. You can use anything, such as "September 2024".
 Just remember to write _something_.
 
-```{r vigi_routine, fig.height=7.5, fig.width=4}
+```{r vigi_routine, fig.height=7.6, fig.width=4}
 #| fig.alt: >
 #|   Example of vigi_routine.
 
@@ -221,7 +221,7 @@ this case, the colitis happened 150days after ipilimumab initiation.
 We can add this information to the graph, using the `case_tto` argument.
 
 
-```{r vigi_routine_case, fig.height=7.5, fig.width=4}
+```{r vigi_routine_case, fig.height=7.6, fig.width=4}
 vigi_routine(
   case_tto  = 150,
   demo_data = demo,
@@ -271,3 +271,41 @@ vigi_routine(
   export_to = "~/vigicaen_graph.png"
 )
 ```
+
+## Advanced options: suspect_only and d_code_2
+
+The `vigi_routine()` function now supports two advanced arguments:
+
+- `suspect_only` (default TRUE): If TRUE, only cases where the drug is suspected (Basis == "1") are used for IC and TTO analyses. If FALSE, all cases are included.
+- `d_code_2` (optional): If provided, a single analysis is performed on cases exposed to both drugs in `d_code` and `d_code_2`. This is useful for drugs with two compounds (e.g., amoxicillin plus clavulanic acid).
+
+### Example: Dual drug analysis
+
+The example below is not very suitable: The idea is to use `d_code_2` when you want to study
+a fix drug combination, e.g. amoxicillin + clavulanic acid.
+
+However, the syntax would be:
+
+```{r dual_drug, fig.height=7.6, fig.width=4}
+d1 <- ex_$d_drecno["nivolumab"]
+d2 <- ex_$d_drecno["ipilimumab"]
+a_llt <- ex_$a_llt["a_colitis"]
+
+demo <- demo_
+adr  <- adr_
+drug <- drug_
+link <- link_
+
+vigi_routine(
+  demo_data = demo,
+  drug_data = drug,
+  adr_data  = adr,
+  link_data = link,
+  d_code = d1,
+  d_code_2 = d2,
+  a_code = a_llt,
+  vigibase_version = "September 2024"
+)
+```
+
+A CLI message will indicate that only cases exposed to both drugs are included in the analysis.

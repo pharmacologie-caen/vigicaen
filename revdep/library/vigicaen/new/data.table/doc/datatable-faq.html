@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="generator" content="litedown 0.7">
+<meta name="generator" content="litedown 0.8">
 <title>Frequently Asked Questions about data.table</title>
 <style type="text/css">
 body {
@@ -117,7 +117,7 @@ section.footnotes {
 <body>
 <div class="frontmatter">
 <div class="title"><h1>Frequently Asked Questions about data.table</h1></div>
-<div class="date"><h3>2025-07-07</h3></div>
+<div class="date"><h3>2026-01-24</h3></div>
 </div>
 <div class="body">
 <div id="TOC">
@@ -222,10 +222,7 @@ h2 {
   width: 100%; 
 }
 </style>
-<p>Translations of this document are available in</p>
-<ul>
-<li><a href="https://rdatatable.gitlab.io/data.table/articles/fr/datatable-faq.html">French</a></li>
-</ul>
+<p>Translations of this document are available in: en | <a href="https://rdatatable.gitlab.io/data.table/articles/fr/datatable-faq.html">fr</a></p>
 <p>The first section, Beginner FAQs, is intended to be read in order, from start to finish.  It’s just written in a FAQ style to be digested more easily. It isn’t really the most frequently asked questions. A better measure for that is looking on Stack Overflow.</p>
 <p>This FAQ is required reading and considered core documentation. Please do not ask questions on Stack Overflow or raise issues on GitHub until you have read it. We can all tell when you ask that you haven’t read it. So if you do ask and haven’t read it, don’t use your real name.</p>
 <p>This document has been quickly revised given the changes in v1.9.8 released Nov 2016. Please do submit pull requests to fix mistakes or improvements.  If anyone knows why the table of contents comes out so narrow and squashed when displayed by CRAN, please let us know.  This document used to be a PDF and we changed it recently to HTML.</p>
@@ -233,7 +230,7 @@ h2 {
 <h2 id="j-num"><span class="section-number">1.1</span> Why do <code>DT[ , 5]</code> and <code>DT[2, 5]</code> return a 1-column data.table rather than vectors like <code>data.frame</code>?</h2>
 <p>For consistency so that when you use data.table in functions that accept varying inputs, you can rely on <code>DT[...]</code> returning a data.table. You don’t have to remember to include <code>drop=FALSE</code> like you do in data.frame. data.table was first released in 2006 and this difference to data.frame has been a feature since the very beginning.</p>
 <p>You may have heard that it is generally bad practice to refer to columns by number rather than name, though. If your colleague comes along and reads your code later they may have to hunt around to find out which column is number 5. If you or they change the column ordering higher up in your R program, you may produce wrong results with no warning or error if you forget to change all the places in your code which refer to column number 5. That is your fault not R’s or data.table’s. It’s really really bad. Please don’t do it. It’s the same mantra as professional SQL developers have: never use <code>select *</code>, always explicitly select by column name to at least try to be robust to future changes.</p>
-<p>Say column 5 is named <code>&quot;region&quot;</code> and you really must extract that column as a vector not a data.table. It is more robust to use the column name and write <code>DT$region</code> or <code>DT[[&quot;region&quot;]]</code>; i.e., the same as base R. Using base R’s <code>$</code> and <code>[[</code> on data.table is encouraged. Not when combined with <code>&lt;-</code> to assign (use <code>:=</code> instead for that) but just to select a single column by name they are encouraged.</p>
+<p>Say column 5 is named <code>&quot;region&quot;</code> and you really must extract that column as a vector not a data.table. It is more robust to use the column name and write <code>DT$region</code> or <code>DT[[&quot;region&quot;]]</code>; i.e., the same as base R. Using base R’s <code>$</code> and <code>[[</code> on data.table is encouraged. Not when combined with <code>&lt;-</code> to assign (use <code>:=</code> instead for that) but just to select a single column by name they are encouraged. A key difference, however, is that DT$col and DT[[‘col’]] may return a reference, while DT[, col] always returns a copy. This can have important consequences and is explained in the <code>vignette(&quot;datatable-reference-semantics&quot;, package=&quot;data.table&quot;)</code>.</p>
 <p>There are some circumstances where referring to a column by number seems like the only way, such as a sequence of columns. In these situations just like data.frame, you can write <code>DT[, 5:10]</code> and <code>DT[,c(1,4,10)]</code>. However, again, it is more robust (to future changes in your data’s number of and ordering of columns) to use a named range such as <code>DT[,columnRed:columnViolet]</code> or name each one <code>DT[,c(&quot;columnRed&quot;,&quot;columnOrange&quot;,&quot;columnYellow&quot;)]</code>. It is harder work up front, but you will probably thank yourself and your colleagues might thank you in the future. At least you can say you tried your best to write robust code if something does go wrong.</p>
 <p>However, what we really want you to do is <code>DT[,.(columnRed,columnOrange,columnYellow)]</code>; i.e., use column names as if they are variables directly inside <code>DT[...]</code>. You don’t have to prefix each column with <code>DT$</code> like you do in data.frame. The <code>.()</code> part is just an alias for <code>list()</code> and you can use <code>list()</code> instead if you prefer. You can place any R expression of column names, using any R package, returning different types of different lengths, right there. We wanted to encourage you to do that so strongly in the past that we deliberately didn’t make <code>DT[,5]</code> work at all. Before v1.9.8 released Nov 2016, <code>DT[,5]</code> used to just return <code>5</code>. The thinking was that we could more simply teach one fact that the parts inside <code>DT[...]</code> get evaluated within the frame of DT always (they see column names as if they are variables). And <code>5</code> evaluates to <code>5</code> so that behaviour was consistent with the single rule. We asked you to go through an extra deliberate hurdle <code>DT[,5,with=FALSE]</code> if you really wanted to select a column by name or number. Going forward from Nov 2016, you don’t need to use <code>with=FALSE</code> and we’ll see how greater consistency with data.frame in this regard will help or hinder both new and long-time users. The new users who don’t read this FAQ, not even this very first entry, will hopefully not stumble as soon with data.table as they did before if they had expected it to work like data.frame. Hopefully they will not miss out on understanding our intent and recommendation to place expressions of columns inside <code>DT[i, j, by]</code>. If they use data.table like data.frame they won’t gain any benefits. If you know anyone like that, please give them a friendly nudge to read this document like you are.</p>
 <p>Reminder: you can place <em>any</em> R expression inside <code>DT[...]</code> using column names as if they are variables; e.g., try <code>DT[, colA*colB/2]</code>. That does return a vector because you used column names as if they are variables. Wrap with <code>.()</code> to return a data.table; i.e. <code>DT[,.(colA*colB/2)]</code>.  Name it: <code>DT[,.(myResult = colA*colB/2)]</code>.  And we’ll leave it to you to guess how to return two things from this query. It’s also quite common to do a bunch of things inside an anonymous body: <code>DT[, { x&lt;-colA+10; x*x/2 }]</code> or call another package’s function: <code>DT[ , fitdistr(columnA, &quot;normal&quot;)]</code>.</p>
@@ -743,7 +740,9 @@ class(7L)             # L makes it an integer
 DT[ , b := rnorm(5)]  # 'replace' integer column with a numeric column
 </code></pre>
 <h2 id="sec:reading-data-table-from-rds-or-rdata-file"><span class="section-number">5.3</span> Reading data.table from RDS or RData file</h2>
-<p><code>*.RDS</code> and <code>*.RData</code> are file types which can store in-memory R objects on disk efficiently. However, storing data.table into the binary file loses its column over-allocation. This isn’t a big deal – your data.table will be copied in memory on the next <em>by reference</em> operation and throw a warning. Therefore it is recommended to call <code>setalloccol()</code> on each data.table loaded with <code>readRDS()</code> or <code>load()</code> calls.</p>
+<p><code>*.RDS</code> and <code>*.RData</code> are file types which can store in-memory R objects on disk efficiently. However, storing <code>data.table</code> into a binary file loses its column over-allocation (see also <code>?truelength</code>). This isn’t a big deal – your <code>data.table</code> will be copied in memory on the next <em>by reference</em> operation and throw a warning.<br />
+Therefore, it is recommended to call <code>setDT()</code> on each <code>data.table</code> loaded with <code>readRDS()</code> or <code>load()</code> calls to restore its internal attributes. If you only need to pre-allocate space for new columns, <code>setalloccol()</code> can also be used.</p>
+<p>For more details, see <code>?setDT</code> and <code>?truelength</code>.</p>
 <h1 id="chp:general-questions-about-the-package"><span class="section-number main-number">6</span> General questions about the package</h1>
 <h2 id="sec:v1-3-appears-to-be-missing-from-the-cran-archive"><span class="section-number">6.1</span> v1.3 appears to be missing from the CRAN archive?</h2>
 <p>That is correct. v1.3 was available on R-Forge only. There were several large

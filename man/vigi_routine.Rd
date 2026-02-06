@@ -68,7 +68,7 @@ If you provide a case_tto value, it is represented by the red line, and the
 label.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \code{vigi_routine()} draws
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}} \code{vigi_routine()} draws
 an Information Component plot and
 a Time to Onset plot for a given drug-adr pair.
 }

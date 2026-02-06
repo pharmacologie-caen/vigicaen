@@ -2,7 +2,7 @@
 #'
 #' @title Screening of adverse drug reactions
 #'
-#' @description `r lifecycle::badge('experimental')`
+#' @description `r lifecycle::badge('stable')`
 #' Identify and rank the
 #' most frequently reported adverse drug reaction (ADR) terms
 #' in a dataset, based on a specified MedDRA term level.

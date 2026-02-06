@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="generator" content="litedown 0.7">
+<meta name="generator" content="litedown 0.8">
 <title>Efficient reshaping using data.tables</title>
 <style type="text/css">
 body {
@@ -114,14 +114,10 @@ section.footnotes {
 <body>
 <div class="frontmatter">
 <div class="title"><h1>Efficient reshaping using data.tables</h1></div>
-<div class="date"><h3>2025-07-07</h3></div>
+<div class="date"><h3>2026-01-24</h3></div>
 </div>
 <div class="body">
-<p>Translations of this document are available in</p>
-<ul>
-<li><a href="https://rdatatable.gitlab.io/data.table/articles/fr/datatable-reshape.html">French</a></li>
-<li><a href="https://rdatatable.gitlab.io/data.table/articles/ru/datatable-reshape.html">Russian</a></li>
-</ul>
+<p>Translations of this document are available in: en | <a href="https://rdatatable.gitlab.io/data.table/articles/fr/datatable-reshape.html">fr</a> | <a href="https://rdatatable.gitlab.io/data.table/articles/ru/datatable-reshape.html">ru</a></p>
 <p>This vignette discusses the default usage of reshaping functions <code>melt</code> (wide to long) and <code>dcast</code> (long to wide) for <em>data.tables</em> as well as the <strong>new extended functionalities</strong> of melting and casting on <em>multiple columns</em> available from <code>v1.9.6</code>.</p>
 <hr />
 <h2 id="sec:data">Data</h2>
@@ -275,7 +271,7 @@ DT.m1
 </ul>
 <h4 id="sec:starting-from-dt-m1-how-can-we-get-the-number-of-children-in-each-family">- Starting from <code>DT.m1</code>, how can we get the number of children in each family?</h4>
 <p>You can also pass a function to aggregate by in <code>dcast</code> with the argument <code>fun.aggregate</code>. This is particularly essential when the formula provided does not identify single observation for each cell.</p>
-<pre><code class="language-r">dcast(DT.m1, family_id ~ ., fun.agg = function(x) sum(!is.na(x)), value.var = &quot;dob&quot;)
+<pre><code class="language-r">dcast(DT.m1, family_id ~ ., fun.aggregate = function(x) sum(!is.na(x)), value.var = &quot;dob&quot;)
 # Key: &lt;family_id&gt;
 #    family_id     .
 #        &lt;int&gt; &lt;int&gt;
@@ -289,61 +285,72 @@ DT.m1
 <h2 id="sec:2-limitations-in-previous-melt-dcast-approaches">2. Limitations in previous <code>melt/dcast</code> approaches</h2>
 <p>So far we’ve seen features of <code>melt</code> and <code>dcast</code> that are implemented efficiently for <code>data.table</code>s, using internal <code>data.table</code> machinery (<em>fast radix ordering</em>, <em>binary search</em> etc.).</p>
 <p>However, there are situations we might run into where the desired operation is not expressed in a straightforward manner. For example, consider the <code>data.table</code> shown below:</p>
-<pre><code class="language-r">s2 &lt;- &quot;family_id age_mother dob_child1 dob_child2 dob_child3 gender_child1 gender_child2 gender_child3
-1         30 1998-11-26 2000-01-29         NA             1             2            NA
-2         27 1996-06-22         NA         NA             2            NA            NA
-3         26 2002-07-11 2004-04-05 2007-09-02             2             2             1
-4         32 2004-10-10 2009-08-27 2012-07-21             1             1             1
-5         29 2000-12-05 2005-02-28         NA             2             1            NA&quot;
+<pre><code class="language-r">s2 &lt;- &quot;family_id age_mother name_child1 name_child2 name_child3 gender_child1 gender_child2 gender_child3
+1         30         Ben        Anna          NA             1             2            NA
+2         27         Tom          NA          NA             2            NA            NA
+3         26         Lia         Sam         Amy             2             2             1
+4         32         Max         Zoe         Joe             1             1             1
+5         29         Dan         Eva          NA             2             1            NA&quot;
 DT &lt;- fread(s2)
 DT
-#    family_id age_mother dob_child1 dob_child2 dob_child3 gender_child1 gender_child2 gender_child3
-#        &lt;int&gt;      &lt;int&gt;     &lt;IDat&gt;     &lt;IDat&gt;     &lt;IDat&gt;         &lt;int&gt;         &lt;int&gt;         &lt;int&gt;
-# 1:         1         30 1998-11-26 2000-01-29       &lt;NA&gt;             1             2            NA
-# 2:         2         27 1996-06-22       &lt;NA&gt;       &lt;NA&gt;             2            NA            NA
-# 3:         3         26 2002-07-11 2004-04-05 2007-09-02             2             2             1
-# 4:         4         32 2004-10-10 2009-08-27 2012-07-21             1             1             1
-# 5:         5         29 2000-12-05 2005-02-28       &lt;NA&gt;             2             1            NA
+#    family_id age_mother name_child1 name_child2 name_child3 gender_child1 gender_child2
+#        &lt;int&gt;      &lt;int&gt;      &lt;char&gt;      &lt;char&gt;      &lt;char&gt;         &lt;int&gt;         &lt;int&gt;
+# 1:         1         30         Ben        Anna        &lt;NA&gt;             1             2
+# 2:         2         27         Tom        &lt;NA&gt;        &lt;NA&gt;             2            NA
+# 3:         3         26         Lia         Sam         Amy             2             2
+# 4:         4         32         Max         Zoe         Joe             1             1
+# 5:         5         29         Dan         Eva        &lt;NA&gt;             2             1
+#    gender_child3
+#            &lt;int&gt;
+# 1:            NA
+# 2:            NA
+# 3:             1
+# 4:             1
+# 5:            NA
 ## 1 = female, 2 = male
 </code></pre>
-<p>And you’d like to combine (<code>melt</code>) all the <code>dob</code> columns together, and <code>gender</code> columns together. Using the current functionality, we can do something like this:</p>
-<pre><code class="language-r">DT.m1 = melt(DT, id = c(&quot;family_id&quot;, &quot;age_mother&quot;))
+<p>And you’d like to combine (<code>melt</code>) all the <code>name</code> columns together, and <code>gender</code> columns together. Using the old functionality, we could do something like this:</p>
+<pre><code class="language-r">DT.m1 = melt(DT, id.vars = c(&quot;family_id&quot;, &quot;age_mother&quot;))
+# Warning in melt.data.table(DT, id.vars = c(&quot;family_id&quot;, &quot;age_mother&quot;)): 'measure.vars'
+# [name_child1, name_child2, name_child3, gender_child1, ...] are not all of the same type. By order
+# of hierarchy, the molten data value column will be of type 'character'. All measure variables not
+# of type 'character' will be coerced too. Check DETAILS in ?melt.data.table for more on coercion.
 DT.m1[, c(&quot;variable&quot;, &quot;child&quot;) := tstrsplit(variable, &quot;_&quot;, fixed = TRUE)]
 DT.c1 = dcast(DT.m1, family_id + age_mother + child ~ variable, value.var = &quot;value&quot;)
 DT.c1
 # Key: &lt;family_id, age_mother, child&gt;
-#     family_id age_mother  child        dob     gender
-#         &lt;int&gt;      &lt;int&gt; &lt;char&gt;     &lt;IDat&gt;     &lt;IDat&gt;
-#  1:         1         30 child1 1998-11-26 1970-01-02
-#  2:         1         30 child2 2000-01-29 1970-01-03
-#  3:         1         30 child3       &lt;NA&gt;       &lt;NA&gt;
-#  4:         2         27 child1 1996-06-22 1970-01-03
-#  5:         2         27 child2       &lt;NA&gt;       &lt;NA&gt;
-#  6:         2         27 child3       &lt;NA&gt;       &lt;NA&gt;
-#  7:         3         26 child1 2002-07-11 1970-01-03
-#  8:         3         26 child2 2004-04-05 1970-01-03
-#  9:         3         26 child3 2007-09-02 1970-01-02
-# 10:         4         32 child1 2004-10-10 1970-01-02
-# 11:         4         32 child2 2009-08-27 1970-01-02
-# 12:         4         32 child3 2012-07-21 1970-01-02
-# 13:         5         29 child1 2000-12-05 1970-01-03
-# 14:         5         29 child2 2005-02-28 1970-01-02
-# 15:         5         29 child3       &lt;NA&gt;       &lt;NA&gt;
+#     family_id age_mother  child gender   name
+#         &lt;int&gt;      &lt;int&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt;
+#  1:         1         30 child1      1    Ben
+#  2:         1         30 child2      2   Anna
+#  3:         1         30 child3   &lt;NA&gt;   &lt;NA&gt;
+#  4:         2         27 child1      2    Tom
+#  5:         2         27 child2   &lt;NA&gt;   &lt;NA&gt;
+#  6:         2         27 child3   &lt;NA&gt;   &lt;NA&gt;
+#  7:         3         26 child1      2    Lia
+#  8:         3         26 child2      2    Sam
+#  9:         3         26 child3      1    Amy
+# 10:         4         32 child1      1    Max
+# 11:         4         32 child2      1    Zoe
+# 12:         4         32 child3      1    Joe
+# 13:         5         29 child1      2    Dan
+# 14:         5         29 child2      1    Eva
+# 15:         5         29 child3   &lt;NA&gt;   &lt;NA&gt;
 
-str(DT.c1) ## gender column is class IDate now!
+str(DT.c1) ## gender column is character type now!
 # Classes 'data.table' and 'data.frame':	15 obs. of  5 variables:
 #  $ family_id : int  1 1 1 2 2 2 3 3 3 4 ...
 #  $ age_mother: int  30 30 30 27 27 27 26 26 26 32 ...
 #  $ child     : chr  &quot;child1&quot; &quot;child2&quot; &quot;child3&quot; &quot;child1&quot; ...
-#  $ dob       : IDate, format: &quot;1998-11-26&quot; &quot;2000-01-29&quot; NA ...
-#  $ gender    : IDate, format: &quot;1970-01-02&quot; &quot;1970-01-03&quot; NA ...
+#  $ gender    : chr  &quot;1&quot; &quot;2&quot; NA &quot;2&quot; ...
+#  $ name      : chr  &quot;Ben&quot; &quot;Anna&quot; NA &quot;Tom&quot; ...
 #  - attr(*, &quot;.internal.selfref&quot;)=&lt;externalptr&gt; 
 #  - attr(*, &quot;sorted&quot;)= chr [1:3] &quot;family_id&quot; &quot;age_mother&quot; &quot;child&quot;
 </code></pre>
 <h4 id="sec:issues">Issues</h4>
 <ol>
 <li>
-<p>What we wanted to do was to combine all the <code>dob</code> and <code>gender</code> type columns together respectively. Instead, we are combining <em>everything</em> together, and then splitting them again. I think it’s easy to see that it’s quite roundabout (and inefficient).</p>
+<p>What we wanted to do was to combine all the <code>name</code> and <code>gender</code> type columns together respectively. Instead, we are combining <em>everything</em> together, and then splitting them again. I think it’s easy to see that it’s quite roundabout (and inefficient).</p>
 <p>As an analogy, imagine you’ve a closet with four shelves of clothes and you’d like to put together the clothes from shelves 1 and 2 together (in 1), and 3 and 4 together (in 3). What we are doing is more or less to combine all the clothes together, and then split them back on to shelves 1 and 3!</p>
 </li>
 <li>
@@ -362,34 +369,34 @@ str(DT.c1) ## gender column is class IDate now!
 <p>Since we’d like for <code>data.table</code>s to perform this operation straightforward and efficient using the same interface, we went ahead and implemented an <em>additional functionality</em>, where we can <code>melt</code> to multiple columns <em>simultaneously</em>.</p>
 <h4 id="sec:melt-multiple-columns-simultaneously">- <code>melt</code> multiple columns simultaneously</h4>
 <p>The idea is quite simple. We pass a list of columns to <code>measure.vars</code>, where each element of the list contains the columns that should be combined together.</p>
-<pre><code class="language-r">colA = paste0(&quot;dob_child&quot;, 1:3)
+<pre><code class="language-r">colA = paste0(&quot;name_child&quot;, 1:3)
 colB = paste0(&quot;gender_child&quot;, 1:3)
-DT.m2 = melt(DT, measure = list(colA, colB), value.name = c(&quot;dob&quot;, &quot;gender&quot;))
+DT.m2 = melt(DT, measure.vars = list(colA, colB), value.name = c(&quot;name&quot;, &quot;gender&quot;))
 DT.m2
-#     family_id age_mother variable        dob gender
-#         &lt;int&gt;      &lt;int&gt;   &lt;fctr&gt;     &lt;IDat&gt;  &lt;int&gt;
-#  1:         1         30        1 1998-11-26      1
-#  2:         2         27        1 1996-06-22      2
-#  3:         3         26        1 2002-07-11      2
-#  4:         4         32        1 2004-10-10      1
-#  5:         5         29        1 2000-12-05      2
-#  6:         1         30        2 2000-01-29      2
-#  7:         2         27        2       &lt;NA&gt;     NA
-#  8:         3         26        2 2004-04-05      2
-#  9:         4         32        2 2009-08-27      1
-# 10:         5         29        2 2005-02-28      1
-# 11:         1         30        3       &lt;NA&gt;     NA
-# 12:         2         27        3       &lt;NA&gt;     NA
-# 13:         3         26        3 2007-09-02      1
-# 14:         4         32        3 2012-07-21      1
-# 15:         5         29        3       &lt;NA&gt;     NA
+#     family_id age_mother variable   name gender
+#         &lt;int&gt;      &lt;int&gt;   &lt;fctr&gt; &lt;char&gt;  &lt;int&gt;
+#  1:         1         30        1    Ben      1
+#  2:         2         27        1    Tom      2
+#  3:         3         26        1    Lia      2
+#  4:         4         32        1    Max      1
+#  5:         5         29        1    Dan      2
+#  6:         1         30        2   Anna      2
+#  7:         2         27        2   &lt;NA&gt;     NA
+#  8:         3         26        2    Sam      2
+#  9:         4         32        2    Zoe      1
+# 10:         5         29        2    Eva      1
+# 11:         1         30        3   &lt;NA&gt;     NA
+# 12:         2         27        3   &lt;NA&gt;     NA
+# 13:         3         26        3    Amy      1
+# 14:         4         32        3    Joe      1
+# 15:         5         29        3   &lt;NA&gt;     NA
 
 str(DT.m2) ## col type is preserved
 # Classes 'data.table' and 'data.frame':	15 obs. of  5 variables:
 #  $ family_id : int  1 2 3 4 5 1 2 3 4 5 ...
 #  $ age_mother: int  30 27 26 32 29 30 27 26 32 29 ...
 #  $ variable  : Factor w/ 3 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;: 1 1 1 1 1 2 2 2 2 2 ...
-#  $ dob       : IDate, format: &quot;1998-11-26&quot; &quot;1996-06-22&quot; &quot;2002-07-11&quot; ...
+#  $ name      : chr  &quot;Ben&quot; &quot;Tom&quot; &quot;Lia&quot; &quot;Max&quot; ...
 #  $ gender    : int  1 2 2 1 2 2 NA 2 1 1 ...
 #  - attr(*, &quot;.internal.selfref&quot;)=&lt;externalptr&gt;
 </code></pre>
@@ -403,25 +410,25 @@ str(DT.m2) ## col type is preserved
 </ul>
 <h4 id="sec:using-patterns">- Using <code>patterns()</code></h4>
 <p>Usually in these problems, the columns we’d like to melt can be distinguished by a common pattern. We can use the function <code>patterns()</code>, implemented for convenience, to provide regular expressions for the columns to be combined together. The above operation can be rewritten as:</p>
-<pre><code class="language-r">DT.m2 = melt(DT, measure = patterns(&quot;^dob&quot;, &quot;^gender&quot;), value.name = c(&quot;dob&quot;, &quot;gender&quot;))
+<pre><code class="language-r">DT.m2 = melt(DT, measure.vars = patterns(&quot;^name&quot;, &quot;^gender&quot;), value.name = c(&quot;name&quot;, &quot;gender&quot;))
 DT.m2
-#     family_id age_mother variable        dob gender
-#         &lt;int&gt;      &lt;int&gt;   &lt;fctr&gt;     &lt;IDat&gt;  &lt;int&gt;
-#  1:         1         30        1 1998-11-26      1
-#  2:         2         27        1 1996-06-22      2
-#  3:         3         26        1 2002-07-11      2
-#  4:         4         32        1 2004-10-10      1
-#  5:         5         29        1 2000-12-05      2
-#  6:         1         30        2 2000-01-29      2
-#  7:         2         27        2       &lt;NA&gt;     NA
-#  8:         3         26        2 2004-04-05      2
-#  9:         4         32        2 2009-08-27      1
-# 10:         5         29        2 2005-02-28      1
-# 11:         1         30        3       &lt;NA&gt;     NA
-# 12:         2         27        3       &lt;NA&gt;     NA
-# 13:         3         26        3 2007-09-02      1
-# 14:         4         32        3 2012-07-21      1
-# 15:         5         29        3       &lt;NA&gt;     NA
+#     family_id age_mother variable   name gender
+#         &lt;int&gt;      &lt;int&gt;   &lt;fctr&gt; &lt;char&gt;  &lt;int&gt;
+#  1:         1         30        1    Ben      1
+#  2:         2         27        1    Tom      2
+#  3:         3         26        1    Lia      2
+#  4:         4         32        1    Max      1
+#  5:         5         29        1    Dan      2
+#  6:         1         30        2   Anna      2
+#  7:         2         27        2   &lt;NA&gt;     NA
+#  8:         3         26        2    Sam      2
+#  9:         4         32        2    Zoe      1
+# 10:         5         29        2    Eva      1
+# 11:         1         30        3   &lt;NA&gt;     NA
+# 12:         2         27        3   &lt;NA&gt;     NA
+# 13:         3         26        3    Amy      1
+# 14:         4         32        3    Joe      1
+# 15:         5         29        3   &lt;NA&gt;     NA
 </code></pre>
 <h4 id="sec:using-measure-to-specify-measure-vars-via-separator-or-pattern">- Using <code>measure()</code> to specify <code>measure.vars</code> via separator or pattern</h4>
 <p>If, as in the data above, the input columns to melt have regular
@@ -479,25 +486,25 @@ instead want a value column for each measurement dimension, we can do:</p>
 <p>Going back to the example of the data with families and children, we
 can see a more complex usage of <code>measure</code>, involving a function which
 is used to convert the <code>child</code> string values to integers:</p>
-<pre><code class="language-r">DT.m3 = melt(DT, measure = measure(value.name, child=as.integer, sep=&quot;_child&quot;))
+<pre><code class="language-r">DT.m3 = melt(DT, measure.vars = measure(value.name, child=as.integer, sep=&quot;_child&quot;))
 DT.m3
-#     family_id age_mother child        dob gender
-#         &lt;int&gt;      &lt;int&gt; &lt;int&gt;     &lt;IDat&gt;  &lt;int&gt;
-#  1:         1         30     1 1998-11-26      1
-#  2:         2         27     1 1996-06-22      2
-#  3:         3         26     1 2002-07-11      2
-#  4:         4         32     1 2004-10-10      1
-#  5:         5         29     1 2000-12-05      2
-#  6:         1         30     2 2000-01-29      2
-#  7:         2         27     2       &lt;NA&gt;     NA
-#  8:         3         26     2 2004-04-05      2
-#  9:         4         32     2 2009-08-27      1
-# 10:         5         29     2 2005-02-28      1
-# 11:         1         30     3       &lt;NA&gt;     NA
-# 12:         2         27     3       &lt;NA&gt;     NA
-# 13:         3         26     3 2007-09-02      1
-# 14:         4         32     3 2012-07-21      1
-# 15:         5         29     3       &lt;NA&gt;     NA
+#     family_id age_mother child   name gender
+#         &lt;int&gt;      &lt;int&gt; &lt;int&gt; &lt;char&gt;  &lt;int&gt;
+#  1:         1         30     1    Ben      1
+#  2:         2         27     1    Tom      2
+#  3:         3         26     1    Lia      2
+#  4:         4         32     1    Max      1
+#  5:         5         29     1    Dan      2
+#  6:         1         30     2   Anna      2
+#  7:         2         27     2   &lt;NA&gt;     NA
+#  8:         3         26     2    Sam      2
+#  9:         4         32     2    Zoe      1
+# 10:         5         29     2    Eva      1
+# 11:         1         30     3   &lt;NA&gt;     NA
+# 12:         2         27     3   &lt;NA&gt;     NA
+# 13:         3         26     3    Amy      1
+# 14:         4         32     3    Joe      1
+# 15:         5         29     3   &lt;NA&gt;     NA
 </code></pre>
 <p>In the code above we used <code>sep=&quot;_child&quot;</code> which results in melting only
 the columns which contain that string (six column names split into two
@@ -521,7 +528,7 @@ melt(who, measure.vars = measure(
 </code></pre>
 <p>When using the <code>pattern</code> argument, it must be a Perl-compatible
 regular expression containing the same number of capture groups
-(parenthesized sub-expressions) as the number other arguments (group
+(parenthesized sub-expressions) as the number of other arguments (group
 names). The code below shows how to use a more complex regex with five
 groups, two numeric output columns, and an anonymous type conversion
 function,</p>
@@ -542,16 +549,16 @@ function,</p>
 <h4 id="sec:casting-multiple-value-vars-simultaneously">- Casting multiple <code>value.var</code>s simultaneously</h4>
 <p>We can now provide <strong>multiple <code>value.var</code> columns</strong> to <code>dcast</code> for <code>data.table</code>s directly so that the operations are taken care of internally and efficiently.</p>
 <pre><code class="language-r">## new 'cast' functionality - multiple value.vars
-DT.c2 = dcast(DT.m2, family_id + age_mother ~ variable, value.var = c(&quot;dob&quot;, &quot;gender&quot;))
+DT.c2 = dcast(DT.m2, family_id + age_mother ~ variable, value.var = c(&quot;name&quot;, &quot;gender&quot;))
 DT.c2
 # Key: &lt;family_id, age_mother&gt;
-#    family_id age_mother      dob_1      dob_2      dob_3 gender_1 gender_2 gender_3
-#        &lt;int&gt;      &lt;int&gt;     &lt;IDat&gt;     &lt;IDat&gt;     &lt;IDat&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;
-# 1:         1         30 1998-11-26 2000-01-29       &lt;NA&gt;        1        2       NA
-# 2:         2         27 1996-06-22       &lt;NA&gt;       &lt;NA&gt;        2       NA       NA
-# 3:         3         26 2002-07-11 2004-04-05 2007-09-02        2        2        1
-# 4:         4         32 2004-10-10 2009-08-27 2012-07-21        1        1        1
-# 5:         5         29 2000-12-05 2005-02-28       &lt;NA&gt;        2        1       NA
+#    family_id age_mother name_1 name_2 name_3 gender_1 gender_2 gender_3
+#        &lt;int&gt;      &lt;int&gt; &lt;char&gt; &lt;char&gt; &lt;char&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;
+# 1:         1         30    Ben   Anna   &lt;NA&gt;        1        2       NA
+# 2:         2         27    Tom   &lt;NA&gt;   &lt;NA&gt;        2       NA       NA
+# 3:         3         26    Lia    Sam    Amy        2        2        1
+# 4:         4         32    Max    Zoe    Joe        1        1        1
+# 5:         5         29    Dan    Eva   &lt;NA&gt;        2        1       NA
 </code></pre>
 <ul>
 <li>

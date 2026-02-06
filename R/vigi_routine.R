@@ -1,6 +1,6 @@
 #' Display routine pharmacovigilance summary
 #'
-#' @description `r lifecycle::badge('experimental')` `vigi_routine()` draws
+#' @description `r lifecycle::badge('maturing')` `vigi_routine()` draws
 #' an Information Component plot and
 #' a Time to Onset plot for a given drug-adr pair.
 #'

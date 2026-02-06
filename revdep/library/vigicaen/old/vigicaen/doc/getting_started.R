@@ -56,3 +56,12 @@ knitr::opts_chunk$set(
 #           subset_var = "age",
 #           sv_selection = sv_selection)
 
+## ----resume_example, eval = FALSE---------------------------------------------
+# # Example: resume after a crash
+# # (only missing tables will be created)
+# tb_vigibase(
+#   path_base = path_base,
+#   path_sub  = path_sub,
+#   overwrite_existing_tables = FALSE
+# )
+

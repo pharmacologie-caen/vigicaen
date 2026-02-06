@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="generator" content="litedown 0.7">
+<meta name="generator" content="litedown 0.8">
 <title>Introduction to data.table</title>
 <style type="text/css">
 body {
@@ -114,14 +114,10 @@ section.footnotes {
 <body>
 <div class="frontmatter">
 <div class="title"><h1>Introduction to data.table</h1></div>
-<div class="date"><h3>2025-07-07</h3></div>
+<div class="date"><h3>2026-01-24</h3></div>
 </div>
 <div class="body">
-<p>Translations of this document are available in</p>
-<ul>
-<li><a href="https://rdatatable.gitlab.io/data.table/articles/fr/datatable-intro.html">French</a></li>
-<li><a href="https://rdatatable.gitlab.io/data.table/articles/ru/datatable-intro.html">Russian</a></li>
-</ul>
+<p>Translations of this document are available in: en | <a href="https://rdatatable.gitlab.io/data.table/articles/fr/datatable-intro.html">fr</a> | <a href="https://rdatatable.gitlab.io/data.table/articles/ru/datatable-intro.html">ru</a></p>
 <p>This vignette introduces the <code>data.table</code> syntax, its general form, how to <em>subset</em> rows, <em>select and compute</em> on columns, and perform aggregations <em>by group</em>. Familiarity with the <code>data.frame</code> data structure from base R is useful, but not essential to follow this vignette.</p>
 <hr />
 <h2 id="sec:data-analysis-using-data-table">Data analysis using <code>data.table</code></h2>
@@ -935,7 +931,10 @@ makeup.models[, .(coefdist = coef(fit[[1]])[2], rsq = summary(fit[[1]])$r.square
 flights.split &lt;- split(flights, f = flights$month)
 makeup.models.list &lt;- lapply(flights.split, function(df) c(month = df$month[1], fit = list(lm(makeup ~ distance, data = df))))
 makeup.models.df &lt;- do.call(rbind, makeup.models.list)
-sapply(makeup.models.df[, &quot;fit&quot;], function(model) c(coefdist = coef(model)[2], rsq =  summary(model)$r.squared)) |&gt; t() |&gt; data.frame()
+data.frame(t(sapply(
+  makeup.models.df[, &quot;fit&quot;],
+  function(model) c(coefdist = coef(model)[2L], rsq =  summary(model)$r.squared)
+)))
 #    coefdist.distance          rsq
 # 1       0.0042864543 2.664617e-02
 # 2      -0.0036042523 2.211601e-02

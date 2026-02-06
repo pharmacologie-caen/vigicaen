@@ -60,7 +60,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -358,6 +358,8 @@ functions)</a></li>
 computer with low specifications</a></li>
 <li><a href="#subsetting-tables" id="toc-subsetting-tables">Subsetting
 tables</a></li>
+<li><a href="#handling-interruptions-and-resuming-table-creation" id="toc-handling-interruptions-and-resuming-table-creation">Handling
+interruptions and resuming table creation</a></li>
 </ul>
 </div>
 
@@ -469,11 +471,20 @@ directory, under a slightly modified name.</p>
 Parquet is an open-source format, supported by Arrow.</p>
 <p>Not all tables from each source are created during the process.</p>
 <ul>
-<li><p>Main: All tables + subsidiary tables (from sub): demo, drug, adr,
+<li>Main: All tables + subsidiary tables (from sub): demo, drug, adr,
 link, ind, srce, out, followup, suspdup, AgeGroup, Dechallenge,
 Dechallenge2, Frequency, Gender, Notifier, Outcome, Rechallenge,
 Rechallenge2, Region, RepBasis, ReportType, RouteOfAdm, Seriousness, and
-SizeUnit.</p></li>
+SizeUnit.</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> By default, the <code>tb_vigibase()</code>
+function removes cases identified as suspected duplicates (present in
+the file <code>SUSPECTEDDUPLICATES.txt</code>). You can disable this
+behavior with the argument <code>rm_suspdup = FALSE</code> if you wish
+to keep them in the main tables.</p>
+</blockquote>
+<ul>
 <li><p>WHODrug: All tables: mp, thg, pp, ing, srce, org, ccode, atc,
 sun, pf, str, prg, prt, unitx. Again, check correspondence in the
 delivered files from UMC.</p></li>
@@ -548,6 +559,30 @@ want to subset on these. See
 <span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="fu">tb_subset</span>(wd_in, wd_out,</span>
 <span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>          <span class="at">subset_var =</span> <span class="st">&quot;age&quot;</span>,</span>
 <span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>          <span class="at">sv_selection =</span> sv_selection)</span></code></pre></div>
+</div>
+<div id="handling-interruptions-and-resuming-table-creation" class="section level1">
+<h1>Handling interruptions and resuming table creation</h1>
+<p>Building all VigiBase tables can be a long process, especially on
+large datasets or computers with limited resources. There is a risk that
+the <code>tb_vigibase()</code> may crash or be interrupted (for example,
+due to insufficient memory issue) before all tables are created.</p>
+<p>To address this, <code>tb_vigibase()</code> provides the argument
+<code>overwrite_existing_tables</code> (default: <code>FALSE</code>).
+When set to <code>FALSE</code>, the function will automatically skip any
+.parquet tables that already exist in the output directory. This means
+you can re-run <code>tb_vigibase()</code> after a crash or interruption,
+and it will resume from where it left off, only building the missing
+tables. This saves time and avoids unnecessary recomputation.</p>
+<p>If you want to force the rebuilding of all tables (for example, if
+you suspect a table is corrupted or want to refresh everything), set
+<code>overwrite_existing_tables = TRUE</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Example: resume after a crash</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co"># (only missing tables will be created)</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">tb_vigibase</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="at">path_base =</span> path_base,</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="at">path_sub  =</span> path_sub,</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="at">overwrite_existing_tables =</span> <span class="cn">FALSE</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 
 

@@ -8,70 +8,77 @@ knitr::opts_chunk$set(
  collapse = TRUE
 )
 
-## -------------------------------------------------------------------------------------------------
-Products = data.table(
-  id = c(1:4,
-         NA_integer_),
-  name = c("banana",
-           "carrots",
-           "popcorn",
-           "soda",
-           "toothpaste"),
-  price = c(0.63,
-            0.89,
-            2.99,
-            1.49,
-            2.99),
-  unit = c("unit",
-           "lb",
-           "unit",
-           "ounce",
-           "unit"),
-  type = c(rep("natural", 2L),
-           rep("processed", 3L))
+## ----echo=FALSE, file='_translation_links.R'------------------------------------------------------
+# build a link list of alternative languages (may be character(0))
+# idea is to look like 'Other languages: en | fr | de'
+.write.translation.links <- function(fmt) {
+    url = "https://rdatatable.gitlab.io/data.table/articles"
+    path = dirname(knitr::current_input(TRUE))
+    if (basename(path) == "vignettes") {
+      lang = "en"
+    } else {
+      lang = basename(path)
+      path = dirname(path)
+    }
+    translation = dir(path,
+      recursive = TRUE,
+      pattern = glob2rx(knitr::current_input(FALSE))
+    )
+    transl_lang = ifelse(dirname(translation) == ".", "en", dirname(translation))
+    block = if (!all(transl_lang == lang)) {
+      linked_transl = sprintf("[%s](%s)", transl_lang, file.path(url, sub("(?i)\\.Rmd$", ".html", translation)))
+      linked_transl[transl_lang == lang] = lang
+      sprintf(fmt, paste(linked_transl, collapse = " | "))
+    } else ""
+    knitr::asis_output(block)
+}
+
+## ----define_products------------------------------------------------------------------------------
+Products = rowwiseDT(
+  id=,        name=, price=,   unit=, type=,
+   1L,     "banana",   0.63,  "unit", "natural",
+   2L,    "carrots",   0.89,    "lb", "natural",
+   3L,    "popcorn",   2.99,  "unit", "processed",
+   4L,       "soda",   1.49, "ounce", "processed",
+   NA, "toothpaste",   2.99,  "unit", "processed"
 )
 
-Products
-
-## -------------------------------------------------------------------------------------------------
+## ----define_new_tax-------------------------------------------------------------------------------
 NewTax = data.table(
-  unit = c("unit","ounce"),
+  unit = c("unit", "ounce"),
   type = "processed",
   tax_prop = c(0.65, 0.20)
 )
 
 NewTax
 
-## -------------------------------------------------------------------------------------------------
+## ----define_product_received----------------------------------------------------------------------
 set.seed(2156)
 
+# NB: Jan 8, 2024 is a Monday.
+receipt_dates = seq(from=as.IDate("2024-01-08"), length.out=10L, by="week")
+
 ProductReceived = data.table(
-  id = 1:10,
-  date = seq(from = as.IDate("2024-01-08"), length.out = 10L, by = "week"),
-  product_id = sample(c(NA_integer_, 1:3, 6L), size = 10L, replace = TRUE),
-  count = sample(c(50L, 100L, 150L), size = 10L, replace = TRUE)
+  id=1:10, # unique identifier for an supply transaction
+  date=receipt_dates,
+  product_id=sample(c(NA, 1:3, 6L), size=10L, replace=TRUE), # NB: product '6' is not recorded in Products above.
+  count=sample(c(50L, 100L, 150L), size=10L, replace=TRUE)
 )
 
 ProductReceived
 
-## -------------------------------------------------------------------------------------------------
-sample_date = function(from, to, size, ...){
-  all_days = seq(from = from, to = to, by = "day")
-  weekdays = all_days[wday(all_days) %in% 2:6]
-  days_sample = sample(weekdays, size, ...)
-  days_sample_desc = sort(days_sample)
-  days_sample_desc
-}
-
+## ----define_product_sales-------------------------------------------------------------------------
 set.seed(5415)
+
+# Monday-Friday (4 days later) for each of the weeks present in ProductReceived
+possible_weekdays <- as.IDate(sapply(receipt_dates, `+`, 0:4))
 
 ProductSales = data.table(
   id = 1:10,
-  date = ProductReceived[, sample_date(min(date), max(date), 10L)],
-  product_id = sample(c(1:3, 7L), size = 10L, replace = TRUE),
+  date = sort(sample(possible_weekdays, 10L)),
+  product_id = sample(c(1:3, 7L), size = 10L, replace = TRUE), # NB: product '7' is in neither Products nor ProductReceived.
   count = sample(c(50L, 100L, 150L), size = 10L, replace = TRUE)
 )
-
 
 ProductSales
 
@@ -123,7 +130,7 @@ dt1 = ProductReceived[
   j = .(total_value_received  = sum(price * count))
 ]
 
-
+# alternative using multiple [] queries
 dt2 = ProductReceived[
   Products,
   on = c("product_id" = "id"),
@@ -255,6 +262,17 @@ ProductReceivedProd2[ProductSalesProd2,
                      on = list(product_id, date < date),
                      nomatch = NULL]
 
+## ----non_equi_join_example------------------------------------------------------------------------
+x <- data.table(x_int = 2:4, lower = letters[1:3])
+i <- data.table(i_int = c(2L, 4L, 5L), UPPER = LETTERS[1:3])
+x[i, on = .(x_int >= i_int)]
+
+## ----retain_i_column------------------------------------------------------------------------------
+x[i, on = .(x_int >= i_int), .(i_int = i.i_int, x_int = x.x_int, lower, UPPER)]
+
+## ----retain_i_column_inner_join-------------------------------------------------------------------
+x[i, on = .(x_int >= i_int), .(i_int = i.i_int, x_int = x.x_int, lower, UPPER), nomatch = NULL]
+
 ## -------------------------------------------------------------------------------------------------
 ProductPriceHistory = data.table(
   product_id = rep(1:2, each = 3),
@@ -299,11 +317,26 @@ Products[c("banana","popcorn"),
 Products[!"popcorn",
          on = "name"]
 
+## -------------------------------------------------------------------------------------------------
+Products[ProductPriceHistory, 
+         on = .(id = product_id), 
+         price := i.price]
+
+Products
+
+## ----Updating_with_the_Latest_Record--------------------------------------------------------------
+Products[ProductPriceHistory,
+         on = .(id = product_id),
+         `:=`(price = last(i.price), last_updated = last(i.date)),
+         by = .EACHI]
+
+Products
 
 ## -------------------------------------------------------------------------------------------------
-copy(Products)[ProductPriceHistory,
-               on = .(id = product_id),
-               j = `:=`(price = tail(i.price, 1),
-                        last_updated = tail(i.date, 1)),
-               by = .EACHI][]
+cols <- setdiff(names(Products), "id")
+ProductPriceHistory[, (cols) := 
+  Products[.SD, on = .(id = product_id), .SD, .SDcols = cols]]
+setnafill(ProductPriceHistory, fill=0, cols="price") # Handle missing values
+
+ProductPriceHistory
 

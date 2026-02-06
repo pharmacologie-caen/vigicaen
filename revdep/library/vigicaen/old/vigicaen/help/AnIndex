@@ -11,6 +11,7 @@ create_example_tables	create_example_tables
 create_ex_main_pq	create_example_tables
 create_ex_main_txt	create_example_tables
 create_ex_meddra_asc	create_example_tables
+create_ex_sub_pq	create_example_tables
 create_ex_sub_txt	create_example_tables
 create_ex_who_txt	create_example_tables
 demo_	demo_

@@ -1,6 +1,6 @@
 #' Outcome descriptive
 #'
-#' @description `r lifecycle::badge('experimental')` Compute
+#' @description `r lifecycle::badge('stable')` Compute
 #' outcome description over a set of adr and drugs.
 #'
 #' @details You need an `adr` data.table.

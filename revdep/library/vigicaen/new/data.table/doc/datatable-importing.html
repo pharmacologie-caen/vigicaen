@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="generator" content="litedown 0.7">
+<meta name="generator" content="litedown 0.8">
 <title>Importing data.table</title>
 <style type="text/css">
 body {
@@ -114,7 +114,7 @@ section.footnotes {
 <body>
 <div class="frontmatter">
 <div class="title"><h1>Importing data.table</h1></div>
-<div class="date"><h3>2025-07-07</h3></div>
+<div class="date"><h3>2026-01-24</h3></div>
 </div>
 <div class="body">
 <style>
@@ -122,11 +122,7 @@ h2 {
     font-size: 20px;
 }
 </style>
-<p>Translations of this document are available in</p>
-<ul>
-<li><a href="https://rdatatable.gitlab.io/data.table/articles/fr/datatable-importing.html">French</a></li>
-<li><a href="https://rdatatable.gitlab.io/data.table/articles/ru/datatable-importing.html">Russian</a></li>
-</ul>
+<p>Translations of this document are available in: en | <a href="https://rdatatable.gitlab.io/data.table/articles/fr/datatable-importing.html">fr</a> | <a href="https://rdatatable.gitlab.io/data.table/articles/ru/datatable-importing.html">ru</a></p>
 <p>This document is focused on using <code>data.table</code> as a dependency in other R packages. If you are interested in using <code>data.table</code> C code from a non-R application, or in calling its C functions directly, jump to the <a href="#non-r-api">last section</a> of this vignette.</p>
 <p>Importing <code>data.table</code> is no different from importing other R packages. This vignette is meant to answer the most common questions arising around that subject; the lessons presented here can be applied to other R packages.</p>
 <h2 id="sec:why-to-import-data-table">Why to import <code>data.table</code></h2>
@@ -163,7 +159,7 @@ stopifnot(nrow(dt) == 100)
 dt2 = aggr(dt)
 stopifnot(nrow(dt2) &lt; 100)
 </code></pre>
-<p>When testing your package, you may want to use <code>R CMD check --no-stop-on-test-error</code>, which will continue after an error and run all your tests (as opposed to stopping on the first line of script that failed) NB this requires R 3.4.0 or greater.</p>
+<p>When testing your package, you may want to use <code>R CMD check --no-stop-on-test-error</code>, which will continue after an error and run all your tests (as opposed to stopping on the first line of script that failed).</p>
 <h2 id="sec:testing-using-testthat">Testing using <code>testthat</code></h2>
 <p>It is very common to use the <code>testthat</code> package for purpose of tests. Testing a package that imports <code>data.table</code> is no different from testing other packages. An example test script <code>tests/testthat/test-pkg.R</code>:</p>
 <pre><code class="language-r">context(&quot;pkg tests&quot;)

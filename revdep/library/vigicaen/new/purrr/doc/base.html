@@ -426,7 +426,7 @@ function</p>
 <td><code>vapply()</code></td>
 <td><code>map_lgl()</code> (logical), <code>map_int()</code> (integer),
 <code>map_dbl()</code> (double), <code>map_chr()</code> (character),
-<code>map_raw()</code> (raw)</td>
+<code>map_vec()</code> (other vectors)</td>
 </tr>
 <tr class="odd">
 <td>Atomic vector of desired type</td>
@@ -435,7 +435,7 @@ function</p>
 to check type</td>
 <td><code>map2_lgl()</code> (logical), <code>map2_int()</code>
 (integer), <code>map2_dbl()</code> (double), <code>map2_chr()</code>
-(character), <code>map2_raw()</code> (raw)</td>
+(character), <code>map2_vec()</code> (other vectors)</td>
 </tr>
 <tr class="even">
 <td>Atomic vector of desired type</td>
@@ -444,19 +444,19 @@ to check type</td>
 to check type</td>
 <td><code>pmap_lgl()</code> (logical), <code>pmap_int()</code>
 (integer), <code>pmap_dbl()</code> (double), <code>pmap_chr()</code>
-(character), <code>pmap_raw()</code> (raw)</td>
+(character), <code>pmap_vec()</code> (other vectors)</td>
 </tr>
 <tr class="odd">
-<td>Side effect only</td>
-<td>1 vector</td>
-<td>loops</td>
-<td><code>walk()</code></td>
-</tr>
-<tr class="even">
 <td>Side effect only</td>
 <td>2 vectors</td>
 <td>loops</td>
 <td><code>walk2()</code></td>
+</tr>
+<tr class="even">
+<td>Side effect only</td>
+<td>1 vector</td>
+<td>loops</td>
+<td><code>walk()</code></td>
 </tr>
 <tr class="odd">
 <td>Side effect only</td>
@@ -468,41 +468,41 @@ to check type</td>
 <td>Data frame (<code>rbind</code> outputs)</td>
 <td>1 vector</td>
 <td><code>lapply()</code> then <code>rbind()</code></td>
-<td><code>map_dfr()</code></td>
+<td><code>map()</code> then <code>list_rbind()</code></td>
 </tr>
 <tr class="odd">
 <td>Data frame (<code>rbind</code> outputs)</td>
 <td>2 vectors</td>
 <td><code>mapply()</code>/<code>Map()</code> then
 <code>rbind()</code></td>
-<td><code>map2_dfr()</code></td>
+<td><code>map2()</code> then <code>list_rbind()</code></td>
 </tr>
 <tr class="even">
 <td>Data frame (<code>rbind</code> outputs)</td>
 <td>&gt;2 vectors</td>
 <td><code>mapply()</code>/<code>Map()</code> then
 <code>rbind()</code></td>
-<td><code>pmap_dfr()</code></td>
+<td><code>pmap()</code> then <code>list_rbind()</code></td>
 </tr>
 <tr class="odd">
 <td>Data frame (<code>cbind</code> outputs)</td>
 <td>1 vector</td>
 <td><code>lapply()</code> then <code>cbind()</code></td>
-<td><code>map_dfc()</code></td>
+<td><code>map()</code> then <code>list_cbind()</code></td>
 </tr>
 <tr class="even">
 <td>Data frame (<code>cbind</code> outputs)</td>
 <td>2 vectors</td>
 <td><code>mapply()</code>/<code>Map()</code> then
 <code>cbind()</code></td>
-<td><code>map2_dfc()</code></td>
+<td><code>map2()</code> then <code>list_cbind()</code></td>
 </tr>
 <tr class="odd">
 <td>Data frame (<code>cbind</code> outputs)</td>
 <td>&gt;2 vectors</td>
 <td><code>mapply()</code>/<code>Map()</code> then
 <code>cbind()</code></td>
-<td><code>pmap_dfc()</code></td>
+<td><code>pmap()</code> then <code>list_cbind()</code></td>
 </tr>
 <tr class="even">
 <td>Any</td>
@@ -510,7 +510,7 @@ to check type</td>
 <td><code>l/s/vapply(X, function(x) f(x, names(x)))</code> or
 <code>mapply/Map(f, x, names(x))</code></td>
 <td><code>imap()</code>, <code>imap_*()</code> (<code>lgl</code>,
-<code>dbl</code>, <code>dfr</code>, and etc. just like for
+<code>dbl</code>, <code>chr</code>, and etc. just like for
 <code>map()</code>, <code>map2()</code>, and <code>pmap()</code>)</td>
 </tr>
 <tr class="odd">
@@ -729,9 +729,9 @@ number of <code>mapply()</code>’s defaults.</p>
 <span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt;  $ : num [1:5] 3.44 3.88 1.54 5.52 2.23</span></span>
 <span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt;  $ : num [1:5] 0.441 5.728 6.589 1.885 2.63</span></span>
 <span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt;  $ : num [1:5] 11.2 10.82 -8.16 -5.16 4.23</span></span></code></pre></div>
-<p>Alternatively, we could use <code>Map()</code> which doesn’t simply,
-but also doesn’t take any constant arguments, so we need to use an
-anonymous function:</p>
+<p>Alternatively, we could use <code>Map()</code> which doesn’t
+simplify, but also doesn’t take any constant arguments, so we need to
+use an anonymous function:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">Map</span>(<span class="cf">function</span>(...) <span class="fu">rnorm</span>(..., <span class="at">n =</span> <span class="dv">5</span>), <span class="at">mean =</span> means, <span class="at">sd =</span> sds)</span></code></pre></div>
 <p>In R 4.1 and up, you could use the shorter anonymous function
 form:</p>

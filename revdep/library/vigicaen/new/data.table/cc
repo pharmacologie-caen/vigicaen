@@ -1,2 +1,2 @@
-CC=gcc
-CFLAGS=-g -O2
+CC=clang
+CFLAGS=-g -O2 -Wall -pedantic

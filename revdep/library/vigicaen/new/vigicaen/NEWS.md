@@ -1,4 +1,49 @@
-# vigicaen 0.16.0
+# vigicaen 1.0.0
+
+## Time for 1.0!
+
+* We are so happy to deliver the v1.0 of vigicaen! The package has now reached
+a sufficient number of capabilities with a consistent enough internal structure
+that we've thought it would deserve moving to the first major release. The general
+architecture is unlikely to change in the near future, whereas there is always
+room for performance improvement and additional functions. The latter should
+come as minor releases in the foreseeable future. We hope you will enjoy using
+the package and look forward for your feedbacks. Sincerely, the vigicaen team.
+
+## New features
+
+* *New* `add_ind()` complements the `add_*` family, to add indication columns
+to a demo, drug, adr, link or ind table. It's process is slightly simpler
+than the other add functions, as their is no `get_` step at the moment.
+
+* *New* `add_dose()` complements the `add_*` family, to add drug dose
+in mg per day columns to a demo, drug, adr, link or ind table. 
+It calculates daily dose values based on dose amount, frequency, 
+and their corresponding units.(#104)
+
+* `add_drug()` now supports `ind` tables as .data argument.
+
+* `desc_cont()` now supports arrow style tables.
+
+* An error message is raised if trying to pass an `ind` table to `add_adr()`
+as .data argument.
+
+* `dt_fst()` is definitively removed.
+
+## Enhancements for low specification computers
+
+*  `vigi_routine()` is internally optimized to minimize memory use,
+making it more likely to success on low spec computers <16GB RAM (#158)
+
+*  `dt_parquet()` and now internally calls 
+`arrow::open_dataset()` rather than `arrow::read_parquet()`
+if arg `in_memory = FALSE`, to increase chances of success on low spec
+computers <16GB RAM (#158)
+
+*   `tb_subset()` now internally calls `arrow::open_dataset()` 
+rather than `arrow::read_parquet()` for the same reason.
+
+# vigicaen 0.16.1
 
 ## New features
 
@@ -94,13 +139,13 @@ several WHO names, and throws an error if matching multiple DrecNos (#139).
 
 ## New features
 
+
 * `tb_*` family now has a `cli` style progress bar
 
 * `get_llt_soc()` output is reworked with `cli` features.
 The function also now correctly supports non-data.table data.frame.
 
 * `vigi_routine()` fails if there are no drug or adr cases found in `demo_data`.
-
 # vigicaen 0.15.0
 
 ## Breaking changes

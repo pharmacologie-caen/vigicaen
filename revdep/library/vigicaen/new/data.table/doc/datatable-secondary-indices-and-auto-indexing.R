@@ -1,3 +1,28 @@
+## ----echo=FALSE, file='_translation_links.R'------------------------------------------------------
+# build a link list of alternative languages (may be character(0))
+# idea is to look like 'Other languages: en | fr | de'
+.write.translation.links <- function(fmt) {
+    url = "https://rdatatable.gitlab.io/data.table/articles"
+    path = dirname(knitr::current_input(TRUE))
+    if (basename(path) == "vignettes") {
+      lang = "en"
+    } else {
+      lang = basename(path)
+      path = dirname(path)
+    }
+    translation = dir(path,
+      recursive = TRUE,
+      pattern = glob2rx(knitr::current_input(FALSE))
+    )
+    transl_lang = ifelse(dirname(translation) == ".", "en", dirname(translation))
+    block = if (!all(transl_lang == lang)) {
+      linked_transl = sprintf("[%s](%s)", transl_lang, file.path(url, sub("(?i)\\.Rmd$", ".html", translation)))
+      linked_transl[transl_lang == lang] = lang
+      sprintf(fmt, paste(linked_transl, collapse = " | "))
+    } else ""
+    knitr::asis_output(block)
+}
+
 ## ----echo = FALSE, message = FALSE----------------------------------------------------------------
 require(data.table)
 knitr::opts_chunk$set(
@@ -15,6 +40,16 @@ options(width = 100L)
 flights <- fread("flights14.csv")
 head(flights)
 dim(flights)
+
+## ----keyed_operations-----------------------------------------------------------------------------
+DT = data.table(a = c(TRUE, FALSE), b = 1:2)
+setkey(DT, a)                # Set key, reordering DT
+DT[.(TRUE)]                  # 'on' is optional; if omitted, the key is used
+
+## ----unkeyed_operations---------------------------------------------------------------------------
+DT = data.table(a = c(TRUE, FALSE), b = 1:2)
+setindex(DT, a)              # Set index only (no reorder)
+DT[.(TRUE), on = "a"]        # 'on' is required
 
 ## -------------------------------------------------------------------------------------------------
 setindex(flights, origin)
@@ -55,6 +90,9 @@ flights["JFK", on = "origin", verbose = TRUE][1:5]
 
 ## -------------------------------------------------------------------------------------------------
 flights[.("JFK", "LAX"), on = c("origin", "dest")][1:5]
+
+## -------------------------------------------------------------------------------------------------
+flights[.(origin = "JFK", dest = "LAX"), on = c("origin", "dest")]
 
 ## -------------------------------------------------------------------------------------------------
 flights[.("LGA", "TPA"), .(arr_delay), on = c("origin", "dest")]

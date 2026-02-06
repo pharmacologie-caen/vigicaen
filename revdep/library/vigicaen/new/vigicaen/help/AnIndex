@@ -1,6 +1,8 @@
 vigicaen-package	vigicaen-package
 add_adr	add_adr
+add_dose	add_dose
 add_drug	add_drug
+add_ind	add_ind
 adr_	demo_
 cff	cff
 check_dm	check_dm
@@ -22,7 +24,6 @@ desc_outcome	desc_outcome
 desc_rch	desc_rch
 desc_tto	desc_tto
 drug_	demo_
-dt_fst	dt_fst
 dt_parquet	dt_parquet
 extract_tto	extract_tto
 ex_	ex_

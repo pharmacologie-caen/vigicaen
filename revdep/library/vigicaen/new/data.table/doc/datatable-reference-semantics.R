@@ -1,3 +1,28 @@
+## ----echo=FALSE, file='_translation_links.R'------------------------------------------------------
+# build a link list of alternative languages (may be character(0))
+# idea is to look like 'Other languages: en | fr | de'
+.write.translation.links <- function(fmt) {
+    url = "https://rdatatable.gitlab.io/data.table/articles"
+    path = dirname(knitr::current_input(TRUE))
+    if (basename(path) == "vignettes") {
+      lang = "en"
+    } else {
+      lang = basename(path)
+      path = dirname(path)
+    }
+    translation = dir(path,
+      recursive = TRUE,
+      pattern = glob2rx(knitr::current_input(FALSE))
+    )
+    transl_lang = ifelse(dirname(translation) == ".", "en", dirname(translation))
+    block = if (!all(transl_lang == lang)) {
+      linked_transl = sprintf("[%s](%s)", transl_lang, file.path(url, sub("(?i)\\.Rmd$", ".html", translation)))
+      linked_transl[transl_lang == lang] = lang
+      sprintf(fmt, paste(linked_transl, collapse = " | "))
+    } else ""
+    knitr::asis_output(block)
+}
+
 ## ----echo = FALSE, message = FALSE----------------------------------------------------------------
 require(data.table)
 knitr::opts_chunk$set(
@@ -133,6 +158,22 @@ DT[, w := 4L]
 
 ## DT_n doesn't get updated
 DT_n
+
+## -------------------------------------------------------------------------------------------------
+DT = data.table(a = 1:3)
+
+# three ways to get the column
+x_ref = DT$a        # may be a reference
+y_cpy = DT[, a]     # always a copy
+z_cpy = copy(DT$a)  # forced copy
+
+# modify DT by reference
+DT[, a := a + 10L]
+
+# observe results
+x_ref   # may show 11 12 13
+y_cpy   # 1 2 3
+z_cpy   # 1 2 3
 
 ## ----echo=FALSE-----------------------------------------------------------------------------------
 setDTthreads(.old.th)
