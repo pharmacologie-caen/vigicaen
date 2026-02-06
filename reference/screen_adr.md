@@ -1,9 +1,9 @@
 # Screening of adverse drug reactions
 
-**\[experimental\]** Identify and rank the most frequently reported
-adverse drug reaction (ADR) terms in a dataset, based on a specified
-MedDRA term level. It allows users to filter terms by a frequency
-threshold or extract the top `n` most frequently occurring terms.
+**\[stable\]** Identify and rank the most frequently reported adverse
+drug reaction (ADR) terms in a dataset, based on a specified MedDRA term
+level. It allows users to filter terms by a frequency threshold or
+extract the top `n` most frequently occurring terms.
 
 ## Arguments
 

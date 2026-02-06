@@ -44,13 +44,11 @@
 - [`desc_facvar()`](https://pharmacologie-caen.github.io/vigicaen/reference/desc_facvar.md)
   **\[stable\]** : Summarise categorical variables
 - [`desc_outcome()`](https://pharmacologie-caen.github.io/vigicaen/reference/desc_outcome.md)
-  **\[experimental\]** : Outcome descriptive
+  **\[stable\]** : Outcome descriptive
 - [`desc_rch()`](https://pharmacologie-caen.github.io/vigicaen/reference/desc_rch.md)
   **\[stable\]** : Rechallenge descriptive
 - [`desc_tto()`](https://pharmacologie-caen.github.io/vigicaen/reference/desc_tto.md)
   **\[stable\]** : Time to onset descriptive
-- [`dt_fst()`](https://pharmacologie-caen.github.io/vigicaen/reference/dt_fst.md)
-  **\[deprecated\]** : Read fst and convert to data.table
 - [`dt_parquet()`](https://pharmacologie-caen.github.io/vigicaen/reference/dt_parquet.md)
   **\[stable\]** : Read parquet and convert to data.table
 - [`ex_`](https://pharmacologie-caen.github.io/vigicaen/reference/ex_.md)
@@ -79,9 +77,9 @@
 - [`nice_p()`](https://pharmacologie-caen.github.io/vigicaen/reference/nice_p.md)
   **\[stable\]** : Nice printing of p-values
 - [`screen_adr`](https://pharmacologie-caen.github.io/vigicaen/reference/screen_adr.md)
-  **\[experimental\]** : Screening of adverse drug reactions
+  **\[stable\]** : Screening of adverse drug reactions
 - [`screen_drug()`](https://pharmacologie-caen.github.io/vigicaen/reference/screen_drug.md)
-  **\[experimental\]** : Screening of drugs
+  **\[stable\]** : Screening of drugs
 - [`tb_meddra()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_meddra.md)
   **\[stable\]** : Create MedDRA tables
 - [`tb_subset()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_subset.md)
@@ -91,4 +89,4 @@
 - [`tb_who()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_who.md)
   **\[stable\]** : Create WHO tables
 - [`vigi_routine()`](https://pharmacologie-caen.github.io/vigicaen/reference/vigi_routine.md)
-  **\[experimental\]** : Display routine pharmacovigilance summary
+  **\[maturing\]** : Display routine pharmacovigilance summary

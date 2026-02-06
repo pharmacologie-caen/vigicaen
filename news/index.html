@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">vigicaen</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.16.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,17 +47,22 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="vigicaen-development-version">vigicaen (development version)<a class="anchor" aria-label="anchor" href="#vigicaen-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.0.0" id="vigicaen-100">vigicaen 1.0.0<a class="anchor" aria-label="anchor" href="#vigicaen-100"></a></h2>
 <div class="section level3">
-<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="time-for-1-0-0">Time for 1.0!<a class="anchor" aria-label="anchor" href="#time-for-1-0-0"></a></h3>
+<ul><li>We are so happy to deliver the v1.0 of vigicaen! The package has now reached a sufficient number of capabilities with a consistent enough internal structure that we’ve thought it would deserve moving to the first major release. The general architecture is unlikely to change in the near future, whereas there is always room for performance improvement and additional functions. The latter should come as minor releases in the foreseeable future. We hope you will enjoy using the package and look forward for your feedbacks. Sincerely, the vigicaen team.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-features-1-0-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-0-0"></a></h3>
 <ul><li><p><em>New</em> <code><a href="../reference/add_ind.html">add_ind()</a></code> complements the <code>add_*</code> family, to add indication columns to a demo, drug, adr, link or ind table. It’s process is slightly simpler than the other add functions, as their is no <code>get_</code> step at the moment.</p></li>
 <li><p><em>New</em> <code><a href="../reference/add_dose.html">add_dose()</a></code> complements the <code>add_*</code> family, to add drug dose in mg per day columns to a demo, drug, adr, link or ind table. It calculates daily dose values based on dose amount, frequency, and their corresponding units.(<a href="https://github.com/pharmacologie-caen/vigicaen/issues/104" class="external-link">#104</a>)</p></li>
 <li><p><code><a href="../reference/add_drug.html">add_drug()</a></code> now supports <code>ind</code> tables as .data argument.</p></li>
 <li><p><code><a href="../reference/desc_cont.html">desc_cont()</a></code> now supports arrow style tables.</p></li>
 <li><p>An error message is raised if trying to pass an <code>ind</code> table to <code><a href="../reference/add_adr.html">add_adr()</a></code> as .data argument.</p></li>
+<li><p><code>dt_fst()</code> is definitively removed.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="enhancements-for-low-specification-computers-development-version">Enhancements for low specification computers<a class="anchor" aria-label="anchor" href="#enhancements-for-low-specification-computers-development-version"></a></h3>
+<h3 id="enhancements-for-low-specification-computers-1-0-0">Enhancements for low specification computers<a class="anchor" aria-label="anchor" href="#enhancements-for-low-specification-computers-1-0-0"></a></h3>
 <ul><li><p><code><a href="../reference/vigi_routine.html">vigi_routine()</a></code> is internally optimized to minimize memory use, making it more likely to success on low spec computers &lt;16GB RAM (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/158" class="external-link">#158</a>)</p></li>
 <li><p><code><a href="../reference/dt_parquet.html">dt_parquet()</a></code> and now internally calls <code><a href="https://arrow.apache.org/docs/r/reference/open_dataset.html" class="external-link">arrow::open_dataset()</a></code> rather than <code><a href="https://arrow.apache.org/docs/r/reference/read_parquet.html" class="external-link">arrow::read_parquet()</a></code> if arg <code>in_memory = FALSE</code>, to increase chances of success on low spec computers &lt;16GB RAM (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/158" class="external-link">#158</a>)</p></li>
 <li><p><code><a href="../reference/tb_subset.html">tb_subset()</a></code> now internally calls <code><a href="https://arrow.apache.org/docs/r/reference/open_dataset.html" class="external-link">arrow::open_dataset()</a></code> rather than <code><a href="https://arrow.apache.org/docs/r/reference/read_parquet.html" class="external-link">arrow::read_parquet()</a></code> for the same reason.</p></li>

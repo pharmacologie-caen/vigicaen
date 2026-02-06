@@ -1,6 +1,18 @@
 # Changelog
 
-## vigicaen (development version)
+## vigicaen 1.0.0
+
+### Time for 1.0!
+
+- We are so happy to deliver the v1.0 of vigicaen! The package has now
+  reached a sufficient number of capabilities with a consistent enough
+  internal structure that we’ve thought it would deserve moving to the
+  first major release. The general architecture is unlikely to change in
+  the near future, whereas there is always room for performance
+  improvement and additional functions. The latter should come as minor
+  releases in the foreseeable future. We hope you will enjoy using the
+  package and look forward for your feedbacks. Sincerely, the vigicaen
+  team.
 
 ### New features
 
@@ -26,6 +38,8 @@
 - An error message is raised if trying to pass an `ind` table to
   [`add_adr()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_adr.md)
   as .data argument.
+
+- `dt_fst()` is definitively removed.
 
 ### Enhancements for low specification computers
 

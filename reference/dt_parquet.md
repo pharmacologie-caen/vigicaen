@@ -40,7 +40,7 @@ good option to load data in-memory. This function is wrapping
 [`arrow::read_parquet()`](https://arrow.apache.org/docs/r/reference/read_parquet.html),
 [`dplyr::collect()`](https://dplyr.tidyverse.org/reference/compute.html)
 and
-[`data.table::as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html)
+[`data.table::as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html)
 altogether. If you want to load **OUT** of memory, set arg `in_memory`
 to FALSE. **Be careful that doing so will change the function output
 format**. For this latter case, the output is not a data.table, so there

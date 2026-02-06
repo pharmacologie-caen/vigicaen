@@ -838,7 +838,7 @@ demo <-
 #### Using case_when()
 
 The
-[`case_when()`](https://dplyr.tidyverse.org/reference/case_when.html)
+[`case_when()`](https://dplyr.tidyverse.org/reference/case-and-replace-when.html)
 function from the `dplyr` package allows you to manage multiple options
 in a single function, with a slightly different syntax.
 
@@ -853,7 +853,7 @@ demo <-
 ```
 
 More documentation on
-[`case_when()`](https://dplyr.tidyverse.org/reference/case_when.html)
+[`case_when()`](https://dplyr.tidyverse.org/reference/case-and-replace-when.html)
 can be found in the `dplyr` package documentation.
 
 You should just remember here that options are evaluated sequentially,

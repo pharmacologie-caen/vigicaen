@@ -1,7 +1,6 @@
 # Outcome descriptive
 
-**\[experimental\]** Compute outcome description over a set of adr and
-drugs.
+**\[stable\]** Compute outcome description over a set of adr and drugs.
 
 ## Usage
 

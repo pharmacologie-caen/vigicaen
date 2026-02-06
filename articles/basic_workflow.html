@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">vigicaen</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.16.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -858,18 +858,18 @@ from which you can also create a new sex column (with values 1 for men,
 <div class="section level4">
 <h4 id="using-case_when">Using case_when()<a class="anchor" aria-label="anchor" href="#using-case_when"></a>
 </h4>
-<p>The <code><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when()</a></code> function from the <code>dplyr</code>
+<p>The <code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when()</a></code> function from the <code>dplyr</code>
 package allows you to manage multiple options in a single function, with
 a slightly different syntax.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">demo</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">demo</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    sex <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="va">Gender</span> <span class="op">==</span> <span class="st">"1"</span> <span class="op">~</span> <span class="fl">1</span>,</span>
+<span>    sex <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="va">Gender</span> <span class="op">==</span> <span class="st">"1"</span> <span class="op">~</span> <span class="fl">1</span>,</span>
 <span>                    <span class="va">Gender</span> <span class="op">==</span> <span class="st">"2"</span> <span class="op">~</span> <span class="fl">2</span>,</span>
 <span>                    <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_real_</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div>
-<p>More documentation on <code><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when()</a></code> can be found in the
+<p>More documentation on <code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when()</a></code> can be found in the
 <code>dplyr</code> package documentation.</p>
 <p>You should just remember here that options are evaluated
 sequentially, from top to bottom.</p>
