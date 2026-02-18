@@ -2,6 +2,8 @@
 
 ## vigicaen 1.0.0
 
+CRAN release: 2026-02-06
+
 ### Time for 1.0!
 
 - We are so happy to deliver the v1.0 of vigicaen! The package has now
