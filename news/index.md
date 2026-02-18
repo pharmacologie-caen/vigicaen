@@ -1,5 +1,7 @@
 # Changelog
 
+## vigicaen (development version)
+
 ## vigicaen 1.0.0
 
 CRAN release: 2026-02-06
