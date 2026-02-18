@@ -128,7 +128,7 @@
       x Missing columns: llt_code, llt_name, pt_name, soc_name, and hlt_name
       > Supply a `meddra` table to `.data`. See ?meddra_.
 
-# format is ok [plain]
+# cli format and basic use work / format is ok [plain]
 
     Code
       check_data_drug(data_invalid, arg = "x")
@@ -168,18 +168,7 @@
       x Missing columns: llt_code, llt_name, pt_name, soc_name, and hlt_name
       > Supply a `meddra` table to `x`. See ?meddra_.
 
----
-
-    Code
-      vigicaen:::check_data_smqlist(smq_list_content, arg = "x")
-    Condition
-      Error:
-      ! `x` must be an `smq_list` table.
-      x Invalid/missing columns detected
-      i Did you provide an `smq_list_content`, instead of an `smq_list` dataset?.
-      > See ?smq_list_.
-
-# format is ok [ansi]
+# cli format and basic use work / format is ok [ansi]
 
     Code
       check_data_drug(data_invalid, arg = "x")
@@ -219,18 +208,7 @@
       [31mx[39m Missing columns: llt_code, llt_name, pt_name, soc_name, and hlt_name
       > Supply a `meddra` table to `x`. See ?meddra_.
 
----
-
-    Code
-      vigicaen:::check_data_smqlist(smq_list_content, arg = "x")
-    Condition
-      [1m[33mError[39m:[22m
-      [1m[22m[33m![39m `x` must be an `smq_list` table.
-      [31mx[39m Invalid/missing columns detected
-      [36mi[39m Did you provide an `smq_list_content`, instead of an `smq_list` dataset?.
-      > See ?smq_list_.
-
-# format is ok [unicode]
+# cli format and basic use work / format is ok [unicode]
 
     Code
       check_data_drug(data_invalid, arg = "x")
@@ -270,18 +248,7 @@
       ✖ Missing columns: llt_code, llt_name, pt_name, soc_name, and hlt_name
       → Supply a `meddra` table to `x`. See ?meddra_.
 
----
-
-    Code
-      vigicaen:::check_data_smqlist(smq_list_content, arg = "x")
-    Condition
-      Error:
-      ! `x` must be an `smq_list` table.
-      ✖ Invalid/missing columns detected
-      ℹ Did you provide an `smq_list_content`, instead of an `smq_list` dataset?.
-      → See ?smq_list_.
-
-# format is ok [fancy]
+# cli format and basic use work / format is ok [fancy]
 
     Code
       check_data_drug(data_invalid, arg = "x")
@@ -321,17 +288,6 @@
       [31m✖[39m Missing columns: llt_code, llt_name, pt_name, soc_name, and hlt_name
       → Supply a `meddra` table to `x`. See ?meddra_.
 
----
-
-    Code
-      vigicaen:::check_data_smqlist(smq_list_content, arg = "x")
-    Condition
-      [1m[33mError[39m:[22m
-      [1m[22m[33m![39m `x` must be an `smq_list` table.
-      [31m✖[39m Invalid/missing columns detected
-      [36mℹ[39m Did you provide an `smq_list_content`, instead of an `smq_list` dataset?.
-      → See ?smq_list_.
-
 # smq_list is distinguished of smq_list_content
 
     Code
@@ -343,55 +299,99 @@
       i Did you provide an `smq_list_content`, instead of an `smq_list` dataset?.
       > See ?smq_list_.
 
+# smq_list is distinguished of smq_list_content / format is ok [plain]
+
+    Code
+      vigicaen:::check_data_smqlist(smq_list_content, arg = "x")
+    Condition
+      Error:
+      ! `x` must be an `smq_list` table.
+      x Invalid/missing columns detected
+      i Did you provide an `smq_list_content`, instead of an `smq_list` dataset?.
+      > See ?smq_list_.
+
+# smq_list is distinguished of smq_list_content / format is ok [ansi]
+
+    Code
+      vigicaen:::check_data_smqlist(smq_list_content, arg = "x")
+    Condition
+      [1m[33mError[39m:[22m
+      [1m[22m[33m![39m `x` must be an `smq_list` table.
+      [31mx[39m Invalid/missing columns detected
+      [36mi[39m Did you provide an `smq_list_content`, instead of an `smq_list` dataset?.
+      > See ?smq_list_.
+
+# smq_list is distinguished of smq_list_content / format is ok [unicode]
+
+    Code
+      vigicaen:::check_data_smqlist(smq_list_content, arg = "x")
+    Condition
+      Error:
+      ! `x` must be an `smq_list` table.
+      ✖ Invalid/missing columns detected
+      ℹ Did you provide an `smq_list_content`, instead of an `smq_list` dataset?.
+      → See ?smq_list_.
+
+# smq_list is distinguished of smq_list_content / format is ok [fancy]
+
+    Code
+      vigicaen:::check_data_smqlist(smq_list_content, arg = "x")
+    Condition
+      [1m[33mError[39m:[22m
+      [1m[22m[33m![39m `x` must be an `smq_list` table.
+      [31m✖[39m Invalid/missing columns detected
+      [36mℹ[39m Did you provide an `smq_list_content`, instead of an `smq_list` dataset?.
+      → See ?smq_list_.
+
 # works with arrow::Table
 
     Code
       check_data_demo(arrow::as_arrow_table(d_), paste0(name, "data"))
     Condition
-      Error:
-      ! Could not evaluate cli `{}` expression: `arg`.
-      Caused by error:
-      ! object 'name' not found
+      Error in `.f()`:
+      ! `adr_data` must be a `demo` table.
+      x Missing columns: Type, DateDatabase, and Region
+      > Supply a `demo` table to `adr_data`. See ?demo_.
 
 ---
 
     Code
       check_data_demo(arrow::as_arrow_table(d_), paste0(name, "data"))
     Condition
-      Error:
-      ! Could not evaluate cli `{}` expression: `arg`.
-      Caused by error:
-      ! object 'name' not found
+      Error in `.f()`:
+      ! `drug_data` must be a `demo` table.
+      x Missing columns: Type, DateDatabase, and Region
+      > Supply a `demo` table to `drug_data`. See ?demo_.
 
 ---
 
     Code
       check_data_demo(arrow::as_arrow_table(d_), paste0(name, "data"))
     Condition
-      Error:
-      ! Could not evaluate cli `{}` expression: `arg`.
-      Caused by error:
-      ! object 'name' not found
+      Error in `.f()`:
+      ! `link_data` must be a `demo` table.
+      x Missing columns: Type, DateDatabase, and Region
+      > Supply a `demo` table to `link_data`. See ?demo_.
 
 ---
 
     Code
       check_data_demo(arrow::as_arrow_table(d_), paste0(name, "data"))
     Condition
-      Error:
-      ! Could not evaluate cli `{}` expression: `arg`.
-      Caused by error:
-      ! object 'name' not found
+      Error in `.f()`:
+      ! `meddra_data` must be a `demo` table.
+      x Missing columns: UMCReportId, Type, DateDatabase, and Region
+      > Supply a `demo` table to `meddra_data`. See ?demo_.
 
 ---
 
     Code
       check_data_demo(arrow::as_arrow_table(d_), paste0(name, "data"))
     Condition
-      Error:
-      ! Could not evaluate cli `{}` expression: `arg`.
-      Caused by error:
-      ! object 'name' not found
+      Error in `.f()`:
+      ! `smq_list_data` must be a `demo` table.
+      x Missing columns: UMCReportId, Type, DateDatabase, and Region
+      > Supply a `demo` table to `smq_list_data`. See ?demo_.
 
 ---
 

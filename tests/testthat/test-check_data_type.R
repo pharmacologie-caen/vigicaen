@@ -175,12 +175,12 @@ test_that("works with arrow::Table", {
       UMCReportId = 1
     )
 
-  list(demo_, adr_, drug_, link_, meddra_, smq_list_) |>
+ list(demo_, adr_, drug_, link_, meddra_, smq_list_) |>
     rlang::set_names("demo_", "adr_", "drug_", "link_", "meddra_", "smq_list_") |>
     purrr::map(arrow::as_arrow_table) |>
     purrr::discard_at("demo_") |>
-    purrr::map(
-      function(d_)
+    purrr::imap(
+      function(d_, name)
       expect_snapshot(
         error = TRUE, {
           # arg paste0(name, "data") is deviated to make snapshot reading easier

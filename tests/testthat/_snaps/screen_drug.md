@@ -1,4 +1,4 @@
-# error in mp_data [plain]
+# checkers of mp_data and .data are ok / error in mp_data [plain]
 
     Code
       screen_drug(drug_true, mp_data = mp_false)
@@ -8,7 +8,7 @@
       x Missing columns: drug_name_t
       > Supply an `mp` table to `mp_data`. See ?mp_.
 
-# error in mp_data [ansi]
+# checkers of mp_data and .data are ok / error in mp_data [ansi]
 
     Code
       screen_drug(drug_true, mp_data = mp_false)
@@ -18,7 +18,7 @@
       [31mx[39m Missing columns: drug_name_t
       > Supply an `mp` table to `mp_data`. See ?mp_.
 
-# error in mp_data [unicode]
+# checkers of mp_data and .data are ok / error in mp_data [unicode]
 
     Code
       screen_drug(drug_true, mp_data = mp_false)
@@ -28,7 +28,7 @@
       ✖ Missing columns: drug_name_t
       → Supply an `mp` table to `mp_data`. See ?mp_.
 
-# error in mp_data [fancy]
+# checkers of mp_data and .data are ok / error in mp_data [fancy]
 
     Code
       screen_drug(drug_true, mp_data = mp_false)

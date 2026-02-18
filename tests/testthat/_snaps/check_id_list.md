@@ -59,7 +59,7 @@
       i Nested `lists` are not allowed.
       > Supply a named list of character or numeric vectors to `wrong_list2`. See ?ex_.
 
-# format is ok [plain]
+# id list checker works for both character and numeric inputs / format is ok [plain]
 
     Code
       check_id_list(wrong_list, arg = "x")
@@ -80,7 +80,7 @@
       i Did you provide a list of drug or adr names, instead of ids?
       > Use `get_*` functions to collect numeric ids.
 
-# format is ok [ansi]
+# id list checker works for both character and numeric inputs / format is ok [ansi]
 
     Code
       check_id_list(wrong_list, arg = "x")
@@ -101,7 +101,7 @@
       [36mi[39m Did you provide a list of drug or adr [1mnames[22m, instead of [1mids[22m?
       > Use `get_*` functions to collect numeric [1mids[22m.
 
-# format is ok [unicode]
+# id list checker works for both character and numeric inputs / format is ok [unicode]
 
     Code
       check_id_list(wrong_list, arg = "x")
@@ -122,7 +122,7 @@
       ℹ Did you provide a list of drug or adr names, instead of ids?
       → Use `get_*` functions to collect numeric ids.
 
-# format is ok [fancy]
+# id list checker works for both character and numeric inputs / format is ok [fancy]
 
     Code
       check_id_list(wrong_list, arg = "x")

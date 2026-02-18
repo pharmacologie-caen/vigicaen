@@ -70,11 +70,14 @@ get_llt_smq <-
     smq_scope <- rlang::arg_match(smq_scope)
 
     smq_scope_code <-
-      dplyr::case_when(
-        smq_scope == "narrow" ~ c("2"),
-        smq_scope == "broad" ~ c("1", "2"),
-        TRUE ~ "this is an error"
-      )
+      if(smq_scope == "narrow") { # removed dplyr::case_when()
+        # because of https://github.com/tidyverse/dplyr/issues/7082
+        c("2")
+      } else if (smq_scope == "broad") {
+        c("1", "2")
+      } else {
+        "this is an error"
+      }
 
     if("Table"  %in% class(smq_list)){
       # automatically collect smq_list and smq_content if out of memory

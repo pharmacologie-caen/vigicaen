@@ -20,7 +20,6 @@
       r1 <- get_llt_soc(wrong_without_capital, term_level = "pt", meddra = meddra_,
         verbose = FALSE)
     Message
-      
       -- get_llt_soc() ---------------------------------------------------------------
       
       -- x Unmatched reactions --
@@ -36,7 +35,6 @@
       r1 <- get_llt_soc(wrong_with_capital, term_level = "pt", meddra = meddra_,
         verbose = FALSE)
     Message
-      
       -- get_llt_soc() ---------------------------------------------------------------
       
       -- x Unmatched reactions --
@@ -51,7 +49,6 @@
     Code
       r1 <- get_llt_soc(wrong_list, term_level = "pt", meddra = meddra_, verbose = FALSE)
     Message
-      
       -- get_llt_soc() ---------------------------------------------------------------
       
       -- x Unmatched reactions --

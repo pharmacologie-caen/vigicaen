@@ -16,28 +16,28 @@
       ===========================>--- percent, seconds | Write smq_content.parquet 
       ==============================> percent, seconds | Done 
 
-# format is ok [plain]
+# msg_tb_onceperdatabase prints in different formats / format is ok [plain]
 
     Code
       msg_tb_onceperdatabase()
     Message
       This process must only be done once per database version.
 
-# format is ok [ansi]
+# msg_tb_onceperdatabase prints in different formats / format is ok [ansi]
 
     Code
       msg_tb_onceperdatabase()
     Message
       [1m[22mThis process must only be done [1m[33monce[39m[22m per database version.
 
-# format is ok [unicode]
+# msg_tb_onceperdatabase prints in different formats / format is ok [unicode]
 
     Code
       msg_tb_onceperdatabase()
     Message
       This process must only be done once per database version.
 
-# format is ok [fancy]
+# msg_tb_onceperdatabase prints in different formats / format is ok [fancy]
 
     Code
       msg_tb_onceperdatabase()

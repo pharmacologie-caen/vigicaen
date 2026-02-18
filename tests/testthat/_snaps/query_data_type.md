@@ -8,7 +8,7 @@
       ! Column names are not those of expected data types.
       > Supported types are demo, drug, adr, ind, and link. See ?demo_.
 
-# format is ok [plain]
+# cli formatting / format is ok [plain]
 
     Code
       vigicaen:::query_data_type(drug_valid, ".data")
@@ -17,7 +17,7 @@
     Output
       [1] "drug"
 
-# format is ok [ansi]
+# cli formatting / format is ok [ansi]
 
     Code
       vigicaen:::query_data_type(drug_valid, ".data")
@@ -26,7 +26,7 @@
     Output
       [1] "drug"
 
-# format is ok [unicode]
+# cli formatting / format is ok [unicode]
 
     Code
       vigicaen:::query_data_type(drug_valid, ".data")
@@ -35,7 +35,7 @@
     Output
       [1] "drug"
 
-# format is ok [fancy]
+# cli formatting / format is ok [fancy]
 
     Code
       vigicaen:::query_data_type(drug_valid, ".data")

@@ -118,7 +118,7 @@ test_that("standard use works", {
 
   expect_message(
     expect_doppelganger(
-      "Exporting",
+      "Exporting arrow",
 
       vigi_routine(
         case_tto = 150,
@@ -442,7 +442,7 @@ test_that("too few time to onset prevents graph drawing", {
 
   expect_message(
     expect_doppelganger(
-      "no time to onset",
+      "no time to onset arrow",
       vigi_routine(
         demo_data = arrow::as_arrow_table(demo),
         drug_data = arrow::as_arrow_table(drug),
@@ -816,7 +816,7 @@ test_that("absence of rechallenge data correctly displayed", {
   )
 
   expect_doppelganger(
-    "no rechallenge",
+    "no rechallenge arrow",
     vigi_routine(
       demo_data = arrow::as_arrow_table(demo),
       drug_data = arrow::as_arrow_table(drug),
