@@ -1,5 +1,22 @@
 # vigicaen (development version)
 
+## New features
+
+* `tb_vigibase()` and `tb_who()` now work with (and only with) csv files, instead
+of txt files. This is to align with new export format of VigiBase ECL. Thanks
+to Maxime Demourgues for pointing out this issue.
+
+* `Record_Id` replaces `MedicinalProd_Id` throughout the package. This is also
+an alignment with newer export.
+
+* Table `prg` is no longer in the export, it has been removed from `tb_who()` process,
+as for variable `Pharmform_Id`.
+
+## Bug fixes
+
+* Internal warning fix with `get_llt_smq()` due to dplyr v1.2.0 requirements with
+`dplyr::case_when()` (https://github.com/tidyverse/dplyr/issues/7082).
+
 # vigicaen 1.0.0
 
 ## Time for 1.0!

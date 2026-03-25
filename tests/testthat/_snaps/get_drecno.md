@@ -6,7 +6,7 @@
     Condition
       Warning:
       The `show_all` argument of `get_drecno()` is deprecated as of vigicaen 0.14.1.
-      i Unmatching DrecNos or MedicinalProd_Ids will be shown by default.
+      i Unmatching DrecNos or Record_Ids will be shown by default.
     Message
       
       -- get_drecno() ----------------------------------------------------------------
@@ -31,7 +31,7 @@
     Condition
       Warning:
       The `show_all` argument of `get_drecno()` is deprecated as of vigicaen 0.14.1.
-      i Unmatching DrecNos or MedicinalProd_Ids will be shown by default.
+      i Unmatching DrecNos or Record_Ids will be shown by default.
     Message
       
       -- get_drecno() ----------------------------------------------------------------
@@ -353,10 +353,10 @@
       
       --------------------------------------------------------------------------------
 
-# works for mpi_list as well
+# works for record_id as well
 
     Code
-      r1 <- get_drecno(mpi, mp_, method = "mpi_list", allow_combination = FALSE,
+      r1 <- get_drecno(mpi, mp_, method = "record_id", allow_combination = FALSE,
         verbose = TRUE)
     Message
       
@@ -429,7 +429,7 @@
 ---
 
     Code
-      r_insp3 <- get_drecno(mpi, mp_, method = "mpi_list", verbose = TRUE,
+      r_insp3 <- get_drecno(mpi, mp_, method = "record_id", verbose = TRUE,
         allow_combination = FALSE)
     Message
       

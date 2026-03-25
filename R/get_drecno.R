@@ -1,4 +1,4 @@
-#' Get DrecNo from drug names or MedicinalProd_Id
+#' Get DrecNo from drug names or Record_Id
 #'
 #' @description `r lifecycle::badge('stable')` Collect
 #'  Drug Record Numbers associated to one or more drugs.
@@ -29,16 +29,16 @@
 #' i.e. `trastuzumab emtasine` for `trastuzumab`, or close names
 #' like `alitretinoin` when looking for `tretinoin`.
 #'
-#' Exact match is used for "mpi_list" method.
+#' Exact match is used for "record_id" method.
 #'
 #' @section Choosing a method:
 #'
 #' "drug_name" let you work with drug names. It's likely to be
 #' the appropriate method in most of the cases.
 #'
-#' "mpi_list" is used when you have a list of MedicinalProd_Ids.
-#' A drug can have multiple MedicinalProd_Ids, corresponding to
-#' different packagings. The MedicinalProd_Id matching is typically used to identify DrecNo(s)
+#' "record_id" is used when you have a list of Record_Ids
+#' A drug can have multiple Record_Ids, corresponding to
+#' different packagings. The Record_Id matching is typically used to identify DrecNo(s)
 #' contained in an ATC class (extracted from `thg`), since not all MPI of drugs are present in `thg` (explanations in [get_atc_code()]).
 #'
 #' @section WHO names:
@@ -65,10 +65,10 @@
 #' Importantly, when retrieving fixed-association drugs, the non-of-interest
 #' drug alone drecno is not found, hence the cases related to this drug will not be added to those of the drug of interest.
 #'
-#' @param d_sel A named list. Selection of drug names or medicinalprod_id. See details
+#' @param d_sel A named list. Selection of drug names or Record_Id See details
 #' @param mp A modified MP data.table. See \code{\link{mp_}}
 #' @param allow_combination A logical. Should fixed associations including the drug of interest be retrieved? See details.
-#' @param method Should DrecNo be found from drug names or from MedicinalProd_Id?
+#' @param method Should DrecNo be found from drug names or from Record_Id?
 #' @param verbose A logical. Allows you to see matching drug names in the console.
 #' Turn to FALSE once you've checked the matching.
 #' @param inspect `r lifecycle::badge('deprecated')` Use `verbose` instead.
@@ -116,7 +116,7 @@ get_drecno <- function(
     d_sel,
     mp,
     allow_combination = TRUE,
-    method = c("drug_name", "mpi_list"),
+    method = c("drug_name", "record_id"),
     verbose = TRUE,
     show_all = deprecated(),
     inspect = deprecated()
@@ -161,14 +161,9 @@ get_drecno <- function(
     lifecycle::deprecate_warn(
       when = "0.14.1",
       what = "get_drecno(show_all)",
-      details = c("i" = "Unmatching DrecNos or MedicinalProd_Ids will be shown by default.")
+      details = c("i" = "Unmatching DrecNos or Record_Ids will be shown by default.")
     )
   }
-
-  # find_mpi <- function(x_mpi_list, env = mp,
-  #                      MedicinalProd_Id = {{ MedicinalProd_Id }})
-  #   eval(rlang::expr(MedicinalProd_Id %in% x_mpi_list), envir = env)
-
 
   # ---- drug name finding ----
 
@@ -245,15 +240,15 @@ get_drecno <- function(
 
   # drug_finder_and_exist_checker(c("nivolumab", "ipilimumab"))
 
-  # ---- MedicinalProd_Id finding ----
+  # ---- Record_Id finding ----
 
-  if(method == "mpi_list") {
+  if(method == "record_id") {
 
     res_list_dt <-
       purrr::map(d_sel_renamed, function(d_n)
         mp |>
           dplyr::filter(
-            !!find_mpi(d_n)
+            !!find_rcid(d_n)
             ) |>
           dplyr::mutate(who = .data$Sequence.number.1 == "01" &
                           .data$Sequence.number.2 == "001") |>
@@ -324,8 +319,8 @@ get_drecno <- function(
       }
   }
 
-  if(method == "mpi_list" && allow_combination)
-    cli_alert_info("{.arg allow_combination} is ignored if {.arg method} = {.val mpi_list}.")
+  if(method == "record_id" && allow_combination)
+    cli_alert_info("{.arg allow_combination} is ignored if {.arg method} = {.val record_id}.")
 
   if (any_renamed_name |
       (method == "drug_name" && any(any_no_match, any_not_who, verbose))
@@ -499,8 +494,8 @@ find_isolated <- function(x_drug_name){
   rlang::expr(.data$drug_name_t == !!x_drug_name)
 }
 
-find_mpi <- function(x_mpi_list)
-  rlang::expr(.data$MedicinalProd_Id %in% !!x_mpi_list)
+find_rcid <- function(x_record_id)
+  rlang::expr(.data$Record_Id %in% !!x_record_id)
 
 
 msg_getdrecno_no_match <-

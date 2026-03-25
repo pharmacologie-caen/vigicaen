@@ -13,7 +13,7 @@ tb_vigibase(
 )
 }
 \arguments{
-\item{path_base}{Character string, a directory containing vigibase txt tables. It is also the
+\item{path_base}{Character string, a directory containing vigibase csv tables. It is also the
 output directory.}
 
 \item{path_sub}{Character string, a directory containing subsidiary tables.}
@@ -40,7 +40,7 @@ RepBasis, ReportType, RouteOfAdm, Seriousness, and SizeUnit.
 }
 
 .parquet files into the \code{path_base} directory (\strong{including suspected duplicates tables}).
-Some columns are returned as \code{integer} (UMCReportId, Drug_Id, MedicinalProd_Id, Adr_Id, MedDRA_Id),
+Some columns are returned as \code{integer} (UMCReportId, Drug_Id, Record_Id, Adr_Id, MedDRA_Id),
 and some columns as \code{numeric} (TimeToOnsetMin, TimeToOnsetMax)
 All other columns are \code{character}.
 }
@@ -49,7 +49,7 @@ All other columns are \code{character}.
 files to .parquet files.
 }
 \details{
-Vigibase Extract Case Level is delivered as zipped text files, that you should
+Vigibase Extract Case Level is delivered as zipped csv files, that you should
 transform to a more efficient format. Parquet format from \code{arrow} has many advantages:
 It works with out-of-memory data, which makes it possible to process Vigibase tables on
 a computer with not-so-much RAM. It is also lightweighted and standard across different
@@ -75,8 +75,8 @@ path_sub  <- paste0(tempdir(), "/", "sub",  "/")
 dir.create(path_base)
 dir.create(path_sub)
 
-create_ex_main_txt(path_base)
-create_ex_sub_txt(path_sub)
+create_ex_main_csv(path_base)
+create_ex_sub_csv(path_sub)
 
  # ---- Running tb_vigibase
 

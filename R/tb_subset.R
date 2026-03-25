@@ -8,7 +8,7 @@
 #' Available `subset_var` :
 #' \itemize{
 #'   \item `drecno` will use Drug Record Number (DrecNo), from WHO Drug, and will subset from `drug` (see [get_drecno()]).
-#'   \item `medprod_id` will use MedicinalProd_Id, also from `drug`. May be useful if requesting from ATC classes. (see [get_atc_code()]).
+#'   \item `record_id` will use Record_Id, also from `drug`. May be useful if requesting from ATC classes. (see [get_atc_code()]).
 #'   \item `meddra_id` will use MedDRA_Id, subset from `adr`. (see [get_llt_soc()] or See [get_llt_smq()]).
 #'   \item `age` will use AgeGroup from `demo`. See below.
 #' }
@@ -31,7 +31,7 @@
 #'
 #' @param wd_in Source directory pathway (character)
 #' @param wd_out Output directory pathway (character)
-#' @param subset_var One of `"drecno"`, `"medprod_id"`, `"meddra_id"`, `"age"`
+#' @param subset_var One of `"drecno"`, `"record_id"`, `"meddra_id"`, `"age"`
 #' @param sv_selection A named list or a vector containing the appropriate ids (according to the method, see details)
 #' @param rm_suspdup A logical. Should suspected duplicates be removed? TRUE by default
 #' @returns Parquet files in the output directory. All files from a
@@ -95,7 +95,7 @@ tb_subset <-
   function(wd_in,
            wd_out,
 
-           subset_var = c("drecno", "medprod_id", "meddra_id", "age"),
+           subset_var = c("drecno", "record_id", "meddra_id", "age"),
            sv_selection, # > 65 yo
 
            rm_suspdup = TRUE
@@ -103,9 +103,9 @@ tb_subset <-
 
     subset_var <- rlang::arg_match(subset_var)
 
-    # check integer lists for meddra_id, medprod_id, and drecno
+    # check integer lists for meddra_id, record_id, and drecno
 
-    if(subset_var %in% c("drecno", "medprod_id", "meddra_id")){
+    if(subset_var %in% c("drecno", "record_id", "meddra_id")){
       check_id_list(sv_selection)
 
       check_id_list_numeric(sv_selection)
@@ -139,7 +139,7 @@ tb_subset <-
     sv <- switch(
       subset_var,
       drecno     = "DrecNo",
-      medprod_id = "MedicinalProd_Id",
+      record_id = "Record_Id",
       meddra_id  = "MedDRA_Id",
       age        = "AgeGroup"
     )
@@ -155,7 +155,7 @@ tb_subset <-
     sv_df_name <- switch(
       subset_var,
       drecno     = "drug",
-      medprod_id = "drug",
+      record_id = "drug",
       meddra_id  = "adr",
       age        = "demo"
     )

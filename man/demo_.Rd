@@ -30,7 +30,7 @@ submitted to the database.
 \itemize{
 \item \code{UMCReportId} Integer. See \code{demo_}.
 \item \code{Drug_Id} Integer. The unique identifier of each drug report.
-\item \code{MedicinalProd_Id} Integer. The medicinalproduct identifier.
+\item \code{Record_Id} Integer. The medicinalproduct identifier.
 See \code{\link[=get_atc_code]{get_atc_code()}}.
 \item \code{DrecNo} Integer. Drug Record Number, pivotal to identify drugs
 with \code{\link[=get_drecno]{get_drecno()}}.

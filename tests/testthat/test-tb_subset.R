@@ -18,7 +18,7 @@ test_that("you can subset on drecno, age, meddra_id", {
            UMCReportId = c(1, 2, 3, 4),
            Drug_Id = c("d1", "d2", "d3", "d4"),
            DrecNo = c(133138448, 133138448, 111841511, 111841511),
-           MedicinalProd_Id = c(25027716, 97354576, 104264760, 37484408)
+           Record_Id = c(25027716, 97354576, 104264760, 37484408)
          ),
        adr  =
          data.table(
@@ -251,7 +251,7 @@ test_that("you can keep suspdup", {
         UMCReportId = c(1, 2, 3, 4),
         Drug_Id = c("d1", "d2", "d3", "d4"),
         DrecNo = c(133138448, 133138448, 111841511, 111841511),
-        MedicinalProd_Id = c(25027716, 97354576, 104264760, 37484408)
+        Record_Id = c(25027716, 97354576, 104264760, 37484408)
       ),
     adr  =
       data.table(
@@ -387,7 +387,7 @@ test_that("alternative syntaxes work", {
         UMCReportId = c(1, 2, 3, 4),
         Drug_Id = c("d1", "d2", "d3", "d4"),
         DrecNo = c(133138448, 133138448, 111841511, 111841511),
-        MedicinalProd_Id = c(25027716, 97354576, 104264760, 37484408)
+        Record_Id = c(25027716, 97354576, 104264760, 37484408)
       ),
     adr  =
       data.table(

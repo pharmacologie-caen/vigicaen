@@ -17,7 +17,7 @@
     Condition
       Error in `add_ind()`:
       ! `drug_data` must be a `drug` table.
-      x Missing columns: DrecNo, MedicinalProd_Id, and Drug_Id
+      x Missing columns: DrecNo, Record_Id, and Drug_Id
       > Supply a `drug` table to `drug_data`. See ?drug_.
 
 ---

@@ -189,7 +189,7 @@ mp_small <-
 thg_small <-
   thg_ %>%
   filter(
-    MedicinalProd_Id %in%
+    Record_Id %in%
       unlist(atc_mpi)
   )
 

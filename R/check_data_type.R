@@ -11,7 +11,7 @@
 #' @examples
 #'
 #' drug_valid <- data.frame(
-#'   DrecNo = 1, UMCReportId = 1, MedicinalProd_Id = 1, Drug_Id = 1)
+#'   DrecNo = 1, UMCReportId = 1, Record_Id = 1, Drug_Id = 1)
 #'
 #'  vigicaen:::check_data_drug(drug_valid, ".data")
 
@@ -78,7 +78,7 @@ check_data_drug <-
 
     drug_cols <-
       c("DrecNo",
-        "MedicinalProd_Id",
+        "Record_Id",
         "UMCReportId",
         "Drug_Id")
 

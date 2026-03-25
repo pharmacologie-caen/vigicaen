@@ -1,20 +1,4 @@
 test_that("basic use works", {
-  f_sets <-
-    list(ATC.txt = data.frame(f0 = "A         1ALIMENTARY TRACT AND METABOLISM                                                                               "),
-        CCODE.txt = data.frame(f0 = "ABW       Aruba                                                                           "),
-        ING.txt = data.frame(f0 = "1         198512312301                                    38        1         1         "),
-        MP.txt = data.frame(f0 = "1                                            0000010100100000000010000000001YMethyldopa                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              N/A                 0         001       N/A          001       0         1985123120170907"),
-        ORG.txt = data.frame(f0 = "0         None                                                                            UNS       "),
-        PF.txt = data.frame(f0 = "001       Unspecified                                                                     "),
-        PP.txt = data.frame(f0 = "1         001                 1         0119851231"),
-        PRT.txt = data.frame(f0 = "001       Medicinal product                                                               "),
-        PRG.txt = data.frame(f0 = "0         None                                                        20020701"),
-        SRCE.txt = data.frame(f0 = "001       INN - International Nonproprietary Names - WHO                                  N/A       "),
-        STR.txt = data.frame(f0 = "000001    Unspecified                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         "),
-        SUN.txt = data.frame(f0 = "1         0000050000EN        Formaldehyde solution                                                                                            180       "),
-        ThG.txt = data.frame(f0 = "100007    N06BA     19890630Y40683     "),
-        `Unit-X.txt` = data.frame(f0 = "01        kg                                      "))
-
 
   tmp_folder <- tempdir()
 
@@ -23,9 +7,7 @@ test_that("basic use works", {
   if(!dir.exists(path_who))
     dir.create(path_who)
 
-  purrr::iwalk(f_sets, function(d_, name_){
-      write.table(d_, file = paste0(path_who, name_), row.names = FALSE, quote = FALSE, col.names = FALSE)
-  })
+  create_ex_who_csv(path_who)
 
   expect_snapshot(
     tb_who(path_who = path_who, force = TRUE),
@@ -40,19 +22,10 @@ test_that("basic use works", {
 
   mp_res <- arrow::read_parquet(paste0(path_who, "mp.parquet"))
 
-  mp_true <-
-    dplyr::tibble(
-      MedicinalProd_Id = 1,
-      Sequence.number.1 = "01",
-      Sequence.number.2 = "001",
-      DrecNo = 1,
-      drug_name_t = "methyldopa",
-      Create.date = "19851231",
-      Date.changed = "20170907",
-      Country = "N/A       ")
+  table_true <-
+    f_sets_who_pq()
 
-
-  expect_equal(mp_res, mp_true)
+  expect_equal(mp_res, table_true$mp |> dplyr::as_tibble())
 
   # no end slash to path_who
 
@@ -61,9 +34,7 @@ test_that("basic use works", {
   if(!dir.exists(paste0(path_who_no_slash, "/")))
     dir.create(paste0(path_who_no_slash, "/"))
 
-  purrr::iwalk(f_sets, function(d_, name_){
-    write.table(d_, file = paste0(path_who_no_slash, "/", name_), row.names = FALSE, quote = FALSE, col.names = FALSE)
-  })
+  create_ex_who_csv(path_who_no_slash)
 
   expect_snapshot(
     tb_who(path_who = path_who_no_slash,
@@ -79,7 +50,7 @@ test_that("basic use works", {
 
   mp_res_ns <- arrow::read_parquet(paste0(path_who, "mp.parquet"))
 
-  expect_equal(mp_res_ns, mp_true)
+  expect_equal(mp_res_ns, table_true$mp |> dplyr::as_tibble())
 
   unlink(tmp_folder, recursive = TRUE)
 })

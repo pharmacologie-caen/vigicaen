@@ -135,7 +135,7 @@
     Condition
       Error:
       ! `x` must be a `drug` table.
-      x Missing columns: DrecNo, MedicinalProd_Id, and Drug_Id
+      x Missing columns: DrecNo, Record_Id, and Drug_Id
       > Supply a `drug` table to `x`. See ?drug_.
 
 ---
@@ -175,7 +175,7 @@
     Condition
       [1m[33mError[39m:[22m
       [1m[22m[33m![39m `x` must be a `drug` table.
-      [31mx[39m Missing columns: DrecNo, MedicinalProd_Id, and Drug_Id
+      [31mx[39m Missing columns: DrecNo, Record_Id, and Drug_Id
       > Supply a `drug` table to `x`. See ?drug_.
 
 ---
@@ -215,7 +215,7 @@
     Condition
       Error:
       ! `x` must be a `drug` table.
-      ✖ Missing columns: DrecNo, MedicinalProd_Id, and Drug_Id
+      ✖ Missing columns: DrecNo, Record_Id, and Drug_Id
       → Supply a `drug` table to `x`. See ?drug_.
 
 ---
@@ -255,7 +255,7 @@
     Condition
       [1m[33mError[39m:[22m
       [1m[22m[33m![39m `x` must be a `drug` table.
-      [31m✖[39m Missing columns: DrecNo, MedicinalProd_Id, and Drug_Id
+      [31m✖[39m Missing columns: DrecNo, Record_Id, and Drug_Id
       → Supply a `drug` table to `x`. See ?drug_.
 
 ---
@@ -400,7 +400,7 @@
     Condition
       Error in `.f()`:
       ! `demo_data` must be a `drug` table.
-      x Missing columns: DrecNo, MedicinalProd_Id, and Drug_Id
+      x Missing columns: DrecNo, Record_Id, and Drug_Id
       > Supply a `drug` table to `demo_data`. See ?drug_.
 
 ---
@@ -410,7 +410,7 @@
     Condition
       Error in `.f()`:
       ! `adr_data` must be a `drug` table.
-      x Missing columns: DrecNo, MedicinalProd_Id, and Drug_Id
+      x Missing columns: DrecNo, Record_Id, and Drug_Id
       > Supply a `drug` table to `adr_data`. See ?drug_.
 
 ---
@@ -420,7 +420,7 @@
     Condition
       Error in `.f()`:
       ! `link_data` must be a `drug` table.
-      x Missing columns: DrecNo and MedicinalProd_Id
+      x Missing columns: DrecNo and Record_Id
       > Supply a `drug` table to `link_data`. See ?drug_.
 
 ---
@@ -430,7 +430,7 @@
     Condition
       Error in `.f()`:
       ! `meddra_data` must be a `drug` table.
-      x Missing columns: DrecNo, MedicinalProd_Id, UMCReportId, and Drug_Id
+      x Missing columns: DrecNo, Record_Id, UMCReportId, and Drug_Id
       > Supply a `drug` table to `meddra_data`. See ?drug_.
 
 ---
@@ -440,7 +440,7 @@
     Condition
       Error in `.f()`:
       ! `smq_list_data` must be a `drug` table.
-      x Missing columns: DrecNo, MedicinalProd_Id, UMCReportId, and Drug_Id
+      x Missing columns: DrecNo, Record_Id, UMCReportId, and Drug_Id
       > Supply a `drug` table to `smq_list_data`. See ?drug_.
 
 ---

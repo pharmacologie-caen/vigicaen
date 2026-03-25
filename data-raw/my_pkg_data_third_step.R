@@ -1,6 +1,6 @@
 ## code to convert some variables into integer
 
-# DrecNo, MedicinalProd_Id
+# DrecNo, Record_Id
 
 
 drug     <- drug_
@@ -9,13 +9,13 @@ thg      <- thg_
 
 
 drug_cvt <- drug |>
-  dplyr::mutate(dplyr::across(c(DrecNo, MedicinalProd_Id), as.integer))
+  dplyr::mutate(dplyr::across(c(DrecNo, Record_Id), as.integer))
 
 mp_cvt <- mp |>
-  dplyr::mutate(dplyr::across(c(DrecNo, MedicinalProd_Id), as.integer))
+  dplyr::mutate(dplyr::across(c(DrecNo, Record_Id), as.integer))
 
 thg_cvt <- thg |>
-  dplyr::mutate(dplyr::across(c(Therapgroup_Id, MedicinalProd_Id), as.integer))
+  dplyr::mutate(dplyr::across(c(Therapgroup_Id, Record_Id), as.integer))
 
 # exporting to .rda files
 

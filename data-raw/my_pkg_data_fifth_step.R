@@ -3,7 +3,7 @@
 mp_ <-
   mp_ |>
   dplyr::add_row(
-    MedicinalProd_Id = 123456787,
+    Record_Id = 123456787,
     Sequence.number.1 = "01",
     Sequence.number.2 = "001",
     DrecNo = 10116627,

@@ -1,10 +1,10 @@
 #' Get ATC codes (DrecNos or MPIs)
 #'
 #' @description `r lifecycle::badge('stable')` Collect
-#' Drug Record Numbers or MedicinalProd_Ids associated to one or more ATC classes.
+#' Drug Record Numbers or Record_Ids associated to one or more ATC classes.
 #'
 #' @details `get_atc_code()` is an *ID collector* function. Provide `atc_sel` in the same way as `d_sel` in [add_drug()],
-#' but remember to specify its method arg as `MedicinalProd_Id` if
+#' but remember to specify its method arg as `Record_Id` if
 #' `vigilyze` is set to `FALSE`.
 #' Vigilyze style means all conditioning of drugs will be retrieved after
 #' requesting an ATC class (i.e., drugs are identified with their DrecNos),
@@ -14,11 +14,11 @@
 #' @param atc_sel A named list of ATC codes. See Details.
 #' @param vigilyze A logical. Should ATC classes be retrieved using the vigilyze style? See details
 #' @param mp A modified MP data.table. See \code{\link{mp_}}
-#' @param thg_data A data.table. Correspondence between ATC codes and MedicinalProd_Id (usually, it is `thg`)
+#' @param thg_data A data.table. Correspondence between ATC codes and Record_Id (usually, it is `thg`)
 #' @keywords data_management drug atc
 #' @export
 #' @returns A named list of integers. **DrecNos** if `vigilyze` is set to `TRUE`,
-#' or **MedicinalProd_Ids** if `vigilyze` is set to `FALSE`.
+#' or **Record_Ids** if `vigilyze` is set to `FALSE`.
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #' @seealso \code{\link{mp_}}, \code{\link{thg_}}, [add_drug()], [get_drecno()]
@@ -40,7 +40,7 @@
 #'                thg_data = thg_,
 #'                vigilyze = TRUE)
 #'
-#' # Or you can get MedicinalProd_Ids (if vigilyze is FALSE)
+#' # Or you can get Record_Ids (if vigilyze is FALSE)
 #'
 #' atc_mpi <-
 #'   get_atc_code(atc_sel = atc_sel,
@@ -88,14 +88,14 @@ get_atc_code <-
     core_get_atc_code <-
       function(atc_,
                ATC.code = {{ ATC.code }},
-               MedicinalProd_Id = {{ MedicinalProd_Id }}) {
+               Record_Id = {{ Record_Id }}) {
         length_code <- stringr::str_count(atc_)
 
         atc_mpi <-
           thg_data[stringr::str_sub(ATC.code,
                                     start = 1,
                                     end = length_code) == atc_,
-                   as.integer(MedicinalProd_Id)]
+                   as.integer(Record_Id)]
 
         atc_mpi
       }
@@ -103,7 +103,7 @@ get_atc_code <-
     # apply core function to each element ----
     # extract mpi (requested even if you want drecnos) ----
 
-    atc_sel_mpi <-
+    atc_sel_rcid <-
       purrr::map(atc_sel_renamed, function(one_sel)
         purrr::map(one_sel,
                    core_get_atc_code) |>
@@ -119,20 +119,20 @@ get_atc_code <-
         )
 
       get_drecno(
-        d_sel = atc_sel_mpi,
+        d_sel = atc_sel_rcid,
         mp = mp,
         allow_combination = FALSE,
-        method = "mpi_list",
+        method = "record_id",
         verbose = FALSE
       )
 
     } else {
 
       cli::cli_alert_info(
-        "vigilyze set to FALSE, extracting MedicinalProd_ids (?get_atc_code for details)"
+        "vigilyze set to FALSE, extracting Record_Ids (?get_atc_code for details)"
         )
 
-      atc_sel_mpi
+      atc_sel_rcid
     }
 
   }

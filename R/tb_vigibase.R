@@ -3,7 +3,7 @@
 #' @description `r lifecycle::badge('stable')` Transform VigiBase .txt
 #' files to .parquet files.
 #'
-#' @details Vigibase Extract Case Level is delivered as zipped text files, that you should
+#' @details Vigibase Extract Case Level is delivered as zipped csv files, that you should
 #' transform to a more efficient format. Parquet format from `arrow` has many advantages:
 #' It works with out-of-memory data, which makes it possible to process Vigibase tables on
 #' a computer with not-so-much RAM. It is also lightweighted and standard across different
@@ -17,7 +17,7 @@
 #' If set to FALSE (the default), the function will skip the construction of any .parquet tables that already exist,
 #' so you do not have to start from scratch after a failure. Set to TRUE to force rebuilding all tables.
 #'
-#' @param path_base Character string, a directory containing vigibase txt tables. It is also the
+#' @param path_base Character string, a directory containing vigibase csv tables. It is also the
 #' output directory.
 #' @param path_sub  Character string, a directory containing subsidiary tables.
 #' @param force Logical, to be passed to `cli::cli_progress_update()`. Used for internal
@@ -49,7 +49,7 @@
 #' @seealso [tb_who()], [tb_meddra()], [tb_subset()], [dt_parquet()]
 #'
 #' @return .parquet files into the `path_base` directory (**including suspected duplicates tables**).
-#' Some columns are returned as `integer` (UMCReportId, Drug_Id, MedicinalProd_Id, Adr_Id, MedDRA_Id),
+#' Some columns are returned as `integer` (UMCReportId, Drug_Id, Record_Id, Adr_Id, MedDRA_Id),
 #' and some columns as `numeric` (TimeToOnsetMin, TimeToOnsetMax)
 #' All other columns are `character`.
 #'
@@ -64,8 +64,8 @@
 #' dir.create(path_base)
 #' dir.create(path_sub)
 #'
-#' create_ex_main_txt(path_base)
-#' create_ex_sub_txt(path_sub)
+#' create_ex_main_csv(path_base)
+#' create_ex_sub_csv(path_sub)
 #'
 #'  # ---- Running tb_vigibase
 #'
@@ -93,17 +93,53 @@ tb_vigibase <-
       "tb_vigibase()"
     )
 
+    screen_csv_main <- tb_screen_main(path_base, ext = ".csv")
+    screen_csv_sub  <- tb_screen_sub( path_sub, ext = ".csv")
+
+    screen_csv <- c(screen_csv_main, screen_csv_sub)
+
+    expected_csv_files <-
+      paste0(
+        c("ADR", "DEMO", "DRUG", "FOLLOWUP", "IND", "LINK", "OUT", "SRCE",
+          "AgeGroup_Lx", "Dechallenge_Lx", "Dechallenge2_Lx", "Frequency_Lx",
+          "Gender_Lx", "Notifier_Lx", "Outcome_Lx", "Rechallenge_Lx", "Rechallenge2_Lx",
+          "Region_Lx", "ReportType_Lx", "RouteOfAdm_Lx", "Seriousness_Lx",
+          "SizeUnit_Lx", "SUSPECTEDDUPLICATES"),
+             ".csv")
+
+    if(all(expected_csv_files %in% screen_csv)) {
+      cli::cli_alert_success("All expected csv files found in {.arg path_base} and {.arg path_sub}")
+    } else {
+      missing_csv_files <-
+        expected_csv_files[!expected_csv_files %in% screen_csv]
+
+      if(length(missing_csv_files) == 8) { # 8 = number of tables in main
+        cli::cli_abort(
+          c(
+            "All csv files must be present in {.arg path_base} and {.arg path_sub}.",
+            "i" = "As of vigicaen 1.1.0, input tables must be in .csv format."
+          )
+        )
+          } else {
+        cli::cli_abort(
+          c(
+            "All csv files must be present in {.arg path_base} and {.arg path_sub}.",
+            "x" = "Missing file{?s}: {missing_csv_files}."
+          ))
+      }
+    }
+
     # Scan for existing parquet tables ONLY if overwrite_existing_tables = FALSE
 
     if (!overwrite_existing_tables) {
       cli::cli_alert_info("Checking for existing tables.")
 
-      main_parquet_tables <- tb_screen_main_parquet(path_base)
-      sub_parquet_tables <- tb_screen_sub_parquet(path_sub)
+      main_parquet_tables <- tb_screen_main(path_base, ext = ".parquet")
+      sub_parquet_tables <- tb_screen_sub(path_sub, ext = ".parquet")
 
       if(!length(main_parquet_tables) == 0 |
          !length(sub_parquet_tables) == 0) {
-        cli::cli_alert_info("These tables won't be build again.")
+        cli::cli_alert_info("These tables won't be built again.")
         cli::cli_inform(c(">" = "Set {.arg overwrite_existing_tables} to TRUE to rewrite them."))
       }
     } else {
@@ -125,21 +161,22 @@ tb_vigibase <-
 
     # ---- suspectedduplicates (always created first) ---- ####
     if (overwrite_existing_tables || !("suspdup.parquet" %in% main_parquet_tables)) {
-      cli_progress_update(force = force, status = "Read SUSPECTEDDUPLICATES.txt", set = 1)
-      suspdup <- reader("SUSPECTEDDUPLICATES.txt", folder = path_sub)
-      cli_progress_update(force = force, status = "Split suspdup", set = 2)
-      suspdup <- suspdup |>
-        dplyr::transmute(
-          UMCReportId                = str_sub(.data$f0, start = 1L,  end = 11L),
-          SuspectedduplicateReportId = str_sub(.data$f0, start = 12L, end = 22L)
-        ) |>
-        dplyr::mutate(
-          dplyr::across(dplyr::all_of(c("UMCReportId", "SuspectedduplicateReportId")),
-                        ~ .x |> str_trim() |> as.integer())
-        ) |>
-        dplyr::compute()
+      cli_progress_update(force = force, status = "Read SUSPECTEDDUPLICATES.csv", set = 1)
+      suspdup <-
+        arrow::read_csv_arrow(
+          paste0(path_sub, "SUSPECTEDDUPLICATES.csv"),
+          col_names = FALSE,
+          as_data_frame = FALSE,
+          schema =
+            arrow::schema(
+              UMCReportId  = arrow::int32(),
+              SuspectedduplicateReportId = arrow::int32()
+            )
+        )
+
       cli_progress_update(force = force, status = "Write suspdup.parquet", set = 3)
       arrow::write_parquet(suspdup, sink = paste0(path_base, "suspdup.parquet"))
+
       # If rm_suspdup, prepare the list of duplicates
       if (rm_suspdup) {
         duplicates <- suspdup |> dplyr::pull(.data$SuspectedduplicateReportId, as_vector = FALSE)
@@ -160,31 +197,28 @@ tb_vigibase <-
 
     # ---- demo ---- ####
     if (overwrite_existing_tables || !("demo.parquet" %in% main_parquet_tables)) {
-      cli_progress_update(force = force, status = "Read DEMO.txt", set = 4)
-      demo <- reader("DEMO.txt", path_base)
-      cli_progress_update(force = force,
-        status = "Split demo",
-        set = 6)
+      cli_progress_update(force = force, status = "Read DEMO.csv", set = 4)
       demo <-
-        demo |>
-        dplyr::transmute(
-          UMCReportId  = str_sub(.data$f0, start = 1L,  end = 11L),
-          AgeGroup     = str_sub(.data$f0, start = 12L, end = 12L),
-          Gender       = str_sub(.data$f0, start = 13L, end = 13L),
-          DateDatabase = str_sub(.data$f0, start = 14L, end = 21L),
-          Type         = str_sub(.data$f0, start = 22L, end = 22L),
-          Region       = str_sub(.data$f0, start = 23L, end = 23L),
-          FirstDateDatabase = str_sub(.data$f0, start = 24L, end = 31L)
-        ) |>
-        dplyr::mutate(
-          UMCReportId = .data$UMCReportId |>
-            str_trim() |>
-            as.integer()
-          ) |>
-        dplyr::compute()
+        arrow::read_csv_arrow(
+          paste0(path_base, "DEMO.csv"),
+          col_names = FALSE,
+          as_data_frame = FALSE,
+          schema =
+            arrow::schema(
+              UMCReportId  = arrow::int32(),
+              AgeGroup     = arrow::string(),
+              Gender       = arrow::string(),
+              DateDatabase = arrow::string(),
+              Type         = arrow::string(),
+              Region       = arrow::string(),
+              FirstDateDatabase = arrow::string()
+            )
+        )
+
       if (rm_suspdup) {
         cli_progress_update(force = force, status = "Remove duplicates", set = 7)
-        demo <- demo |> dplyr::filter(!.data$UMCReportId %in% duplicates)
+        demo <- demo |> dplyr::filter(!.data$UMCReportId %in% duplicates) |>
+          dplyr::compute()
       }
       cli_progress_update(force = force, status = "Write demo.parquet", set = 8)
       arrow::write_parquet(demo, sink = paste0(path_base, "demo.parquet"))
@@ -193,38 +227,32 @@ tb_vigibase <-
     }
     # ---- drug ---- ####
     if (overwrite_existing_tables || !("drug.parquet" %in% main_parquet_tables)) {
-      cli_progress_update(force = force, status = "Read DRUG.txt", set = 10)
-      drug <- reader("DRUG.txt", path_base)
-      cli_progress_update(force = force, status = "Split drug", set = 12)
-      drug <- drug |>
-        dplyr::transmute(
-          UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
-          Drug_Id     = str_sub(.data$f0, start = 12L, end = 22L),
-          MedicinalProd_Id = str_sub(.data$f0, start = 23L, end = 33L),
-          DrecNo      = str_sub(.data$f0, start = 34L, end = 39L),
-          Seq1        = str_sub(.data$f0, start = 40L, end = 41L),
-          Seq2        = str_sub(.data$f0, start = 42L, end = 44L),
-          Route       = str_sub(.data$f0, start = 45L, end = 46L),
-          Basis       = str_sub(.data$f0, start = 47L, end = 47L),
-          Amount      = str_sub(.data$f0, start = 48L, end = 52L),
-          AmountU     = str_sub(.data$f0, start = 53L, end = 54L),
-          Frequency   = str_sub(.data$f0, start = 55L, end = 56L),
-          FrequencyU  = str_sub(.data$f0, start = 57L, end = 59L)
-          ) |>
-        dplyr::mutate(
-          dplyr::across(dplyr::all_of(c("UMCReportId", "Drug_Id",
-                                        "MedicinalProd_Id",
-                                        "DrecNo")),
-                 ~ .x |>
-            str_trim() |>
-            as.integer()
+      cli_progress_update(force = force, status = "Read DRUG.csv", set = 10)
+      drug <- arrow::read_csv_arrow(
+        paste0(path_base, "DRUG.csv"),
+        col_names = FALSE,
+        as_data_frame = FALSE,
+        schema =
+          arrow::schema(
+            UMCReportId = arrow::int32(),
+            Drug_Id     = arrow::int32(),
+            Record_Id   = arrow::int32(),
+            DrecNo      = arrow::int32(),
+            Seq1        = arrow::string(),
+            Seq2        = arrow::string(),
+            Route       = arrow::string(),
+            Basis       = arrow::string(),
+            Amount      = arrow::string(),
+            AmountU     = arrow::string(),
+            Frequency   = arrow::string(),
+            FrequencyU  = arrow::string()
           )
-        ) |>
-        dplyr::compute()
+      )
       # Remove suspected duplicates if requested
       if (rm_suspdup) {
         cli_progress_update(force = force, status = "Remove duplicates", set = 13)
-        drug <- drug |> dplyr::filter(!.data$UMCReportId %in% duplicates)
+        drug <- drug |> dplyr::filter(!.data$UMCReportId %in% duplicates) |>
+          dplyr::compute()
         drug_ids <- dplyr::pull(drug, .data$Drug_Id, as_vector = TRUE)
       } else {
         drug_ids <- NULL
@@ -244,25 +272,21 @@ tb_vigibase <-
     }
     # ---- followup ---- ####
     if (overwrite_existing_tables || !("followup.parquet" %in% main_parquet_tables)) {
-      cli_progress_update(force = force, status = "Read FOLLOWUP.txt", set = 16)
-      followup <- reader("FOLLOWUP.txt", path_base)
-      cli_progress_update(force = force, status = "Split followup", set = 18)
-      followup <- followup |>
-        dplyr::transmute(
-          UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
-          ReplacedUMCReportId = str_sub(.data$f0, start = 12L, end = 22L)
-          ) |>
-        dplyr::mutate(
-          dplyr::across(dplyr::all_of(c("UMCReportId", "ReplacedUMCReportId")),
-                 ~ .x |>
-                   str_trim() |>
-                   as.integer()
+      cli_progress_update(force = force, status = "Read FOLLOWUP.csv", set = 16)
+      followup <- arrow::read_csv_arrow(
+        paste0(path_base, "FOLLOWUP.csv"),
+        col_names = FALSE,
+        as_data_frame = FALSE,
+        schema =
+          arrow::schema(
+            UMCReportId         = arrow::int32(),
+            ReplacedUMCReportId = arrow::int32()
           )
-        ) |>
-        dplyr::compute()
+      )
       if (rm_suspdup) {
         cli_progress_update(force = force, status = "Remove duplicates", set = 19)
-        followup <- followup |> dplyr::filter(!.data$UMCReportId %in% duplicates)
+        followup <- followup |> dplyr::filter(!.data$UMCReportId %in% duplicates) |>
+          dplyr::compute()
       }
       cli_progress_update(force = force, status = "Write followup.parquet", set = 20)
       arrow::write_parquet(followup, sink = paste0(path_base, "followup.parquet"))
@@ -271,24 +295,24 @@ tb_vigibase <-
     }
     # ---- adr ---- ####
     if (overwrite_existing_tables || !("adr.parquet" %in% main_parquet_tables)) {
-      cli_progress_update(force = force, status = "Read ADR.txt", set = 22)
-      adr <- reader("ADR.txt", path_base)
-      cli_progress_update(force = force, status = "Split adr", set = 24)
-      adr <- adr |>
-        dplyr::transmute(
-          UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
-          Adr_Id      = str_sub(.data$f0, start = 12L, end = 22L),
-          MedDRA_Id   = str_sub(.data$f0, start = 23L, end = 30L),
-          Outcome     = str_sub(.data$f0, start = 31L, end = 31L)
-        ) |>
-        dplyr::mutate(dplyr::across(
-          dplyr::all_of(c("UMCReportId", "Adr_Id", "MedDRA_Id")), ~ .x |>
-            str_trim() |>
-            as.integer())) |>
-        dplyr::compute()
+      cli_progress_update(force = force, status = "Read ADR.csv", set = 22)
+      adr <- arrow::read_csv_arrow(
+        paste0(path_base, "ADR.csv"),
+        col_names = FALSE,
+        as_data_frame = FALSE,
+        schema =
+          arrow::schema(
+            UMCReportId = arrow::int32(),
+            Adr_Id      = arrow::int32(),
+            MedDRA_Id   = arrow::int32(),
+            Outcome     = arrow::string()
+          )
+      )
+
       if (rm_suspdup) {
         cli_progress_update(force = force, status = "Remove duplicates", set = 25)
-        adr <- adr |> dplyr::filter(!.data$UMCReportId %in% duplicates)
+        adr <- adr |> dplyr::filter(!.data$UMCReportId %in% duplicates) |>
+          dplyr::compute()
       }
       cli_progress_update(force = force, status = "Write adr.parquet", set = 26)
       arrow::write_parquet(adr, sink = paste0(path_base, "adr.parquet"))
@@ -300,22 +324,23 @@ tb_vigibase <-
     }
     # ---- out ---- ####
     if (overwrite_existing_tables || !("out.parquet" %in% main_parquet_tables)) {
-      cli_progress_update(force = force, status = "Read OUT.txt", set = 27)
-      out <- reader("OUT.txt", path_base)
-      cli_progress_update(force = force, status = "Split out", set = 28)
-      out <- out |>
-        dplyr::transmute(
-          UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
-          Seriousness = str_trim(str_sub(.data$f0, start = 12L, end = 13L)),
-          Serious     = str_sub(.data$f0, start = 14L, end = 14L)
-        ) |>
-        dplyr::mutate(dplyr::across(dplyr::all_of(c("UMCReportId")), ~ .x |>
-                                      str_trim() |>
-                                      as.integer())) |>
-        dplyr::compute()
+      cli_progress_update(force = force, status = "Read OUT.csv", set = 27)
+      out <- arrow::read_csv_arrow(
+        paste0(path_base, "OUT.csv"),
+        col_names = FALSE,
+        as_data_frame = FALSE,
+        schema =
+          arrow::schema(
+            UMCReportId = arrow::int32(),
+            Seriousness = arrow::string(),
+            Serious     = arrow::string()
+          )
+      )
+
       if (rm_suspdup) {
         cli_progress_update(force = force, status = "Remove duplicates", set = 29)
-        out <- out |> dplyr::filter(!.data$UMCReportId %in% duplicates)
+        out <- out |> dplyr::filter(!.data$UMCReportId %in% duplicates) |>
+          dplyr::compute()
       }
       cli_progress_update(force = force, status = "Write out.parquet", set = 30)
       arrow::write_parquet(out, sink = paste0(path_base, "out.parquet"))
@@ -324,21 +349,22 @@ tb_vigibase <-
     }
     # ---- srce ---- ####
     if (overwrite_existing_tables || !("srce.parquet" %in% main_parquet_tables)) {
-      cli_progress_update(force = force, status = "Read SRCE.txt", set = 31)
-      srce <- reader("SRCE.txt", path_base)
-      cli_progress_update(force = force, status = "Split srce", set = 32)
-      srce <- srce |>
-        dplyr::transmute(
-          UMCReportId = str_sub(.data$f0, start = 1L, end = 11L),
-          Type        = str_trim(str_sub(.data$f0, start = 12L, end = 13L))
-        ) |>
-        dplyr::mutate(dplyr::across(dplyr::all_of(c("UMCReportId")), ~ .x |>
-                                      str_trim() |>
-                                      as.integer())) |>
-        dplyr::compute()
+      cli_progress_update(force = force, status = "Read SRCE.csv", set = 31)
+      srce <- arrow::read_csv_arrow(
+        paste0(path_base, "SRCE.csv"),
+        col_names = FALSE,
+        as_data_frame = FALSE,
+        schema =
+          arrow::schema(
+            UMCReportId = arrow::int32(),
+            Type        = arrow::string()
+          )
+      )
+
       if (rm_suspdup) {
         cli_progress_update(force = force, status = "Remove duplicates", set = 33)
-        srce <- srce |> dplyr::filter(!.data$UMCReportId %in% duplicates)
+        srce <- srce |> dplyr::filter(!.data$UMCReportId %in% duplicates) |>
+          dplyr::compute()
       }
       cli_progress_update(force = force, status = "Write srce.parquet", set = 34)
       arrow::write_parquet(srce, sink = paste0(path_base, "srce.parquet"))
@@ -347,30 +373,30 @@ tb_vigibase <-
     }
     # ---- link ---- ####
     if (overwrite_existing_tables || !("link.parquet" %in% main_parquet_tables)) {
-      cli_progress_update(force = force, status = "Read LINK.txt", set = 35)
-      link <- reader("LINK.txt", path_base)
-      cli_progress_update(force = force, status = "Split link (longest step)", set = 36)
+      cli_progress_update(force = force, status = "Read LINK.csv", set = 35)
+      link <- arrow::read_csv_arrow(
+        paste0(path_base, "LINK.csv"),
+        col_names = FALSE,
+        as_data_frame = FALSE,
+        schema =
+          arrow::schema(
+            Drug_Id        = arrow::int32(),
+            Adr_Id         = arrow::int32(),
+            Dechallenge1   = arrow::string(),
+            Dechallenge2   = arrow::string(),
+            Rechallenge1   = arrow::string(),
+            Rechallenge2   = arrow::string(),
+            TimeToOnsetMin = arrow::string(),
+            TimeToOnsetMax = arrow::string()
+          )
+      )
+      cli_progress_update(force = force, status = "Process link (longest step)", set = 36)
       link <- link |>
-        dplyr::transmute(
-          Drug_Id        = str_sub(.data$f0, start = 1L,  end = 11L),
-          Adr_Id         = str_sub(.data$f0, start = 12L, end = 22L),
-          Dechallenge1   = str_sub(.data$f0, start = 23L, end = 23L),
-          Dechallenge2   = str_sub(.data$f0, start = 24L, end = 24L),
-          Rechallenge1   = str_sub(.data$f0, start = 25L, end = 25L),
-          Rechallenge2   = str_sub(.data$f0, start = 26L, end = 26L),
-          TimeToOnsetMin = str_sub(.data$f0, start = 27L, end = 37L),
-          TimeToOnsetMax = str_sub(.data$f0, start = 38L, end = 48L)
-        ) |>
         dplyr::mutate(
-          dplyr::across(dplyr::all_of(c("Drug_Id", "Adr_Id")),
-                        ~ .x |>
-                          str_trim() |>
-                          as.integer()
-                        ),
           dplyr::across(dplyr::all_of(c("TimeToOnsetMin", "TimeToOnsetMax")),
                         ~
                           .x |>
-                          str_trim() |>
+                          # str_trim() |>
                           stringr::str_replace("^-$", "1568459784.65489") |>
                           as.numeric()
           ),
@@ -388,7 +414,8 @@ tb_vigibase <-
         dplyr::compute()
       if (rm_suspdup) {
         cli_progress_update(force = force, status = "Remove duplicates", set = 72)
-        link <- link |> dplyr::filter(!is.na(.data$UMCReportId))
+        link <- link |> dplyr::filter(!is.na(.data$UMCReportId)) |>
+          dplyr::compute()
       }
       cli_progress_update(force = force, status = "Write link.parquet", set = 73)
       arrow::write_parquet(link, sink = paste0(path_base, "link.parquet"))
@@ -399,34 +426,27 @@ tb_vigibase <-
     if (overwrite_existing_tables ||
         !("ind.parquet" %in% main_parquet_tables)) {
       cli_progress_update(force = force,
-                          status = "Read IND.txt",
+                          status = "Read IND.csv",
                           set = 74)
-      ind <- arrow::read_delim_arrow(
-        paste0(path_base, "IND.txt"),
+      ind <- arrow::read_csv_arrow(
+        paste0(path_base, "IND.csv"),
         col_names = FALSE,
         as_data_frame = FALSE,
-        delim = "\t",
-        read_options = arrow::csv_read_options(column_names = "f0", encoding = "ANSI_X3.4-1986")
-      )
-      cli_progress_update(force = force,
-                          status = "Split ind (2nd longest step)",
-                          set = 75)
-      ind <- ind |>
-        dplyr::transmute(
-          Drug_Id    = str_sub(.data$f0, start = 1L, end = 11L),
-          Indication = str_trim(str_sub(
-            .data$f0, start = 12L, end = 266L
-          ))
-        ) |>
-        dplyr::mutate(dplyr::across(dplyr::all_of(c("Drug_Id")), ~ .x |>
-                                      str_trim() |>
-                                      as.integer())) |>
-        dplyr::compute()
+        schema =
+          arrow::schema(
+            Drug_Id        = arrow::int32(),
+            Indication     = arrow::string()
+          )
+        )
+      # arrow::csv_read_options(encoding = "ANSI_X3.4-1986") # seems to be
+      # outdated as of csv export of VigiBase
+
       if (rm_suspdup) {
         cli_progress_update(force = force,
                             status = "Remove duplicates",
                             set = 76)
-        ind <- ind |> dplyr::filter(.data$Drug_Id %in% drug_ids)
+        ind <- ind |> dplyr::filter(.data$Drug_Id %in% drug_ids) |>
+          dplyr::compute()
       }
       cli_progress_update(force = force,
                           status = "Write ind.parquet",
@@ -436,212 +456,42 @@ tb_vigibase <-
       gc()
     }
     # ---- Unique block for subsidiary tables ---- ####
+
     secondary_tables <- c(
-      "AgeGroup.parquet", "Dechallenge.parquet", "Dechallenge2.parquet", "Frequency.parquet",
-      "Gender.parquet", "Notifier.parquet", "Outcome.parquet", "Rechallenge.parquet",
-      "Rechallenge2.parquet", "Region.parquet", "RepBasis.parquet", "ReportType.parquet",
-      "RouteOfAdm.parquet", "Seriousness.parquet", "SizeUnit.parquet"
+      "AgeGroup", "Dechallenge", "Dechallenge2", "Frequency",
+      "Gender", "Notifier", "Outcome", "Rechallenge",
+      "Rechallenge2", "Region", "RepBasis", "ReportType",
+      "RouteOfAdm", "Seriousness", "SizeUnit"
     )
-    if (overwrite_existing_tables || !all(secondary_tables %in% sub_parquet_tables)) {
+
+    secondary_tables_parquet <- paste0(secondary_tables, ".parquet")
+
+    if (overwrite_existing_tables || !all(secondary_tables_parquet %in% sub_parquet_tables)) {
       cli_progress_update(force = force,
         status = "Process Subsidiary files",
         set = 99)
 
-      AgeGroup <- reader("AgeGroup_Lx.txt", path_sub)
-      AgeGroup <-
-        AgeGroup |>
-        dplyr::transmute(
-          AgeGroup = substr(.data$f0, start = 1, stop = 1),
-          Code = substr(.data$f0, start = 2, stop = 26) |> str_trim()
-        ) |>
-        dplyr::compute()
-      arrow::write_parquet(AgeGroup, sink = paste0(path_sub, "AgeGroup.parquet"))
+      subs <-
+        secondary_tables |>
+        rlang::set_names(secondary_tables_parquet) |>
+        purrr::imap(
+          function(t_, name_){
+          full_path <- paste0(path_sub, t_, "_Lx.csv")
 
-      # Dechallenge
-      Dechallenge <- reader("Dechallenge_Lx.txt", path_sub)
-      Dechallenge <-
-        Dechallenge |>
-        dplyr::transmute(
-          Dechallenge1 = substr(.data$f0, start = 1, stop = 1),
-          Code = substr(.data$f0, start = 2, stop = 257) |> str_trim()
-        ) |>
-        dplyr::compute()
-      arrow::write_parquet(Dechallenge, sink = paste0(path_sub, "Dechallenge.parquet"))
+          table <-
+            arrow::read_csv_arrow(
+            full_path,
+            col_names = FALSE,
+            as_data_frame = FALSE,
+            schema =
+              arrow::schema(
+                Code = arrow::string(),
+                Text = arrow::string()
+              )
+            )
 
-      # Dechallenge2
-
-      Dechallenge2 <- reader("Dechallenge2_Lx.txt", path_sub)
-      Dechallenge2 <-
-        Dechallenge2 |>
-        dplyr::transmute(
-          Dechallenge2 = substr(.data$f0, start = 1, stop = 1),
-          Code = substr(.data$f0, start = 2, stop = 257) |> str_trim()
-        ) |>
-        dplyr::compute()
-      arrow::write_parquet(Dechallenge2, sink = paste0(path_sub, "Dechallenge2.parquet"))
-
-      # FrequencyU
-
-      Frequency <- reader("Frequency_Lx.txt", path_sub)
-      Frequency <-
-        Frequency |>
-        dplyr::transmute(
-          FrequencyU = substr(.data$f0, start = 1, stop = 3),
-          Code = substr(.data$f0, start = 4, stop = 259) |> str_trim()
-        ) |>
-        dplyr::compute()
-      arrow::write_parquet(Frequency, sink = paste0(path_sub, "Frequency.parquet"))
-
-      # Gender
-
-      Gender <- reader("Gender_Lx.txt", path_sub)
-      Gender <-
-        Gender |>
-        dplyr::transmute(
-          Gender = substr(.data$f0, start = 1, stop = 1),
-          Code = substr(.data$f0, start = 2, stop = 257) |> str_trim()
-        ) |>
-        dplyr::compute()
-      arrow::write_parquet(Gender, sink = paste0(path_sub, "Gender.parquet"))
-
-      # Notifier
-
-      Notifier <- reader("Notifier_Lx.txt", path_sub)
-      Notifier <-
-        Notifier |>
-        dplyr::transmute(
-          Type = substr(.data$f0, start = 1, stop = 2) |> str_trim() |> as.integer(),
-          Code = substr(.data$f0, start = 3, stop = 258) |> str_trim()
-        ) |>
-        dplyr::compute()
-      arrow::write_parquet(Notifier, sink = paste0(path_sub, "Notifier.parquet"))
-
-      # Outcome
-
-      Outcome <- reader("Outcome_Lx.txt", path_sub)
-      Outcome <-
-        Outcome |>
-        dplyr::transmute(
-          Outcome = substr(.data$f0, start = 1, stop = 1),
-          Code = substr(.data$f0, start = 2, stop = 257) |> str_trim()
-        ) |>
-        dplyr::compute()
-      arrow::write_parquet(Outcome, sink = paste0(path_sub, "Outcome.parquet"))
-
-      # Rechallenge
-
-      Rechallenge <- reader("Rechallenge_Lx.txt", path_sub)
-      Rechallenge <-
-        Rechallenge |>
-        dplyr::transmute(
-          Rechallenge1 = substr(.data$f0, start = 1, stop = 1),
-          Code = substr(.data$f0, start = 2, stop = 81) |> str_trim()
-        ) |>
-        dplyr::compute()
-      arrow::write_parquet(Rechallenge, sink = paste0(path_sub, "Rechallenge.parquet"))
-
-      # Rechallenge2
-
-      Rechallenge2 <- reader("Rechallenge2_Lx.txt", path_sub)
-      Rechallenge2 <-
-        Rechallenge2 |>
-        dplyr::transmute(
-          Rechallenge2 = substr(.data$f0, start = 1, stop = 1),
-          Code = substr(.data$f0, start = 2, stop = 81) |> str_trim()
-        ) |>
-        dplyr::compute()
-      arrow::write_parquet(Rechallenge2, sink = paste0(path_sub, "Rechallenge2.parquet"))
-
-      # Region
-
-      Region <- reader("Region_Lx.txt", path_sub)
-      Region <-
-        Region |>
-        dplyr::transmute(
-          Region = substr(.data$f0, start = 1, stop = 1),
-          Code = substr(.data$f0, start = 2, stop = 51) |> str_trim()
-        ) |>
-        dplyr::compute()
-      arrow::write_parquet(Region, sink = paste0(path_sub, "Region.parquet"))
-
-      # RepBasis
-
-      RepBasis <- reader("RepBasis_Lx.txt", path_sub)
-      RepBasis <-
-        RepBasis |>
-        dplyr::transmute(
-          Basis = substr(.data$f0, start = 1, stop = 1),
-          Code = substr(.data$f0, start = 2, stop = 51) |> str_trim()
-        ) |>
-        dplyr::compute()
-      arrow::write_parquet(RepBasis, sink = paste0(path_sub, "RepBasis.parquet"))
-
-      # ReportType
-
-      ReportType <- reader("ReportType_Lx.txt", path_sub)
-      ReportType <-
-        ReportType |>
-        dplyr::transmute(
-          ReportType = substr(.data$f0, start = 1, stop = 1),
-          Code = substr(.data$f0, start = 2, stop = 257) |> str_trim()
-        ) |>
-        dplyr::compute()
-      arrow::write_parquet(ReportType, sink = paste0(path_sub, "ReportType.parquet"))
-
-      # RouteOfAdm
-
-      RouteOfAdm <- reader("RouteOfAdm_Lx.txt", path_sub)
-      RouteOfAdm <-
-        RouteOfAdm |>
-        dplyr::transmute(
-          Route = substr(.data$f0, start = 1, stop = 2) |> str_trim() |> as.integer(),
-          Code = substr(.data$f0, start = 3, stop = 82) |> str_trim()
-        ) |>
-        dplyr::compute()
-      arrow::write_parquet(RouteOfAdm, sink = paste0(path_sub, "RouteOfAdm.parquet"))
-
-      # Seriousness
-
-      Seriousness <- reader("Seriousness_Lx.txt", path_sub)
-      Seriousness <-
-        Seriousness |>
-        dplyr::transmute(
-          Seriousness = substr(.data$f0, start = 1, stop = 2) |>
-          str_trim() |>
-          as.integer(),
-          Code = substr(.data$f0, start = 3, stop = 258) |> str_trim()
-        ) |>
-        dplyr::compute()
-      arrow::write_parquet(Seriousness, sink = paste0(path_sub, "Seriousness.parquet"))
-
-      # SizeUnit
-
-      SizeUnit <-
-        read.table(
-          file = paste0(path_sub, "SizeUnit_Lx.txt"),
-          header = FALSE,
-          sep = "\t",
-          quote = "",
-          dec = ".",
-          fill = TRUE,
-          comment.char = "",
-          stringsAsFactors = FALSE,
-          col.names = "f0",
-          colClasses = "character",
-          nrows = 1000)
-
-      SizeUnit$f0 <- iconv(SizeUnit$f0, from = "ANSI_X3.4-1986", to = "UTF8")
-
-      SizeUnit <-
-        SizeUnit |>
-        dplyr::transmute(
-          AmountU = substr(.data$f0, start = 1, stop = 2) |>
-          str_trim() |>
-          as.integer(),
-          Code = substr(.data$f0, start = 3, stop = 82) |> str_trim()
-        ) |>
-        dplyr::compute()
-      arrow::write_parquet(SizeUnit, sink = paste0(path_sub, "SizeUnit.parquet"))
+            arrow::write_parquet(table, sink = paste0(path_sub, name_))
+        })
 
       cli_progress_update(force = force,
         status = "Done",
@@ -651,9 +501,15 @@ tb_vigibase <-
   }
 
 # Helper: scan for main parquet tables
+#' @param path_base character string, folder with base files
+#' @param ext character string, either ".parquet", ".csv", or ".txt"
 #' @keywords internal
 #' @noRd
-tb_screen_main_parquet <- function(path_base) {
+tb_screen_main <- function(path_base,
+                                   ext = c(".parquet", ".csv", ".txt")) {
+
+  ext <- rlang::arg_match(ext)
+
   main_tables <- c("demo",
                    "adr",
                    "drug",
@@ -663,11 +519,17 @@ tb_screen_main_parquet <- function(path_base) {
                    "srce",
                    "followup",
                    "suspdup")
-  pattern <- paste0("^(", paste(main_tables, collapse = "|"), ")\\.parquet$")
-  files <- list.files(path_base, pattern = pattern, full.names = FALSE)
-  if (length(files) > 0) {
+  pattern <- paste0("^(", paste(main_tables, collapse = "|"),
+                    ")\\",
+                    ext,
+                    "$")
+  files <- list.files(path_base, pattern = pattern, full.names = FALSE,
+                      ignore.case = TRUE)
+  if (length(files) > 0 && ext == ".parquet") {
+    # only displayed if parquet checking - part of user info linked to
+    # overwrite_existing_tables arg.
     cli::cli_inform(
-      "The following tables were already found as parquet files in {.arg path_base}: {.val {files}}"
+      "The following tables were found as {ext} files in {.arg path_base}: {.val {files}}"
     )
   }
   return(files)
@@ -677,28 +539,44 @@ tb_screen_main_parquet <- function(path_base) {
 #' @keywords internal
 #' @noRd
 
-tb_screen_sub_parquet <- function(path_sub) {
+tb_screen_sub <- function(path_sub,
+                                  ext = c(".parquet", ".csv", ".txt")) {
+
+  ext <- rlang::arg_match(ext)
+
   pattern_tables <- c(
-    "AgeGroup",
-    "Dechallenge",
-    "Dechallenge2",
-    "Frequency",
-    "Gender",
-    "Notifier",
-    "Outcome",
-    "Rechallenge",
-    "Rechallenge2",
-    "Region",
-    "RepBasis",
-    "ReportType",
-    "RouteOfAdm",
-    "Seriousness",
-    "SizeUnit"
+    "AgeGroup_Lx",
+    "Dechallenge_Lx",
+    "Dechallenge2_Lx",
+    "Frequency_Lx",
+    "Gender_Lx",
+    "Notifier_Lx",
+    "Outcome_Lx",
+    "Rechallenge_Lx",
+    "Rechallenge2_Lx",
+    "Region_Lx",
+    "RepBasis_Lx",
+    "ReportType_Lx",
+    "RouteOfAdm_Lx",
+    "Seriousness_Lx",
+    "SizeUnit_Lx",
+    "SUSPECTEDDUPLICATES"
   )
-  pattern <- paste0("^(", paste(pattern_tables, collapse = "|"), ")\\.parquet$")
+
+  if(ext == ".parquet"){
+    pattern_tables <-
+      pattern_tables[!pattern_tables == "SUSPECTEDDUPLICATES"] |>
+      stringr::str_replace("_Lx$", "")
+  }
+
+  pattern <- paste0("^(", paste(pattern_tables, collapse = "|"),
+                    ")\\",
+                    ext,
+                    "$")
+
   files <- list.files(path_sub, pattern = pattern, full.names = FALSE)
-  if (length(files) == length(pattern_tables)) {
-    cli::cli_inform("Subsidiary files were already found as parquet files.")
+  if (length(files) == length(pattern_tables) && ext == ".parquet") {
+    cli::cli_inform("Subsidiary files were found as {ext} files.")
   }
   return(files)
 }

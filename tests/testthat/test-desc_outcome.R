@@ -13,7 +13,7 @@ test_that("gives proper counts, even with arrow Table", {
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c(21, 22, 21, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
-      MedicinalProd_Id = NA
+      Record_Id = NA
     )
 
   adr_list_test <-

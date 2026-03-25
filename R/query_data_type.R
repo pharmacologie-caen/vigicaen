@@ -14,7 +14,7 @@
 #' @examples
 #'
 #' drug_valid <- data.frame(
-#'   DrecNo = 1, UMCReportId = 1, MedicinalProd_Id = 1, Drug_Id = 1)
+#'   DrecNo = 1, UMCReportId = 1, Record_Id = 1, Drug_Id = 1)
 #'
 #'  vigicaen:::query_data_type(drug_valid, ".data")
 
@@ -32,7 +32,7 @@ query_data_type <-
               names(.data))
         ~ "demo",
         all(c("DrecNo",
-              "MedicinalProd_Id",
+              "Record_Id",
               "UMCReportId",
               "Drug_Id") %in% names(.data))
         ~ "drug",

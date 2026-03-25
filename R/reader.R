@@ -1,6 +1,6 @@
 #' Internal arrow reader
 #'
-#' Used in [tb_vigibase()], [tb_who()], [tb_meddra()]
+#' Used in [tb_vigibase()], [tb_who()]
 #'
 #' @param file_name Character string
 #' @param folder Character string
@@ -22,10 +22,23 @@
 #' unlink(path_base, recursive = TRUE)
 
 reader <- function(file_name, folder){
-  arrow::read_delim_arrow(paste0(folder, file_name),
-                          col_names = FALSE,
-                          as_data_frame = FALSE,
-                          delim = "\t",
-                          schema = arrow::schema(f0 = arrow::utf8())
-  )
+  if (stringr::str_detect(file_name, "csv$")) {
+    t1 <- arrow::read_csv_arrow(
+      paste0(folder, file_name),
+      col_names = FALSE,
+      as_data_frame = FALSE
+    )
+  }
+
+  if (stringr::str_detect(file_name, "txt$")) {
+    t1 <- arrow::read_delim_arrow(
+      paste0(folder, file_name),
+      col_names = FALSE,
+      as_data_frame = FALSE,
+      delim = "\t",
+      schema = arrow::schema(f0 = arrow::utf8())
+    )
+  }
+
+  return(t1)
 }

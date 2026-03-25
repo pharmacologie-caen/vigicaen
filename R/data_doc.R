@@ -49,7 +49,7 @@
 #' \itemize{
 #'   \item `UMCReportId` Integer. See `demo_`.
 #'   \item `Drug_Id` Integer. The unique identifier of each drug report.
-#'   \item `MedicinalProd_Id` Integer. The medicinalproduct identifier.
+#'   \item `Record_Id` Integer. The medicinalproduct identifier.
 #'   See [get_atc_code()].
 #'   \item `DrecNo` Integer. Drug Record Number, pivotal to identify drugs
 #'   with [get_drecno()].
@@ -276,7 +276,7 @@
 #' @format
 #' `mp_` is a data.table with 8 variables and 14146 rows.
 #' \itemize{
-#'   \item `MedicinalProd_Id` Integer. The medicinalproduct identifier.
+#'   \item `Record_Id` Integer. The medicinalproduct identifier.
 #'   \item `Sequence.number.1` and `2` Characters. Complement to DrecNo.
 #'   \item `DrecNo` Character. Drug Record Number, pivotal to identify drugs
 #'   with [get_drecno()].
@@ -295,7 +295,7 @@
 #'   \item `Create.date` Character. The date the record was created.
 #'   \item `Official.ATC.code` Character. Whether the ATC code
 #'   is official (Yes/No).
-#'   \item `MedicinalProd_Id` Integer. The medicinalproduct identifier.
+#'   \item `Record_Id` Integer. The medicinalproduct identifier.
 #'   }
 #'
 #' @keywords datasets whodrug
