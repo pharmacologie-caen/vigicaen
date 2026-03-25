@@ -173,7 +173,11 @@ create_ex_who_csv <-
         ifelse(
           name_csv == "UNITX.csv",
           "UNIT-X.csv",
-          name_csv
+          ifelse(
+            name_csv == "THG.csv",
+            "ThG.csv",
+            name_csv
+          )
         )
 
       write.table(d_, file = paste0(path_fix, name_csv),
@@ -307,7 +311,7 @@ f_sets_who <-
         ),
         ing = data.table(
           Ingredient_Id      = 1L,
-            Create.date      = 19851231,
+            Create.date      = "19851231",
             Substance_Id     = 2,
             Quantity         = 3,
             Quantity.2       = 0,
@@ -372,7 +376,7 @@ f_sets_who <-
         thg = data.table(
           Therapgroup_Id = 100007L,
           ATC.code = "N06BA",
-          Create.date = 19890630L,
+          Create.date = "19890630",
           Official.ATC.code = "Y",
           Record_Id = 40683L
         ),

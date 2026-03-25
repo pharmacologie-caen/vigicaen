@@ -22,10 +22,13 @@ test_that("basic use works", {
 
   mp_res <- arrow::read_parquet(paste0(path_who, "mp.parquet"))
 
+  thg_res <- arrow::read_parquet(paste0(path_who, "thg.parquet"))
+
   table_true <-
     f_sets_who_pq()
 
   expect_equal(mp_res, table_true$mp |> dplyr::as_tibble())
+  expect_equal(thg_res, table_true$thg |> dplyr::as_tibble())
 
   # no end slash to path_who
 
