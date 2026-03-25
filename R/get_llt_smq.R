@@ -75,8 +75,6 @@ get_llt_smq <-
         c("2")
       } else if (smq_scope == "broad") {
         c("1", "2")
-      } else {
-        "this is an error"
       }
 
     if("Table"  %in% class(smq_list)){
