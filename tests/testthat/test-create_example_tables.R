@@ -77,11 +77,19 @@ test_that("written data is unchanged when loaded back", {
 
   create_ex_who_csv(path)
 
-  name_who_upper <- names(f_sets_who()) |>
-    stringr::str_to_upper()
+  name_who_upper <- stringr::str_to_upper(names(f_sets_who()))
   name_who_csv <- paste0(name_who_upper, ".csv")
 
-  name_who_csv <- ifelse(name_who_csv == "UNITX.csv", "UNIT-X.csv", name_who_csv)
+  name_who_csv <-
+    ifelse(
+      name_who_csv == "UNITX.csv",
+      "Unit-X.csv",
+      ifelse(
+        name_who_csv == "THG.csv",
+        "ThG.csv",
+        name_who_csv
+      )
+    )
 
   who_reimport_csv <-
     name_who_csv |>

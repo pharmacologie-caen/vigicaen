@@ -172,7 +172,7 @@ create_ex_who_csv <-
       name_csv <-
         ifelse(
           name_csv == "UNITX.csv",
-          "UNIT-X.csv",
+          "Unit-X.csv",
           ifelse(
             name_csv == "THG.csv",
             "ThG.csv",
