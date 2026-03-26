@@ -9,7 +9,7 @@ add_drug(
   d_code,
   d_names = names(d_code),
   repbasis = "sci",
-  method = c("DrecNo", "MedicinalProd_Id"),
+  method = c("DrecNo", "Record_Id"),
   drug_data,
   data_type = deprecated()
 )
@@ -25,7 +25,7 @@ add_drug(
 Type initial of those you wish to select ("s" for suspect, "c" for concomitant
 and "i" for interacting ; default to all, e.g. "sci").}
 
-\item{method}{A character string. The type of drug code (DrecNo or MedicinalProd_Id). See details.}
+\item{method}{A character string. The type of drug code (DrecNo or Record_Id). See details.}
 
 \item{drug_data}{A data.frame containing the drug data (usually, it is \code{drug})}
 
@@ -46,7 +46,7 @@ in vigibase datasets (demo, link, adr, drug, and ind).
 \details{
 \code{d_code} is a named list containing drug codes.
 Either drug record numbers (e.g., from \code{\link[=get_drecno]{get_drecno()}}), or
-medicinalprod_ids (e.g., from \code{\link[=get_atc_code]{get_atc_code()}}). Default method is to DrecNos.
+record_ids (e.g., from \code{\link[=get_atc_code]{get_atc_code()}}). Default method is to DrecNos.
 }
 \section{Argument \code{repbasis}}{
 

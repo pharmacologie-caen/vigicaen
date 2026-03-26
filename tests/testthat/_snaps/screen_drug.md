@@ -55,6 +55,6 @@
     Condition
       Error in `screen_drug()`:
       ! `.data` must be a `drug` table.
-      x Missing columns: MedicinalProd_Id and Drug_Id
+      x Missing columns: Record_Id and Drug_Id
       > Supply a `drug` table to `.data`. See ?drug_.
 

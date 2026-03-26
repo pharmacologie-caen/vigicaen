@@ -2,25 +2,25 @@
 % Please edit documentation in R/create_example_tables.R
 \name{create_example_tables}
 \alias{create_example_tables}
-\alias{create_ex_main_txt}
-\alias{create_ex_sub_txt}
-\alias{create_ex_who_txt}
 \alias{create_ex_meddra_asc}
 \alias{create_ex_main_pq}
 \alias{create_ex_sub_pq}
+\alias{create_ex_main_csv}
+\alias{create_ex_who_csv}
+\alias{create_ex_sub_csv}
 \title{Example source tables for VigiBase and MedDRA}
 \usage{
-create_ex_main_txt(path)
-
-create_ex_sub_txt(path)
-
-create_ex_who_txt(path)
-
 create_ex_meddra_asc(path)
 
 create_ex_main_pq(path)
 
 create_ex_sub_pq(path)
+
+create_ex_main_csv(path)
+
+create_ex_who_csv(path)
+
+create_ex_sub_csv(path)
 }
 \arguments{
 \item{path}{Character string. A folder on your computer where the tables should
@@ -30,19 +30,19 @@ be written.}
 A set of text/ascii files,
 as received by the Uppsala Monitoring Centre or MedDRA
 \itemize{
-\item For \code{\link[=create_ex_main_txt]{create_ex_main_txt()}},
-DEMO.txt, DRUG.txt, LINK.txt, FOLLOWUP.txt,
-ADR.txt, OUT.txt, SRCE.txt, and IND.txt
-\item For \code{\link[=create_ex_sub_txt]{create_ex_sub_txt()}},
-AgeGroup_Lx.txt, Dechallenge_Lx.txt, Dechallenge2_Lx.txt,
-Frequency_Lx.txt, Gender_Lx.txt, Notifier_Lx.txt, Outcome_Lx.txt,
-Rechallenge_Lx.txt, Rechallenge2_Lx.txt, Region_Lx.txt, RepBasis_Lx.txt,
-ReportType_Lx.txt, RouteOfAdm_Lx.txt, Seriousness_Lx.txt,
-and SizeUnit_Lx.txt
-\item For \code{\link[=create_ex_who_txt]{create_ex_who_txt()}},
-ATC.txt, CCODE.txt, ING.txt, MP.txt, ORG.txt,
-PF.txt, PP.txt, PRT.txt, PRG.txt, SRCE.txt, STR.txt,
-SUN.txt, ThG.txt, and Unit-X.txt
+\item For \code{\link[=create_ex_main_csv]{create_ex_main_csv()}},
+DEMO.csv, DRUG.csv, LINK.csv, FOLLOWUP.csv,
+ADR.csv, OUT.csv, SRCE.csv, and IND.csv
+\item For \code{\link[=create_ex_sub_csv]{create_ex_sub_csv()}},
+AgeGroup_Lx.csv, Dechallenge_Lx.csv, Dechallenge2_Lx.csv,
+Frequency_Lx.csv, Gender_Lx.csv, Notifier_Lx.csv, Outcome_Lx.csv,
+Rechallenge_Lx.csv, Rechallenge2_Lx.csv, Region_Lx.csv, RepBasis_Lx.csv,
+ReportType_Lx.csv, RouteOfAdm_Lx.csv, Seriousness_Lx.csv, SizeUnit_Lx.csv,
+and SUSPECTEDDUPLICATES.csv
+\item For \code{\link[=create_ex_who_csv]{create_ex_who_csv()}},
+ATC.csv, CCODE.csv, ING.csv, MP.csv, ORG.csv,
+PF.csv, PP.csv, PRT.csv, PRG.csv, SRCE.csv, STR.csv,
+SUN.csv, ThG.csv, and Unit-X.csv
 \item For \code{\link[=create_ex_meddra_asc]{create_ex_meddra_asc()}},
 llt.asc, mdhier.asc, smq_content.asc, smq_list.asc
 \item For \code{\link[=create_ex_main_pq]{create_ex_main_pq()}},
@@ -58,26 +58,28 @@ and sizeunit.parquet
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Write some example
-tables as source text/ascii/parquet files.
+tables as source csv/ascii/parquet files.
 }
 \details{
 VigiBase tables and MedDRA tables are provided respectively
-as text files and ascii files. The \verb{tb_*} family turns them
+as csv files and ascii files. The \verb{tb_*} family turns them
 into parquet files. These \verb{create_example_*} functions are only used to produce
 example source files to illustrate the \verb{tb_*} family, and parquet files for the
-same purpose.
+same purpose. Note that there is a little difference among main and sub
+tables, whether created in csv or parquet, as suspected duplicates moves
+from sub to main during \code{tb_vigibase()} process.
 }
 \section{Functions}{
 \itemize{
-\item \code{create_ex_sub_txt()}: sub txt tables
-
-\item \code{create_ex_who_txt()}: WHO txt tables
-
-\item \code{create_ex_meddra_asc()}: MedDRA txt tables
-
 \item \code{create_ex_main_pq()}: main parquet tables
 
 \item \code{create_ex_sub_pq()}: subsidiary parquet tables
+
+\item \code{create_ex_main_csv()}: main csv tables
+
+\item \code{create_ex_who_csv()}: who csv tables
+
+\item \code{create_ex_sub_csv()}: sub csv tables
 
 }}
 \examples{
@@ -87,17 +89,18 @@ path <- paste0(tempdir(), "/crex/")
 dir.create(path)
 
 # You may want to use different paths for each type of tables
-create_ex_main_txt(path)
-
-create_ex_sub_txt(path)
-
-create_ex_who_txt(path)
 
 create_ex_meddra_asc(path)
 
 create_ex_main_pq(path)
 
 create_ex_sub_pq(path)
+
+create_ex_main_csv(path)
+
+create_ex_who_csv(path)
+
+create_ex_sub_csv(path)
 
 # Remove temporary folders when you're done
 unlink(path, recursive = TRUE)

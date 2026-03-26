@@ -7,7 +7,7 @@
 tb_subset(
   wd_in,
   wd_out,
-  subset_var = c("drecno", "medprod_id", "meddra_id", "age"),
+  subset_var = c("drecno", "record_id", "meddra_id", "age"),
   sv_selection,
   rm_suspdup = TRUE
 )
@@ -17,7 +17,7 @@ tb_subset(
 
 \item{wd_out}{Output directory pathway (character)}
 
-\item{subset_var}{One of \code{"drecno"}, \code{"medprod_id"}, \code{"meddra_id"}, \code{"age"}}
+\item{subset_var}{One of \code{"drecno"}, \code{"record_id"}, \code{"meddra_id"}, \code{"age"}}
 
 \item{sv_selection}{A named list or a vector containing the appropriate ids (according to the method, see details)}
 
@@ -38,7 +38,7 @@ an appropriate list according to this variable in \code{sv_selection}.
 Available \code{subset_var} :
 \itemize{
 \item \code{drecno} will use Drug Record Number (DrecNo), from WHO Drug, and will subset from \code{drug} (see \code{\link[=get_drecno]{get_drecno()}}).
-\item \code{medprod_id} will use MedicinalProd_Id, also from \code{drug}. May be useful if requesting from ATC classes. (see \code{\link[=get_atc_code]{get_atc_code()}}).
+\item \code{record_id} will use Record_Id, also from \code{drug}. May be useful if requesting from ATC classes. (see \code{\link[=get_atc_code]{get_atc_code()}}).
 \item \code{meddra_id} will use MedDRA_Id, subset from \code{adr}. (see \code{\link[=get_llt_soc]{get_llt_soc()}} or See \code{\link[=get_llt_smq]{get_llt_smq()}}).
 \item \code{age} will use AgeGroup from \code{demo}. See below.
 }

@@ -1,13 +1,15 @@
 #' Example source tables for VigiBase and MedDRA
 #'
 #' @description `r lifecycle::badge('stable')` Write some example
-#' tables as source text/ascii/parquet files.
+#' tables as source csv/ascii/parquet files.
 #'
 #' @details VigiBase tables and MedDRA tables are provided respectively
-#' as text files and ascii files. The `tb_*` family turns them
+#' as csv files and ascii files. The `tb_*` family turns them
 #' into parquet files. These `create_example_*` functions are only used to produce
 #' example source files to illustrate the `tb_*` family, and parquet files for the
-#' same purpose.
+#' same purpose. Note that there is a little difference among main and sub
+#' tables, whether created in csv or parquet, as suspected duplicates moves
+#' from sub to main during `tb_vigibase()` process.
 #'
 #' @param path Character string. A folder on your computer where the tables should
 #' be written.
@@ -16,19 +18,19 @@
 #' @returns A set of text/ascii files,
 #' as received by the Uppsala Monitoring Centre or MedDRA
 #' \itemize{
-#'  \item For [create_ex_main_txt()],
-#'  DEMO.txt, DRUG.txt, LINK.txt, FOLLOWUP.txt,
-#'  ADR.txt, OUT.txt, SRCE.txt, and IND.txt
-#'  \item For [create_ex_sub_txt()],
-#'  AgeGroup_Lx.txt, Dechallenge_Lx.txt, Dechallenge2_Lx.txt,
-#'  Frequency_Lx.txt, Gender_Lx.txt, Notifier_Lx.txt, Outcome_Lx.txt,
-#'  Rechallenge_Lx.txt, Rechallenge2_Lx.txt, Region_Lx.txt, RepBasis_Lx.txt,
-#'  ReportType_Lx.txt, RouteOfAdm_Lx.txt, Seriousness_Lx.txt,
-#'  and SizeUnit_Lx.txt
-#'  \item For [create_ex_who_txt()],
-#'  ATC.txt, CCODE.txt, ING.txt, MP.txt, ORG.txt,
-#'  PF.txt, PP.txt, PRT.txt, PRG.txt, SRCE.txt, STR.txt,
-#'  SUN.txt, ThG.txt, and Unit-X.txt
+#'  \item For [create_ex_main_csv()],
+#'  DEMO.csv, DRUG.csv, LINK.csv, FOLLOWUP.csv,
+#'  ADR.csv, OUT.csv, SRCE.csv, and IND.csv
+#'  \item For [create_ex_sub_csv()],
+#'  AgeGroup_Lx.csv, Dechallenge_Lx.csv, Dechallenge2_Lx.csv,
+#'  Frequency_Lx.csv, Gender_Lx.csv, Notifier_Lx.csv, Outcome_Lx.csv,
+#'  Rechallenge_Lx.csv, Rechallenge2_Lx.csv, Region_Lx.csv, RepBasis_Lx.csv,
+#'  ReportType_Lx.csv, RouteOfAdm_Lx.csv, Seriousness_Lx.csv, SizeUnit_Lx.csv,
+#'  and SUSPECTEDDUPLICATES.csv
+#'  \item For [create_ex_who_csv()],
+#'  ATC.csv, CCODE.csv, ING.csv, MP.csv, ORG.csv,
+#'  PF.csv, PP.csv, PRT.csv, PRG.csv, SRCE.csv, STR.csv,
+#'  SUN.csv, ThG.csv, and Unit-X.csv
 #'  \item For [create_ex_meddra_asc()],
 #'  llt.asc, mdhier.asc, smq_content.asc, smq_list.asc
 #'  \item For [create_ex_main_pq()],
@@ -53,11 +55,6 @@
 #' dir.create(path)
 #'
 #' # You may want to use different paths for each type of tables
-#' create_ex_main_txt(path)
-#'
-#' create_ex_sub_txt(path)
-#'
-#' create_ex_who_txt(path)
 #'
 #' create_ex_meddra_asc(path)
 #'
@@ -65,55 +62,22 @@
 #'
 #' create_ex_sub_pq(path)
 #'
+#' create_ex_main_csv(path)
+#'
+#' create_ex_who_csv(path)
+#'
+#' create_ex_sub_csv(path)
+#'
 #' # Remove temporary folders when you're done
 #' unlink(path, recursive = TRUE)
-
-create_ex_main_txt <-
-  function(
-    path
-  ){
-    purrr::iwalk(f_sets_main(), function(d_, name_)
-        write.table(d_, file = paste0(path, name_),
-          row.names = FALSE, quote = FALSE, col.names = FALSE)
-    )
-  }
-
-#' @describeIn create_example_tables sub txt tables
-#' @export
-
-create_ex_sub_txt <-
-  function(
-    path
-  ){
-    purrr::iwalk(f_sets_sub(), function(d_, name_)
-      write.table(d_, file = paste0(path, name_),
-                  row.names = FALSE, quote = FALSE, col.names = FALSE)
-    )
-  }
-
-#' @describeIn create_example_tables WHO txt tables
-#' @export
-
-create_ex_who_txt <-
-  function(
-    path
-  ){
-
-    purrr::iwalk(f_sets_who(), function(d_, name_)
-      write.table(d_, file = paste0(path, name_),
-                  row.names = FALSE, quote = FALSE, col.names = FALSE)
-    )
-  }
-
-#' @describeIn create_example_tables MedDRA txt tables
-#' @export
 
 create_ex_meddra_asc <-
   function(
     path
   ){
+    path_fix <- fix_path_endslash(path)
     purrr::iwalk(f_sets_meddra(), function(d_, name_)
-      write.table(d_, file = paste0(path, name_),
+      write.table(d_, file = paste0(path_fix, name_),
                   row.names = FALSE, quote = FALSE, col.names = FALSE)
     )
   }
@@ -125,13 +89,14 @@ create_ex_main_pq <-
   function(
     path
   ){
+    path_fix <- fix_path_endslash(path)
     purrr::iwalk(
       f_sets_main_pq(),
       function(dataset, name)
         arrow::write_parquet(
           dataset |>
             arrow::as_arrow_table(),
-          sink = paste0(path, "/", name, ".parquet")
+          sink = paste0(path_fix, "/", name, ".parquet")
         )
 
     )
@@ -139,20 +104,107 @@ create_ex_main_pq <-
 
 #' @describeIn create_example_tables subsidiary parquet tables
 #' @export
+
 create_ex_sub_pq <-
   function(
     path
   ){
+    path_fix <- fix_path_endslash(path)
     purrr::iwalk(
       f_sets_sub_pq(),
-      function(dataset, name)
+      function(dataset, name){
+        name_pq <- name |> stringr::str_replace("_Lx$", "")
+
         arrow::write_parquet(
           dataset |>
             arrow::as_arrow_table(),
-          sink = paste0(path, "/", name, ".parquet")
+          sink = paste0(path_fix, "/", name_pq, ".parquet")
         )
+      }
     )
   }
+
+#' @describeIn create_example_tables main csv tables
+#' @export
+
+create_ex_main_csv <-
+  function(
+    path
+  ){
+    path_fix <- fix_path_endslash(path)
+
+    purrr::iwalk(f_sets_main(), function(d_, name_){
+
+      name_upper <- name_ |>
+        stringr::str_to_upper()
+
+      name_csv <- paste0(name_upper, ".csv")
+
+      name_csv <-
+        ifelse(
+          name_csv == "SUSPDUP.csv",
+          "SUSPECTEDDUPLICATES.csv",
+          name_csv
+        )
+
+      write.table(d_, file = paste0(path_fix, name_csv),
+                  sep = ",", dec = ".",
+                  row.names = FALSE, quote = TRUE, col.names = FALSE)
+    })
+  }
+
+#' @describeIn create_example_tables who csv tables
+#' @export
+
+create_ex_who_csv <-
+  function(
+    path
+  ){
+    path_fix <- fix_path_endslash(path)
+
+    purrr::iwalk(f_sets_who(), function(d_, name_){
+
+      name_upper <- name_ |>
+        stringr::str_to_upper()
+
+      name_csv <- paste0(name_upper, ".csv")
+
+      name_csv <-
+        ifelse(
+          name_csv == "UNITX.csv",
+          "Unit-X.csv",
+          ifelse(
+            name_csv == "THG.csv",
+            "ThG.csv",
+            name_csv
+          )
+        )
+
+      write.table(d_, file = paste0(path_fix, name_csv),
+                  sep = ",", dec = ".",
+                  row.names = FALSE, quote = TRUE, col.names = FALSE)
+    })
+  }
+
+#' @describeIn create_example_tables sub csv tables
+#' @export
+
+create_ex_sub_csv <-
+  function(
+    path
+  ){
+    path_fix <- fix_path_endslash(path)
+
+    purrr::iwalk(f_sets_sub(), function(d_, name_){
+
+      name_csv <- paste0(name_, ".csv")
+
+      write.table(d_, file = paste0(path_fix, name_csv),
+                  sep = ",", dec = ".",
+                  row.names = FALSE, quote = TRUE, col.names = FALSE)
+    })
+  }
+
 
 # Helpers ------
 
@@ -160,154 +212,206 @@ create_ex_sub_pq <-
 
 f_sets_main <-
   function() {
-    list(
-      DEMO.txt = data.frame(f0 = c(
-        "10000001   32194501051119460820", # Not duplicate
-        "10000002   32194501051119460820"  # Duplicate
-      )),
-      DRUG.txt = data.frame(f0 =
-                              c(
-                                "10000001   8          4901354    064392080055011    31- 806", # Not duplicate
-                                "10000002   9          4901355    064392080055012    32- 807"  # Duplicate
-                              )),
-      LINK.txt = data.frame(f0 = c(
-        "8          17         51---0.78991   0.98745    ",  # Not duplicate Drug_Id
-        "9          14         51---6.98789   -          "   # Duplicate Drug_Id
-      )),
-      FOLLOWUP.txt = data.frame(f0 = c("0548978    0254687    ", "7568798    4565321    ")),
-      ADR.txt = data.frame(f0 = c(
-        "10000001   17         100474561",
-        "10000002   14         145078144" # Duplicate Drug_Id
-      )),
-      OUT.txt = data.frame(f0 = c("10000001   - N", "96575661   - Y")),
-      SRCE.txt = data.frame(f0 = c("10000001   1 ", "9804562    1 ")),
-      IND.txt = data.frame(
-        # 266 length
-        f0 = paste0(
-          "780954     Cutaneous diseases due to other mycobacteria",
-          rep(" ", 211)
-        )
-      )
-    )
-  }
-
-f_sets_main_pq <-
-  function() {
     rlang::list2(
       demo =
         data.table(
           UMCReportId = c(10000001, 10000002, 3, 4),
-          AgeGroup = c(1, 2, 7, 9)
+          AgeGroup = c(1, 2, 7, 9) |> as.character(),
+          Gender  = c(1, 2, 1, 1) |> as.character(),
+          DateDatabase = c(20200101, 20200101, 20200101, 20200101) |> as.character(),
+          Type = c(2, 1, 1, 2) |> as.character(),
+          Region = c(2, 4, 2, 4) |> as.character(),
+          FirstDateDatabase = c(20200101, 20200101, 20200101, 20200101) |> as.character()
         ),
       drug =
         data.table(
           UMCReportId = c(10000001, 10000002),
           Drug_Id = c(8, 9),
+          Record_Id = c(97354576, 104264760),
           DrecNo = c(133138448, 111841511),
-          MedicinalProd_Id = c(97354576, 104264760)
+          Seq1 = c("01", "-"),
+          Seq2 = c("001", "-"),
+          Route = c("41", "42"),
+          Basis = c("1", "1"),
+          Amount = c("840", "-"),
+          AmountU = c("9", "-"),
+          Frequency = c("-", "-"),
+          FrequencyU = c("803", "-")
         ),
       adr  =
         data.table(
           UMCReportId = c(10000001, 10000002),
           Adr_Id = c(17L, 14L),
-          MedDRA_Id = c(110049083, 146319904)
+          MedDRA_Id = c(110049083, 146319904),
+          Outcome = c("3", "4")
         ),
       link =
         data.table(
           Drug_Id = c(8, 9),
-          Adr_Id = c(17L, 14L)
+          Adr_Id = c(17L, 14L),
+          Dechallenge1 = c("1", "2"),
+          Dechallenge2 = c("3", "5"),
+          Rechallenge1 = c("1", "1"),
+          Rechallenge2 = c("3", "3"),
+          TimeToOnsetMin = c(725.9, 680),
+          TimeToOnsetMax = c(730.9, 681)
         ),
       srce =
-        data.table(UMCReportId = c(10000001, 10000002)),
+        data.table(UMCReportId = c(10000001, 10000002),
+                   Type = c(1, 1) |> as.character()),
       ind  =
-        data.table(Drug_Id = c(8, 9)),
+        data.table(Drug_Id = c(8, 9),
+                   Indication = c("One indication", "Another ind")),
       out  =
-        data.table(UMCReportId = c(10000001, 10000002)),
+        data.table(UMCReportId = c(10000001, 10000002),
+                   Seriousness = c("-", "6"),
+                   Serious = c("N", "Y")),
       followup =
-        data.table(UMCReportId = c(10000001, 10000002)),
-      suspdup =
-        data.table(
-          UMCReportId = c(10000001),
-          SuspectedduplicateReportId = c(10000002)
-        )
+        data.table(UMCReportId = c(10000001, 10000002),
+                   ReplacedUMCReportId = c(2, 3))
     )
   }
 
-f_sets_sub <-
+f_sets_main_pq <-
   function() {
-    list(
-      SUSPECTEDDUPLICATES.txt = data.frame(f0 = c("10000001    10000002 ")),
-      AgeGroup_Lx.txt = data.frame(f0 = c("1An age range             ")),
-      Dechallenge_Lx.txt = data.frame(f0 = paste0("1Some drug action", rep(" ", 237))),
-      Dechallenge2_Lx.txt = data.frame(f0 = paste0("1Some outcome occurring", rep(" ", 231))),
-      Frequency_Lx.txt =
-        data.frame(f0 =
-                     paste0(
-                       "123Some frequency of administration", rep(" ", 221)
-                     )),
-      Gender_Lx.txt = data.frame(f0 = paste0("1Some gender", rep(" ", 242))),
-      Notifier_Lx.txt = data.frame(f0 = paste0("1 Some notifier", rep(" ", 240))),
-      Outcome_Lx.txt = data.frame(f0 = paste0("1Some outcome", rep(" ", 241))),
-      Rechallenge_Lx.txt = data.frame(f0 = paste0("1A rechallenge action", rep(" ", 60))),
-      Rechallenge2_Lx.txt =
-        data.frame(f0 = paste0(
-          "1A reaction recurrence status", rep(" ", 36)
-        )),
-      Region_Lx.txt = data.frame(f0 = paste0("1A world region", rep(" ", 36))),
-      RepBasis_Lx.txt = data.frame(f0 = paste0("1A reputation basis", rep(" ", 32))),
-      ReportType_Lx.txt = data.frame(f0 = paste0("1A type of report", rep(" ", 237))),
-      RouteOfAdm_Lx.txt = data.frame(f0 = paste0("1 A route of admnistration", rep(" ", 56))),
-      Seriousness_Lx.txt = data.frame(f0 = paste0(
-        "1 Some seriousness criteria", rep(" ", 224)
-      )),
-      SizeUnit_Lx.txt = data.frame(f0 = paste0("1 A dosing unit", rep(" ", 66)))
-    )
+    f_sets <- f_sets_main()
+
+    # link is modified between csv and parquet
+
+    f_sets$link <-
+      f_sets$link |>
+      dplyr::mutate(
+        tto_mean = c(728.40, 680.5),
+        range    = c(2.5, 0.5),
+        UMCReportId = c(10000001L, 10000002L)
+      )
+
+    # suspdup is moved from sub to main
+
+    f_sets$suspdup <-
+      data.table(
+        UMCReportId = c(10000001L),
+        SuspectedduplicateReportId = c(10000002)
+      )
+
+    return(f_sets)
   }
 
 f_sets_who <-
   function() {
-    # just in case you want to remember how you made this list
+      rlang::list2(
+        atc = data.table(
+          ATC.code = "A",
+          Level = 1,
+          Text = "ALIMENTARY TRACT AND METABOLISM"
+        ),
+        ccode = data.table(
+          Country.code = "ABW",
+          Country.Name = "Aruba"
+        ),
+        ing = data.table(
+          Ingredient_Id      = 1L,
+            Create.date      = "19851231",
+            Substance_Id     = 2,
+            Quantity         = 3,
+            Quantity.2       = 0,
+            Unit             = 1,
+            Record_Id        = 1
+        ),
+        mp = data.table(
+          Record_Id   = 1,
+          Umc_Product_Id     = 1,
+          Drug.record.number = 101001,
+          Sequence.number.1  = "0",
+          Sequence.number.2  = "1",
+          Sequence.number.3  = "1",
+          Sequence.number.4  = "1",
+          Substance_or_substance_synonym = "Y",
+          Drug.name          = "Methyldopa",
+          Name.specifier     = 1,
+          Marketing.Authorization.Number = NA_real_,
+          Marketing.Authorization.Date = NA_real_,
+          Marketing.Authorization.Withdrawal.date = NA_real_,
 
-    # run each reading from an example dataset, without processing it.
-    #df_expr <- list(atc  ,   ccode ,   ing    ,
-    #                mp    ,   org ,   pf   ,
-    #                pp    ,   prt    ,  srce,
-    #                str ,   sun  ,   thg   ,
-    #                unitx) |>
-    #  rlang::set_names(
-    #    "atc",  "ccode", "ing",
-    #    "mp",   "org",   "pf",
-    #    "pp",   "prt",   "srce",
-    #    "str",  "sun",   "thg",
-    #    "unitx"
-    #  ) |>
-    #  rlang::set_names(~ paste0(stringr::str_to_upper(.x), ".txt")) |>
-    #  purrr::map(
-    #    function(d_){
-    #
-    #      string <- d_ |> head(1) |> collect() |> pull()
-    #      rlang::expr(data.frame(f0 = !!string))
-    #    }
-    #  )
-    #rlang::call2(expr(list2), !!!df_expr)
+          Country = "ABW",
+          Company = 1,
+          Marketing.Authorization.Holder = 1,
+          Reference.code    = 1,
+          Source.country    = 1,
+          Year.of.Reference = 1985,
+          Product.type      = 1,
+          Create.date       = "19850101",
+          Date.changed      = NA_character_
+        ),
+        org = data.table(
+          Organization_Id = 0L,
+          Name = "None",
+          Country.code = "UNS"
+        ),
+        pf = data.table(
+          Pharmform_Id = 1L,
+          Text = "Unspecified"
+        ),
+        prt = data.table(
+          Prodtype_Id = 1L,
+          Text = "Medicinal product"
+        ),
+        srce = data.table(
+          Reference.code = 1L,
+          Reference = "INN - International Nonproprietary Names - WHO",
+          Country.code = "N/A"
+        ),
+        str = data.table(
+          Strength_Id = 1L,
+          Text = "Unspecified"
+        ),
+        sun = data.table(
+          Substance_Id      = 1L,
+          CAS.number        = 50000L,
+          Language.code     = "EN",
+          Substance.name    = "Formaldehyde solution",
+          Year.of.Reference = NA_integer_,
+          Reference.code    = 183L
+        ),
+        thg = data.table(
+          Therapgroup_Id = 100007L,
+          ATC.code = "N06BA",
+          Create.date = "19890630",
+          Official.ATC.code = "Y",
+          Record_Id = 40683L
+        ),
+        unitx = data.table(
+          Unit_Id = 1L,
+          Text = "kg"
+        )
+      )
+    }
 
-    list(
-      ATC.txt = data.frame(f0 = "A         1ALIMENTARY TRACT AND METABOLISM                                                                               "),
-      CCODE.txt = data.frame(f0 = "ABW       Aruba                                                                           "),
-      ING.txt = data.frame(f0 = "1         198512312301                                    38        1         1         "),
-      MP.txt = data.frame(f0 = "1                                            0000010100100000000010000000001YMethyldopa                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              N/A                 0         001       N/A          001       0         1985123120170907"),
-      ORG.txt = data.frame(f0 = "0         None                                                                            UNS       "),
-      PF.txt = data.frame(f0 = "001       Unspecified                                                                     "),
-      PP.txt = data.frame(f0 = "1         001                 1         0119851231"),
-      PRT.txt = data.frame(f0 = "001       Medicinal product                                                               "),
-      PRG.txt = data.frame(f0 = "0         None                                                        20020701"),
-      SRCE.txt = data.frame(f0 = "001       INN - International Nonproprietary Names - WHO                                  N/A       "),
-      STR.txt = data.frame(f0 = "000001    Unspecified                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         "),
-      SUN.txt = data.frame(f0 = "1         0000050000EN        Formaldehyde solution                                                                                            180       "),
-      ThG.txt = data.frame(f0 = "100007    N06BA     19890630Y40683     "),
-      `Unit-X.txt` = data.frame(f0 = "01        kg                                      ")
-    )
+f_sets_who_pq <-
+  function() {
+    f_sets <- f_sets_who()
 
+    f_sets$mp <-
+      f_sets$mp |>
+      dplyr::mutate(
+        DrecNo = .data$Drug.record.number,
+        drug_name_t = .data$Drug.name |>
+          str_trim() |>
+          stringr::str_to_lower()
+      ) |>
+      dplyr::select(
+        dplyr::all_of(c(
+          "Record_Id",
+          "Sequence.number.1",
+          "Sequence.number.2",
+          "DrecNo",
+          "drug_name_t",
+          "Create.date",
+          "Date.changed",
+          "Country")
+        ))
+
+    return(f_sets)
   }
 
 f_sets_meddra <-
@@ -340,23 +444,37 @@ f_sets_meddra <-
     )
   }
 
-f_sets_sub_pq <-
+f_sets_sub <-
   function() {
     rlang::list2(
-      AgeGroup = data.table(AgeGroup = as.integer(1), Code = c("An age range")),
-      Dechallenge = data.table(Dechallenge1 = as.integer(1), Code = c("Some drug action")),
-      Dechallenge2 = data.table(Dechallenge2 = as.integer(1), Code = c("Some outcome occurring")),
-      Frequency = data.table(FrequencyU = as.integer(123), Code = c("Some frequency of administration")),
-      Gender = data.table(Gender = as.integer(1), Code = c("Some gender")),
-      Notifier = data.table(Type = as.integer(1), Code = c("Some notifier")),
-      Outcome = data.table(Outcome = as.integer(1), Code = c("Some outcome")),
-      Rechallenge = data.table(Rechallenge1 = as.integer(1), Code = c("A rechallenge action")),
-      Rechallenge2 = data.table(Rechallenge2 = as.integer(1), Code = c("A reaction recurrence status")),
-      Region = data.table(Region = as.integer(1), Code = c("A world region")),
-      RepBasis = data.table(Basis = as.integer(1), Code = c("A reputation basis")),
-      ReportType = data.table(ReportType = as.integer(1), Code = c("A type of report")),
-      RouteOfAdm = data.table(RouteOfAdm = as.integer(1), Code = c("A route of admnistration")),
-      Seriousness = data.table(Seriousness = as.integer(1), Code = c("Some seriousness criteria")),
-      SizeUnit = data.table(AmountU = as.integer(1), Code = c("A dosing unit"))
+      AgeGroup_Lx     = data.table(Code = "1", Text = c("An age range")),
+      Dechallenge_Lx  = data.table(Code = "1", Text = c("Some drug action")),
+      Dechallenge2_Lx = data.table(Code = "1", Text = c("Some outcome occurring")),
+      Frequency_Lx    = data.table(Code = "123", Text = c("Some frequency of administration")),
+      Gender_Lx       = data.table(Code = "1", Text = c("Some gender")),
+      Notifier_Lx     = data.table(Code = "1", Text = c("Some notifier")),
+      Outcome_Lx      = data.table(Code = "1", Text = c("Some outcome")),
+      Rechallenge_Lx  = data.table(Code = "1", Text = c("A rechallenge action")),
+      Rechallenge2_Lx = data.table(Code = "1", Text = c("A reaction recurrence status")),
+      Region_Lx       = data.table(Code = "1", Text = c("A world region")),
+      RepBasis_Lx     = data.table(Code = "1", Text = c("A reputation basis")),
+      ReportType_Lx   = data.table(Code = "1", Text = c("A type of report")),
+      RouteOfAdm_Lx   = data.table(Code = "1", Text = c("A route of admnistration")),
+      Seriousness_Lx  = data.table(Code = "1", Text = c("Some seriousness criteria")),
+      SizeUnit_Lx     = data.table(Code = "1", Text = c("A dosing unit")),
+      SUSPECTEDDUPLICATES =
+        data.table(
+          UMCReportId = c(10000001L),
+          SuspectedduplicateReportId = c(10000002)
+        )
     )
+  }
+
+f_sets_sub_pq <-
+  function(){
+    f_sets <- f_sets_sub()
+
+    f_sets$SUSPECTEDDUPLICATES <- NULL   # suspdup is moved from sub to main
+
+    return(f_sets)
   }

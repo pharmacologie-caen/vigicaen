@@ -5,7 +5,7 @@
 #'
 #' @details `d_code` is a named list containing drug codes.
 #' Either drug record numbers (e.g., from [get_drecno()]), or
-#' medicinalprod_ids (e.g., from [get_atc_code()]). Default method is to DrecNos.
+#' record_ids (e.g., from [get_atc_code()]). Default method is to DrecNos.
 #'
 #' @section Argument `repbasis`:
 #' Drugs can be reported according to one of three reputation bases:
@@ -25,7 +25,7 @@
 #' @param .data The dataset used to identify individual reports (usually, it is `demo`)
 #' @param d_code A named list of drug codes (DrecNos or MPI). See Details.
 #' @param d_names A character vector. Names for drug columns (must be the same length as d_code), default to `names(d_code)`
-#' @param method A character string. The type of drug code (DrecNo or MedicinalProd_Id). See details.
+#' @param method A character string. The type of drug code (DrecNo or Record_Id). See details.
 #' @param repbasis Suspect, interacting and/or concomitant.
 #' Type initial of those you wish to select ("s" for suspect, "c" for concomitant
 #' and "i" for interacting ; default to all, e.g. "sci").
@@ -80,7 +80,7 @@ add_drug <-
            d_code,
            d_names = names(d_code),
            repbasis = "sci",
-           method = c("DrecNo", "MedicinalProd_Id"),
+           method = c("DrecNo", "Record_Id"),
            drug_data,
            data_type = deprecated()
   )

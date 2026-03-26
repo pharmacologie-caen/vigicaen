@@ -7,7 +7,7 @@
 tb_who(path_who, force = FALSE)
 }
 \arguments{
-\item{path_who}{Character string, a directory containing whodrug txt tables. It is also the
+\item{path_who}{Character string, a directory containing whodrug csv tables. It is also the
 output directory.}
 
 \item{force}{Logical, to be passed to \code{cli::cli_progress_update()}. Used for internal
@@ -15,16 +15,16 @@ purposes.}
 }
 \value{
 .parquet files into the \code{path_who} directory.
-Some columns are returned as \code{integer} (all Id columns, including MedicinalProd_Id,
+Some columns are returned as \code{integer} (all Id columns, including Record_Id,
 with notable exception of DrecNo),
 and some columns as \code{numeric} (Quantity from ingredient table)
 All other columns are \code{character}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Transform Vigibase WHO .txt files
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Transform Vigibase WHO .csv files
 to .parquet files
 
-WHODrug is delivered as zipped text files folder, that you should
+WHODrug is delivered as zipped csv files folder, that you should
 transform to a more efficient format. Parquet format from arrow has many advantages:
 It can work with out-of-memory data, which makes it possible to process tables on
 a computer with not-so-much RAM. It is also lightweighted and standard across different
@@ -39,7 +39,7 @@ Use \code{\link[=dt_parquet]{dt_parquet()}} to load the tables afterward.
 
 path_who <- paste0(tempdir(), "/whodrug_directory/")
 dir.create(path_who)
-create_ex_who_txt(path_who)
+create_ex_who_csv(path_who)
 
 tb_who(path_who = path_who)
 

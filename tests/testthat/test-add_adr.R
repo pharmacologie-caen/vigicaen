@@ -229,7 +229,7 @@ test_that("works with drug data as the .data argument", {
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
-      MedicinalProd_Id = NA,
+      Record_Id = NA,
       UMCReportId = c(1, 1, 2, 2, 3)
     )
 
@@ -262,7 +262,7 @@ test_that("works with drug data as the .data argument", {
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c("ici1", "ici2", "ici3", "ici1", "ici1"),
-      MedicinalProd_Id = NA,
+      Record_Id = NA,
       UMCReportId = c(1, 1, 2, 2, 3),
       adr1 = c(1, 1, 0, 0, 0),
       adr2 = c(0, 0, 1, 1, 1),

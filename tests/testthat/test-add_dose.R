@@ -187,7 +187,7 @@ test_that("handles invalid dose values correctly", {
   drug_invalid <- data.frame(
     UMCReportId = c(1),
     Drug_Id = c(1),
-    MedicinalProd_Id = c(1),
+    Record_Id = c(1),
     DrecNo = c(001),
     Basis = c(1),
     Amount = c("-"),
@@ -221,7 +221,7 @@ test_that("works with case and drug level tables", {
     data.table(
       UMCReportId = c(1, 2, 3, 4, 5, 1),
       Drug_Id = c(1, 2, 3, 4, 5, 6),
-      MedicinalProd_Id = c(1, 2, 3, 4, 5, 6),
+      Record_Id = c(1, 2, 3, 4, 5, 6),
       DrecNo = c(001, 002, 003, 001, 002, 001),
       Basis = c(1, 1, 0, 0, 1, 1),
       Amount = c(300, 123, 456, 789, 758, 600),
@@ -268,7 +268,7 @@ test_that("works with case and drug level tables", {
     data.table(
       UMCReportId = c(1, 2, 3, 4, 5, 1),
       Drug_Id = c(1, 2, 3, 4, 5, 6),
-      MedicinalProd_Id = c(1, 2, 3, 4, 5, 6),
+      Record_Id = c(1, 2, 3, 4, 5, 6),
       DrecNo = c(001, 002, 003, 001, 002, 001),
       Basis = c(1, 1, 0, 0, 1, 1),
       Amount = c(300, 123, 456, 789, 758, 600),
@@ -411,7 +411,7 @@ test_that("you can use arrow/parquet format", {
     data.table(
       UMCReportId = c(1, 2, 3, 4, 5),
       Drug_Id = c(1, 2, 3, 4, 5),
-      MedicinalProd_Id = c(1, 2, 3, 4, 5),
+      Record_Id = c(1, 2, 3, 4, 5),
       DrecNo = c(001, 002, 003, 004, 005),
       Basis = c(1, 1, 0, 0, 1),
       Amount = c("-", 123, 456, 789, 758),
@@ -516,10 +516,10 @@ test_that("d_code must be numeric", {
 })
 
 
-test_that("works with mpi_list", {
+test_that("works with record_id", {
 
   mpi <- rlang::list2(
-    para = mp_[DrecNo == "42225260", MedicinalProd_Id]
+    para = mp_[DrecNo == "42225260", Record_Id]
   )
 
   suppressMessages(
@@ -528,7 +528,7 @@ test_that("works with mpi_list", {
       add_dose(
         d_code = mpi,
         d_dose_names = names(mpi),
-        method = "MedicinalProd_Id",
+        method = "Record_Id",
         repbasis = "sci",
         drug_data = drug_
       )

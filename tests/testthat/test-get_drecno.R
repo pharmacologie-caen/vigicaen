@@ -247,15 +247,15 @@ test_that("works for drugs, which is the default setting", {
 
 })
 
-test_that("works for mpi_list as well", {
+test_that("works for record_id as well", {
 
   mpi <- rlang::list2(
-    para = mp_[DrecNo == 42225260, MedicinalProd_Id]
+    para = mp_[DrecNo == 42225260, Record_Id]
   )
 
   res_mpi <- get_drecno(mpi,
                          mp_,
-                         method = "mpi_list",
+                         method = "record_id",
                          # show_all = FALSE,
                          allow_combination = FALSE,
                         verbose = FALSE)
@@ -264,7 +264,7 @@ test_that("works for mpi_list as well", {
     r1 <- get_drecno(
       mpi,
       mp_,
-      method = "mpi_list",
+      method = "record_id",
       allow_combination = FALSE,
       verbose = TRUE
     )
@@ -278,7 +278,7 @@ test_that("works for mpi_list as well", {
 
   expect_message(r1 <- get_drecno(mpi,
                              mp_,
-                             method = "mpi_list",
+                             method = "record_id",
                              allow_combination = TRUE,
                             verbose = FALSE),
                  "allow_combination.* is ignored")
@@ -355,16 +355,16 @@ test_that("verbose works", {
       )
   })
 
-  # with method = mpi_list
+  # with method = record_id
 
   mpi <- rlang::list2(
-    set1 = mp_[DrecNo == 740486, MedicinalProd_Id]
+    set1 = mp_[DrecNo == 740486, Record_Id]
   )
 
   expect_snapshot({
     r_insp3 <- get_drecno(mpi,
                         mp_,
-                        method = "mpi_list",
+                        method = "record_id",
                         verbose = TRUE,
                         allow_combination = FALSE)
   })

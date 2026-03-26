@@ -106,7 +106,7 @@ test_that("missing data from ind are handled", {
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c(21, 22, 23, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
-      MedicinalProd_Id = NA
+      Record_Id = NA
     )
 
   demo_test <-
@@ -159,7 +159,7 @@ test_that("works with drug level tables", {
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c(21, 22, 23, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
-      MedicinalProd_Id = NA
+      Record_Id = NA
     )
 
   link_test <-
@@ -187,7 +187,7 @@ test_that("works with drug level tables", {
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c(21, 22, 23, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
-      MedicinalProd_Id = NA,
+      Record_Id = NA,
       diabetes = c(1, 1, 0, NA, NA)
     )
 
@@ -249,7 +249,7 @@ test_that("works with case level tables adr", {
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c(21, 22, 23, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
-      MedicinalProd_Id = NA
+      Record_Id = NA
     )
 
   # demo already tested previously
@@ -308,7 +308,7 @@ test_that("handle ambiguous names in .data", {
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c(21, 22, 23, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
-      MedicinalProd_Id = NA
+      Record_Id = NA
     )
 
   demo_test <-
@@ -364,7 +364,7 @@ test_that("you can choose output column names with i_names", {
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c(21, 22, 23, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
-      MedicinalProd_Id = NA
+      Record_Id = NA
     )
 
   demo_test <-
@@ -447,7 +447,7 @@ test_that("you can use arrow/parquet format", {
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c(21, 22, 23, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
-      MedicinalProd_Id = NA
+      Record_Id = NA
     )
 
   demo_test <-

@@ -1,7 +1,7 @@
 test_that("cli format and basic use work", {
 
   drug_valid <- data.frame(
-    DrecNo = 1, UMCReportId = 1, MedicinalProd_Id = 1, Drug_Id = 1)
+    DrecNo = 1, UMCReportId = 1, Record_Id = 1, Drug_Id = 1)
 
   demo_valid <- data.frame(
     UMCReportId = 1, Type = 1, Region = 1, DateDatabase = 1

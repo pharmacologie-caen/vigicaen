@@ -2,26 +2,26 @@
 % Please edit documentation in R/get_drecno.R
 \name{get_drecno}
 \alias{get_drecno}
-\title{Get DrecNo from drug names or MedicinalProd_Id}
+\title{Get DrecNo from drug names or Record_Id}
 \usage{
 get_drecno(
   d_sel,
   mp,
   allow_combination = TRUE,
-  method = c("drug_name", "mpi_list"),
+  method = c("drug_name", "record_id"),
   verbose = TRUE,
   show_all = deprecated(),
   inspect = deprecated()
 )
 }
 \arguments{
-\item{d_sel}{A named list. Selection of drug names or medicinalprod_id. See details}
+\item{d_sel}{A named list. Selection of drug names or Record_Id See details}
 
 \item{mp}{A modified MP data.table. See \code{\link{mp_}}}
 
 \item{allow_combination}{A logical. Should fixed associations including the drug of interest be retrieved? See details.}
 
-\item{method}{Should DrecNo be found from drug names or from MedicinalProd_Id?}
+\item{method}{Should DrecNo be found from drug names or from Record_Id?}
 
 \item{verbose}{A logical. Allows you to see matching drug names in the console.
 Turn to FALSE once you've checked the matching.}
@@ -69,7 +69,7 @@ composite drug names including the string,
 i.e. \verb{trastuzumab emtasine} for \code{trastuzumab}, or close names
 like \code{alitretinoin} when looking for \code{tretinoin}.
 
-Exact match is used for "mpi_list" method.
+Exact match is used for "record_id" method.
 }
 
 \section{Choosing a method}{
@@ -78,9 +78,9 @@ Exact match is used for "mpi_list" method.
 "drug_name" let you work with drug names. It's likely to be
 the appropriate method in most of the cases.
 
-"mpi_list" is used when you have a list of MedicinalProd_Ids.
-A drug can have multiple MedicinalProd_Ids, corresponding to
-different packagings. The MedicinalProd_Id matching is typically used to identify DrecNo(s)
+"record_id" is used when you have a list of Record_Ids
+A drug can have multiple Record_Ids, corresponding to
+different packagings. The Record_Id matching is typically used to identify DrecNo(s)
 contained in an ATC class (extracted from \code{thg}), since not all MPI of drugs are present in \code{thg} (explanations in \code{\link[=get_atc_code]{get_atc_code()}}).
 }
 

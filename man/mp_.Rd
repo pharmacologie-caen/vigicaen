@@ -8,7 +8,7 @@
 \format{
 \code{mp_} is a data.table with 8 variables and 14146 rows.
 \itemize{
-\item \code{MedicinalProd_Id} Integer. The medicinalproduct identifier.
+\item \code{Record_Id} Integer. The medicinalproduct identifier.
 \item \code{Sequence.number.1} and \code{2} Characters. Complement to DrecNo.
 \item \code{DrecNo} Character. Drug Record Number, pivotal to identify drugs
 with \code{\link[=get_drecno]{get_drecno()}}.
@@ -27,7 +27,7 @@ are in lowercase.
 \item \code{Create.date} Character. The date the record was created.
 \item \code{Official.ATC.code} Character. Whether the ATC code
 is official (Yes/No).
-\item \code{MedicinalProd_Id} Integer. The medicinalproduct identifier.
+\item \code{Record_Id} Integer. The medicinalproduct identifier.
 }
 
 An object of class \code{data.table} (inherits from \code{data.frame}) with 4079 rows and 5 columns.

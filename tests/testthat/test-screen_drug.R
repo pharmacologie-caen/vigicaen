@@ -12,7 +12,7 @@ test_that("basic use works", {
       UMCReportId = c(1, 1, 2, 3, 4, 5, 6),
       Drug_Id = c(1, 2, 3, 4, 5, 6, 7),
       DrecNo = c(1, 2, 1, 1, 2, 2, 2),
-      MedicinalProd_Id = rep(9, 7)
+      Record_Id = rep(9, 7)
     )
 
   sd_true <-
@@ -75,7 +75,7 @@ test_that("checkers of mp_data and .data are ok", {
       UMCReportId = 1,
       Drug_Id = 1,
       DrecNo = 2,
-      MedicinalProd_Id = 1
+      Record_Id = 1
     )
 
   drug_false <-
@@ -123,7 +123,7 @@ test_that("issue warning if both freq_thresold and top_n provided", {
       UMCReportId = c(1, 1, 2, 3, 4, 5, 6),
       Drug_Id = c(1, 2, 3, 4, 5, 6, 7),
       DrecNo = c(1, 2, 1, 1, 2, 2, 2),
-      MedicinalProd_Id = rep(9, 7)
+      Record_Id = rep(9, 7)
     )
 
   expect_warning(

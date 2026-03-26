@@ -30,7 +30,7 @@ test_that("Works for single and multiple ATC selections", {
   )
   })
 
-test_that("extracts mpi if vigilyze is FALSE", {
+test_that("extracts record_id if vigilyze is FALSE", {
 
   atc_sel <-
     rlang::list2(l03_j01 = c("L03AA", "J01CA"),
@@ -58,7 +58,7 @@ test_that("extracts mpi if vigilyze is FALSE", {
         )
     )
   },
-  "MedicinalProd"
+  "Record_Id"
   )
 
 })
@@ -106,7 +106,7 @@ test_that("names are tolower-ed and trimed", {
           vigilyze = FALSE
         )
     },
-    "Medicinal")
+    "Record_Id")
   },
   "tolower-ed")
 
@@ -169,20 +169,20 @@ test_that("codes of different length work", {
       ATC.code = "J01A",
       Create.date = "",
       Official.ATC.code = "Y",
-      MedicinalProd_Id = 13
+      Record_Id = 13
     ) |>
     dplyr::add_row(
       Therapgroup_Id = 11,
       ATC.code = "L03AB",
       Create.date = "",
       Official.ATC.code = "Y",
-      MedicinalProd_Id = 15
+      Record_Id = 15
     )
 
   mp_test <- # we already have L03AA and J01CA
     mp_ |>
     dplyr::add_row(
-      MedicinalProd_Id = 13,
+      Record_Id = 13,
       Sequence.number.1 = "01",
       Sequence.number.2 = "001",
       DrecNo = 130,
@@ -192,7 +192,7 @@ test_that("codes of different length work", {
       Country = ""
     ) |>
     dplyr::add_row(
-      MedicinalProd_Id = 15,
+      Record_Id = 15,
       Sequence.number.1 = "01",
       Sequence.number.2 = "001",
       DrecNo = 150,

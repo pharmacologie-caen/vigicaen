@@ -22,10 +22,10 @@
     Message
       i `.data` detected as `demo` table.
 
-# works with mpi_list
+# works with record_id
 
     Code
-      demo <- add_drug(demo_, d_code = mpi, method = "MedicinalProd_Id", repbasis = "sci",
+      demo <- add_drug(demo_, d_code = mpi, method = "Record_Id", repbasis = "sci",
         drug_data = drug_)
     Message
       i `.data` detected as `demo` table.
@@ -33,7 +33,7 @@
 ---
 
     Code
-      demo_a <- add_drug(arrow::as_arrow_table(demo_), d_code = mpi, method = "MedicinalProd_Id",
+      demo_a <- add_drug(arrow::as_arrow_table(demo_), d_code = mpi, method = "Record_Id",
       repbasis = "sci", drug_data = arrow::as_arrow_table(drug_))
     Message
       i `.data` detected as `demo` table.
@@ -211,6 +211,6 @@
     Condition
       Error in `add_drug()`:
       ! `drug_data` must be a `drug` table.
-      x Missing columns: DrecNo, MedicinalProd_Id, and Drug_Id
+      x Missing columns: DrecNo, Record_Id, and Drug_Id
       > Supply a `drug` table to `drug_data`. See ?drug_.
 

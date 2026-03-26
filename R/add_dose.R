@@ -25,7 +25,7 @@
 #' Drugs may be filtered based on reputation
 #' bases (suspect, concomitant, or interacting).
 #' Either drug record numbers (e.g., from [get_drecno()]), or
-#' medicinalprod_ids (e.g., from [get_atc_code()]) can be used to
+#' record_ids (e.g., from [get_atc_code()]) can be used to
 #' identify drugs. Default method is to DrecNos.
 #'
 #' **It is very important to check the results**, as coding issues
@@ -40,7 +40,7 @@
 #' Type initial of those you wish to select ("s" for suspect, "c" for concomitant
 #' and "i" for interacting ; default to all, e.g. "sci").
 #' @param method A character string.
-#' The type of drug code (DrecNo or MedicinalProd_Id). See details.
+#' The type of drug code (DrecNo or Record_Id). See details.
 #' @param drug_data A data.frame containing the drug data (usually, it is `drug`)
 #' @param verbose Logical, whether to display messages about added doses.
 #'
@@ -82,7 +82,7 @@ add_dose <-
            d_code,
            d_dose_names = names(d_code),
            repbasis = "sci",
-           method = c("DrecNo", "MedicinalProd_Id"),
+           method = c("DrecNo", "Record_Id"),
            drug_data,
            verbose = TRUE
   )

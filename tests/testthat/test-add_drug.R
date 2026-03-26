@@ -118,10 +118,10 @@ test_that("works with irregular names for demo and drug", {
 
 })
 
-test_that("works with mpi_list", {
+test_that("works with record_id", {
 
   mpi <- rlang::list2(
-    para = mp_[DrecNo == "42225260", MedicinalProd_Id]
+    para = mp_[DrecNo == "42225260", Record_Id]
   )
 
   mpi_count <- rlang::list2(
@@ -135,7 +135,7 @@ test_that("works with mpi_list", {
       demo_ |>
       add_drug(
         d_code = mpi,
-        method = "MedicinalProd_Id",
+        method = "Record_Id",
         repbasis = "sci",
         drug_data = drug_
       )
@@ -147,7 +147,7 @@ test_that("works with mpi_list", {
       arrow::as_arrow_table() |>
       add_drug(
         d_code = mpi,
-        method = "MedicinalProd_Id",
+        method = "Record_Id",
         repbasis = "sci",
         drug_data = arrow::as_arrow_table(drug_)
       )
@@ -321,7 +321,7 @@ test_that("works with link, drug and ind data, drug identification is Drug_Id wi
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c(21, 22, 23, 21, 21),
-      MedicinalProd_Id = NA,
+      Record_Id = NA,
       UMCReportId = c(1, 1, 2, 2, 3)
     )
 
@@ -429,7 +429,7 @@ test_that("works with link, drug and ind data, drug identification is Drug_Id wi
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c(21, 22, 23, 21, 21),
-      MedicinalProd_Id = NA,
+      Record_Id = NA,
       UMCReportId = c(1, 1, 2, 2, 3),
       ici1 = c(1, 0, 0, 1, 1),
       ici2 = c(0, 1, 0, 0, 0),
@@ -456,7 +456,7 @@ test_that("works with adr data, drug identification is UMCReportId wise", {
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c(21, 22, 23, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
-      MedicinalProd_Id = NA
+      Record_Id = NA
     )
 
   expect_snapshot({
@@ -524,7 +524,7 @@ test_that("handle ambiguous names in .data", {
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c(21, 22, 23, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
-      MedicinalProd_Id = NA
+      Record_Id = NA
     )
 
   demo_test <-
@@ -596,7 +596,7 @@ test_that("you can choose output column names with d_names", {
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c(21, 22, 23, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
-      MedicinalProd_Id = NA
+      Record_Id = NA
     )
 
   demo_test <-
@@ -662,7 +662,7 @@ test_that("you can use arrow/parquet format", {
       Basis   = c(1, 1, 1, 1, 1),
       DrecNo  = c(21, 22, 23, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
-      MedicinalProd_Id = NA
+      Record_Id = NA
     )
 
 

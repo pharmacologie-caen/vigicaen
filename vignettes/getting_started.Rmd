@@ -28,7 +28,7 @@ and [MedDRA](https://www.meddra.org/)?
 
 Congratulations! You've made it half way to explore VigiBase.
 
-Now, you need to process those large text/ascii files into R readable
+Now, you need to process those large csv/ascii files into R readable
 files. This is the purpose of this vignette.
 
 ## Overview
@@ -185,8 +185,8 @@ Currently, you can subset on
 
 -   Age groups
 
--   Drug record numbers (DrecNo) and Medicinal product IDs
-    (MedicinalProd_Id)
+-   Drug record numbers (DrecNo) and Record IDs
+    (Record_Id)
 
 -   MedDRA codes of adverse drug reactions (MedDRA_Id)
 

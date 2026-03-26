@@ -11,21 +11,21 @@ get_atc_code(atc_sel, mp, thg_data, vigilyze = TRUE)
 
 \item{mp}{A modified MP data.table. See \code{\link{mp_}}}
 
-\item{thg_data}{A data.table. Correspondence between ATC codes and MedicinalProd_Id (usually, it is \code{thg})}
+\item{thg_data}{A data.table. Correspondence between ATC codes and Record_Id (usually, it is \code{thg})}
 
 \item{vigilyze}{A logical. Should ATC classes be retrieved using the vigilyze style? See details}
 }
 \value{
 A named list of integers. \strong{DrecNos} if \code{vigilyze} is set to \code{TRUE},
-or \strong{MedicinalProd_Ids} if \code{vigilyze} is set to \code{FALSE}.
+or \strong{Record_Ids} if \code{vigilyze} is set to \code{FALSE}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}} Collect
-Drug Record Numbers or MedicinalProd_Ids associated to one or more ATC classes.
+Drug Record Numbers or Record_Ids associated to one or more ATC classes.
 }
 \details{
 \code{get_atc_code()} is an \emph{ID collector} function. Provide \code{atc_sel} in the same way as \code{d_sel} in \code{\link[=add_drug]{add_drug()}},
-but remember to specify its method arg as \code{MedicinalProd_Id} if
+but remember to specify its method arg as \code{Record_Id} if
 \code{vigilyze} is set to \code{FALSE}.
 Vigilyze style means all conditioning of drugs will be retrieved after
 requesting an ATC class (i.e., drugs are identified with their DrecNos),
@@ -50,7 +50,7 @@ atc_drecno <-
                thg_data = thg_,
                vigilyze = TRUE)
 
-# Or you can get MedicinalProd_Ids (if vigilyze is FALSE)
+# Or you can get Record_Ids (if vigilyze is FALSE)
 
 atc_mpi <-
   get_atc_code(atc_sel = atc_sel,

@@ -9,7 +9,7 @@ add_dose(
   d_code,
   d_dose_names = names(d_code),
   repbasis = "sci",
-  method = c("DrecNo", "MedicinalProd_Id"),
+  method = c("DrecNo", "Record_Id"),
   drug_data,
   verbose = TRUE
 )
@@ -28,7 +28,7 @@ Type initial of those you wish to select ("s" for suspect, "c" for concomitant
 and "i" for interacting ; default to all, e.g. "sci").}
 
 \item{method}{A character string.
-The type of drug code (DrecNo or MedicinalProd_Id). See details.}
+The type of drug code (DrecNo or Record_Id). See details.}
 
 \item{drug_data}{A data.frame containing the drug data (usually, it is \code{drug})}
 
@@ -60,7 +60,7 @@ in \code{drug_data}, the corresponding row will be omitted.
 Drugs may be filtered based on reputation
 bases (suspect, concomitant, or interacting).
 Either drug record numbers (e.g., from \code{\link[=get_drecno]{get_drecno()}}), or
-medicinalprod_ids (e.g., from \code{\link[=get_atc_code]{get_atc_code()}}) can be used to
+record_ids (e.g., from \code{\link[=get_atc_code]{get_atc_code()}}) can be used to
 identify drugs. Default method is to DrecNos.
 
 \strong{It is very important to check the results}, as coding issues
