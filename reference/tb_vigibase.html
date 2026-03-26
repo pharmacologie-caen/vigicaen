@@ -70,7 +70,7 @@ files to .parquet files.</p>
 
 
 <dl><dt id="arg-path-base">path_base<a class="anchor" aria-label="anchor" href="#arg-path-base"></a></dt>
-<dd><p>Character string, a directory containing vigibase txt tables. It is also the
+<dd><p>Character string, a directory containing vigibase csv tables. It is also the
 output directory.</p></dd>
 
 
@@ -105,13 +105,13 @@ directory: AgeGroup, Dechallenge, Dechallenge2, Frequency,
 Gender, Notifier, Outcome, Rechallenge, Rechallenge2, Region,
 RepBasis, ReportType, RouteOfAdm, Seriousness, and SizeUnit.</p></li>
 </ul><p>.parquet files into the <code>path_base</code> directory (<strong>including suspected duplicates tables</strong>).
-Some columns are returned as <code>integer</code> (UMCReportId, Drug_Id, MedicinalProd_Id, Adr_Id, MedDRA_Id),
+Some columns are returned as <code>integer</code> (UMCReportId, Drug_Id, Record_Id, Adr_Id, MedDRA_Id),
 and some columns as <code>numeric</code> (TimeToOnsetMin, TimeToOnsetMax)
 All other columns are <code>character</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Vigibase Extract Case Level is delivered as zipped text files, that you should
+    <p>Vigibase Extract Case Level is delivered as zipped csv files, that you should
 transform to a more efficient format. Parquet format from <code>arrow</code> has many advantages:
 It works with out-of-memory data, which makes it possible to process Vigibase tables on
 a computer with not-so-much RAM. It is also lightweighted and standard across different
@@ -142,8 +142,8 @@ so you do not have to start from scratch after a failure. Set to TRUE to force r
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">path_base</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">path_sub</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="create_example_tables.html">create_ex_main_txt</a></span><span class="op">(</span><span class="va">path_base</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="create_example_tables.html">create_ex_sub_txt</a></span><span class="op">(</span><span class="va">path_sub</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="create_example_tables.html">create_ex_main_csv</a></span><span class="op">(</span><span class="va">path_base</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="create_example_tables.html">create_ex_sub_csv</a></span><span class="op">(</span><span class="va">path_sub</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="co"># ---- Running tb_vigibase</span></span></span>
 <span class="r-in"><span></span></span>

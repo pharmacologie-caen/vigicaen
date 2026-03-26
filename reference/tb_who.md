@@ -1,8 +1,8 @@
 # Create WHO tables
 
-**\[stable\]** Transform Vigibase WHO .txt files to .parquet files
+**\[stable\]** Transform Vigibase WHO .csv files to .parquet files
 
-WHODrug is delivered as zipped text files folder, that you should
+WHODrug is delivered as zipped csv files folder, that you should
 transform to a more efficient format. Parquet format from arrow has many
 advantages: It can work with out-of-memory data, which makes it possible
 to process tables on a computer with not-so-much RAM. It is also
@@ -27,7 +27,7 @@ tb_who(path_who, force = FALSE)
 
 - path_who:
 
-  Character string, a directory containing whodrug txt tables. It is
+  Character string, a directory containing whodrug csv tables. It is
   also the output directory.
 
 - force:
@@ -39,7 +39,7 @@ tb_who(path_who, force = FALSE)
 ## Value
 
 .parquet files into the `path_who` directory. Some columns are returned
-as `integer` (all Id columns, including MedicinalProd_Id, with notable
+as `integer` (all Id columns, including Record_Id, with notable
 exception of DrecNo), and some columns as `numeric` (Quantity from
 ingredient table) All other columns are `character`.
 
@@ -59,7 +59,7 @@ if (FALSE) { # interactive()
 
 path_who <- paste0(tempdir(), "/whodrug_directory/")
 dir.create(path_who)
-create_ex_who_txt(path_who)
+create_ex_who_csv(path_who)
 
 tb_who(path_who = path_who)
 

@@ -2,6 +2,30 @@
 
 ## vigicaen (development version)
 
+### New features
+
+- [`tb_vigibase()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_vigibase.md)
+  and
+  [`tb_who()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_who.md)
+  now work with (and only with) csv files, instead of txt files. This is
+  to align with new export format of VigiBase ECL. Thanks to Maxime
+  Demourgues for pointing out this issue.
+
+- `Record_Id` replaces `MedicinalProd_Id` throughout the package. This
+  is also an alignment with newer export.
+
+- Table `prg` is no longer in the export, it has been removed from
+  [`tb_who()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_who.md)
+  process, as for variable `Pharmform_Id`.
+
+### Bug fixes
+
+- Internal warning fix with
+  [`get_llt_smq()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_llt_smq.md)
+  due to dplyr v1.2.0 requirements with
+  [`dplyr::case_when()`](https://dplyr.tidyverse.org/reference/case-and-replace-when.html)
+  (<https://github.com/tidyverse/dplyr/issues/7082>).
+
 ## vigicaen 1.0.0
 
 CRAN release: 2026-02-06

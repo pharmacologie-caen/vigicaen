@@ -14,7 +14,7 @@ add_dose(
   d_code,
   d_dose_names = names(d_code),
   repbasis = "sci",
-  method = c("DrecNo", "MedicinalProd_Id"),
+  method = c("DrecNo", "Record_Id"),
   drug_data,
   verbose = TRUE
 )
@@ -45,8 +45,8 @@ add_dose(
 
 - method:
 
-  A character string. The type of drug code (DrecNo or
-  MedicinalProd_Id). See details.
+  A character string. The type of drug code (DrecNo or Record_Id). See
+  details.
 
 - drug_data:
 
@@ -74,7 +74,7 @@ amount unit (grams, etc.) *or* the frequency (days, etc.) is missing in
 filtered based on reputation bases (suspect, concomitant, or
 interacting). Either drug record numbers (e.g., from
 [`get_drecno()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_drecno.md)),
-or medicinalprod_ids (e.g., from
+or record_ids (e.g., from
 [`get_atc_code()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_atc_code.md))
 can be used to identify drugs. Default method is to DrecNos.
 

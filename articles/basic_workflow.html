@@ -195,8 +195,8 @@ adverse drug reactions</p></li>
 drugs and adrs in a specific dictionary.</p>
 <ul>
 <li><p>For drugs, we will use the WHODrug dictionary, and collect Drug
-Record Numbers (DrecNos) most of the time, or Medicinal Product Ids
-(MedicinalProd_Ids) in some specific scenarii.</p></li>
+Record Numbers (DrecNos) most of the time, or Record Ids (Record_Id) in
+some specific scenarii.</p></li>
 <li><p>For adrs, we will use the Medical Dictionary for Regulatory
 Activities (MedDRA), and collect term codes (low-level term codes).
 Here, it is important to note that we can work with other terms (like
@@ -422,10 +422,9 @@ reporting on nivolumab reactions).</p>
 </h4>
 <p>The correspondence between ATC (Anatomical and Therapeutical
 Classification) classes and drug codes is found in the <code>thg</code>
-table. In this table, drug codes are stored as
-<code>MedicinalProd_Id</code>. It is therefore necessary to make a
-second correspondence with <code>mp</code> to find
-<code>DrecNo</code>.</p>
+table. In this table, drug codes are stored as <code>Record_Id</code>.
+It is therefore necessary to make a second correspondence with
+<code>mp</code> to find <code>DrecNo</code>.</p>
 <p>This can be done with the <code><a href="../reference/get_atc_code.html">get_atc_code()</a></code> function.</p>
 <p>As with drugs, we first need to identify the ATC class of interest
 (here, “L03”).</p>
@@ -448,12 +447,12 @@ classes.</p>
 <span><span class="co">#&gt; List of 1</span></span>
 <span><span class="co">#&gt;  $ l03: num [1:13] 2.20e+07 1.41e+08 1.01e+08 1.25e+08 3.93e+07 ...</span></span></code></pre></div>
 <p>By default, this function retrieves DrecNos associated with an ATC
-class. It is possible to retrieve MedicinalProd_Ids instead by setting
-the <code>vigilyze</code> argument to <code>FALSE</code>.</p>
-<p>The interest of using MedicinalProd_Ids instead of DrecNos is to
-restrict the drug panel only to packages corresponding to a specific ATC
-class (e.g., you might not want to find all packages of corticosteroids
-if you work with the ATC class “S01BA”, which corresponds to ophtalmic
+class. It is possible to retrieve Record_Ids instead by setting the
+<code>vigilyze</code> argument to <code>FALSE</code>.</p>
+<p>The interest of using Record_Ids instead of DrecNos is to restrict
+the drug panel only to packages corresponding to a specific ATC class
+(e.g., you might not want to find all packages of corticosteroids if you
+work with the ATC class “S01BA”, which corresponds to ophtalmic
 steroids).</p>
 <p>Once DrecNos are identified, we can add them to the <code>demo</code>
 table, with the <code><a href="../reference/add_drug.html">add_drug()</a></code> function.</p>

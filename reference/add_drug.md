@@ -11,7 +11,7 @@ add_drug(
   d_code,
   d_names = names(d_code),
   repbasis = "sci",
-  method = c("DrecNo", "MedicinalProd_Id"),
+  method = c("DrecNo", "Record_Id"),
   drug_data,
   data_type = deprecated()
 )
@@ -41,8 +41,8 @@ add_drug(
 
 - method:
 
-  A character string. The type of drug code (DrecNo or
-  MedicinalProd_Id). See details.
+  A character string. The type of drug code (DrecNo or Record_Id). See
+  details.
 
 - drug_data:
 
@@ -65,7 +65,7 @@ corresponding drug is absent) or 1 (the drug is present in the case if
 `d_code` is a named list containing drug codes. Either drug record
 numbers (e.g., from
 [`get_drecno()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_drecno.md)),
-or medicinalprod_ids (e.g., from
+or record_ids (e.g., from
 [`get_atc_code()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_atc_code.md)).
 Default method is to DrecNos.
 

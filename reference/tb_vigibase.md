@@ -18,7 +18,7 @@ tb_vigibase(
 
 - path_base:
 
-  Character string, a directory containing vigibase txt tables. It is
+  Character string, a directory containing vigibase csv tables. It is
   also the output directory.
 
 - path_sub:
@@ -61,13 +61,13 @@ tb_vigibase(
 
 .parquet files into the `path_base` directory (**including suspected
 duplicates tables**). Some columns are returned as `integer`
-(UMCReportId, Drug_Id, MedicinalProd_Id, Adr_Id, MedDRA_Id), and some
-columns as `numeric` (TimeToOnsetMin, TimeToOnsetMax) All other columns
-are `character`.
+(UMCReportId, Drug_Id, Record_Id, Adr_Id, MedDRA_Id), and some columns
+as `numeric` (TimeToOnsetMin, TimeToOnsetMax) All other columns are
+`character`.
 
 ## Details
 
-Vigibase Extract Case Level is delivered as zipped text files, that you
+Vigibase Extract Case Level is delivered as zipped csv files, that you
 should transform to a more efficient format. Parquet format from `arrow`
 has many advantages: It works with out-of-memory data, which makes it
 possible to process Vigibase tables on a computer with not-so-much RAM.
@@ -105,8 +105,8 @@ path_sub  <- paste0(tempdir(), "/", "sub",  "/")
 dir.create(path_base)
 dir.create(path_sub)
 
-create_ex_main_txt(path_base)
-create_ex_sub_txt(path_sub)
+create_ex_main_csv(path_base)
+create_ex_sub_csv(path_sub)
 
  # ---- Running tb_vigibase
 

@@ -22,7 +22,7 @@ thg_
 
 `mp_` is a data.table with 8 variables and 14146 rows.
 
-- `MedicinalProd_Id` Integer. The medicinalproduct identifier.
+- `Record_Id` Integer. The medicinalproduct identifier.
 
 - `Sequence.number.1` and `2` Characters. Complement to DrecNo.
 
@@ -50,7 +50,7 @@ thg_
 - `Official.ATC.code` Character. Whether the ATC code is official
   (Yes/No).
 
-- `MedicinalProd_Id` Integer. The medicinalproduct identifier.
+- `Record_Id` Integer. The medicinalproduct identifier.
 
 An object of class `data.table` (inherits from `data.frame`) with 4079
 rows and 5 columns.

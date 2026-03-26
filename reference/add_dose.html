@@ -76,7 +76,7 @@ datasets.</p>
 <span>  <span class="va">d_code</span>,</span>
 <span>  d_dose_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">d_code</span><span class="op">)</span>,</span>
 <span>  repbasis <span class="op">=</span> <span class="st">"sci"</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DrecNo"</span>, <span class="st">"MedicinalProd_Id"</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DrecNo"</span>, <span class="st">"Record_Id"</span><span class="op">)</span>,</span>
 <span>  <span class="va">drug_data</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -108,7 +108,7 @@ and "i" for interacting ; default to all, e.g. "sci").</p></dd>
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>A character string.
-The type of drug code (DrecNo or MedicinalProd_Id). See details.</p></dd>
+The type of drug code (DrecNo or Record_Id). See details.</p></dd>
 
 
 <dt id="arg-drug-data">drug_data<a class="anchor" aria-label="anchor" href="#arg-drug-data"></a></dt>
@@ -134,7 +134,7 @@ in <code>drug_data</code>, the corresponding row will be omitted.
 Drugs may be filtered based on reputation
 bases (suspect, concomitant, or interacting).
 Either drug record numbers (e.g., from <code><a href="get_drecno.html">get_drecno()</a></code>), or
-medicinalprod_ids (e.g., from <code><a href="get_atc_code.html">get_atc_code()</a></code>) can be used to
+record_ids (e.g., from <code><a href="get_atc_code.html">get_atc_code()</a></code>) can be used to
 identify drugs. Default method is to DrecNos.</p>
 <p><strong>It is very important to check the results</strong>, as coding issues
 are common for dose data, and some results may seem unreliable.</p>

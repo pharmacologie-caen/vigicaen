@@ -100,8 +100,8 @@ These functions will allow to collect IDs (e.g. codes) matching our
 drugs and adrs in a specific dictionary.
 
 - For drugs, we will use the WHODrug dictionary, and collect Drug Record
-  Numbers (DrecNos) most of the time, or Medicinal Product Ids
-  (MedicinalProd_Ids) in some specific scenarii.
+  Numbers (DrecNos) most of the time, or Record Ids (Record_Id) in some
+  specific scenarii.
 
 - For adrs, we will use the Medical Dictionary for Regulatory Activities
   (MedDRA), and collect term codes (low-level term codes). Here, it is
@@ -355,7 +355,7 @@ Here, we see that 225 cases report nivolumab.
 
 The correspondence between ATC (Anatomical and Therapeutical
 Classification) classes and drug codes is found in the `thg` table. In
-this table, drug codes are stored as `MedicinalProd_Id`. It is therefore
+this table, drug codes are stored as `Record_Id`. It is therefore
 necessary to make a second correspondence with `mp` to find `DrecNo`.
 
 This can be done with the
@@ -390,14 +390,13 @@ str(atc_drecno)
 ```
 
 By default, this function retrieves DrecNos associated with an ATC
-class. It is possible to retrieve MedicinalProd_Ids instead by setting
-the `vigilyze` argument to `FALSE`.
+class. It is possible to retrieve Record_Ids instead by setting the
+`vigilyze` argument to `FALSE`.
 
-The interest of using MedicinalProd_Ids instead of DrecNos is to
-restrict the drug panel only to packages corresponding to a specific ATC
-class (e.g., you might not want to find all packages of corticosteroids
-if you work with the ATC class “S01BA”, which corresponds to ophtalmic
-steroids).
+The interest of using Record_Ids instead of DrecNos is to restrict the
+drug panel only to packages corresponding to a specific ATC class (e.g.,
+you might not want to find all packages of corticosteroids if you work
+with the ATC class “S01BA”, which corresponds to ophtalmic steroids).
 
 Once DrecNos are identified, we can add them to the `demo` table, with
 the

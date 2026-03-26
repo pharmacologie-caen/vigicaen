@@ -48,6 +48,16 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="vigicaen-development-version">vigicaen (development version)<a class="anchor" aria-label="anchor" href="#vigicaen-development-version"></a></h2>
+<div class="section level3">
+<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<ul><li><p><code><a href="../reference/tb_vigibase.html">tb_vigibase()</a></code> and <code><a href="../reference/tb_who.html">tb_who()</a></code> now work with (and only with) csv files, instead of txt files. This is to align with new export format of VigiBase ECL. Thanks to Maxime Demourgues for pointing out this issue.</p></li>
+<li><p><code>Record_Id</code> replaces <code>MedicinalProd_Id</code> throughout the package. This is also an alignment with newer export.</p></li>
+<li><p>Table <code>prg</code> is no longer in the export, it has been removed from <code><a href="../reference/tb_who.html">tb_who()</a></code> process, as for variable <code>Pharmform_Id</code>.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-development-version">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<ul><li>Internal warning fix with <code><a href="../reference/get_llt_smq.html">get_llt_smq()</a></code> due to dplyr v1.2.0 requirements with <code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">dplyr::case_when()</a></code> (<a href="https://github.com/tidyverse/dplyr/issues/7082" class="external-link uri">https://github.com/tidyverse/dplyr/issues/7082</a>).</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0" id="vigicaen-100">vigicaen 1.0.0<a class="anchor" aria-label="anchor" href="#vigicaen-100"></a></h2><p class="text-muted">CRAN release: 2026-02-06</p>

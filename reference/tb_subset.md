@@ -8,7 +8,7 @@
 tb_subset(
   wd_in,
   wd_out,
-  subset_var = c("drecno", "medprod_id", "meddra_id", "age"),
+  subset_var = c("drecno", "record_id", "meddra_id", "age"),
   sv_selection,
   rm_suspdup = TRUE
 )
@@ -26,7 +26,7 @@ tb_subset(
 
 - subset_var:
 
-  One of `"drecno"`, `"medprod_id"`, `"meddra_id"`, `"age"`
+  One of `"drecno"`, `"record_id"`, `"meddra_id"`, `"age"`
 
 - sv_selection:
 
@@ -52,8 +52,8 @@ appropriate list according to this variable in `sv_selection`. Available
   subset from `drug` (see
   [`get_drecno()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_drecno.md)).
 
-- `medprod_id` will use MedicinalProd_Id, also from `drug`. May be
-  useful if requesting from ATC classes. (see
+- `record_id` will use Record_Id, also from `drug`. May be useful if
+  requesting from ATC classes. (see
   [`get_atc_code()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_atc_code.md)).
 
 - `meddra_id` will use MedDRA_Id, subset from `adr`. (see

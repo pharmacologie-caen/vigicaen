@@ -1,22 +1,22 @@
 # Example source tables for VigiBase and MedDRA
 
-**\[stable\]** Write some example tables as source text/ascii/parquet
+**\[stable\]** Write some example tables as source csv/ascii/parquet
 files.
 
 ## Usage
 
 ``` r
-create_ex_main_txt(path)
-
-create_ex_sub_txt(path)
-
-create_ex_who_txt(path)
-
 create_ex_meddra_asc(path)
 
 create_ex_main_pq(path)
 
 create_ex_sub_pq(path)
+
+create_ex_main_csv(path)
+
+create_ex_who_csv(path)
+
+create_ex_sub_csv(path)
 ```
 
 ## Arguments
@@ -31,18 +31,18 @@ create_ex_sub_pq(path)
 A set of text/ascii files, as received by the Uppsala Monitoring Centre
 or MedDRA
 
-- For `create_ex_main_txt()`, DEMO.txt, DRUG.txt, LINK.txt,
-  FOLLOWUP.txt, ADR.txt, OUT.txt, SRCE.txt, and IND.txt
+- For `create_ex_main_csv()`, DEMO.csv, DRUG.csv, LINK.csv,
+  FOLLOWUP.csv, ADR.csv, OUT.csv, SRCE.csv, and IND.csv
 
-- For `create_ex_sub_txt()`, AgeGroup_Lx.txt, Dechallenge_Lx.txt,
-  Dechallenge2_Lx.txt, Frequency_Lx.txt, Gender_Lx.txt, Notifier_Lx.txt,
-  Outcome_Lx.txt, Rechallenge_Lx.txt, Rechallenge2_Lx.txt,
-  Region_Lx.txt, RepBasis_Lx.txt, ReportType_Lx.txt, RouteOfAdm_Lx.txt,
-  Seriousness_Lx.txt, and SizeUnit_Lx.txt
+- For `create_ex_sub_csv()`, AgeGroup_Lx.csv, Dechallenge_Lx.csv,
+  Dechallenge2_Lx.csv, Frequency_Lx.csv, Gender_Lx.csv, Notifier_Lx.csv,
+  Outcome_Lx.csv, Rechallenge_Lx.csv, Rechallenge2_Lx.csv,
+  Region_Lx.csv, RepBasis_Lx.csv, ReportType_Lx.csv, RouteOfAdm_Lx.csv,
+  Seriousness_Lx.csv, SizeUnit_Lx.csv, and SUSPECTEDDUPLICATES.csv
 
-- For `create_ex_who_txt()`, ATC.txt, CCODE.txt, ING.txt, MP.txt,
-  ORG.txt, PF.txt, PP.txt, PRT.txt, PRG.txt, SRCE.txt, STR.txt, SUN.txt,
-  ThG.txt, and Unit-X.txt
+- For `create_ex_who_csv()`, ATC.csv, CCODE.csv, ING.csv, MP.csv,
+  ORG.csv, PF.csv, PP.csv, PRT.csv, PRG.csv, SRCE.csv, STR.csv, SUN.csv,
+  ThG.csv, and Unit-X.csv
 
 - For `create_ex_meddra_asc()`, llt.asc, mdhier.asc, smq_content.asc,
   smq_list.asc
@@ -60,23 +60,27 @@ or MedDRA
 
 ## Details
 
-VigiBase tables and MedDRA tables are provided respectively as text
-files and ascii files. The `tb_*` family turns them into parquet files.
-These `create_example_*` functions are only used to produce example
-source files to illustrate the `tb_*` family, and parquet files for the
-same purpose.
+VigiBase tables and MedDRA tables are provided respectively as csv files
+and ascii files. The `tb_*` family turns them into parquet files. These
+`create_example_*` functions are only used to produce example source
+files to illustrate the `tb_*` family, and parquet files for the same
+purpose. Note that there is a little difference among main and sub
+tables, whether created in csv or parquet, as suspected duplicates moves
+from sub to main during
+[`tb_vigibase()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_vigibase.md)
+process.
 
 ## Functions
-
-- `create_ex_sub_txt()`: sub txt tables
-
-- `create_ex_who_txt()`: WHO txt tables
-
-- `create_ex_meddra_asc()`: MedDRA txt tables
 
 - `create_ex_main_pq()`: main parquet tables
 
 - `create_ex_sub_pq()`: subsidiary parquet tables
+
+- `create_ex_main_csv()`: main csv tables
+
+- `create_ex_who_csv()`: who csv tables
+
+- `create_ex_sub_csv()`: sub csv tables
 
 ## See also
 
@@ -92,17 +96,18 @@ path <- paste0(tempdir(), "/crex/")
 dir.create(path)
 
 # You may want to use different paths for each type of tables
-create_ex_main_txt(path)
-
-create_ex_sub_txt(path)
-
-create_ex_who_txt(path)
 
 create_ex_meddra_asc(path)
 
 create_ex_main_pq(path)
 
 create_ex_sub_pq(path)
+
+create_ex_main_csv(path)
+
+create_ex_who_csv(path)
+
+create_ex_sub_csv(path)
 
 # Remove temporary folders when you're done
 unlink(path, recursive = TRUE)

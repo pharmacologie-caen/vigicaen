@@ -1,4 +1,4 @@
-# Get DrecNo from drug names or MedicinalProd_Id
+# Get DrecNo from drug names or Record_Id
 
 **\[stable\]** Collect Drug Record Numbers associated to one or more
 drugs.
@@ -10,7 +10,7 @@ get_drecno(
   d_sel,
   mp,
   allow_combination = TRUE,
-  method = c("drug_name", "mpi_list"),
+  method = c("drug_name", "record_id"),
   verbose = TRUE,
   show_all = deprecated(),
   inspect = deprecated()
@@ -21,7 +21,7 @@ get_drecno(
 
 - d_sel:
 
-  A named list. Selection of drug names or medicinalprod_id. See details
+  A named list. Selection of drug names or Record_Id See details
 
 - mp:
 
@@ -35,7 +35,7 @@ get_drecno(
 
 - method:
 
-  Should DrecNo be found from drug names or from MedicinalProd_Id?
+  Should DrecNo be found from drug names or from Record_Id?
 
 - verbose:
 
@@ -80,18 +80,18 @@ not match to composite drug names including the string, i.e.
 `trastuzumab emtasine` for `trastuzumab`, or close names like
 `alitretinoin` when looking for `tretinoin`.
 
-Exact match is used for "mpi_list" method.
+Exact match is used for "record_id" method.
 
 ## Choosing a method
 
 "drug_name" let you work with drug names. It's likely to be the
 appropriate method in most of the cases.
 
-"mpi_list" is used when you have a list of MedicinalProd_Ids. A drug can
-have multiple MedicinalProd_Ids, corresponding to different packagings.
-The MedicinalProd_Id matching is typically used to identify DrecNo(s)
-contained in an ATC class (extracted from `thg`), since not all MPI of
-drugs are present in `thg` (explanations in
+"record_id" is used when you have a list of Record_Ids A drug can have
+multiple Record_Ids, corresponding to different packagings. The
+Record_Id matching is typically used to identify DrecNo(s) contained in
+an ATC class (extracted from `thg`), since not all MPI of drugs are
+present in `thg` (explanations in
 [`get_atc_code()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_atc_code.md)).
 
 ## WHO names

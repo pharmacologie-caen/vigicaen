@@ -21,12 +21,12 @@
   **\[experimental\]** : Compute interaction disproportionality
 - [`compute_or_mod()`](https://pharmacologie-caen.github.io/vigicaen/reference/compute_or_mod.md)
   **\[stable\]** : Compute (r)OR from a model summary
-- [`create_ex_main_txt()`](https://pharmacologie-caen.github.io/vigicaen/reference/create_example_tables.md)
-  [`create_ex_sub_txt()`](https://pharmacologie-caen.github.io/vigicaen/reference/create_example_tables.md)
-  [`create_ex_who_txt()`](https://pharmacologie-caen.github.io/vigicaen/reference/create_example_tables.md)
-  [`create_ex_meddra_asc()`](https://pharmacologie-caen.github.io/vigicaen/reference/create_example_tables.md)
+- [`create_ex_meddra_asc()`](https://pharmacologie-caen.github.io/vigicaen/reference/create_example_tables.md)
   [`create_ex_main_pq()`](https://pharmacologie-caen.github.io/vigicaen/reference/create_example_tables.md)
   [`create_ex_sub_pq()`](https://pharmacologie-caen.github.io/vigicaen/reference/create_example_tables.md)
+  [`create_ex_main_csv()`](https://pharmacologie-caen.github.io/vigicaen/reference/create_example_tables.md)
+  [`create_ex_who_csv()`](https://pharmacologie-caen.github.io/vigicaen/reference/create_example_tables.md)
+  [`create_ex_sub_csv()`](https://pharmacologie-caen.github.io/vigicaen/reference/create_example_tables.md)
   **\[stable\]** : Example source tables for VigiBase and MedDRA
 - [`demo_`](https://pharmacologie-caen.github.io/vigicaen/reference/demo_.md)
   [`drug_`](https://pharmacologie-caen.github.io/vigicaen/reference/demo_.md)
@@ -58,7 +58,7 @@
 - [`get_atc_code()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_atc_code.md)
   **\[stable\]** : Get ATC codes (DrecNos or MPIs)
 - [`get_drecno()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_drecno.md)
-  **\[stable\]** : Get DrecNo from drug names or MedicinalProd_Id
+  **\[stable\]** : Get DrecNo from drug names or Record_Id
 - [`get_llt_smq()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_llt_smq.md)
   **\[stable\]** : Get low level term codes from SMQs
 - [`get_llt_soc()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_llt_soc.md)

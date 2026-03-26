@@ -76,7 +76,7 @@ srce_
 
 - `Drug_Id` Integer. The unique identifier of each drug report.
 
-- `MedicinalProd_Id` Integer. The medicinalproduct identifier. See
+- `Record_Id` Integer. The medicinalproduct identifier. See
   [`get_atc_code()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_atc_code.md).
 
 - `DrecNo` Integer. Drug Record Number, pivotal to identify drugs with
