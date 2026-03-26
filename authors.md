@@ -17,7 +17,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/pharmacologie-caen/vigicaen/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/pharmacologie-caen/vigicaen/blob/v1.0.0.9000/DESCRIPTION)
 
 Dolladille C, Chrétien B (2026). *vigicaen: 'VigiBase' Pharmacovigilance
 Database Toolbox*. R package version 1.0.0.9000,
