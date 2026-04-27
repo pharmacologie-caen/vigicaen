@@ -5,7 +5,7 @@ tags:
 - Pharmacovigilance
 - Database
 - Disproportionality analysis
-date: "2026-02-02"
+date: "2026-04-27"
 output:
   pdf_document:
     keep_md: true
@@ -118,6 +118,20 @@ VigiBase®, was informed of the package development and kindly allowed
 its publication, acknowledging the potential benefit to promote the use
 of VigiBase®.
 
+# State of the field
+
+There are very few packages related to pharmacovigilance in R. Most are
+focused on interfacing with the Food and Drug Administration Adverse
+Event Reporting System (FAERS), and most attempt to visualize existing
+data, run basic disproportionality analysis or perform web scrapping.
+[@mukhopadhyay2026] None of them actually allow to browse the entirety
+of a worldwide database such as VigiBase®, including all types of drugs
+and adverse events. Also, there is no existing package that prepares
+pharmacovigilance data in order to build advanced disproportionality
+metrics such as machine or deep learning, in the open source community.
+Finally, yet but a few of these packages are available on mainstream
+platforms such as CRAN. [@embry2018, @embry2016]
+
 # Research impact and significance
 
 Our team and collaborators have already published several
@@ -133,7 +147,7 @@ The University of Nagoya has functional routines relying on vigicaen for
 disproportionality analyses. Vigicaen is not getting in any concurrence
 with existing open source tools, but rather addresses an unmet need.
 
-# Design thinking
+# Software design
 
 Key concepts were fundamental to building vigicaen: First, it should be
 open source, build on top of state-of-the-art practices to deal with
@@ -142,8 +156,8 @@ using widespread and consistent syntax R users would be familiar with
 (e.g. tidyverse). Although other syntaxes like `data.table` were once at
 the core of the package, they are now generally left over, as they were
 thought less fit to the project when considering the balance between
-performance and user facing interace. Second, it should address the most
-technically challenging issues for beginners in R or biostatistical
+performance and user facing interface. Second, it should address the
+most technically challenging issues for beginners in R or biostatistical
 softwares in general. Third, it should keep as much rigor and
 consistency as possible in the function naming, expected input formats,
 and outputs. Fourth, it should provide help, e.g. messages to users, to
@@ -256,9 +270,9 @@ tb_vigibase(path_base, path_sub)
 ```
 ## This process must only be done once per database version.
 ## It can take up to 30minutes.
-## =========>---------------------   31% | 1.1s | Read SRCE.txt 
-## ==========>--------------------   34% | 1.2s | Write srce.parquet 
-##                                                                    
+## =========>---------------------   31% | 1s | Read SRCE.txt 
+## ==========>--------------------   35% | 1.2s | Read LINK.txt 
+##                                                               
 ```
 
 
@@ -500,6 +514,18 @@ vigi_routine(
 
 
 \includegraphics[alt={Example of vigi_routine with case data.}]{paper_files/figure-latex/vigi_routine-1} 
+
+# AI usage disclosure
+
+GitHub copilot and other AI assistants were episodically used during the
+software development. Main goals were to draft pull-requests from an
+existing issue, to assist in code syntax, and to improve English writing
+in the documentation. It was especially useful at drafting variants of
+existing checkers, or to avoid typographic errors when transforming
+larger sections, due to architectural change. It is foreseeable that
+such tools will take a growing place in the development of vigicaen, as
+is the case in many other settings. All AI-written code was
+human-checked by one of the package authors before being accepted.
 
 # Conclusion
 
