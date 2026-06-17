@@ -5,12 +5,13 @@ tags:
 - Pharmacovigilance
 - Database
 - Disproportionality analysis
-date: "2026-04-27"
+date: "2026-06-17"
 output:
   pdf_document:
     keep_md: true
   rmarkdown::html_vignette: default
   html_document:
+    keep_md: true
     df_print: paged
 authors:
 - name: Charles Dolladille
@@ -23,7 +24,7 @@ authors:
   affiliation: 2
   url: "https://www.linkedin.com/in/basile-chretien/"
   email: basile.chretien@outlook.com
-bibliography: RJreferences.bib
+bibliography: paper.bib
 type: package
 affiliations:
 - name: University of Caen Normandy, Pharmacology Department, Centre Hospitalier Universitaire
@@ -130,7 +131,7 @@ and adverse events. Also, there is no existing package that prepares
 pharmacovigilance data in order to build advanced disproportionality
 metrics such as machine or deep learning, in the open source community.
 Finally, yet but a few of these packages are available on mainstream
-platforms such as CRAN. [@embry2018, @embry2016]
+platforms such as CRAN. [@embry_vaersvax_2018; @embry_vaersndvax_2016]
 
 # Research impact and significance
 
@@ -270,9 +271,8 @@ tb_vigibase(path_base, path_sub)
 ```
 ## This process must only be done once per database version.
 ## It can take up to 30minutes.
-## =========>---------------------   31% | 1s | Read SRCE.txt 
-## ==========>--------------------   35% | 1.2s | Read LINK.txt 
-##                                                               
+## ==========>--------------------   33% | 1s | Remove duplicates 
+##                                                                 
 ```
 
 
