@@ -49,16 +49,16 @@ analyses using pharmacovigilance data, as traditional approaches are
 susceptible to various biases such as reporting bias and confounding.
 The aim of vigicaen is to provide a toolbox for the VigiBase® Extract
 Case Level database, resolving technical challenges related to the
-database large size, and providing easier and reproducible access to
+large size of the database, and providing easier and reproducible access to
 advanced features. The package is built on top of the parquet file
-format. Functions related to drug and adverse event identification,
-descriptive features such as time to onset, dechallenge and rechallenge
-outcomes are provided. Command line side-effect outputs aim at fast
-resolving of common issues related to drug and adverse event
+format. Functions related to drug and adverse event identification, and
+descriptive features such as time to onset, dechallenge, and rechallenge
+outcomes are provided. Command-line side-effect outputs aim at fast
+resolution of common issues related to drug and adverse event
 identification. The package is intended for pharmacovigilance
-practitioners, clinicians and researchers with or without advanced
+practitioners, clinicians, and researchers with or without advanced
 biostatistical skills. A graphical output can be produced for routine
-use, to support daily assessment of drug liability.
+use to support the daily assessment of drug liability.
 
 # Statement of need
 
@@ -72,12 +72,12 @@ of pharmacovigilance principles and reporting systems.
 
 For decades, the World Health Organization (WHO) has been collecting
 adverse drug reaction reports, called Individual Case Safety Reports
-(ICSRs), from its member countries, populating more than 40 millions
+(ICSRs), from its member countries, populating more than 40 million
 reports to date. This pharmacovigilance database is called VigiBase® and
 is managed by the Uppsala Monitoring Centre in Sweden.[@vigibase] These
 ICSRs describe the course of patients who experienced an adverse event
 (a medical condition) after taking a drug. The burning question is
-whether this adverse event was actually related to the drug intake, e.g.
+whether this adverse event was actually related to the drug intake, e.g.,
 if it is an adverse drug *reaction* (ADR). The pharmacovigilance
 database aims at uncovering the very first potential signals of
 association between drugs and ADRs.[@montastruc2011]
@@ -85,38 +85,38 @@ association between drugs and ADRs.[@montastruc2011]
 It relies on disproportionality analysis, a statistical method that
 produces estimators of how unlikely the number of observed ICSRs
 reporting on a specific drug and adverse event is to be attributable to
-chance alone. Together with an incertitude margin, these estimators are
+chance alone. Together with an uncertainty margin, these estimators are
 used to raise safety signals on drugs.[@montastruc2011]
 
 The Uppsala Monitoring Centre grants access to VigiBase® to researchers,
-either academics or industrials, under a licence contract. The most
-extensive available version is called Extract Case Level: It contains
-all the ICSRs, with information such as the patient demographics, the
-drug intake, the adverse events, the outcome, the dechallenge and
-rechallenge outcome, and the time to onset. However, this version is
-provided as large text files, and requires a lot of processing before
-being usable for analysis. Those text files might be particularly
-challenging to use in R, as they would often exceed the size of the
-available Random Access Memory, thus requiring advanced knowledge of R
-computing techniques. Clinicians and pharmacovigilance practitioners
-typically lack these skills, and therefore struggle to use the VigiBase®
-data for their research. As a result, they would often rely on partial
-data, with limited statistical modelling options. Or, they could develop
-home-made biostatistic scripts that would typically be used once, often
-left undocumented, and highly heterogeneous across research teams.
+either academic or industrial, under a license contract. The most
+extensive available version is called Extract Case Level: it contains
+all the ICSRs, with information such as patient demographics, drug intake,
+adverse events, outcomes, dechallenge and rechallenge outcomes, and
+time to onset. However, this version is provided as large text files and
+requires a lot of processing before being usable for analysis. Those
+text files might be particularly challenging to use in R, as they would
+often exceed the size of the available Random Access Memory, thus
+requiring advanced knowledge of R computing techniques. Clinicians and
+pharmacovigilance practitioners typically lack these skills and therefore
+struggle to use VigiBase® data for their research. As a result, they
+often rely on partial data with limited statistical modeling options.
+Alternatively, they might develop home-made biostatistical scripts that are
+typically used once, often left undocumented, and highly heterogeneous
+across research teams.
 
 The vigicaen package aims at providing a toolbox for the VigiBase®
-Extract Case Level database, tackling a few technical challenges to run
-on low-specification computers, and provide easy and reproducible access
+Extract Case Level database, tackling several technical challenges to run
+on low-specification computers, and providing easy and reproducible access
 to advanced features.[@dolladille2025] This article will explain the
 technical choices and data management logic underlying the package, and
 provide some examples of its main features. Additional examples and use
-cases are treated in the package vignettes, which can be found on the
+cases are covered in the package vignettes, which can be found on the
 package website at <https://pharmacologie-caen.github.io/vigicaen/>. Of
-important note, the package is not supported nor reflects the opinion of
+important note, the package is not supported by, nor does it reflect the opinion of,
 the WHO. The Uppsala Monitoring Centre, in charge of maintaining
 VigiBase®, was informed of the package development and kindly allowed
-its publication, acknowledging the potential benefit to promote the use
+its publication, acknowledging the potential benefit of promoting the use
 of VigiBase®.
 
 # State of the field
@@ -124,13 +124,13 @@ of VigiBase®.
 There are very few packages related to pharmacovigilance in R. Most are
 focused on interfacing with the Food and Drug Administration Adverse
 Event Reporting System (FAERS), and most attempt to visualize existing
-data, run basic disproportionality analysis or perform web scrapping.
-[@mukhopadhyay2026] None of them actually allow to browse the entirety
+data, run basic disproportionality analyses, or perform web scraping.
+[@mukhopadhyay2026] None of them actually allow browsing the entirety
 of a worldwide database such as VigiBase®, including all types of drugs
-and adverse events. Also, there is no existing package that prepares
-pharmacovigilance data in order to build advanced disproportionality
-metrics such as machine or deep learning, in the open source community.
-Finally, yet but a few of these packages are available on mainstream
+and adverse events. Also, there is no existing package in the open-source community
+that prepares pharmacovigilance data in order to build advanced disproportionality
+metrics, such as machine or deep learning models.
+Finally, only a few of these packages are available on mainstream
 platforms such as CRAN. [@embry_vaersvax_2018; @embry_vaersndvax_2016]
 
 # Research impact and significance
@@ -141,88 +141,86 @@ pharmacovigilance studies using vigicaen. [@legallois2025,
 @minoc2025]. Vigicaen streamlines the data management process of
 pharmacovigilance studies, allowing for easier collaboration across
 centers around the world. The potential gain has already convinced
-several academic centres. The French Network of Regional
-Pharmacovigilance Centres is on its way to implement vigicaen as part of
-the routine practice across the 31 Pharmacovigilance Centres in France.
+several academic centers. The French Network of Regional
+Pharmacovigilance Centres is on its way to implementing vigicaen as part of
+routine practice across the 31 Pharmacovigilance Centres in France.
 The University of Nagoya has functional routines relying on vigicaen for
-disproportionality analyses. Vigicaen is not getting in any concurrence
-with existing open source tools, but rather addresses an unmet need.
+disproportionality analyses. Vigicaen does not compete with existing open-source tools, but rather addresses an unmet need.
 
 # Software design
 
 Key concepts were fundamental to building vigicaen: First, it should be
-open source, build on top of state-of-the-art practices to deal with
-large datasets (e.g. arrow), especially on low specification computers,
-using widespread and consistent syntax R users would be familiar with
-(e.g. tidyverse). Although other syntaxes like `data.table` were once at
-the core of the package, they are now generally left over, as they were
-thought less fit to the project when considering the balance between
-performance and user facing interface. Second, it should address the
+open source, built on top of state-of-the-art practices to deal with
+large datasets (e.g., arrow), especially on low-specification computers,
+using a widespread and consistent syntax R users are familiar with
+(e.g., tidyverse). Although other syntaxes like `data.table` were once at
+the core of the package, they have now been phased out, as they were
+thought less fit for the project when considering the balance between
+performance and the user-facing interface. Second, it should address the
 most technically challenging issues for beginners in R or biostatistical
-softwares in general. Third, it should keep as much rigor and
-consistency as possible in the function naming, expected input formats,
-and outputs. Fourth, it should provide help, e.g. messages to users, to
+software in general. Third, it should maintain as much rigor and
+consistency as possible in function naming, expected input formats,
+and outputs. Fourth, it should provide help, e.g., messages to users, to
 allow external checking of what is produced by the package. Fifth, it is
-not purposed to implement model functions (like `glm`) per se, but
+not intended to implement model functions (like `glm`) per se, but
 rather to prepare the dataset so as to let the user run any model of
-his/her choice. Simple computations are nevertheless in the scope (like
-bivariate disproportionality analysis, or basic interaction analysis).
+their choice. Simple computations are nevertheless within scope (like
+bivariate disproportionality analysis or basic interaction analysis).
 
 # Open-source software practice
 
 The package was developed according to best practices as promoted by R
 Packages, 2nd edition. @rpackag It is accompanied by a comprehensive set
-of unitary tests (covering 100% of the code), in-depth documentation for
+of unit tests (covering 100% of the code), in-depth documentation for
 each function and object, and several tutorial vignettes for both
-new-comers and advanced users. The source code is available on
-GitHub.com, so as to provide a unique platform to submit issues and
-propose pull requests. It is made available under the open source CeCILL
+newcomers and advanced users. The source code is available on
+GitHub.com, so as to provide a unified platform to submit issues and
+propose pull requests. It is made available under the open-source CeCILL
 2.1 license.
 
 # Development history
 
-The first iteration of the package was built in 2020, as a local
+The first iteration of the package was built in 2020 as local
 software designed for internal use at Caen University Hospital. Later,
 it was called pharmacocaen and posted as a private repository on GitHub
-on 2022, due to intellectual property concerns with Uppsala Monitoring
-Centre. After resolution of property concerns, the package became
+in 2022, due to intellectual property concerns with the Uppsala Monitoring
+Centre. After resolution of these property concerns, the package became
 available as a public repository on GitHub under the name vigicaen in
 2024, and was accepted on CRAN in 2025. In the first versions, the
 package was mainly focused on performing vectorized data management so
 as to identify a large number of drugs and reactions in a compiled way.
 As there was a wide variety of settings under which drugs and reactions
-could be identified, bug fixing and edge cases were the main concerns
-during several years. Then, additional functionalities like building
-datasets from text files and descriptives were added. Contacts were made
-with members from the Uppsala Monitoring Centre, regarding their own
-work on other topics. These exchanges helped defining the exact
+could be identified, bug fixing and handling edge cases were the main concerns
+for several years. Then, additional functionalities like building
+datasets from text files and descriptive statistics were added. Contacts were made
+with members of the Uppsala Monitoring Centre regarding their own
+work on other topics. These exchanges helped define the exact
 perimeter of vigicaen, as well as its potential articulation with other
-open source softwares in the future. Also, vigicaen was discussed with
-end-users from pharmacovigilance centres in France, which led to the
+open-source software in the future. Also, vigicaen was discussed with
+end-users from pharmacovigilance centers in France, which led to the
 development of specific functions like `vigi_routine`.
 
 # Processing `vigibase®` source files.
 
-Clinicians and pharmacovigilance researchers are used to work with
+Clinicians and pharmacovigilance researchers are used to working with
 low-specification computers. The typical available Random Access Memory
-rarely exceeds 16GB, which is one of the key resources to deal with
+rarely exceeds 16GB, which is one of the key bottlenecks when dealing with
 large data files in R.[@22arro] VigiBase® Extract Case Level files
-currently exceed 30GB once unpacked, which is way too large to be loaded
-in-memory for mainstream readers like `read.table()`.
+currently exceed 30GB once unpacked, which is too large to be loaded
+in-memory by mainstream readers like `read.table()`.
 
-Vigicaen relies on `parquet` files a recent format based on open
+Vigicaen relies on `parquet` files, a recent format based on open
 standards.[@parquet] Arrow is a cross-language development platform that
-allows for manipulation of large datasets.[@apachea] It is implemented
-in R via the arrow package.[@richardson2025] Datasets remain out of
-memory, allowing for processing of large files on low-specification
+allows for the manipulation of large datasets.[@apachea] It is implemented
+in R via the arrow package.[@arrowr] Datasets remain out of
+memory, allowing for the processing of large files on low-specification
 computers. Various tests of vigicaen on 16GB RAM computers succeeded in
-processing the source files. This, in combination with an as close as
-possible alignment with the tidyverse style guide, is also aimed at
-providing a modern and more rigorous approach as compared to base
-R.[@wickham2023]
+processing the source files. This, in combination with an alignment as close as
+possible to the tidyverse style guide, is also aimed at
+providing a modern and more rigorous approach compared to base R.[@wickham2023]
 
 Sourcing VigiBase® Extract Case Level files is done with the `tb_*`
-family functions.
+family of functions.
 
 First, we define paths to the source folders.
 
@@ -271,14 +269,14 @@ tb_vigibase(path_base, path_sub)
 ```
 ## This process must only be done once per database version.
 ## It can take up to 30minutes.
-## ==========>--------------------   33% | 1s | Remove duplicates 
-##                                                                 
+## ==========>--------------------   35% | 1.1s | Read LINK.txt 
+##                                                               
 ```
 
 
 
-With an average computer, the real running time is around 20-30minutes
-on current database version.
+With an average computer, the real running time is around 20–30 minutes
+on the current database version.
 
 If the dictionaries for drugs and adverse events are also required,
 `tb_who()` and `tb_meddra()` can be used.
@@ -296,16 +294,14 @@ corresponding drugs and adverse events.
 
 The following logic is implemented in vigicaen:
 
-1 Use drug and adverse event names to collect their IDs.
+1. Use drug and adverse event names to collect their IDs.
+2. Match the IDs in the `drug` and `adr` tables to identify the cases.
+3. Report this information in `demo` (or any other VigiBase® table).
 
-2 Match the IDs in `drug` and `adr` tables to identify the cases.
-
-3 Report this information in `demo` (or any other VigiBase® table).
-
-This is done with the `get_*` functions (step 1), and the `add_*`
+This is done with the `get_*` functions (step 1) and the `add_*`
 functions (steps 2 and 3). The overall process requires the sequential
 use of both. Below is an example to identify the drugs. The same
-principle is applied to adverse events.
+principle applies to adverse events.
 
 
 ``` r
@@ -387,13 +383,13 @@ demo <-
 
 ## Displaying information at the command line
 
-As seen in the output above, the `get_*` functions do 2 things: They
+As seen in the output above, the `get_*` functions do two things: they
 return drug or adverse event IDs (stored in `d_drecno` in the example),
-and they display command line information about the matching process.
-This is especially useful since drugs and adverse events name may vary
+and they display command-line information about the matching process.
+This is especially useful since drug and adverse event names may vary
 in their spelling and case, while the underlying dictionary only accepts
-exact matches. Matched and un-matched names are displayed, along with
-some hints for the unmatching reasons.
+exact matches. Matched and unmatched names are displayed, along with
+some hints for the reasons for non-matching.
 
 
 ``` r
@@ -450,52 +446,52 @@ a_llt <- get_llt_soc(a_sel, term_level = "pt", meddra = meddra)
 
 ## The named list for inputting drug and adverse event names
 
-The `get_*` and `add_*` functions are built on top of named list as
-first argument. This structure may seem a bit busy, especially for new
-comers, but it allows for genuine flexibility when analyses plan
-increments. As an example, one may create
+The `get_*` and `add_*` functions are built with a named list as
+their first argument. This structure may seem a bit complex, especially for
+newcomers, but it allows for genuine flexibility when analysis plans
+increment. As an example, one may create
 `list(drug_group_1 = c("ipilimumab", "nivolumab"))` to automatically
-gather all ICSRs reporting one of these two drugs, through
+gather all ICSRs reporting one of these two drugs through
 `get_drecno()` and `add_drug()`.
 
 # Descriptive features
 
-Descriptive features often take an important place in pharmacovigilance
-studies. They may be as important as producing statistical estimands, to
+Descriptive features often play an important role in pharmacovigilance
+studies. They can be as important as producing statistical estimates to
 assess the liability of a given drug. Among them, the time to onset is
-rather challenging to compute. The main reasons are the incertitude
-around the exact reported time to onset, and the potential multiple
+rather challenging to compute. The main reasons are the uncertainty
+around the exact reported time to onset, and the potential for multiple
 reports for a given drug-adverse event pair in a single ICSR. The first
 is tackled by the Uppsala Monitoring Centre, which recommends in
-internal documentation to analyze ICSR where the incertitude interval is
+internal documentation to analyze ICSRs where the uncertainty interval is
 no more than a day. The second is addressed in `extract_tto()` or
 `desc_tto()`, which only extracts the longest time to onset reported for
 a given drug-adverse event pair in a given ICSR. This variable is called
 `tto_max`. Admittedly, this is a simplification that might not cover all
-potential use cases, for example if the question is the time since last
+potential use cases, for example, if the question is the time since the last
 infusion of a drug.
 
 A similar simplifying approach is applied to drug dechallenge
 (`desc_dch()`) and rechallenge (`desc_rch()`) outcomes, as well as
-adverse event outcome (`desc_outcome()`).
+adverse event outcomes (`desc_outcome()`).
 
 # Disproportionality estimates
 
 Although the aim of the package is to prepare readily available datasets
 for users to compute disproportionality on their own via advanced
-modelling techniques, it also provides basic estimates through the
+modeling techniques, it also provides basic estimates through the
 `compute_dispro()` and `compute_interaction()` functions. The underlying
-computations rely on the Norén et al methodology, for both point
-estimates, confidence and credibility intervals. [@norén2013]
+computations rely on the Norén et al. methodology for both point
+estimates, confidence, and credibility intervals. [@norén2013]
 
 # Routine use
 
-As a routine pharmacovigilance practitioner, key information on a drug -
-adverse event pair may be needed out-of-the-box, without further need
-for manipulating the underlying tables. To adress the typical needs
-(disproportionality estimand, time to onset, dechallenge and rechallenge
+For a routine pharmacovigilance practitioner, key information on a drug-adverse 
+event pair may be needed out-of-the-box, without further need
+for manipulating the underlying tables. To address typical needs
+(disproportionality estimates, time to onset, dechallenge, and rechallenge
 outcomes), `vigi_routine()` creates a graphical output for a given pair.
-It is intended as a daily practice tool, to support routine assessment
+It is intended as a daily practice tool to support routine assessment
 of causality. The graph can easily be exported to an external file with
 the `export_to` argument.
 
@@ -517,15 +513,17 @@ vigi_routine(
 
 # AI usage disclosure
 
-GitHub copilot and other AI assistants were episodically used during the
-software development. Main goals were to draft pull-requests from an
-existing issue, to assist in code syntax, and to improve English writing
-in the documentation. It was especially useful at drafting variants of
-existing checkers, or to avoid typographic errors when transforming
-larger sections, due to architectural change. It is foreseeable that
-such tools will take a growing place in the development of vigicaen, as
+GitHub Copilot and other AI assistants were episodically used during the
+software development. The main goals were to draft pull requests from
+existing issues, to assist with code syntax, and to improve the English writing
+in the documentation. It was especially useful for drafting variants of
+existing checkers or avoiding typographical errors when transforming
+larger sections due to architectural changes. It is foreseeable that
+such tools will play a growing role in the development of vigicaen, as
 is the case in many other settings. All AI-written code was
 human-checked by one of the package authors before being accepted.
+Generative AI was used to check spelling and improve the syntax of this 
+manuscript.
 
 # Conclusion
 
