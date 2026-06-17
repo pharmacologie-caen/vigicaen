@@ -34,35 +34,49 @@
   url = {https://allisonhorst.github.io/palmerpenguins/},
 }
 
-
-@misc{22arro,
-	title = {22  Arrow {\textendash} R for Data Science (2e)},
-	url = {https://r4ds.hadley.nz/arrow.html}
+@online{22arro,
+  author = {Wickham, Hadley and Çetinkaya-Rundel, Mine and Grolemund, Garrett},
+  title = {Arrow -- R for Data Science},
+  year = {2023},
+  edition = {2e},
+  url = {https://r4ds.hadley.nz/arrow.html},
+  urldate = {2026-06-17}
 }
 
-@misc{parquet,
-	title = {Parquet},
-	url = {https://parquet.apache.org/},
-	langid = {en}
+@online{parquet,
+  author = {{Apache Software Foundation}},
+  title = {Apache Parquet},
+  year = {2026},
+  url = {https://parquet.apache.org/},
+  urldate = {2026-06-17},
+  langid = {en}
 }
 
-@misc{apachea,
-	title = {Apache Arrow},
-	url = {https://arrow.apache.org/},
-	langid = {canadian}
+@online{apachea,
+  author = {{Apache Software Foundation}},
+  title = {Apache Arrow},
+  year = {2026},
+  url = {https://arrow.apache.org/},
+  urldate = {2026-06-17},
+  langid = {canadian}
 }
 
-@misc{arrowr,
-	title = {Arrow R Package},
-	url = {https://arrow.apache.org/docs/r/},
-	langid = {canadian}
+@Manual{arrowr,
+    title = {arrow: Integration to 'Apache' 'Arrow'},
+    author = {Neal Richardson and Ian Cook and Nic Crane and Dewey Dunnington and Romain François and Jonathan Keane and Bryce Mecum and Dragoș Moldovan-Grünfeld and Jeroen Ooms and Jacob Wujciak-Jens and {Apache Arrow}},
+    year = {2026},
+    note = {R package version 23.0.1.2},
+    url = {https://CRAN.R-project.org/package=arrow},
+    doi = {10.32614/CRAN.package.arrow},
 }
 
-@misc{vigibase,
-	title = {About VigiBase},
-	author = {Centre, Uppsala Monitoring},
-	url = {https://who-umc.org/vigibase/},
-	langid = {en}
+@online{vigibase,
+  author = {{Uppsala Monitoring Centre}},
+  title = {About VigiBase},
+  year = {2026},
+  url = {https://who-umc.org/vigibase/},
+  urldate = {2026-06-17},
+  langid = {en}
 }
 
 @article{montastruc2011,
@@ -210,7 +224,55 @@ PMID: 40617160},
 	langid = {eng}
 }
 
-@misc{rpackag,
-	title = {R Packages (2e)},
-	url = {https://r-pkgs.org/}
+@book{rpackag,
+  author    = {Wickham, Hadley and Bryan, Jenny},
+  title     = {R Packages: Organize, Test, Document, and Share Your Code},
+  year      = {2023},
+  edition   = {2e},
+  publisher = {O'Reilly Media},
+  url       = {https://r-pkgs.org/},
+  urldate   = {2026-06-17},
+  isbn      = {978-1098134464},
+  langid    = {en}
 }
+
+@article{mukhopadhyay2026,
+	title = {{SurVigilance}: {An} application for accessing global pharmacovigilance data},
+	volume = {34},
+	issn = {2352-7110},
+	shorttitle = {{SurVigilance}},
+	url = {https://www.sciencedirect.com/science/article/pii/S2352711026000403},
+	doi = {10.1016/j.softx.2026.102546},
+	abstract = {Even though several publicly accessible pharmacovigilance databases are available, extracting data from them is a technically challenging process. Existing tools typically focus on a single database. We present SurVigilance, an open-source tool that streamlines the process of retrieving safety data from seven major pharmacovigilance databases. SurVigilance provides a graphical user interface as well as functions for programmatic access, thus enabling integration into existing research workflows. SurVigilance utilizes a modular architecture to provide access to the heterogeneous sources. By reducing the technical barriers to accessing safety data, SurVigilance aims to facilitate pharmacovigilance research.},
+	urldate = {2026-04-27},
+	journal = {SoftwareX},
+	author = {Mukhopadhyay, Raktim and Markatou, Marianthi},
+	month = jun,
+	year = {2026},
+	keywords = {Adverse events, Pharmacovigilance, Safety database, SeleniumBase, Spontaneous reporting systems},
+	pages = {102546},
+	file = {ScienceDirect Snapshot:C\:\\Users\\dolladi231\\Zotero\\storage\\ANII8E9P\\S2352711026000403.html:text/html},
+}
+
+@Manual{embry_vaersvax_2018,
+    title = {vaersvax: US Vaccine Adverse Event Reporting System (VAERS) Vaccine Data
+for Present},
+	author = {Embry, Irucka},
+    year = {2018},
+    note = {R package version 1.0.5},
+    url = {https://CRAN.R-project.org/package=vaersvax},
+    doi = {10.32614/CRAN.package.vaersvax},
+}
+
+@misc{embry_vaersndvax_2016,
+	title = {{vaersNDvax}: {Non}-{Domestic} {Vaccine} {Adverse} {Event} {Reporting} {System} ({VAERS}) {Vaccine} {Data} for {Present}},
+	copyright = {CC0},
+	shorttitle = {{vaersNDvax}},
+	url = {https://cran.r-project.org/web/packages/vaersNDvax/index.html},
+	abstract = {Non-Domestic VAERS vaccine data for 01/01/2016 - 06/14/2016. If you want to explore the full VAERS data for 1990 - Present (data, symptoms, and vaccines), then check out the 'vaersND' package from the URL below. The URL and BugReports below correspond to the 'vaersND' package, of which 'vaersNDvax' is a small subset (2016 only). 'vaersND' is not hosted on CRAN due to the large size of the data set. To install the Suggested 'vaers' and 'vaersND' packages, use the following R code: 'devtools::install\_git("https://gitlab.com/iembry/vaers.git", build\_vignettes = TRUE)' and 'devtools::install\_git("https://gitlab.com/iembry/vaersND.git", build\_vignettes = TRUE)'. "VAERS is a national vaccine safety surveillance program co-sponsored by the US Centers for Disease Control and Prevention (CDC) and the US Food and Drug Administration (FDA). VAERS is a post-marketing safety surveillance program, collecting information about adverse events (possible side effects) that occur after the administration of vaccines licensed for use in the United States." For more information about the data, visit {\textless}https://vaers.hhs.gov/index{\textgreater}. For information about vaccination/immunization hazards, visit {\textless}http://www.questionuniverse.com/rethink.html/\#vaccine{\textgreater}.},
+	urldate = {2026-04-27},
+	author = {Embry, Irucka},
+	month = aug,
+	year = {2016},
+}
+
