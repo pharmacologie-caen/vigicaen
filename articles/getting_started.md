@@ -14,11 +14,11 @@ files. This is the purpose of this vignette.
 
 The `tb_*` functions (Table Builders) will help you through the process.
 
-| `tb_*` function | Usage                                                                    |
-|-----------------|--------------------------------------------------------------------------|
-| `tb_vigibase`   | Main tables (demo, drugs, adverse drug reactions), and subsidiary tables |
-| `tb_who`        | WHODrug tables                                                           |
-| `tb_meddra`     | MedDRA tables                                                            |
+| `tb_*` function | Usage |
+|----|----|
+| `tb_vigibase` | Main tables (demo, drugs, adverse drug reactions), and subsidiary tables |
+| `tb_who` | WHODrug tables |
+| `tb_meddra` | MedDRA tables |
 
 ## Deploy tables
 
@@ -53,6 +53,7 @@ We usually create `path_*` objects in R, then use them in functions.
 This is optional, you can also pass path directly to `tb_*` functions.
 
 ``` r
+
 library(vigicaen)
 
 # change for the correct paths on your computer
@@ -127,6 +128,7 @@ function from this package, which is a shorthand for
 
 ``` r
 
+
 demo   <- dt_parquet(path_main, "demo")
 drug   <- dt_parquet(path_main, "drug")
 adr    <- dt_parquet(path_main, "adr")
@@ -153,6 +155,7 @@ In this case, you can use the `in_memory` argument of
 to load tables **OUT** of memory.
 
 ``` r
+
 demo   <- dt_parquet(path_main, "demo", in_memory = FALSE)
 ```
 
@@ -187,6 +190,7 @@ on these. See
 [`vignette("basic_workflow")`](https://pharmacologie-caen.github.io/vigicaen/articles/basic_workflow.md).
 
 ``` r
+
 
 sv_selection <-
     c(7, #  65 - 74 years group
@@ -225,6 +229,7 @@ suspect a table is corrupted or want to refresh everything), set
 `overwrite_existing_tables = TRUE`.
 
 ``` r
+
 # Example: resume after a crash
 # (only missing tables will be created)
 tb_vigibase(

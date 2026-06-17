@@ -64,6 +64,7 @@ a *named* list containing indication terms.
 ## Examples
 
 ``` r
+
 # Set up a list of indication terms
 
 i_list <-

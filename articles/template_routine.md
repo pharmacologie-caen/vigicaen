@@ -7,6 +7,7 @@ You are strongly advised to check it out before using this one.
 
 ``` r
 
+
 library(vigicaen)
 
 # ---- Set paths ---- ####

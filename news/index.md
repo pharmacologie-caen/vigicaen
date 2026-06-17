@@ -252,6 +252,7 @@ CRAN release: 2025-02-21
   with `mp`.
 
   ``` r
+
   # the old way
   mp_short <- dt_parquet(path_who, "mp_short")
   d_names <- list(drug1 = "paracetamol")
@@ -273,6 +274,7 @@ CRAN release: 2025-02-21
   was made to streamline the process of querying sub-SMQs.
 
   ``` r
+
   # the old way
   smq_list_content <- dt_parquet(path_meddra, "smq_list_content")
 

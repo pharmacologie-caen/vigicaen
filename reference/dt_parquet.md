@@ -57,6 +57,7 @@ directly, with `as_data_frame` = FALSE.
 ## Examples
 
 ``` r
+
 # Say you have a data.frame stored in a parquet format, such as this one
 demo <-
   data.table::data.table(

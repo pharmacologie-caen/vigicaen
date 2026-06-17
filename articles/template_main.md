@@ -30,6 +30,7 @@ You may create a separate script with paths, that you would call at the
 beginning of your main script.
 
 ``` r
+
 library(vigicaen)
 library(rlang)
 library(here) # if you like the here syntax for file paths
@@ -37,6 +38,7 @@ library(dplyr)
 ```
 
 ``` r
+
 # #### PATHS #### ####
 
 path_base   <- "../vigibase_ecl/main"
@@ -59,6 +61,7 @@ source("00_dict.R") # from template_dictionary
 ### Demo
 
 ``` r
+
 # ---- Deduplicating ---- ####
 
 demo <- demo |> 
@@ -224,6 +227,7 @@ demo |>
 ### Link
 
 ``` r
+
 link <-
   link |> 
     add_drug(
@@ -239,6 +243,7 @@ link <-
 ### Basic models
 
 ``` r
+
 # ---- Bivariate ---- ####
 
 rb <- 
@@ -272,6 +277,7 @@ rm <-
 ### Basic descriptive
 
 ``` r
+
 # ---- General description ---- ####
 
 r_desc <- 

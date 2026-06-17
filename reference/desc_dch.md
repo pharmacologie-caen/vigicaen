@@ -54,6 +54,7 @@ and
 ## Examples
 
 ``` r
+
 link_ <-
   link_ |>
   add_drug(

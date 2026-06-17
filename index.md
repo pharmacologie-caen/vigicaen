@@ -127,6 +127,7 @@ a specific population, e.g. older adults), and the time to onset
 reported for this reaction.
 
 ``` r
+
 library(vigicaen)
 
 # Step 1: Load datasets (or use example sets
@@ -176,6 +177,7 @@ exposure and colitis reporting (reporting odds-ratio `or` and
 information component `ic`).
 
 ``` r
+
 library(vigicaen)
 
 demo <-

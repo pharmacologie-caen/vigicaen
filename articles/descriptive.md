@@ -19,6 +19,7 @@
 ### Step 0: Load packages
 
 ``` r
+
 library(vigicaen)
 library(rlang)
 library(dplyr)
@@ -30,6 +31,7 @@ This vignette uses the preloaded datasets (and a spurious suspdup
 table).
 
 ``` r
+
 demo     <- demo_
 adr      <- adr_
 drug     <- drug_
@@ -55,12 +57,14 @@ suspdup <-
 And preloaded drug and adr dictionaries.
 
 ``` r
+
 d_drecno <- ex_$d_drecno
 
 a_llt <- ex_$a_llt
 ```
 
 ``` r
+
 demo <-
   demo |>
   add_drug(
@@ -84,6 +88,7 @@ As we aim to describe drug and adr counts, but also other variables
 You can still refer to
 
 ``` r
+
 # Age, sex
 
 demo <-
@@ -161,6 +166,7 @@ should be passed to `vf`, as a character vector.
 Let’s take the `demo` dataset as an example, with variable “age”.
 
 ``` r
+
 desc_facvar(
   .data = demo,
   vf = "age"
@@ -195,6 +201,7 @@ What happens when the variable has only two levels, for example 1 and 0,
 as is often the case for the drug and adr variables?
 
 ``` r
+
 desc_facvar(
   .data = demo,
   vf = "nivolumab"
@@ -223,6 +230,7 @@ provides little information and can be omitted.
 Let’s continue with another example on the “seriousness” status.
 
 ``` r
+
 desc_facvar(
   .data = demo,
   vf = "serious"
@@ -246,6 +254,7 @@ You can export to run plotting or other formatting functions, with
 argument `export_raw_values`.
 
 ``` r
+
 desc_facvar(
   .data = demo,
   vf = "nivolumab",
@@ -270,6 +279,7 @@ The solution is to create the variable with the desired levels upstream,
 in a data management step.
 
 ``` r
+
 demo <-
   demo |>
   mutate(
@@ -297,6 +307,7 @@ The same is true for columns like “year”.
 When studying the “year” column, it is common to get an error message
 
 ``` r
+
 desc_facvar(
   .data = demo,
   vf = "year"
@@ -332,6 +343,7 @@ We can therefore solve this problem by adjusting the value of this
 parameter.
 
 ``` r
+
 desc_facvar(
   .data = demo,
   vf = "year",
@@ -364,6 +376,7 @@ be more informative.
 Levels of some variables are indicated by numbers.
 
 ``` r
+
 desc_facvar(
   .data = demo,
   vf = "Region"
@@ -399,6 +412,7 @@ Several options are possible to bring the information back directly into
 demo, the simplest is to use factors
 
 ``` r
+
 demo <-
   demo |> 
   mutate(
@@ -423,6 +437,7 @@ This transformation has the effect of modifying the result of
 [`desc_facvar()`](https://pharmacologie-caen.github.io/vigicaen/reference/desc_facvar.md)
 
 ``` r
+
 desc_facvar(
   .data = demo,
   vf = "Region"
@@ -454,6 +469,7 @@ example, if you want to put the percentage in brackets instead of
 parentheses
 
 ``` r
+
 desc_facvar(
   .data = demo,
   vf = "nivolumab",
@@ -478,6 +494,7 @@ You can also change all other elements of this argument.
     be exactly 100%.
 
 ``` r
+
 desc_facvar(
   .data = demo,
   vf = "nivolumab",
@@ -499,6 +516,7 @@ let you screen the most drugs reported in a `drug` dataset, sorted by
 frequency.
 
 ``` r
+
 screen_drug(drug, mp_data = mp, top_n = 5)
 #> # A tibble: 5 × 4
 #>   `Drug name`      DrecNo     N percentage
@@ -518,6 +536,7 @@ For example, identify colitis cases and screen drugs under this
 reaction.
 
 ``` r
+
 drug |> 
   add_adr(
     a_llt,
@@ -545,6 +564,7 @@ let you screen the most frequent reactions reported in an `adr` dataset,
 sorted by frequency.
 
 ``` r
+
 screen_adr(adr_, meddra = meddra_)
 #>                                               term     n percentage
 #>                                             <char> <int>      <num>
@@ -607,6 +627,7 @@ can be used on `adr` data.
 
 ``` r
 
+
 adr <-
   adr |>
   add_drug(
@@ -637,6 +658,7 @@ The `desc_outcome` function prioritizes data according to the rule:
 > order to count each event only once for each case.
 
 ``` r
+
 adr |> 
   desc_outcome(
     drug_s = "nivolumab",
@@ -678,6 +700,7 @@ dechallenge and rechallenge data at case level.
 ### Step 1: Load the datasets
 
 ``` r
+
 link <- 
   link_
 ```
@@ -759,6 +782,7 @@ As for the `demo` and `adr` tables, the `link` table must be completed
 with drug and adr columns, using the `add_*` family functions.
 
 ``` r
+
 link <-
   link |> 
    add_drug(
@@ -779,6 +803,7 @@ link <-
 Counts check
 
 ``` r
+
 link |> 
    check_dm(
      cols = c(names(d_drecno), names(a_llt))
@@ -833,6 +858,7 @@ Two parameters are derived from this information: the mean time to onset
 `tto_mean` and the `range`. The calculation is as follows:
 
 ``` r
+
 tto_mean = (TimeToOnsetMax + TimeToOnsetMin) / 2
 
 range = (TimeToOnsetMax + TimeToOnsetMin) / 2 - TimeToOnsetMin
@@ -873,6 +899,7 @@ This information, that we call `tto_max`, is obtained with
 [`extract_tto()`](https://pharmacologie-caen.github.io/vigicaen/reference/extract_tto.md).
 
 ``` r
+
 extract_tto(
   .data = link,
   drug_s = "nivolumab",
@@ -914,6 +941,7 @@ notably with
 [`desc_tto()`](https://pharmacologie-caen.github.io/vigicaen/reference/desc_tto.md).
 
 ``` r
+
 desc_tto(
   .data = link,
   drug_s = "nivolumab",
@@ -926,6 +954,7 @@ desc_tto(
 Several drugs and reactions can be queried in these two functions.
 
 ``` r
+
 desc_tto(
   .data = link,
   drug_s = c("nivolumab", "pembrolizumab"),
@@ -952,6 +981,7 @@ synthesizes the number of positive dechallenges:
 > dosage has been reduced, and the reaction has abatted.
 
 ``` r
+
 desc_dch(
   link,
   drug_s = "nivolumab",
@@ -962,6 +992,7 @@ desc_dch(
 ```
 
 ``` r
+
 desc_dch(
   link,
   drug_s = c("nivolumab", "pembrolizumab"),
@@ -990,6 +1021,7 @@ to DrecNo and MedDRA_Id, respectively. Terminology
   `non_rec` = `inf`)
 
 ``` r
+
 desc_rch(
   link,
   drug_s = "nivolumab",
@@ -1018,6 +1050,7 @@ our entire dataset
 We must create a variable that takes the value 1 for all cases.
 
 ``` r
+
 link <-
   link |> 
   mutate(
@@ -1028,6 +1061,7 @@ link <-
 We a particular syntax, we can access the information
 
 ``` r
+
 desc_rch(
   link,
   drug_s = "all_cases",

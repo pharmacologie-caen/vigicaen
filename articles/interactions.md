@@ -1,6 +1,7 @@
 # Interactions
 
 ``` r
+
 library(vigicaen)
 library(rlang)
 library(dplyr)
@@ -31,6 +32,7 @@ use is shown [at the end of the vignette](#compute_int).
 We use built-in example dataset.
 
 ``` r
+
 
 # ---- Tables ---- ####
 
@@ -83,6 +85,7 @@ Additive effect of two covariates can be obtained by multiplying the
 Odds-Ratio of each.
 
 ``` r
+
 mod3 <- glm(a_colitis ~ ipilimumab + sex,
             data = demo,
             family = "binomial")
@@ -120,6 +123,7 @@ Say we want to investigate the interaction between ipilimumab and
 nivolumab and colitis reporting.
 
 ``` r
+
 demo |> 
   filter(nivolumab == 1) |> 
   compute_dispro(
@@ -152,6 +156,7 @@ Both IC and ROR can be used here.
 The true statistical interaction is obtained with the following model
 
 ``` r
+
 mod4 <- glm(a_colitis ~ ipilimumab + sex + ipilimumab * sex,
             data = demo,
             family = "binomial")
@@ -177,24 +182,24 @@ compute_or_mod(
 
 ### Bayesian Information Component, `compute_interaction()`
 
-The formula for the interaction between 3 variables ($y$, the event of
-interest, $x1$ and $x2$, two potential explanatory factors) in
+The formula for the interaction between 3 variables ($`y`$, the event of
+interest, $`x1`$ and $`x2`$, two potential explanatory factors) in
 information component is
 
-$log_{2}\frac{n_{y,x1,x2}}{n.expected_{interaction}}$
+$`log_2\frac{n_{y, x1, x2}}{n.expected_{interaction}}`$
 
-with $n.expected_{interaction}$ equal to
+with $`n.expected_{interaction}`$ equal to
 
-$\frac{n_{x1,x2}*n_{y,x1}*n_{y,x2}*n.total}{n_{x1}*n_{x2}*n_{y}}$
+$`\frac{n_{x1, x2} * n_{y, x1} * n_{y, x2} * n.total}{n_{x1} * n_{x2} * n_y}`$
 
 The parameters are read as follows
 
-| Parameter     | Case                                              |
-|---------------|---------------------------------------------------|
-| $n_{x1}$      | number of cases reporting x1                      |
-| $n_{x1,x2}$   | number of cases reporting x1 **AND** x2           |
-| $n_{y,x1,x2}$ | number of cases reporting x1 **AND** x2 **AND** y |
-| $n.total$     | total number of cases in the study population     |
+| Parameter         | Case                                              |
+|-------------------|---------------------------------------------------|
+| $`n_{x1}`$        | number of cases reporting x1                      |
+| $`n_{x1, x2}`$    | number of cases reporting x1 **AND** x2           |
+| $`n_{y, x1, x2}`$ | number of cases reporting x1 **AND** x2 **AND** y |
+| $`n.total`$       | total number of cases in the study population     |
 
 The credibility interval is calculated as for the usual IC.
 
@@ -202,6 +207,7 @@ The credibility interval is calculated as for the usual IC.
 produces this interaction statistic.
 
 ``` r
+
 
 demo |>
   compute_interaction(

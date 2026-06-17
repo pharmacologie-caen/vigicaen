@@ -58,6 +58,7 @@ which is not necessarily a *reporting* Odds-Ratio.
 ## Examples
 
 ``` r
+
 # Reporting Odds-Ratio of colitis with nivolumab among ICI cases.
 
 demo <-

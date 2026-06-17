@@ -1,6 +1,7 @@
 # Routine pharmacovigilance
 
 ``` r
+
 library(vigicaen)
 ```
 
@@ -65,6 +66,7 @@ Then, you need to set up the paths to your tables, and use
 [`dt_parquet()`](https://pharmacologie-caen.github.io/vigicaen/reference/dt_parquet.md).
 
 ``` r
+
 path_base   <- "~/vigibase/main/"
 path_who    <- "~/vigibase/who/"
 path_meddra <- "~/meddra/"
@@ -74,6 +76,7 @@ Load tables into R. Preferably, let them out of memory, especially if
 you have a computer with rather low specifications (e.g., 16GB of RAM).
 
 ``` r
+
 demo <- dt_parquet(path_base, "demo", in_memory = FALSE)
 drug <- dt_parquet(path_base, "drug", in_memory = FALSE)
 adr  <- dt_parquet(path_base, "adr", in_memory = FALSE)
@@ -86,6 +89,7 @@ meddra <- dt_parquet(path_meddra, "meddra_hierarchy")
 For this vignette, we will use built-in example tables instead.
 
 ``` r
+
 demo     <- demo_
 adr      <- adr_
 drug     <- drug_
@@ -104,6 +108,7 @@ exactly similar to the
 [`vignette("basic_workflow")`](https://pharmacologie-caen.github.io/vigicaen/articles/basic_workflow.md).
 
 ``` r
+
 d_sel <- list(
   ipilimumab = "ipilimumab"
 )
@@ -153,6 +158,7 @@ Feel free to browse the other `get_*` functions:
 [`get_atc_code()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_atc_code.md).
 
 ``` r
+
 d_code <- 
   get_drecno(d_sel, mp = mp)
 #> 
@@ -199,6 +205,7 @@ It takes several arguments:
   remember to write *something*.
 
 ``` r
+
 vigi_routine(
   demo_data = demo,
   drug_data = drug,
@@ -244,6 +251,7 @@ this case, the colitis happened 150days after ipilimumab initiation.
 We can add this information to the graph, using the `case_tto` argument.
 
 ``` r
+
 vigi_routine(
   case_tto  = 150,
   demo_data = demo,
@@ -282,6 +290,7 @@ Some of these extensions (like .svg) require additional packages to
 work. (e.g. svglite for “.svg”).
 
 ``` r
+
 vigi_routine(
   case_tto  = 150,
   demo_data = demo,
@@ -319,6 +328,7 @@ clavulanic acid.
 However, the syntax would be:
 
 ``` r
+
 d1 <- ex_$d_drecno["nivolumab"]
 d2 <- ex_$d_drecno["ipilimumab"]
 a_llt <- ex_$a_llt["a_colitis"]

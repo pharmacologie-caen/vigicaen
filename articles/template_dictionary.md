@@ -24,12 +24,14 @@ and
 for details on what this template does.
 
 ``` r
+
 library(vigicaen)
 library(rlang)
 library(dplyr)
 ```
 
 ``` r
+
 # #### PATHS #### ####
 
 path_who    <- "../vigibase_ecl/who" # adapt to your own
@@ -52,6 +54,7 @@ smq_content <- dt_parquet(path_meddra, "meddra_smq_content")
 ```
 
 ``` r
+
 # #### Drug definitions #### ####
 
 d_sel <-

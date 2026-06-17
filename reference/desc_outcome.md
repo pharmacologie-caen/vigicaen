@@ -69,6 +69,7 @@ for more details.
 ## Examples
 
 ``` r
+
 adr_ <-
   adr_ |>
   add_drug(

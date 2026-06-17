@@ -45,6 +45,7 @@ which internally calls this function.
 ## Examples
 
 ``` r
+
 ic_tail(n_obs = 12,
         n_exp = 5)
 #> [1] 0.2542334

@@ -33,6 +33,7 @@ Each table has a unique identifying key and other keys to perform joins.
 ### Step 0: Load Packages
 
 ``` r
+
 library(vigicaen)
 library(rlang)
 library(dplyr)
@@ -59,6 +60,7 @@ interest.
 Those collection of terms should be stored in **named lists**.
 
 ``` r
+
 # drug selection
 d_sel <-
   list(
@@ -148,6 +150,7 @@ step 6 is performed with
 #### Step 1: Load the tables
 
 ``` r
+
 demo <- demo_
 drug <- drug_
 
@@ -168,6 +171,7 @@ in this tutorial), you need to create a **named list** of character
 vectors.
 
 ``` r
+
 d_sel <- # drug selection
   list2(
     nivolumab = "nivolumab"
@@ -213,6 +217,7 @@ You should **always** look carefully at the printed message.
     with argument `verbose = TRUE` (default).
 
 ``` r
+
 get_drecno(
   d_sel = d_sel,
   mp = mp_,
@@ -256,6 +261,7 @@ identify all cases reporting the drug.
     in an R object called `d_drecno`.
 
 ``` r
+
 d_drecno <-
   get_drecno(
     d_sel = d_sel,
@@ -282,6 +288,7 @@ function takes 3 mandatory arguments:
 - The `drug` table linking drug intake to each case.
 
 ``` r
+
 demo <- 
   add_drug(
     .data = demo,
@@ -320,6 +327,7 @@ demo
 Or, in tidyverse syntax
 
 ``` r
+
 demo <- 
   demo |> 
   add_drug(
@@ -340,6 +348,7 @@ function will count the number of rows in the dataset where the desired
 column is equal to 1.
 
 ``` r
+
 check_dm(demo, "nivolumab")
 #>           [,1]
 #> nivolumab  225
@@ -366,6 +375,7 @@ As with drugs, we first need to identify the ATC class of interest
 (here, “L03”).
 
 ``` r
+
 atc_sel <-
   list2(l03 = "L03")
 
@@ -384,6 +394,7 @@ function requires the `mp` and `thg` tables, as well as the selection of
 ATC classes.
 
 ``` r
+
 str(atc_drecno)
 #> List of 1
 #>  $ l03: num [1:13] 2.20e+07 1.41e+08 1.01e+08 1.25e+08 3.93e+07 ...
@@ -404,6 +415,7 @@ the
 function.
 
 ``` r
+
 demo |> 
   add_drug(
     d_code = atc_drecno,
@@ -458,6 +470,7 @@ consider the drug whether it is suspect, concomitant, or interacting. We
 can change the selection.
 
 ``` r
+
 demo |> 
   add_drug(
     d_code = d_drecno,
@@ -489,6 +502,7 @@ To work with multiple drugs, you need to update the initial `d_sel`
 list.
 
 ``` r
+
 d_sel <- 
   list2(
     nivolumab = "nivolumab",
@@ -537,6 +551,7 @@ classes do not match your needs perfectly, you can group them in the
 `d_sel` list.
 
 ``` r
+
 d_sel <- 
   list2(
     analgesics = c("paracetamol", "tramadol"),
@@ -609,6 +624,7 @@ or
 #### Step 1: Load the tables
 
 ``` r
+
 adr <- adr_
 meddra <- meddra_
 ```
@@ -618,6 +634,7 @@ demo was loaded during the [drug workflow](#drug_workflow).
 #### Step 2: Choose events of interest
 
 ``` r
+
 a_sel_pt <-
   list2(
     a_colitis = c(
@@ -653,6 +670,7 @@ The
 function allows you to query the `meddra`.
 
 ``` r
+
 a_llt <- 
   get_llt_soc(
     term_sel = a_sel_pt,
@@ -710,6 +728,7 @@ function allows you to identify cases reporting the adverse event of
 interest and add the corresponding column to `demo`.
 
 ``` r
+
 demo <- 
   add_adr(
     .data = demo,
@@ -724,6 +743,7 @@ demo <-
 also works for adr.
 
 ``` r
+
 demo |> 
   check_dm("a_colitis")
 #>           [,1]
@@ -755,6 +775,7 @@ The process is simpler than for drugs and reactions, since there is no
 First, load the tables and pick the indication terms of interest.
 
 ``` r
+
 # You need ind and drug, plus the table you will be working on, here demo.
 ind <- ind_
 
@@ -768,6 +789,7 @@ Then, run
 [`add_ind()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_ind.md).
 
 ``` r
+
 demo <- 
   add_ind(
     .data = demo,
@@ -793,6 +815,7 @@ which doesn’t work in case of missing data.
 will do the job instead.
 
 ``` r
+
 demo |> 
   desc_facvar("melanoma")
 #> # A tibble: 2 × 4
@@ -808,6 +831,7 @@ The `demo` table contains the `AgeGroup` column, which groups ages into
 categories. You may want to recode it to match you research question
 
 ``` r
+
 demo <-
   demo |>
   mutate(
@@ -825,6 +849,7 @@ create a new sex column (with values 1 for men, 2 for women, and NA
 otherwise)
 
 ``` r
+
 demo <-
   demo |> 
   mutate(
@@ -842,6 +867,7 @@ function from the `dplyr` package allows you to manage multiple options
 in a single function, with a slightly different syntax.
 
 ``` r
+
 demo <- 
   demo |> 
   mutate(
@@ -865,6 +891,7 @@ whether the case was serious or not, and whether the patient experienced
 a fatal issue during his/her follow-up.
 
 ``` r
+
 # ---- Serious ---- ####
 
 out <- out_
@@ -930,6 +957,7 @@ computes both of these.
   credibility interval (default: IC025).
 
 ``` r
+
 demo |> 
   compute_dispro(
     y = "a_colitis",
@@ -953,6 +981,7 @@ The [`glm()`](https://rdrr.io/r/stats/glm.html) function from the
 `stats` package can be used for this purpose.
 
 ``` r
+
 mod <- glm(a_colitis ~ nivolumab, 
            data = demo, family = "binomial")
 
@@ -981,6 +1010,7 @@ In a logistic regression models, estimates lead to (reporting) OR by the
 exponential.
 
 ``` r
+
 summary(mod)$coefficients
 #>               Estimate Std. Error    z value     Pr(>|z|)
 #> (Intercept) -2.0476928  0.1371736 -14.927752 2.174746e-50
@@ -993,6 +1023,7 @@ exp(summary(mod)$coefficients[2, 1])
 Adding covariates is straightforward
 
 ``` r
+
 mod2 <- glm(a_colitis ~ nivolumab + sex + age,
             data = demo,
             family = "binomial")
@@ -1032,6 +1063,7 @@ There are several packages that can extract the OR from a model. The
 function is just one of many ways to do it.
 
 ``` r
+
 mod_or <- 
   compute_or_mod(
     summary(mod2)$coefficients,
