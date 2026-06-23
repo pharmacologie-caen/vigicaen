@@ -5,13 +5,12 @@ tags:
 - Pharmacovigilance
 - Database
 - Disproportionality analysis
-date: "2026-06-17"
+date: "2026-06-23"
 output:
   pdf_document:
     keep_md: true
   rmarkdown::html_vignette: default
   html_document:
-    keep_md: true
     df_print: paged
 authors:
 - name: Charles Dolladille
@@ -250,26 +249,17 @@ Then, we run the related `tb_*` function, `tb_vigibase()`.
 tb_vigibase(path_base, path_sub)
 ```
 
-```
-## 
-```
 
 ```
 ## -- tb_vigibase() ---------------------------------------------------------------
-```
-
-```
+## 
 ## i Checking for existing tables.
-```
-
-```
+## 
 ## i Creating vigibase tables.
-```
-
-```
+## 
 ## This process must only be done once per database version.
 ## It can take up to 30minutes.
-## ==========>--------------------   35% | 1.1s | Read LINK.txt 
+## =========>---------------------   31% | 1.1s | Read SRCE.txt 
 ##                                                               
 ```
 
@@ -305,18 +295,17 @@ principle applies to adverse events.
 
 
 ``` r
-# load vigibase tables and drug dictionary
+# Load vigibase tables and drug dictionary
 demo <- dt_parquet(path_base, "demo")
 drug <- dt_parquet(path_base, "drug")
 
-# for the demonstration, we will use built-in example files
+# Here, example datasets
 demo <- demo_
 drug <- drug_
 mp   <- mp_
 
 # Select drug names
-d_sel <-
-  list(ipilimumab = "ipilimumab")
+d_sel <- list(ipilimumab = "ipilimumab")
 
 # Get the drug IDs 
 d_drecno <- 
@@ -324,49 +313,8 @@ d_drecno <-
     d_sel,
     mp = mp
   )
-```
 
-```
-## 
-```
-
-```
-## -- get_drecno() ----------------------------------------------------------------
-```
-
-```
-## 
-```
-
-```
-## -- `d_sel`: Matching drugs --
-```
-
-```
-## 
-```
-
-```
-## -- v Matched drugs
-```
-
-```
-## 
-```
-
-```
-## > `ipilimumab`: "ipilimumab" and "ipilimumab;nivolumab"
-## 
-## 
-## i Set `verbose` to FALSE to suppress this section.
-## 
-## 
-## 
-## --------------------------------------------------------------------------------
-```
-
-``` r
-# report into demo
+# Add it to demo
 demo <- 
   demo |> 
   add_drug(
@@ -375,8 +323,18 @@ demo <-
   )
 ```
 
+
 ```
-## i `.data` detected as `demo` table.
+## -- get_drecno() ----------------------------------------------------------------
+## 
+## -- `d_sel`: Matching drugs --
+## 
+## -- v Matched drugs 
+## 
+## > `ipilimumab`: "ipilimumab" and "ipilimumab;nivolumab"
+## i Set `verbose` to FALSE to suppress this section.
+## 
+## --------------------------------------------------------------------------------
 ```
 
 
@@ -402,42 +360,19 @@ a_sel <-
 a_llt <- get_llt_soc(a_sel, term_level = "pt", meddra = meddra)
 ```
 
-```
-## 
-```
 
 ```
 ## -- get_llt_soc() ---------------------------------------------------------------
-```
-
-```
 ## 
-```
-
-```
 ## -- v Matched reactions at `pt` level (number of codes) --
-```
-
-```
 ## 
-```
-
-```
 ## > `colitis_term`: "Autoimmune colitis (1)" and "Colitis (25)"
 ## > `pneumonitis_term`: x No match
-## 
-## 
 ## i Set `verbose` to FALSE to suppress this section.
-## 
-## 
 ## 
 ## -- x Unmatched reactions --
 ## 
-## 
-## 
 ## -- ! Some reactions did not start with a Capital letter 
-## 
-## 
 ## 
 ## * In `pneumonitis_term`: x "pneumonitis"
 ```
