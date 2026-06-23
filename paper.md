@@ -130,12 +130,12 @@ and adverse events. Also, there is no existing package in the open-source commun
 that prepares pharmacovigilance data in order to build advanced disproportionality
 metrics, such as machine or deep learning models.
 Finally, only a few of these packages are available on mainstream
-platforms such as CRAN. [@embry_vaersvax_2018; @embry_vaersndvax_2016]
+platforms such as CRAN.[@embry_vaersvax_2018; @embry_vaersndvax_2016]
 
 # Research impact and significance
 
 Our team and collaborators have already published several
-pharmacovigilance studies using vigicaen. [@legallois2025,
+pharmacovigilance studies using vigicaen.[@legallois2025,
 @dolladille2020, @alexandre2021, @chretien2025, @nishida2025,
 @minoc2025]. Vigicaen streamlines the data management process of
 pharmacovigilance studies, allowing for easier collaboration across
@@ -259,8 +259,9 @@ tb_vigibase(path_base, path_sub)
 ## 
 ## This process must only be done once per database version.
 ## It can take up to 30minutes.
-## =========>---------------------   31% | 1.1s | Read SRCE.txt 
-##                                                               
+## ==========>--------------------   33% | 1s | Remove duplicates 
+## ==========>--------------------   34% | 1.1s | Write srce.parquet 
+##                                                                    
 ```
 
 
@@ -412,12 +413,17 @@ adverse event outcomes (`desc_outcome()`).
 
 # Disproportionality estimates
 
-Although the aim of the package is to prepare readily available datasets
-for users to compute disproportionality on their own via advanced
+Generating
+disproportionality estimates, metrics aiming at evaluating the association between
+drug intake and adverse drug reaction occurrence, 
+remains a cornerstone of safety signal
+detection in the field of pharmacovigilance.[@montastruc2011] Although the aim of the 
+package is to prepare readily available datasets
+for users to compute disproportionality estimates on their own via advanced
 modeling techniques, it also provides basic estimates through the
 `compute_dispro()` and `compute_interaction()` functions. The underlying
 computations rely on the Norén et al. methodology for both point
-estimates, confidence, and credibility intervals. [@norén2013]
+estimates, confidence, and credibility intervals.[@norén2013]
 
 # Routine use
 
