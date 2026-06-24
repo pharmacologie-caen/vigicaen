@@ -50,7 +50,8 @@
 <h2 class="pkg-version" data-toc-text="development version" id="vigicaen-development-version">vigicaen (development version)<a class="anchor" aria-label="anchor" href="#vigicaen-development-version"></a></h2>
 <div class="section level3">
 <h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
-<ul><li><p><code><a href="../reference/tb_vigibase.html">tb_vigibase()</a></code> and <code><a href="../reference/tb_who.html">tb_who()</a></code> now work with (and only with) csv files, instead of txt files. This is to align with new export format of VigiBase ECL. Thanks to Maxime Demourgues for pointing out this issue.</p></li>
+<ul><li><p>Named list arguments (such as those passed to <code>get_*</code> and <code>add_*</code> functions) are now checked for duplicate names. Providing the same name twice in a list is an error. The error message indicates the problematic name(s) and their positions in the list. (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/142" class="external-link">#142</a>)</p></li>
+<li><p><code><a href="../reference/tb_vigibase.html">tb_vigibase()</a></code> and <code><a href="../reference/tb_who.html">tb_who()</a></code> now work with (and only with) csv files, instead of txt files. This is to align with new export format of VigiBase ECL. Thanks to Maxime Demourgues for pointing out this issue.</p></li>
 <li><p><code>Record_Id</code> replaces <code>MedicinalProd_Id</code> throughout the package. This is also an alignment with newer export.</p></li>
 <li><p>Table <code>prg</code> is no longer in the export, it has been removed from <code><a href="../reference/tb_who.html">tb_who()</a></code> process, as for variable <code>Pharmform_Id</code>.</p></li>
 </ul></div>

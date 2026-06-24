@@ -27,6 +27,9 @@ Useful links:
 
 Authors:
 
+- Charles Dolladille <cdolladille@hotmail.com>
+  ([ORCID](https://orcid.org/0000-0003-0449-6261))
+
 - Basile Chrétien ([ORCID](https://orcid.org/0000-0002-7483-2489))
 
 Other contributors:

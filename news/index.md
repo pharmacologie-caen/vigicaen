@@ -4,6 +4,12 @@
 
 ### New features
 
+- Named list arguments (such as those passed to `get_*` and `add_*`
+  functions) are now checked for duplicate names. Providing the same
+  name twice in a list is an error. The error message indicates the
+  problematic name(s) and their positions in the list.
+  ([\#142](https://github.com/pharmacologie-caen/vigicaen/issues/142))
+
 - [`tb_vigibase()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_vigibase.md)
   and
   [`tb_who()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_who.md)
