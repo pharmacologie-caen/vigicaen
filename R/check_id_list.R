@@ -56,6 +56,28 @@ check_id_list <-
       )
     }
 
+    names_of_list <- names(id_list)
+    dup_names <- unique(names_of_list[duplicated(names_of_list)])
+
+    if (length(dup_names) > 0) {
+      dup_positions <- purrr::map_chr(
+        dup_names,
+        function(dn) {
+          pos <- which(names_of_list == dn)
+          cli::format_inline("{.val {dn}} at position{?s} {pos}")
+        }
+      )
+
+      cli::cli_abort(
+        c(
+          "{.arg {arg}} must have {.strong unique} names.",
+          "x" = "Redundant name{?s} found in {.arg {arg}}:",
+          rlang::set_names(dup_positions, rep("i", length(dup_positions)))
+        ),
+        call = call
+      )
+    }
+
     if(!unique_character_type & !unique_numeric_type & !unique_integer_type) {
       cli::cli_abort(
         c("{.arg {arg}} items must all be of type {.strong character} or {.strong numeric}.",

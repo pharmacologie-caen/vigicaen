@@ -1,3 +1,34 @@
+test_that("id list checker catches duplicate names", {
+  dup_names_list <-
+    list(
+      intervention = "a",
+      intervention = "b"
+    )
+
+  dup_names_list2 <-
+    list(
+      intervention = "a",
+      control = "c",
+      intervention = "b"
+    )
+
+  expect_snapshot(
+    error = TRUE, {
+      check_id_list(dup_names_list)
+    })
+
+  expect_snapshot(
+    error = TRUE, {
+      check_id_list(dup_names_list2)
+    })
+
+  cli::test_that_cli("format is ok", {
+    expect_snapshot(error = TRUE, {
+      check_id_list(dup_names_list, arg = "x")
+    })
+  })
+})
+
 test_that("id list checker works for both character and numeric inputs", {
   good_list <-
     list(
