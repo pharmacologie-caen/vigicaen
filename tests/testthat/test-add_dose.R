@@ -544,3 +544,32 @@ test_that("works with record_id", {
   expect_equal(mean(demo$para_dose_mg_per_day, na.rm = TRUE), 1087.5)
 
 })
+
+test_that("can overwrite existing columns", {
+
+  mpi <- rlang::list2(
+    para = mp_[DrecNo == "42225260", Record_Id]
+  )
+
+  suppressMessages(
+    demo <-
+      demo_ |>
+      add_dose(
+        d_code = mpi,
+        d_dose_names = names(mpi),
+        method = "Record_Id",
+        repbasis = "sci",
+        drug_data = drug_
+      ) |>
+      add_dose(
+        d_code = mpi,
+        d_dose_names = names(mpi),
+        method = "Record_Id",
+        repbasis = "sci",
+        drug_data = drug_
+      )
+  )
+
+  expect_equal(mean(demo$para_dose_mg_per_day, na.rm = TRUE), 1087.5)
+
+})
