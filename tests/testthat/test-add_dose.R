@@ -35,11 +35,18 @@ test_that("finding or not finding drug dose displays correctly", {
 
   # arbitrarily complex combination
 
+  d_code_complex <- list(paracetamol = c(97818920, 97409107),
+                 unknown_drug = c(99999999),
+                 para2 = c(97818920, 97409107),
+                 para_3 = c(97818920, 97409107),
+                 para_4 = c(99999999)
+  )
+
   expect_snapshot(
     demo <-
       add_dose(
         .data = demo_,
-        d_code = d_code[c(1, 2, 3, 1, 2)],
+        d_code = d_code_complex,
         drug_data = drug_
       )
   )
