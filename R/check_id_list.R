@@ -62,9 +62,9 @@ check_id_list <-
     if (length(dup_names) > 0) {
       dup_positions <- purrr::map_chr(
         dup_names,
-        function(dn) {
-          pos <- which(names_of_list == dn)
-          cli::format_inline("{.val {dn}} at position{?s} {pos}")
+        function(dup_name) {
+          pos <- which(names_of_list == dup_name)
+          cli::format_inline("{.val {dup_name}} at position{?s} {pos}")
         }
       )
 
