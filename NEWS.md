@@ -1,4 +1,19 @@
-# vigicaen (development version)
+# vigicaen 2.0.0
+
+## Breaking changes
+
+* Due to a major update of the vigibase extract format (now delivered as
+.csv instead of .txt), significant changes were made to vigicaen. Most of
+these will remain purely internal and you won't even get to notice them.
+
+The most important point is:
+
+> You cannot use vigicaen v2.0.0 or higher with a vigibase extract version
+older than March 2026. 
+
+> To use vigicaen with older datasets, install an older
+version, with 
+`remotes::install_version("vigicaen", version = "1.0.0", repos = "http://cran.us.r-project.org")`
 
 ## New features
 
@@ -19,9 +34,9 @@ as for variable `Pharmform_Id`.
 
 ## Bug fixes
 
-* #167 `get_drecno()`, `get_atc_code()`, `get_llt_soc()`, and `get_llt_smq()` now
+* `get_drecno()`, `get_atc_code()`, `get_llt_soc()`, and `get_llt_smq()` now
 correctly handle Arrow `Dataset` objects (e.g., from `arrow::open_dataset()`) in
-addition to `Table` objects, by pulling them into memory before processing.
+addition to `Table` objects, by pulling them into memory before processing. (#167)
 
 * Internal warning fix with `get_llt_smq()` due to dplyr v1.2.0 requirements with
 `dplyr::case_when()` (https://github.com/tidyverse/dplyr/issues/7082).
