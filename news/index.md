@@ -26,6 +26,17 @@
 
 ### Bug fixes
 
+- [\#167](https://github.com/pharmacologie-caen/vigicaen/issues/167)
+  [`get_drecno()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_drecno.md),
+  [`get_atc_code()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_atc_code.md),
+  [`get_llt_soc()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_llt_soc.md),
+  and
+  [`get_llt_smq()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_llt_smq.md)
+  now correctly handle Arrow `Dataset` objects (e.g., from
+  [`arrow::open_dataset()`](https://arrow.apache.org/docs/r/reference/open_dataset.html))
+  in addition to `Table` objects, by pulling them into memory before
+  processing.
+
 - Internal warning fix with
   [`get_llt_smq()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_llt_smq.md)
   due to dplyr v1.2.0 requirements with
