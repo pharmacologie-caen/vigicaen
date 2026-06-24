@@ -47,17 +47,28 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="vigicaen-development-version">vigicaen (development version)<a class="anchor" aria-label="anchor" href="#vigicaen-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="2.0.0" id="vigicaen-200">vigicaen 2.0.0<a class="anchor" aria-label="anchor" href="#vigicaen-200"></a></h2>
 <div class="section level3">
-<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="breaking-changes-2-0-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-2-0-0"></a></h3>
+<ul><li>Due to a major update of the vigibase extract format (now delivered as .csv instead of .txt), significant changes were made to vigicaen. Most of these will remain purely internal and you won’t even get to notice them.</li>
+</ul><p>The most important point is:</p>
+<blockquote>
+<p>You cannot use vigicaen v2.0.0 or higher with a vigibase extract version older than March 2026.</p>
+</blockquote>
+<blockquote>
+<p>To use vigicaen with older datasets, install an older version, with <code>remotes::install_version("vigicaen", version = "1.0.0", repos = "http://cran.us.r-project.org")</code></p>
+</blockquote>
+</div>
+<div class="section level3">
+<h3 id="new-features-2-0-0">New features<a class="anchor" aria-label="anchor" href="#new-features-2-0-0"></a></h3>
 <ul><li><p>Named list arguments (such as those passed to <code>get_*</code> and <code>add_*</code> functions) are now checked for duplicate names. Providing the same name twice in a list is an error. The error message indicates the problematic name(s) and their positions in the list. (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/142" class="external-link">#142</a>)</p></li>
 <li><p><code><a href="../reference/tb_vigibase.html">tb_vigibase()</a></code> and <code><a href="../reference/tb_who.html">tb_who()</a></code> now work with (and only with) csv files, instead of txt files. This is to align with new export format of VigiBase ECL. Thanks to Maxime Demourgues for pointing out this issue.</p></li>
 <li><p><code>Record_Id</code> replaces <code>MedicinalProd_Id</code> throughout the package. This is also an alignment with newer export.</p></li>
 <li><p>Table <code>prg</code> is no longer in the export, it has been removed from <code><a href="../reference/tb_who.html">tb_who()</a></code> process, as for variable <code>Pharmform_Id</code>.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-development-version">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
-<ul><li><p><a href="https://github.com/pharmacologie-caen/vigicaen/issues/167" class="external-link">#167</a> <code><a href="../reference/get_drecno.html">get_drecno()</a></code>, <code><a href="../reference/get_atc_code.html">get_atc_code()</a></code>, <code><a href="../reference/get_llt_soc.html">get_llt_soc()</a></code>, and <code><a href="../reference/get_llt_smq.html">get_llt_smq()</a></code> now correctly handle Arrow <code>Dataset</code> objects (e.g., from <code><a href="https://arrow.apache.org/docs/r/reference/open_dataset.html" class="external-link">arrow::open_dataset()</a></code>) in addition to <code>Table</code> objects, by pulling them into memory before processing.</p></li>
+<h3 id="bug-fixes-2-0-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-2-0-0"></a></h3>
+<ul><li><p><code><a href="../reference/get_drecno.html">get_drecno()</a></code>, <code><a href="../reference/get_atc_code.html">get_atc_code()</a></code>, <code><a href="../reference/get_llt_soc.html">get_llt_soc()</a></code>, and <code><a href="../reference/get_llt_smq.html">get_llt_smq()</a></code> now correctly handle Arrow <code>Dataset</code> objects (e.g., from <code><a href="https://arrow.apache.org/docs/r/reference/open_dataset.html" class="external-link">arrow::open_dataset()</a></code>) in addition to <code>Table</code> objects, by pulling them into memory before processing. (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/167" class="external-link">#167</a>)</p></li>
 <li><p>Internal warning fix with <code><a href="../reference/get_llt_smq.html">get_llt_smq()</a></code> due to dplyr v1.2.0 requirements with <code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">dplyr::case_when()</a></code> (<a href="https://github.com/tidyverse/dplyr/issues/7082" class="external-link uri">https://github.com/tidyverse/dplyr/issues/7082</a>).</p></li>
 </ul></div>
 </div>

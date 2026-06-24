@@ -1,6 +1,21 @@
 # Changelog
 
-## vigicaen (development version)
+## vigicaen 2.0.0
+
+### Breaking changes
+
+- Due to a major update of the vigibase extract format (now delivered as
+  .csv instead of .txt), significant changes were made to vigicaen. Most
+  of these will remain purely internal and you won’t even get to notice
+  them.
+
+The most important point is:
+
+> You cannot use vigicaen v2.0.0 or higher with a vigibase extract
+> version older than March 2026.
+
+> To use vigicaen with older datasets, install an older version, with
+> `remotes::install_version("vigicaen", version = "1.0.0", repos = "http://cran.us.r-project.org")`
 
 ### New features
 
@@ -26,8 +41,7 @@
 
 ### Bug fixes
 
-- [\#167](https://github.com/pharmacologie-caen/vigicaen/issues/167)
-  [`get_drecno()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_drecno.md),
+- [`get_drecno()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_drecno.md),
   [`get_atc_code()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_atc_code.md),
   [`get_llt_soc()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_llt_soc.md),
   and
@@ -36,6 +50,7 @@
   [`arrow::open_dataset()`](https://arrow.apache.org/docs/r/reference/open_dataset.html))
   in addition to `Table` objects, by pulling them into memory before
   processing.
+  ([\#167](https://github.com/pharmacologie-caen/vigicaen/issues/167))
 
 - Internal warning fix with
   [`get_llt_smq()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_llt_smq.md)
