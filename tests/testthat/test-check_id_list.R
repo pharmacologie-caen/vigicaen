@@ -12,6 +12,15 @@ test_that("id list checker catches duplicate names", {
       intervention = "b"
     )
 
+  dup_names_list3 <-
+    list(
+      intervention = "a",
+      control = "c",
+      intervention = "b",
+      control = "d",
+      other = "e"
+    )
+
   expect_snapshot(
     error = TRUE, {
       check_id_list(dup_names_list)
@@ -20,6 +29,11 @@ test_that("id list checker catches duplicate names", {
   expect_snapshot(
     error = TRUE, {
       check_id_list(dup_names_list2)
+    })
+
+  expect_snapshot(
+    error = TRUE, {
+      check_id_list(dup_names_list3)
     })
 
   cli::test_that_cli("format is ok", {

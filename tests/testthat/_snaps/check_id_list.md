@@ -1,3 +1,74 @@
+# id list checker catches duplicate names
+
+    Code
+      check_id_list(dup_names_list)
+    Condition
+      Error:
+      ! `dup_names_list` must have unique names.
+      x Redundant name found in `dup_names_list`:
+      i "intervention" at position 1 and 2
+
+---
+
+    Code
+      check_id_list(dup_names_list2)
+    Condition
+      Error:
+      ! `dup_names_list2` must have unique names.
+      x Redundant name found in `dup_names_list2`:
+      i "intervention" at position 1 and 3
+
+---
+
+    Code
+      check_id_list(dup_names_list3)
+    Condition
+      Error:
+      ! `dup_names_list3` must have unique names.
+      x Redundant name found in `dup_names_list3`:
+      i "intervention" at position 1 and 3
+      i "control" at position 2 and 4
+
+# id list checker catches duplicate names / format is ok [plain]
+
+    Code
+      check_id_list(dup_names_list, arg = "x")
+    Condition
+      Error:
+      ! `x` must have unique names.
+      x Redundant name found in `x`:
+      i "intervention" at position 1 and 2
+
+# id list checker catches duplicate names / format is ok [ansi]
+
+    Code
+      check_id_list(dup_names_list, arg = "x")
+    Condition
+      [1m[33mError[39m:[22m
+      [1m[22m[33m![39m `x` must have [1munique[22m names.
+      [31mx[39m Redundant name found in `x`:
+      [36mi[39m [34m"intervention"[39m at position 1 and 2
+
+# id list checker catches duplicate names / format is ok [unicode]
+
+    Code
+      check_id_list(dup_names_list, arg = "x")
+    Condition
+      Error:
+      ! `x` must have unique names.
+      ✖ Redundant name found in `x`:
+      ℹ "intervention" at position 1 and 2
+
+# id list checker catches duplicate names / format is ok [fancy]
+
+    Code
+      check_id_list(dup_names_list, arg = "x")
+    Condition
+      [1m[33mError[39m:[22m
+      [1m[22m[33m![39m `x` must have [1munique[22m names.
+      [31m✖[39m Redundant name found in `x`:
+      [36mℹ[39m [34m"intervention"[39m at position 1 and 2
+
 # id list checker works for both character and numeric inputs
 
     Code
