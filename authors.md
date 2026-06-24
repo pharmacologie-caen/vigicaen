@@ -20,13 +20,13 @@ Source:
 [`DESCRIPTION`](https://github.com/pharmacologie-caen/vigicaen/blob/master/DESCRIPTION)
 
 Dolladille C, Chrétien B (2026). *vigicaen: 'VigiBase' Pharmacovigilance
-Database Toolbox*. R package version 1.0.0.9000,
+Database Toolbox*. R package version 2.0.0,
 <https://github.com/pharmacologie-caen/vigicaen>.
 
     @Manual{,
       title = {vigicaen: 'VigiBase' Pharmacovigilance Database Toolbox},
       author = {Charles Dolladille and Basile Chrétien},
       year = {2026},
-      note = {R package version 1.0.0.9000},
+      note = {R package version 2.0.0},
       url = {https://github.com/pharmacologie-caen/vigicaen},
     }
