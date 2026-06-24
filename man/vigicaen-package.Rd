@@ -24,6 +24,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Charles Dolladille \email{cdolladille@hotmail.com} (\href{https://orcid.org/0000-0003-0449-6261}{ORCID})
   \item Basile Chrétien (\href{https://orcid.org/0000-0002-7483-2489}{ORCID})
 }
 

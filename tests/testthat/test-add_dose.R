@@ -35,11 +35,18 @@ test_that("finding or not finding drug dose displays correctly", {
 
   # arbitrarily complex combination
 
+  d_code_complex <- list(paracetamol = c(97818920, 97409107),
+                 unknown_drug = c(99999999),
+                 para2 = c(97818920, 97409107),
+                 para_3 = c(97818920, 97409107),
+                 para_4 = c(99999999)
+  )
+
   expect_snapshot(
     demo <-
       add_dose(
         .data = demo_,
-        d_code = d_code[c(1, 2, 3, 1, 2)],
+        d_code = d_code_complex,
         drug_data = drug_
       )
   )
@@ -525,6 +532,35 @@ test_that("works with record_id", {
   suppressMessages(
     demo <-
       demo_ |>
+      add_dose(
+        d_code = mpi,
+        d_dose_names = names(mpi),
+        method = "Record_Id",
+        repbasis = "sci",
+        drug_data = drug_
+      )
+  )
+
+  expect_equal(mean(demo$para_dose_mg_per_day, na.rm = TRUE), 1087.5)
+
+})
+
+test_that("can overwrite existing columns", {
+
+  mpi <- rlang::list2(
+    para = mp_[DrecNo == "42225260", Record_Id]
+  )
+
+  suppressMessages(
+    demo <-
+      demo_ |>
+      add_dose(
+        d_code = mpi,
+        d_dose_names = names(mpi),
+        method = "Record_Id",
+        repbasis = "sci",
+        drug_data = drug_
+      ) |>
       add_dose(
         d_code = mpi,
         d_dose_names = names(mpi),

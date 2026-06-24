@@ -2,6 +2,11 @@
 
 ## New features
 
+* Named list arguments (such as those passed to `get_*` and `add_*` functions) are
+now checked for duplicate names. Providing the same name twice in a list is an
+error. The error message indicates the problematic name(s) and their positions
+in the list. (#142)
+
 * `tb_vigibase()` and `tb_who()` now work with (and only with) csv files, instead
 of txt files. This is to align with new export format of VigiBase ECL. Thanks
 to Maxime Demourgues for pointing out this issue.
