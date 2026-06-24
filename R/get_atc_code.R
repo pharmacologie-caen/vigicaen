@@ -69,14 +69,14 @@ get_atc_code <-
       cli::cli_warn("names of atc_sel were tolower-ed and trimed")
     }
 
-    if("Table"  %in% class(mp)){
+    if(any(c("Table", "Dataset") %in% class(mp))){
       # automatically collect mp if out of memory
       # since it's a small table
       mp <-
         dplyr::collect(mp)
     }
 
-    if("Table"  %in% class(thg_data)){
+    if(any(c("Table", "Dataset") %in% class(thg_data))){
       # automatically collect thg_data if out of memory
       # since it's a small table
       thg_data <-

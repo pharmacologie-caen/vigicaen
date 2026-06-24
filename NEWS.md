@@ -14,6 +14,10 @@ as for variable `Pharmform_Id`.
 
 ## Bug fixes
 
+* #167 `get_drecno()`, `get_atc_code()`, `get_llt_soc()`, and `get_llt_smq()` now
+correctly handle Arrow `Dataset` objects (e.g., from `arrow::open_dataset()`) in
+addition to `Table` objects, by pulling them into memory before processing.
+
 * Internal warning fix with `get_llt_smq()` due to dplyr v1.2.0 requirements with
 `dplyr::case_when()` (https://github.com/tidyverse/dplyr/issues/7082).
 

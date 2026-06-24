@@ -718,3 +718,46 @@ test_that_cli("ambiguous drug name format is ok", {
       )
   )
 })
+
+test_that("works with mp as Dataset (open_dataset, out of memory)", {
+
+  nivo_drecno <- 111841511
+
+  ipi_drecno <- 133138448
+
+  d_sel_names <- rlang::list2(
+    nivolumab = "nivolumab",
+    ipilimumab = "ipilimumab"
+  )
+
+  d_drecno_nocomb <- rlang::list2(
+    nivo_drecno,
+    ipi_drecno
+  ) %>%
+    rlang::set_names(names(d_sel_names))
+
+  path_test_dir <- file.path(tempdir(), "vigicaen_test_dataset")
+
+  if (dir.exists(path_test_dir))
+    unlink(path_test_dir, recursive = TRUE)
+
+  dir.create(path_test_dir)
+
+  path_mp_parquet <- file.path(path_test_dir, "mp.parquet")
+
+  arrow::write_parquet(mp_, sink = path_mp_parquet)
+
+  mp_dataset <- arrow::open_dataset(path_mp_parquet)
+
+  expect_equal(
+    get_drecno(d_sel = d_sel_names,
+               mp = mp_dataset,
+               allow_combination = FALSE,
+               method = "drug_name",
+               verbose = FALSE
+    ),
+    d_drecno_nocomb
+  )
+
+  unlink(path_test_dir, recursive = TRUE)
+})
