@@ -15,3 +15,5 @@ data-raw/nums_shuffled.RData
 .vs/
 
 .vscode/
+
+revdep/library/
