@@ -77,7 +77,7 @@ get_llt_smq <-
         c("1", "2")
       }
 
-    if("Table"  %in% class(smq_list)){
+    if(any(c("Table", "Dataset") %in% class(smq_list))){
       # automatically collect smq_list and smq_content if out of memory
       # since they are small tables
       smq_list <-
@@ -85,7 +85,7 @@ get_llt_smq <-
     }
 
 
-    if("Table"  %in% class(smq_content)){
+    if(any(c("Table", "Dataset") %in% class(smq_content))){
       smq_content <-
         dplyr::collect(smq_content)
     }

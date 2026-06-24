@@ -63,7 +63,7 @@ get_llt_soc <-
 
     term_col  <- paste0(term_level, "_name")
 
-    if("Table"  %in% class(meddra)){
+    if(any(c("Table", "Dataset") %in% class(meddra))){
       # automatically collect meddra if out of memory
       # since it's a small table
       meddra <-
