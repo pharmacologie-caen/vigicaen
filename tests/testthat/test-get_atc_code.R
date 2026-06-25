@@ -255,6 +255,7 @@ test_that("verbose controls success messages", {
     )
 
   expect_message(
+    expect_message(
     get_atc_code(
       atc_sel = atc_sel,
       mp = mp_,
@@ -263,16 +264,7 @@ test_that("verbose controls success messages", {
       verbose = TRUE
     ),
     "get_atc_code\\(\\)"
-  )
-
-  expect_message(
-    get_atc_code(
-      atc_sel = atc_sel,
-      mp = mp_,
-      thg_data = thg_,
-      vigilyze = TRUE,
-      verbose = TRUE
-    ),
+  ),
     "DrecNo"
   )
 
