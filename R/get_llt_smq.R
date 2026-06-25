@@ -14,6 +14,7 @@
 #' @param smq_scope A character vector. One of "narrow" or "broad".
 #' @param smq_list A data.table. A list of SMQs.
 #' @param smq_content A data.table. A list of SMQs content.
+#' @param verbose Logical. Allows you to see matching SMQs in the console.
 #' @param smq_list_content  `r lifecycle::badge('deprecated')`
 #' @returns A named list of integers. Low-level term codes.
 #' @keywords data_management meddra smq llt
@@ -50,6 +51,7 @@ get_llt_smq <-
     smq_scope = c("narrow", "broad"),
     smq_list,
     smq_content,
+    verbose = TRUE,
     smq_list_content = deprecated()
   ){
 
@@ -220,6 +222,34 @@ get_llt_smq <-
       any()
 
     # ---- Render get_llt_smq() messages ----
+
+    if (verbose == TRUE && !any_sub && !any_failure) {
+      cli_h1("get_llt_smq()")
+      cli_h2("{col_green({symbol$tick})} Matched SMQs (number of LLT codes)")
+
+      purrr::iwalk(
+        llt_list,
+        function(one_llt, one_name) {
+          matched_smq_names <- names(res_list_codes[[one_name]])
+          matched_smq_label <- paste0(matched_smq_names, collapse = " and ")
+
+          cli::cli_inform(
+            c(">" = paste0(
+              "{.code {one_name}}: ",
+              "{.val {matched_smq_label}}",
+              " (",
+              length(one_llt),
+              ")"
+            ))
+          )
+        }
+      )
+
+      cli::cli_alert_info(
+        "Set {.arg verbose} to FALSE to suppress this section."
+      )
+      cli_rule()
+    }
 
     if (any_sub | any_failure)
       cli_h1("get_llt_smq()")

@@ -108,6 +108,33 @@ test_that("omitting ' (SMQ)' is corrected", {
   expect_equal(r1[["embolism"]], r1[["embolism2"]])
 })
 
+test_that("verbose controls success messages", {
+  smq_sel <- rlang::list2(
+    embolism = "Embolic and thrombotic events, venous (SMQ)"
+  )
+
+  expect_message(
+    get_llt_smq(
+      smq_sel,
+      smq_scope = "narrow",
+      smq_list = smq_list_,
+      smq_content = smq_content_,
+      verbose = TRUE
+    ),
+    "get_llt_smq\\(\\)"
+  )
+
+  expect_no_message(
+    get_llt_smq(
+      smq_sel,
+      smq_scope = "narrow",
+      smq_list = smq_list_,
+      smq_content = smq_content_,
+      verbose = FALSE
+    )
+  )
+})
+
 test_that("errors and warnings pop as needed", {
 
   smq_sel <- rlang::list2(
@@ -209,7 +236,8 @@ test_that("works with multiple smqs in a single item", {
     r1 <- get_llt_smq(smq_sel_low,
                 smq_scope =  "narrow",
                 smq_list_,
-                smq_content_)
+                smq_content_,
+                verbose = FALSE)
   )
 
   adr_llt2 <-

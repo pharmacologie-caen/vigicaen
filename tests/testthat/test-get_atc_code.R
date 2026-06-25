@@ -247,3 +247,42 @@ test_that("codes of different length work", {
   )
 
 })
+
+test_that("verbose controls success messages", {
+  atc_sel <-
+    rlang::list2(
+      l03_j01 = c("L03AA", "J01CA")
+    )
+
+  expect_message(
+    get_atc_code(
+      atc_sel = atc_sel,
+      mp = mp_,
+      thg_data = thg_,
+      vigilyze = TRUE,
+      verbose = TRUE
+    ),
+    "get_atc_code\\(\\)"
+  )
+
+  expect_message(
+    get_atc_code(
+      atc_sel = atc_sel,
+      mp = mp_,
+      thg_data = thg_,
+      vigilyze = TRUE,
+      verbose = TRUE
+    ),
+    "DrecNo"
+  )
+
+  expect_no_message(
+    get_atc_code(
+      atc_sel = atc_sel,
+      mp = mp_,
+      thg_data = thg_,
+      vigilyze = TRUE,
+      verbose = FALSE
+    )
+  )
+})

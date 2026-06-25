@@ -32,6 +32,9 @@ now checked for duplicate names. Providing the same name twice in a list is an
 error. The error message indicates the problematic name(s) and their positions
 in the list. (#142)
 
+* `get_atc_code()` and `get_llt_smq()` now provide verbose success-path CLI
+messages (with a `verbose` argument to suppress them). (#177)
+
 * `tb_vigibase()` and `tb_who()` now work with (and only with) csv files, instead
 of txt files. This is to align with new export format of VigiBase ECL. Thanks
 to Maxime Demourgues for pointing out this issue.

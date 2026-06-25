@@ -15,6 +15,7 @@
 #' @param vigilyze A logical. Should ATC classes be retrieved using the vigilyze style? See details
 #' @param mp A modified MP data.table. See \code{\link{mp_}}
 #' @param thg_data A data.table. Correspondence between ATC codes and Record_Id (usually, it is `thg`)
+#' @param verbose A logical. Allows you to see matching ATC classes in the console.
 #' @keywords data_management drug atc
 #' @export
 #' @returns A named list of integers. **DrecNos** if `vigilyze` is set to `TRUE`,
@@ -53,7 +54,8 @@ get_atc_code <-
   function(atc_sel,
            mp,
            thg_data,
-           vigilyze = TRUE) {
+           vigilyze = TRUE,
+           verbose = TRUE) {
 
 
 
@@ -110,13 +112,37 @@ get_atc_code <-
           purrr::flatten_dbl()
       )
 
+    if (verbose == TRUE) {
+      cli_h1("get_atc_code()")
+      cli_h2("{col_green({symbol$tick})} Matched ATC classes ({.arg atc_sel})")
+
+      purrr::iwalk(
+        atc_sel_rcid,
+        function(one_ids, one_name) {
+          cli::cli_inform(
+            c(">" = paste0(
+              "{.code {one_name}}: ",
+              length(unique(one_ids)),
+              " Record_Id values"
+            ))
+          )
+        }
+      )
+    }
+
     # vigilyze is TRUE : use get_drecno ----
     # vigilyze is FALSE : return result ----
 
     if (vigilyze) {
-      cli::cli_alert_info(
-        "vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)"
+      if (verbose == TRUE) {
+        cli::cli_alert_info(
+          "vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)"
         )
+        cli::cli_alert_info(
+          "Set {.arg verbose} to FALSE to suppress this section."
+        )
+        cli_rule()
+      }
 
       get_drecno(
         d_sel = atc_sel_rcid,
@@ -128,9 +154,15 @@ get_atc_code <-
 
     } else {
 
-      cli::cli_alert_info(
-        "vigilyze set to FALSE, extracting Record_Ids (?get_atc_code for details)"
+      if (verbose == TRUE) {
+        cli::cli_alert_info(
+          "vigilyze set to FALSE, extracting Record_Ids (?get_atc_code for details)"
         )
+        cli::cli_alert_info(
+          "Set {.arg verbose} to FALSE to suppress this section."
+        )
+        cli_rule()
+      }
 
       atc_sel_rcid
     }

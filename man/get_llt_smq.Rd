@@ -9,6 +9,7 @@ get_llt_smq(
   smq_scope = c("narrow", "broad"),
   smq_list,
   smq_content,
+  verbose = TRUE,
   smq_list_content = deprecated()
 )
 }
@@ -20,6 +21,8 @@ get_llt_smq(
 \item{smq_list}{A data.table. A list of SMQs.}
 
 \item{smq_content}{A data.table. A list of SMQs content.}
+
+\item{verbose}{Logical. Allows you to see matching SMQs in the console.}
 
 \item{smq_list_content}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
 }

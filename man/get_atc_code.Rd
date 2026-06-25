@@ -4,7 +4,7 @@
 \alias{get_atc_code}
 \title{Get ATC codes (DrecNos or MPIs)}
 \usage{
-get_atc_code(atc_sel, mp, thg_data, vigilyze = TRUE)
+get_atc_code(atc_sel, mp, thg_data, vigilyze = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{atc_sel}{A named list of ATC codes. See Details.}
@@ -14,6 +14,8 @@ get_atc_code(atc_sel, mp, thg_data, vigilyze = TRUE)
 \item{thg_data}{A data.table. Correspondence between ATC codes and Record_Id (usually, it is \code{thg})}
 
 \item{vigilyze}{A logical. Should ATC classes be retrieved using the vigilyze style? See details}
+
+\item{verbose}{A logical. Allows you to see matching ATC classes in the console.}
 }
 \value{
 A named list of integers. \strong{DrecNos} if \code{vigilyze} is set to \code{TRUE},
