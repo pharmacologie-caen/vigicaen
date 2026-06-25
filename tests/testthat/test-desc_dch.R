@@ -160,7 +160,7 @@ test_that("tidy-select works", {
 
   expect_equal(
     desc_dch(link_dch,
-             adr_s = dplyr::starts_with("adr"),
+             adr_s = dplyr::matches("^adr\\d"),
              drug_s = dplyr::starts_with("drug1")),
     desc_dch(link_dch, adr_s = c("adr1", "adr2"), drug_s = "drug1")
   )

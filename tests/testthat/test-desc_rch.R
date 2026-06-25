@@ -139,12 +139,12 @@ test_that("works with few data", {
 
 test_that("tidy-select works", {
 
-  expect_snapshot({
+  suppressMessages(
    link_ <-
      link_ %>%
      add_drug(d_code = ex_$d_groups_drecno, drug_data = drug_) %>%
      add_adr(a_code = ex_$a_llt, adr_data = adr_)
-  })
+  )
 
   expect_equal(
    desc_rch(.data = link_, adr_s = a_colitis, drug_s = pd1),

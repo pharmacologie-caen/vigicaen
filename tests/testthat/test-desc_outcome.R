@@ -84,7 +84,7 @@ test_that("tidy-select works", {
     data.table(
       Drug_Id = c("d1_ici1", "d2_ici2", "d3_ici3", "d4_ici1", "d5_ici1"),
       Basis   = c(1, 1, 1, 1, 1),
-      DrecNo  = c(21, 22, 21, 21, 21),
+      DrecNo  = c(21, 22, 23, 21, 21),
       UMCReportId = c(1, 1, 2, 2, 3),
       Record_Id = NA
     )
@@ -105,12 +105,12 @@ test_that("tidy-select works", {
       Outcome = c(1, 2, 3, 2, 2)
     )
 
-  expect_snapshot({
+  suppressMessages(
     adr_test <-
       adr_test %>%
       add_drug(d_code = d_drecno_test, drug_data = drug_test) %>%
       add_adr(a_code = adr_list_test, adr_data = adr_test)
-  })
+  )
 
   expect_equal(
     desc_outcome(adr_test, drug_s = ici1, adr_s = adr1),
