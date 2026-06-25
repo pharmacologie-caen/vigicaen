@@ -11,13 +11,13 @@
 #'   \item `add_death()` adds a column indicating whether the case
 #'   resulted in death (i.e., `Seriousness == "1"` in the `out` table).
 #'   Cases with no outcome data are coded `NA`.
-#'   Cases with outcome data but no death are coded `FALSE`.
-#'   Cases with death are coded `TRUE`.
+#'   Cases with outcome data but no death are coded `0`.
+#'   Cases with death are coded `1`.
 #'   \item `add_serious()` adds a column indicating whether the case
 #'   was serious (i.e., `Serious == "Y"` in the `out` table).
 #'   Cases with no outcome data are coded `NA`.
-#'   Cases with outcome data but not serious are coded `FALSE`.
-#'   Serious cases are coded `TRUE`.
+#'   Cases with outcome data but not serious are coded `0`.
+#'   Serious cases are coded `1`.
 #'   \item `add_fup()` adds a column indicating whether the case has a
 #'   follow-up (i.e., `UMCReportId` appears in the `followup` table).
 #'   Cases with a follow-up are coded `1`. Others are coded `0`.
@@ -61,26 +61,37 @@ add_death <-
 
     check_data_out(out_data, "out_data")
 
-    # Collect IDs as plain R vectors (works for both in-memory and Arrow)
+    data_type <- query_data_type(.data, ".data")
+
+    if (data_type == "ind") {
+      cli::cli_abort(
+        c(
+          '{.arg .data} must be one of {.code {c("demo", "drug", "adr", "link")}}.',
+          "x" = "{.code ind} tables not supported in {.code add_death()}."
+        )
+      )
+    }
+
+    old_opt <- getOption("arrow.pull_as_vector")
+    options(arrow.pull_as_vector = TRUE)
+    on.exit(options(arrow.pull_as_vector = old_opt), add = TRUE)
 
     all_out_ids <-
       out_data |>
-      dplyr::collect() |>
       dplyr::pull("UMCReportId")
 
     death_ids <-
       out_data |>
       dplyr::filter(.data$Seriousness == "1") |>
-      dplyr::collect() |>
       dplyr::pull("UMCReportId")
 
     result <-
       .data |>
       dplyr::mutate(
-        !!col_name := ifelse(
+        "{col_name}" := ifelse(
           UMCReportId %in% .env$all_out_ids,
-          UMCReportId %in% .env$death_ids,
-          NA
+          as.integer(UMCReportId %in% .env$death_ids),
+          NA_integer_
         )
       )
 
@@ -100,26 +111,37 @@ add_serious <-
 
     check_data_out(out_data, "out_data")
 
-    # Collect IDs as plain R vectors (works for both in-memory and Arrow)
+    data_type <- query_data_type(.data, ".data")
+
+    if (data_type == "ind") {
+      cli::cli_abort(
+        c(
+          '{.arg .data} must be one of {.code {c("demo", "drug", "adr", "link")}}.',
+          "x" = "{.code ind} tables not supported in {.code add_serious()}."
+        )
+      )
+    }
+
+    old_opt <- getOption("arrow.pull_as_vector")
+    options(arrow.pull_as_vector = TRUE)
+    on.exit(options(arrow.pull_as_vector = old_opt), add = TRUE)
 
     all_out_ids <-
       out_data |>
-      dplyr::collect() |>
       dplyr::pull("UMCReportId")
 
     serious_ids <-
       out_data |>
       dplyr::filter(.data$Serious == "Y") |>
-      dplyr::collect() |>
       dplyr::pull("UMCReportId")
 
     result <-
       .data |>
       dplyr::mutate(
-        !!col_name := ifelse(
+        "{col_name}" := ifelse(
           UMCReportId %in% .env$all_out_ids,
-          UMCReportId %in% .env$serious_ids,
-          NA
+          as.integer(UMCReportId %in% .env$serious_ids),
+          NA_integer_
         )
       )
 
@@ -139,20 +161,32 @@ add_fup <-
 
     check_data_fup(fup_data, "fup_data")
 
-    # Collect IDs as plain R vectors (works for both in-memory and Arrow)
+    data_type <- query_data_type(.data, ".data")
+
+    if (data_type == "ind") {
+      cli::cli_abort(
+        c(
+          '{.arg .data} must be one of {.code {c("demo", "drug", "adr", "link")}}.',
+          "x" = "{.code ind} tables not supported in {.code add_fup()}."
+        )
+      )
+    }
+
+    old_opt <- getOption("arrow.pull_as_vector")
+    options(arrow.pull_as_vector = TRUE)
+    on.exit(options(arrow.pull_as_vector = old_opt), add = TRUE)
 
     fup_ids <-
       fup_data |>
-      dplyr::collect() |>
       dplyr::pull("UMCReportId")
 
     result <-
       .data |>
       dplyr::mutate(
-        !!col_name := ifelse(
+        "{col_name}" := ifelse(
           UMCReportId %in% .env$fup_ids,
-          1,
-          0
+          1L,
+          0L
         )
       )
 
