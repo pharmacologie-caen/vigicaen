@@ -10,15 +10,12 @@ test_that("Works for single and multiple ATC selections", {
                  c09aa = 26
     )
 
-  expect_message({
   atc_drecno <-
     get_atc_code(atc_sel = atc_sel,
                  mp = mp_,
                  thg_data = thg_,
-                 vigilyze = TRUE)
-  },
-  "DrecNo"
-  )
+                 vigilyze = TRUE,
+                 verbose = FALSE)
 
   purrr::iwalk(
     atc_sel_drecno_counts,
@@ -42,23 +39,20 @@ test_that("extracts record_id if vigilyze is FALSE", {
                  c09aa = 2185
     )
 
-  expect_message({
-    atc_drecno <-
-      get_atc_code(atc_sel = atc_sel,
-                   mp = mp_,
-                   thg_data = thg_,
-                   vigilyze = FALSE)
+  atc_drecno <-
+    get_atc_code(atc_sel = atc_sel,
+                 mp = mp_,
+                 thg_data = thg_,
+                 vigilyze = FALSE,
+                 verbose = FALSE)
 
-    purrr::iwalk(
-      atc_sel_mpi_counts,
-      function(a, a_n)
-        expect_equal(
-          length(atc_drecno[[a_n]]),
-          a
-        )
-    )
-  },
-  "Record_Id"
+  purrr::iwalk(
+    atc_sel_mpi_counts,
+    function(a, a_n)
+      expect_equal(
+        length(atc_drecno[[a_n]]),
+        a
+      )
   )
 
 })
@@ -76,17 +70,14 @@ test_that("names are tolower-ed and trimed", {
 
   # with vigilyze to TRUE
 
-  expect_warning({
-    expect_message({
+  expect_warning(
     atc_drecno <<-
       get_atc_code(atc_sel = atc_sel,
                    mp = mp_,
                    thg_data = thg_,
-                   vigilyze = TRUE)
-  },
-  "DrecNo"
-  )
-  }, "tolower-ed"
+                   vigilyze = TRUE,
+                   verbose = FALSE),
+    "tolower-ed"
   )
 
   expect_equal(
@@ -96,19 +87,17 @@ test_that("names are tolower-ed and trimed", {
 
   # with vigilyze to FALSE
 
-  expect_warning({
-    expect_message({
-      atc_drecno_vigifalse <<-
-        get_atc_code(
-          atc_sel = atc_sel,
-          mp = mp_,
-          thg_data = thg_,
-          vigilyze = FALSE
-        )
-    },
-    "Record_Id")
-  },
-  "tolower-ed")
+  expect_warning(
+    atc_drecno_vigifalse <<-
+      get_atc_code(
+        atc_sel = atc_sel,
+        mp = mp_,
+        thg_data = thg_,
+        vigilyze = FALSE,
+        verbose = FALSE
+      ),
+    "tolower-ed"
+  )
 
   expect_equal(
     names(atc_drecno_vigifalse),
@@ -128,17 +117,14 @@ test_that("works with thg or mp as Table (out of memory)", {
                  c09aa = 26
     )
 
-  expect_message({
-    atc_drecno <-
-      get_atc_code(atc_sel = atc_sel,
-                   mp = mp_ |>
-                     arrow::as_arrow_table(),
-                   thg_data = thg_ |>
-                     arrow::as_arrow_table(),
-                   vigilyze = TRUE)
-  },
-  "DrecNo"
-  )
+  atc_drecno <-
+    get_atc_code(atc_sel = atc_sel,
+                 mp = mp_ |>
+                   arrow::as_arrow_table(),
+                 thg_data = thg_ |>
+                   arrow::as_arrow_table(),
+                 vigilyze = TRUE,
+                 verbose = FALSE)
 
   purrr::iwalk(
     atc_sel_drecno_counts,
@@ -204,7 +190,7 @@ test_that("codes of different length work", {
 
   atc_res <-
     suppressMessages(
-      get_atc_code(atc_sel, mp_test, thg_test)
+      get_atc_code(atc_sel, mp_test, thg_test, verbose = FALSE)
     )
 
   # should find Drecno 130 from J01A, not Drecno 150 from L03AB
@@ -221,7 +207,7 @@ test_that("codes of different length work", {
 
   atc_res2 <-
     suppressMessages(
-      get_atc_code(atc_sel2, mp_test, thg_test)
+      get_atc_code(atc_sel2, mp_test, thg_test, verbose = FALSE)
     )
 
   # expecting both 130 from J01A and 150 from L03AB
@@ -232,7 +218,7 @@ test_that("codes of different length work", {
 
   atc_res3 <-
     suppressMessages(
-      get_atc_code(atc_sel3, mp_test, thg_test)
+      get_atc_code(atc_sel3, mp_test, thg_test, verbose = FALSE)
     )
 
   # expecting 150 only
@@ -265,7 +251,7 @@ test_that("verbose controls success messages", {
     ),
     "get_atc_code\\(\\)"
   ),
-    "DrecNo"
+    "DrecNo values"
   )
 
   expect_no_message(
@@ -277,4 +263,61 @@ test_that("verbose controls success messages", {
       verbose = FALSE
     )
   )
+
+  expect_message(
+    get_atc_code(
+      atc_sel = atc_sel,
+      mp = mp_,
+      thg_data = thg_,
+      vigilyze = FALSE,
+      verbose = TRUE
+    ),
+    "Record_Id values"
+  )
+})
+
+test_that("verbose reports unmatched ATC classes", {
+  atc_sel <-
+    rlang::list2(
+      item_with_match = c("L03AA", "NOT_AN_ATC"),
+      item_without_match = c("NOPE")
+    )
+
+  msgs <-
+    capture.output(
+      get_atc_code(
+        atc_sel = atc_sel,
+        mp = mp_,
+        thg_data = thg_,
+        vigilyze = FALSE,
+        verbose = TRUE
+      ),
+      type = "message"
+    )
+
+  expect_true(any(grepl("Matched ATC classes", msgs)))
+  expect_true(any(grepl("Unmatched ATC classes", msgs)))
+  expect_true(any(grepl("NOT_AN_ATC", msgs)))
+  expect_true(any(grepl("NOPE", msgs)))
+})
+
+test_that("matched section is hidden if all atc are unmatched", {
+  atc_sel <- rlang::list2(
+    no_match = c("NOPE", "STILL_NOPE")
+  )
+
+  msgs <-
+    capture.output(
+      get_atc_code(
+        atc_sel = atc_sel,
+        mp = mp_,
+        thg_data = thg_,
+        vigilyze = FALSE,
+        verbose = TRUE
+      ),
+      type = "message"
+    )
+
+  expect_false(any(grepl("Matched ATC classes", msgs)))
+  expect_true(any(grepl("Unmatched ATC classes", msgs)))
 })

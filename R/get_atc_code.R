@@ -105,66 +105,118 @@ get_atc_code <-
     # apply core function to each element ----
     # extract mpi (requested even if you want drecnos) ----
 
-    atc_sel_rcid <-
+    atc_sel_rcid_split <-
       purrr::map(atc_sel_renamed, function(one_sel)
         purrr::map(one_sel,
-                   core_get_atc_code) |>
-          purrr::flatten_dbl()
+                   core_get_atc_code)
       )
 
-    if (verbose == TRUE) {
-      cli_h1("get_atc_code()")
-      cli_h2("{col_green({symbol$tick})} Matched ATC classes ({.arg atc_sel})")
+    atc_sel_rcid <-
+      atc_sel_rcid_split |>
+      purrr::map(
+        purrr::flatten_dbl
+      )
 
-      purrr::iwalk(
-        atc_sel_rcid,
-        function(one_ids, one_name) {
-          cli::cli_inform(
-            c(">" = paste0(
-              "{.code {one_name}}: ",
-              length(unique(one_ids)),
-              " Record_Id values"
-            ))
-          )
+    atc_sel_no_match <-
+      purrr::imap(
+        atc_sel_rcid_split,
+        function(one_item, one_name) {
+          one_item_name <-
+            atc_sel_renamed[[one_name]]
+
+          one_item_name[lengths(one_item) == 0]
         }
-      )
-    }
+      ) |>
+      purrr::compact()
+
+    any_match <-
+      atc_sel_rcid |>
+      purrr::map_lgl(
+        ~ length(.x) > 0
+      ) |>
+      any()
+
+    any_no_match <-
+      atc_sel_no_match |>
+      purrr::map_lgl(
+        ~ length(.x) > 0
+      ) |>
+      any()
 
     # vigilyze is TRUE : use get_drecno ----
     # vigilyze is FALSE : return result ----
 
-    if (vigilyze) {
-      if (verbose == TRUE) {
+    output <-
+      if (vigilyze) {
+        get_drecno(
+          d_sel = atc_sel_rcid,
+          mp = mp,
+          allow_combination = FALSE,
+          method = "record_id",
+          verbose = FALSE
+        )
+      } else {
+        atc_sel_rcid
+      }
+
+    # ---- Render get_atc_code() messages ----
+
+    if ((verbose == TRUE && any_match) || any_no_match)
+      cli_h1("get_atc_code()")
+
+    if (verbose == TRUE && any_match) {
+
+      output_label <-
+        if(vigilyze) "DrecNo values" else "Record_Id values"
+
+      cli_h2("{col_green({symbol$tick})} Matched ATC classes ({.arg atc_sel})")
+
+      purrr::iwalk(
+        output,
+        function(one_ids, one_name) {
+          if (length(one_ids) > 0) {
+            cli::cli_inform(
+              c(">" = paste0(
+                "{.code {one_name}}: ",
+                length(unique(one_ids)),
+                " ",
+                output_label
+              ))
+            )
+          }
+        }
+      )
+
+      if(vigilyze){
         cli::cli_alert_info(
           "vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)"
         )
-        cli::cli_alert_info(
-          "Set {.arg verbose} to FALSE to suppress this section."
-        )
-        cli_rule()
-      }
-
-      get_drecno(
-        d_sel = atc_sel_rcid,
-        mp = mp,
-        allow_combination = FALSE,
-        method = "record_id",
-        verbose = FALSE
-      )
-
-    } else {
-
-      if (verbose == TRUE) {
+      } else {
         cli::cli_alert_info(
           "vigilyze set to FALSE, extracting Record_Ids (?get_atc_code for details)"
         )
-        cli::cli_alert_info(
-          "Set {.arg verbose} to FALSE to suppress this section."
-        )
-        cli_rule()
       }
 
-      atc_sel_rcid
+      cli::cli_alert_info(
+        "Set {.arg verbose} to FALSE to suppress this section."
+      )
     }
 
+    if (any_no_match) {
+      cli_h2("{col_red({symbol$cross})} Unmatched ATC classes")
+
+      lid <- cli_ul()
+      for (i in seq_along(atc_sel_no_match)) {
+        cli_li(paste0(
+          'In {.code {names(atc_sel_no_match)[i]}}:',
+          " {.val {atc_sel_no_match[[i]]}}"
+        ))
+      }
+      cli_end(lid)
+    }
+
+    if ((verbose == TRUE && any_match) || any_no_match)
+      cli_rule()
+
+    output
   }

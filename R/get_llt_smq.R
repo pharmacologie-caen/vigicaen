@@ -221,38 +221,47 @@ get_llt_smq <-
       purrr::list_c() |>
       any()
 
+    # any match
+
+    any_match <-
+      res_list_codes |>
+      purrr::map_lgl(function(one_code_list)
+        length(one_code_list) > 0
+      ) |>
+      any()
+
     # ---- Render get_llt_smq() messages ----
 
-    if (verbose == TRUE && !any_sub && !any_failure) {
+    if ((verbose == TRUE && any_match) || any_sub || any_failure)
       cli_h1("get_llt_smq()")
+
+    if (verbose == TRUE && any_match) {
       cli_h2("{col_green({symbol$tick})} Matched SMQs (number of LLT codes)")
 
       purrr::iwalk(
         llt_list,
         function(one_llt, one_name) {
-          matched_smq_names <- names(res_list_codes[[one_name]])
-          matched_smq_label <- paste0(matched_smq_names, collapse = " and ")
+          if (length(res_list_codes[[one_name]]) > 0) {
+            matched_smq_names <- names(res_list_codes[[one_name]])
+            matched_smq_label <- paste0(matched_smq_names, collapse = " and ")
 
-          cli::cli_inform(
-            c(">" = paste0(
-              "{.code {one_name}}: ",
-              "{.val {matched_smq_label}}",
-              " (",
-              length(one_llt),
-              ")"
-            ))
-          )
+            cli::cli_inform(
+              c(">" = paste0(
+                "{.code {one_name}}: ",
+                "{.val {matched_smq_label}}",
+                " (",
+                length(one_llt),
+                ")"
+              ))
+            )
+          }
         }
       )
 
       cli::cli_alert_info(
         "Set {.arg verbose} to FALSE to suppress this section."
       )
-      cli_rule()
     }
-
-    if (any_sub | any_failure)
-      cli_h1("get_llt_smq()")
 
     if (any_sub == TRUE) {
       msg_getlltsmq_sub(res_list_submatchs)
@@ -262,7 +271,7 @@ get_llt_smq <-
       msg_getlltsmq_failure(res_list_failures)
     }
 
-    if (any_sub | any_failure)
+    if ((verbose == TRUE && any_match) || any_sub || any_failure)
       cli_rule()
 
 
