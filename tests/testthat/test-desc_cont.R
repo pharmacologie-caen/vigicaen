@@ -213,14 +213,15 @@ test_that("resolve_desc_vars only supports list inputs when enabled", {
   )
 
   expect_error(
-    vigicaen:::resolve_desc_vars(df, rlang::quo(list_vc), col_arg = "vc")
+    vigicaen:::resolve_desc_vars(df, rlang::quo(list_vc), col_arg = "vc"),
+    class = "rlang_error"
   )
 
   expect_equal(
     vigicaen:::resolve_desc_vars(
       df,
       rlang::quo(list_vc),
-      col_arg = "drug_s",
+      col_arg = "vc",
       allow_list = TRUE
     ),
     "age"
