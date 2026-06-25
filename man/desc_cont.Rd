@@ -15,7 +15,8 @@ desc_cont(
 \arguments{
 \item{.data}{A data.frame, where \code{vc} are column names of continuous variables}
 
-\item{vc}{A character vector, list of column names. Should only contain continuous variables}
+\item{vc}{A tidy-select specification or character vector of column names.
+Should only contain continuous variables.}
 
 \item{format}{A character string. How would you like the output? See details.}
 
@@ -70,6 +71,9 @@ df <-
 # Use default formatting
 
 desc_cont(.data = df, vc = c("age", "bmi"))
+
+# Tidy-select is also supported
+desc_cont(.data = df, vc = age)
 
 # Use custom formatting
 

@@ -9,9 +9,11 @@ desc_outcome(.data, drug_s = "drug1", adr_s = "adr1")
 \arguments{
 \item{.data, }{An \code{adr} data.table. See \code{\link{adr_}}}
 
-\item{drug_s}{A character vector, the drug column(s)}
+\item{drug_s}{A tidy-select specification or character vector of drug
+columns.}
 
-\item{adr_s}{A character vector, the adverse drug reaction column(s).}
+\item{adr_s}{A tidy-select specification or character vector of adverse drug
+reaction columns.}
 }
 \value{
 A data.table with one row per drug-adr pair.
@@ -60,6 +62,12 @@ desc_outcome(
   adr_,
   drug_s = "pd1",
   adr_s = "a_colitis"
+  )
+
+desc_outcome(
+  adr_,
+  drug_s = pd1,
+  adr_s = a_colitis
   )
 
 # you can vectorize over multiple adrs and drugs

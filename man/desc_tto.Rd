@@ -9,9 +9,11 @@ desc_tto(.data, adr_s, drug_s, tto_time_range = 1, ...)
 \arguments{
 \item{.data}{A \code{link} data.table. See \code{\link{link_}}.}
 
-\item{adr_s}{A character string. The name of the adr column. (see details)}
+\item{adr_s}{A tidy-select specification or character vector of adr columns.
+(see details)}
 
-\item{drug_s}{A character string. The name of the drug column. (see details)}
+\item{drug_s}{A tidy-select specification or character vector of drug
+columns. (see details)}
 
 \item{tto_time_range}{Incertitude range of Time to onset, in days. Defaults to 1 as recommended by umc}
 
@@ -54,6 +56,10 @@ link_ <-
 desc_tto(.data = link_,
          adr_s = "a_colitis",
          drug_s = "pd1")
+
+desc_tto(.data = link_,
+         adr_s = a_colitis,
+         drug_s = pd1)
 
 
 desc_tto(.data = link_,

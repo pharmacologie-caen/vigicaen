@@ -1,5 +1,12 @@
 # vigicaen (development version)
 
+## New features
+
+* `desc_cont()`, `desc_facvar()`, `desc_dch()`, `desc_rch()`,
+  `desc_outcome()`, and `desc_tto()` now accept tidy-select syntax for their
+  variable-selection arguments, while keeping character-vector inputs working.
+  (#168)
+
 # vigicaen 2.0.0
 
 ## Breaking changes

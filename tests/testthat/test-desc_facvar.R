@@ -234,6 +234,36 @@ test_that(
   }
 )
 
+test_that("tidy-select works", {
+  df <-
+    data.frame(
+      smoke_status = c("smoker", "non-smoker",
+                       "smoker", "smoker",
+                       "smoker", "smoker",
+                       "non-smoker"
+      ),
+      hta = c(1, 1, 0, 1, 0, 0, 0)
+    )
+
+  expect_equal(
+    desc_facvar(.data = df, vf = hta, format = "n_/N_ (pc_%)", dig = 0, pad_width = 0),
+    desc_facvar(.data = df, vf = "hta", format = "n_/N_ (pc_%)", dig = 0, pad_width = 0)
+  )
+
+  expect_equal(
+    desc_facvar(.data = df,
+                vf = dplyr::starts_with("smoke"),
+                format = "n_/N_ (pc_%)",
+                dig = 0,
+                pad_width = 0),
+    desc_facvar(.data = df,
+                vf = "smoke_status",
+                format = "n_/N_ (pc_%)",
+                dig = 0,
+                pad_width = 0)
+  )
+})
+
 test_that(
   "missing data", {
     df <-
@@ -410,4 +440,3 @@ test_that(
       res_true
     )
   })
-

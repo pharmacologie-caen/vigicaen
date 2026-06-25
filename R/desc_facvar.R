@@ -19,7 +19,7 @@
 #' Equivalent for continuous data is [desc_cont()].
 #'
 #' @param .data A data.frame, where `vf` are column names of categorical variables
-#' @param vf A character vector
+#' @param vf A tidy-select specification or character vector of column names.
 #' @param format A character string, formatting options.
 #' @param digits A numeric. Number of digits for the percentage (passed to interval formatting function).
 #' @param pad_width A numeric. Minimum character length of value output (passed to `stringr::str_pad()`).
@@ -58,6 +58,9 @@
 #' # Use default formatting
 #' desc_facvar(.data = df1, vf = c("hypertension", "smoke_status"))
 #'
+#' # Tidy-select is also supported
+#' desc_facvar(.data = df1, vf = smoke_status)
+#'
 #' # Use custom formatting
 #' desc_facvar(.data = df1,
 #'            vf = c("hypertension", "smoke_status"),
@@ -80,9 +83,9 @@ desc_facvar <-
             ncat_max = 20,
             export_raw_values = FALSE){
 
-    # only columns present in the dataset
+    vf <- resolve_desc_vars(.data, rlang::enquo(vf), col_arg = "vf")
 
-    check_columns_in_data(.data, vf)
+    # only columns present in the dataset
 
     # ---- number of levels checker ----
 

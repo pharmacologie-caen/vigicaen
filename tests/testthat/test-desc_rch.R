@@ -137,6 +137,30 @@ test_that("works with few data", {
    )
 })
 
+test_that("tidy-select works", {
+
+  suppressMessages(
+   link_ <-
+     link_ %>%
+     add_drug(d_code = ex_$d_groups_drecno, drug_data = drug_) %>%
+     add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  )
+
+  expect_equal(
+   desc_rch(.data = link_, adr_s = a_colitis, drug_s = pd1),
+   desc_rch(.data = link_, adr_s = "a_colitis", drug_s = "pd1")
+  )
+
+  expect_equal(
+   desc_rch(.data = link_,
+            adr_s = dplyr::starts_with("a_col"),
+            drug_s = dplyr::starts_with("pd")),
+   desc_rch(.data = link_,
+            adr_s = "a_colitis",
+            drug_s = c("pd1", "pdl1"))
+  )
+})
+
 
 test_that("works with out of memory arrow Table", {
 

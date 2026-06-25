@@ -13,8 +13,10 @@
 #' on time to onset is less than **1 day**. You can change this with `tto_time_range`.
 #'
 #' @param .data A `link` data.table. See \code{\link{link_}}.
-#' @param adr_s A character string. The name of the adr column. (see details)
-#' @param drug_s A character string. The name of the drug column. (see details)
+#' @param adr_s A tidy-select specification or character vector of adr columns.
+#'   (see details)
+#' @param drug_s A tidy-select specification or character vector of drug
+#'   columns. (see details)
 #' @param tto_time_range Incertitude range of Time to onset, in days. Defaults to 1 as recommended by umc
 #' @param ... Additional parameters to be passed to [desc_cont()]. E.g. `format`, `digits`...
 #'
@@ -45,6 +47,10 @@
 #'          adr_s = "a_colitis",
 #'          drug_s = "pd1")
 #'
+#' desc_tto(.data = link_,
+#'          adr_s = a_colitis,
+#'          drug_s = pd1)
+#'
 #'
 #' desc_tto(.data = link_,
 #'          adr_s = c("a_colitis", "a_pneumonitis"),
@@ -57,6 +63,9 @@ desc_tto <-
            tto_time_range = 1,
            ...
            ){
+
+    adr_s <- resolve_desc_vars(.data, rlang::enquo(adr_s), col_arg = "adr_s")
+    drug_s <- resolve_desc_vars(.data, rlang::enquo(drug_s), col_arg = "drug_s")
 
     # extract ttos
 

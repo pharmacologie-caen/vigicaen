@@ -155,6 +155,74 @@ test_that(
   }
 )
 
+test_that("tidy-select works", {
+  df <-
+    data.frame(
+      smoke_status = c("smoker", "non-smoker",
+                       "smoker", "smoker",
+                       "smoker", "smoker",
+                       "non-smoker"
+      ),
+      age = c(60, 50, 56, 49, 75, 69, 85),
+      bmi = c(18, 30, 25, 22, 23, 21, 22)
+    )
+
+  expect_equal(
+    desc_cont(.data = df, vc = age, format = "median (q1-q3)", dig = 0),
+    desc_cont(.data = df, vc = "age", format = "median (q1-q3)", dig = 0)
+  )
+
+  expect_equal(
+    desc_cont(.data = df,
+              vc = dplyr::starts_with("b"),
+              format = "median (q1-q3)",
+              dig = 0),
+    desc_cont(.data = df, vc = "bmi", format = "median (q1-q3)", dig = 0)
+  )
+})
+
+test_that("resolve_desc_vars preserves named character vectors and rejects lists", {
+  df <-
+    data.frame(
+      smoke_status = c("smoker", "non-smoker"),
+      age = c(60, 50),
+      bmi = c(18, 30)
+    )
+
+  named_vc <- c(primary = "age")
+  list_vc <- list(primary = "age")
+  missing_vc <- c(primary = "weight")
+
+  expect_equal(
+    vigicaen:::resolve_desc_vars(df, rlang::quo(age), col_arg = "vc"),
+    "age"
+  )
+
+  expect_equal(
+    vigicaen:::resolve_desc_vars(
+      df,
+      rlang::quo(dplyr::starts_with("b")),
+      col_arg = "vc"
+    ),
+    "bmi"
+  )
+
+  expect_equal(
+    vigicaen:::resolve_desc_vars(df, rlang::quo(named_vc), col_arg = "vc"),
+    "age"
+  )
+
+  expect_error(
+    vigicaen:::resolve_desc_vars(df, rlang::quo(list_vc), col_arg = "vc"),
+    class = "rlang_error"
+  )
+
+  expect_error(
+    vigicaen:::resolve_desc_vars(df, rlang::quo(missing_vc), col_arg = "vc"),
+    class = "columns_not_in_data"
+  )
+})
+
 test_that(
   "missing data", {
     df <-

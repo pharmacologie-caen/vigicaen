@@ -16,8 +16,10 @@
 #' }
 #'
 #' @param .data A `link` data.table. See \code{\link{link_}}.
-#' @param drug_s A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}}.
-#' @param adr_s A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}}.
+#' @param drug_s A tidy-select specification or character vector of drug
+#'   columns. Drug columns can be created with \code{\link{add_drug}}.
+#' @param adr_s A tidy-select specification or character vector of adr columns.
+#'   Adr columns can be created with \code{\link{add_adr}}.
 #'
 #' @returns A data.table with one row per drug-adr pair
 #' \itemize{
@@ -47,6 +49,10 @@
 #'          drug_s = "pd1",
 #'          adr_s = "a_colitis")
 #'
+#' desc_rch(.data = link_,
+#'          drug_s = pd1,
+#'          adr_s = a_colitis)
+#'
 #' # You can vectorize over drugs and adrs
 #'
 #' desc_rch(.data = link_,
@@ -60,6 +66,8 @@ desc_rch <- function(.data,
 ){
 
   check_data_link(.data)
+  drug_s <- resolve_desc_vars(.data, rlang::enquo(drug_s), col_arg = "drug_s")
+  adr_s <- resolve_desc_vars(.data, rlang::enquo(adr_s), col_arg = "adr_s")
 
   core_desc_rch <-
     function(one_drug,
