@@ -236,10 +236,7 @@ get_llt_smq <-
       cli_h1("get_llt_smq()")
 
     if (verbose == TRUE && any_match) {
-      cli_h2(paste0(
-        col_green("{symbol$tick}"),
-        " Matched SMQs (number of LLT codes)"
-      ))
+      cli_h2("{col_green({symbol$tick})} Matched SMQs (number of LLT codes)")
 
       purrr::iwalk(
         llt_list,

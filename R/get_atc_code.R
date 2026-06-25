@@ -169,10 +169,7 @@ get_atc_code <-
       output_label <-
         if(vigilyze) "DrecNo values" else "Record_Id values"
 
-      cli_h2(paste0(
-        col_green("{symbol$tick}"),
-        " Matched ATC classes ({.arg atc_sel})"
-      ))
+      cli_h2("{col_green({symbol$tick})} Matched ATC classes ({.arg atc_sel})")
 
       purrr::iwalk(
         output,
