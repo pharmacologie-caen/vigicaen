@@ -633,7 +633,7 @@ msg_getdrecno_match <-
         function(d_sel,
                  arg = rlang::caller_arg(d_sel),
                  call = rlang::caller_env()) {
-          cli_h3(paste0(col_green("{symbol$tick}"), " Matched drugs"))
+          cli_h2(paste0(col_green("{symbol$tick}"), " Matched drugs"))
         }
 
       cli_par()

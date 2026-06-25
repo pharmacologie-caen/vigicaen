@@ -164,7 +164,10 @@ msg_getlltsoc_match <-
 
       cli_par()
 
-      cli_h2("{col_green({symbol$tick})} Matched reactions at {.code {term_level}} level (number of codes)")
+      cli_h2(paste0(
+        col_green("{symbol$tick}"),
+        " Matched reactions at {.code {term_level}} level (number of codes)"
+      ))
 
       cli_end()
       cli_par()
