@@ -1,5 +1,13 @@
 # vigicaen (development version)
 
+## New features
+
+* *New* `add_death()`, `add_serious()`, and `add_fup()` functions add outcome
+columns to a dataset using the `out` and `followup` tables. These functions
+work transparently with both in-memory and out-of-memory (Arrow) tables,
+fixing the `match requires vector arguments` error that occurred when using
+these tables in Arrow format (#144).
+
 # vigicaen 2.0.0
 
 ## Breaking changes
