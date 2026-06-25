@@ -283,22 +283,15 @@ test_that("verbose reports unmatched ATC classes", {
       item_without_match = c("NOPE")
     )
 
-  msgs <-
-    capture.output(
-      get_atc_code(
+  expect_snapshot({
+      d1 <- get_atc_code(
         atc_sel = atc_sel,
         mp = mp_,
         thg_data = thg_,
         vigilyze = FALSE,
         verbose = TRUE
-      ),
-      type = "message"
-    )
-
-  expect_true(any(grepl("Matched ATC classes", msgs)))
-  expect_true(any(grepl("Unmatched ATC classes", msgs)))
-  expect_true(any(grepl("NOT_AN_ATC", msgs)))
-  expect_true(any(grepl("NOPE", msgs)))
+      )
+      })
 })
 
 test_that("matched section is hidden if all atc are unmatched", {
@@ -306,18 +299,13 @@ test_that("matched section is hidden if all atc are unmatched", {
     no_match = c("NOPE", "STILL_NOPE")
   )
 
-  msgs <-
-    capture.output(
-      get_atc_code(
+  expect_snapshot({
+      d1 <- get_atc_code(
         atc_sel = atc_sel,
         mp = mp_,
         thg_data = thg_,
         vigilyze = FALSE,
         verbose = TRUE
-      ),
-      type = "message"
-    )
-
-  expect_false(any(grepl("Matched ATC classes", msgs)))
-  expect_true(any(grepl("Unmatched ATC classes", msgs)))
+      )
+    })
 })

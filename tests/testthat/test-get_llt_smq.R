@@ -120,19 +120,18 @@ test_that("verbose controls success messages", {
     embolism = "Embolic and thrombotic events, venous (SMQ)"
   )
 
-  expect_message(
-    get_llt_smq(
+  expect_snapshot({
+    r1 <- get_llt_smq(
       smq_sel,
       smq_scope = "narrow",
       smq_list = smq_list_,
       smq_content = smq_content_,
       verbose = TRUE
-    ),
-    "get_llt_smq\\(\\)"
-  )
+    )
+  })
 
   expect_no_message(
-    get_llt_smq(
+    r1 <- get_llt_smq(
       smq_sel,
       smq_scope = "narrow",
       smq_list = smq_list_,
@@ -148,21 +147,15 @@ test_that("verbose can show matched section with sub-smq and failures", {
     smq_failure = c("Not an SMQ")
   )
 
-  msgs <-
-    capture.output(
-      get_llt_smq(
+ expect_snapshot({
+      r1 <- get_llt_smq(
         smq_sel,
         smq_scope = "narrow",
         smq_list = smq_list_,
         smq_content = smq_content_,
         verbose = TRUE
-      ),
-      type = "message"
-    )
-
-  expect_true(any(grepl("Matched SMQs", msgs)))
-  expect_true(any(grepl("Sub-SMQs found", msgs)))
-  expect_true(any(grepl("Unmatched SMQs", msgs)))
+      )
+      })
 })
 
 test_that("errors and warnings pop as needed", {
