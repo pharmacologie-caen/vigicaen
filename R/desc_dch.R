@@ -10,8 +10,9 @@
 #' you have added drugs and adrs with [add_drug()] and [add_adr()].
 #'
 #' @param .data A `link` data.table.
-#' @param drug_s A character vector, the drug column(s)
-#' @param adr_s A character vector, the adverse drug reaction column(s).
+#' @param drug_s A tidy-select specification or character vector of drug columns.
+#' @param adr_s A tidy-select specification or character vector of adverse drug
+#'   reaction columns.
 #' @return A data.table with one row per drug-adr pair.
 #' \itemize{
 #'  \item `drug_s` and `adr_s`, same as input
@@ -40,6 +41,10 @@
 #'          drug_s = "pd1",
 #'          adr_s = "a_colitis")
 #'
+#' desc_dch(link_,
+#'          drug_s = pd1,
+#'          adr_s = a_colitis)
+#'
 #'
 #' # you can vectorize over multiple adrs and drugs
 #'
@@ -55,6 +60,8 @@ desc_dch <-
            ) {
 
     check_data_link(.data)
+    drug_s <- resolve_desc_vars(.data, rlang::enquo(drug_s), col_arg = "drug_s")
+    adr_s <- resolve_desc_vars(.data, rlang::enquo(adr_s), col_arg = "adr_s")
 
     # dechallenge1_label <- data.frame(
     #   Dechallenge1 = as.character(1:6),

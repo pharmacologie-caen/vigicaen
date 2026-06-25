@@ -9,9 +9,11 @@ desc_rch(.data, drug_s = "drug1", adr_s = "adr1")
 \arguments{
 \item{.data}{A \code{link} data.table. See \code{\link{link_}}.}
 
-\item{drug_s}{A character string. The name of the drug column. Drug columns can be created with \code{\link{add_drug}}.}
+\item{drug_s}{A tidy-select specification or character vector of drug
+columns. Drug columns can be created with \code{\link{add_drug}}.}
 
-\item{adr_s}{A character string. The name of the adr column. Adr columns can be created with \code{\link{add_adr}}.}
+\item{adr_s}{A tidy-select specification or character vector of adr columns.
+Adr columns can be created with \code{\link{add_adr}}.}
 }
 \value{
 A data.table with one row per drug-adr pair
@@ -52,6 +54,10 @@ link_ <-
 desc_rch(.data = link_,
          drug_s = "pd1",
          adr_s = "a_colitis")
+
+desc_rch(.data = link_,
+         drug_s = pd1,
+         adr_s = a_colitis)
 
 # You can vectorize over drugs and adrs
 

@@ -113,5 +113,28 @@ test_that("digits are appropriately passed to desc_cont", {
   )
 })
 
+test_that("tidy-select works", {
+
+  expect_snapshot({
+    link_ <-
+      link_ %>%
+      add_drug(d_code = ex_$d_groups_drecno, drug_data = drug_) %>%
+      add_adr(a_code = ex_$a_llt, adr_data = adr_)
+  })
+
+  expect_equal(
+    desc_tto(.data = link_, adr_s = a_colitis, drug_s = pd1),
+    desc_tto(.data = link_, adr_s = "a_colitis", drug_s = "pd1")
+  )
+
+  expect_equal(
+    desc_tto(.data = link_,
+             adr_s = dplyr::starts_with("a_col"),
+             drug_s = dplyr::starts_with("pd")),
+    desc_tto(.data = link_,
+             adr_s = "a_colitis",
+             drug_s = c("pd1", "pdl1"))
+  )
+})
 
 

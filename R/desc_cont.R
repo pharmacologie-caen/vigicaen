@@ -19,7 +19,8 @@
 #' The analogous for categorical variables is [desc_facvar()].
 #'
 #' @param .data A data.frame, where `vc` are column names of continuous variables
-#' @param vc A character vector, list of column names. Should only contain continuous variables
+#' @param vc A tidy-select specification or character vector of column names.
+#'   Should only contain continuous variables.
 #' @param format A character string. How would you like the output? See details.
 #' @param digits A numeric. How many digits? This argument calls internal formatting function
 #' @param export_raw_values A logical. Should the raw values be exported?
@@ -57,6 +58,9 @@
 #'
 #' desc_cont(.data = df, vc = c("age", "bmi"))
 #'
+#' # Tidy-select is also supported
+#' desc_cont(.data = df, vc = age)
+#'
 #' # Use custom formatting
 #'
 #' desc_cont(.data = df,
@@ -78,9 +82,9 @@ desc_cont <-
            export_raw_values = FALSE
            ){
 
-    # checkers ----
+    vc <- resolve_desc_vars(.data, rlang::enquo(vc), col_arg = "vc")
 
-    check_columns_in_data(.data, vc)
+    # checkers ----
 
     # only numeric or integer vars ----
 
@@ -253,6 +257,7 @@ check_columns_in_data <-
   function(
     .data,
     cols,
+    col_arg = rlang::caller_arg(cols),
     call = rlang::caller_env()
     )  {
       if(!all(cols %in% names(.data))){
@@ -260,12 +265,48 @@ check_columns_in_data <-
           cols[!cols %in% names(.data)]
 
         error_columns_in_data(
-          col_arg = rlang::caller_arg(cols),
+          col_arg = col_arg,
           must_be_in = ".data",
           missing_cols = missing_cols,
           call = call
         )
       }
+    }
+
+resolve_desc_vars <-
+    function(.data,
+             cols_quo,
+             col_arg = rlang::as_label(cols_quo),
+             call = rlang::caller_env()) {
+
+      legacy_cols <-
+        tryCatch(
+          rlang::eval_bare(
+            rlang::get_expr(cols_quo),
+            rlang::quo_get_env(cols_quo)
+          ),
+          error = function(...) NULL
+        )
+
+      if (is.list(legacy_cols)) {
+        legacy_cols <-
+          unlist(legacy_cols, recursive = TRUE, use.names = FALSE)
+      }
+
+      if (is.character(legacy_cols)) {
+        legacy_cols <- unname(legacy_cols)
+
+        check_columns_in_data(
+          .data = .data,
+          cols = legacy_cols,
+          col_arg = col_arg,
+          call = call
+        )
+
+        return(legacy_cols)
+      }
+
+      names(dplyr::select(.data, !!cols_quo))
     }
 
 error_columns_numeric_integer <-

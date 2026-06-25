@@ -21,8 +21,10 @@
 #' See `vignette("descriptive")` for more details.
 #' @keywords drug-adr-pair descriptive
 #' @param .data, An `adr` data.table. See \code{\link{adr_}}
-#' @param drug_s A character vector, the drug column(s)
-#' @param adr_s A character vector, the adverse drug reaction column(s).
+#' @param drug_s A tidy-select specification or character vector of drug
+#'   columns.
+#' @param adr_s A tidy-select specification or character vector of adverse drug
+#'   reaction columns.
 #'
 #' @return A data.table with one row per drug-adr pair.
 #' \itemize{
@@ -53,6 +55,12 @@
 #'   adr_s = "a_colitis"
 #'   )
 #'
+#' desc_outcome(
+#'   adr_,
+#'   drug_s = pd1,
+#'   adr_s = a_colitis
+#'   )
+#'
 #' # you can vectorize over multiple adrs and drugs
 #'
 #' desc_outcome(
@@ -67,6 +75,9 @@ desc_outcome <-
            drug_s = "drug1",
            adr_s = "adr1"
            ) {
+
+    drug_s <- resolve_desc_vars(.data, rlang::enquo(drug_s), col_arg = "drug_s")
+    adr_s <- resolve_desc_vars(.data, rlang::enquo(adr_s), col_arg = "adr_s")
 
     # 1Recovered/resolved
     # 2Recovering/resolving

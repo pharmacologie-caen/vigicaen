@@ -17,7 +17,7 @@ desc_facvar(
 \arguments{
 \item{.data}{A data.frame, where \code{vf} are column names of categorical variables}
 
-\item{vf}{A character vector}
+\item{vf}{A tidy-select specification or character vector of column names.}
 
 \item{format}{A character string, formatting options.}
 
@@ -76,6 +76,9 @@ df1 <-
 
 # Use default formatting
 desc_facvar(.data = df1, vf = c("hypertension", "smoke_status"))
+
+# Tidy-select is also supported
+desc_facvar(.data = df1, vf = smoke_status)
 
 # Use custom formatting
 desc_facvar(.data = df1,

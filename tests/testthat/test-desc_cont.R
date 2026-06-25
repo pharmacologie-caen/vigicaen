@@ -155,6 +155,32 @@ test_that(
   }
 )
 
+test_that("tidy-select works", {
+  df <-
+    data.frame(
+      smoke_status = c("smoker", "non-smoker",
+                       "smoker", "smoker",
+                       "smoker", "smoker",
+                       "non-smoker"
+      ),
+      age = c(60, 50, 56, 49, 75, 69, 85),
+      bmi = c(18, 30, 25, 22, 23, 21, 22)
+    )
+
+  expect_equal(
+    desc_cont(.data = df, vc = age, format = "median (q1-q3)", dig = 0),
+    desc_cont(.data = df, vc = "age", format = "median (q1-q3)", dig = 0)
+  )
+
+  expect_equal(
+    desc_cont(.data = df,
+              vc = dplyr::starts_with("b"),
+              format = "median (q1-q3)",
+              dig = 0),
+    desc_cont(.data = df, vc = "bmi", format = "median (q1-q3)", dig = 0)
+  )
+})
+
 test_that(
   "missing data", {
     df <-
