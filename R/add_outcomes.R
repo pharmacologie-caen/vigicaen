@@ -1,6 +1,6 @@
 #' Add outcome columns to a dataset
 #'
-#' @description `r lifecycle::badge('stable')`
+#' @description `r lifecycle::badge('experimental')`
 #' `add_death()`, `add_serious()`, and `add_fup()` create outcome columns
 #' in a vigibase dataset (typically `demo`), using data from the `out`
 #' and `followup` tables.
@@ -31,9 +31,9 @@
 #' Defaults to `"death"`, `"serious"`, or `"fup"` respectively.
 #'
 #' @returns A dataset with the new outcome column.
-#' @export
 #' @importFrom rlang .data
 #' @importFrom rlang .env
+#' @importFrom rlang :=
 #' @keywords data_management outcomes
 #' @seealso [add_drug()], [add_adr()]
 #' @name add_outcomes
@@ -49,7 +49,7 @@
 #'
 #' demo <- add_fup(demo, fup_data = followup)
 #'
-#' check_dm(demo, c("death", "serious", "fup"))
+#' desc_facvar(demo, c("death", "serious", "fup"))
 NULL
 
 #' @rdname add_outcomes

@@ -28,7 +28,7 @@ Defaults to \code{"death"}, \code{"serious"}, or \code{"fup"} respectively.}
 A dataset with the new outcome column.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 \code{add_death()}, \code{add_serious()}, and \code{add_fup()} create outcome columns
 in a vigibase dataset (typically \code{demo}), using data from the \code{out}
 and \code{followup} tables.
@@ -39,13 +39,13 @@ These functions handle both in-memory and out-of-memory (Arrow) tables.
 \item \code{add_death()} adds a column indicating whether the case
 resulted in death (i.e., \code{Seriousness == "1"} in the \code{out} table).
 Cases with no outcome data are coded \code{NA}.
-Cases with outcome data but no death are coded \code{FALSE}.
-Cases with death are coded \code{TRUE}.
+Cases with outcome data but no death are coded \code{0}.
+Cases with death are coded \code{1}.
 \item \code{add_serious()} adds a column indicating whether the case
 was serious (i.e., \code{Serious == "Y"} in the \code{out} table).
 Cases with no outcome data are coded \code{NA}.
-Cases with outcome data but not serious are coded \code{FALSE}.
-Serious cases are coded \code{TRUE}.
+Cases with outcome data but not serious are coded \code{0}.
+Serious cases are coded \code{1}.
 \item \code{add_fup()} adds a column indicating whether the case has a
 follow-up (i.e., \code{UMCReportId} appears in the \code{followup} table).
 Cases with a follow-up are coded \code{1}. Others are coded \code{0}.
@@ -62,7 +62,7 @@ followup <- followup_
 
 demo <- add_fup(demo, fup_data = followup)
 
-check_dm(demo, c("death", "serious", "fup"))
+desc_facvar(demo, c("death", "serious", "fup"))
 }
 \seealso{
 \code{\link[=add_drug]{add_drug()}}, \code{\link[=add_adr]{add_adr()}}
