@@ -60,8 +60,8 @@ desc_dch <-
            ) {
 
     check_data_link(.data)
-    drug_s <- resolve_desc_vars(.data, rlang::enquo(drug_s), col_arg = "drug_s", allow_list = TRUE)
-    adr_s <- resolve_desc_vars(.data, rlang::enquo(adr_s), col_arg = "adr_s", allow_list = TRUE)
+    drug_s <- resolve_desc_vars(.data, rlang::enquo(drug_s), col_arg = "drug_s")
+    adr_s <- resolve_desc_vars(.data, rlang::enquo(adr_s), col_arg = "adr_s")
 
     # dechallenge1_label <- data.frame(
     #   Dechallenge1 = as.character(1:6),

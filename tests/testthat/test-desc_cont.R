@@ -181,7 +181,7 @@ test_that("tidy-select works", {
   )
 })
 
-test_that("resolve_desc_vars only supports list inputs when enabled", {
+test_that("resolve_desc_vars preserves named character vectors and rejects lists", {
   df <-
     data.frame(
       smoke_status = c("smoker", "non-smoker"),
@@ -215,16 +215,6 @@ test_that("resolve_desc_vars only supports list inputs when enabled", {
   expect_error(
     vigicaen:::resolve_desc_vars(df, rlang::quo(list_vc), col_arg = "vc"),
     class = "rlang_error"
-  )
-
-  expect_equal(
-    vigicaen:::resolve_desc_vars(
-      df,
-      rlang::quo(list_vc),
-      col_arg = "vc",
-      allow_list = TRUE
-    ),
-    "age"
   )
 
   expect_error(

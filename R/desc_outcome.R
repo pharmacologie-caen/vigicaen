@@ -76,8 +76,8 @@ desc_outcome <-
            adr_s = "adr1"
            ) {
 
-    drug_s <- resolve_desc_vars(.data, rlang::enquo(drug_s), col_arg = "drug_s", allow_list = TRUE)
-    adr_s <- resolve_desc_vars(.data, rlang::enquo(adr_s), col_arg = "adr_s", allow_list = TRUE)
+    drug_s <- resolve_desc_vars(.data, rlang::enquo(drug_s), col_arg = "drug_s")
+    adr_s <- resolve_desc_vars(.data, rlang::enquo(adr_s), col_arg = "adr_s")
 
     # 1Recovered/resolved
     # 2Recovering/resolving
