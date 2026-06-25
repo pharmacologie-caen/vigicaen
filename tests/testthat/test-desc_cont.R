@@ -181,7 +181,7 @@ test_that("tidy-select works", {
   )
 })
 
-test_that("resolve_desc_vars preserves legacy inputs and tidy-select", {
+test_that("resolve_desc_vars only supports list inputs when enabled", {
   df <-
     data.frame(
       smoke_status = c("smoker", "non-smoker"),
@@ -212,8 +212,17 @@ test_that("resolve_desc_vars preserves legacy inputs and tidy-select", {
     "age"
   )
 
+  expect_error(
+    vigicaen:::resolve_desc_vars(df, rlang::quo(list_vc), col_arg = "vc")
+  )
+
   expect_equal(
-    vigicaen:::resolve_desc_vars(df, rlang::quo(list_vc), col_arg = "vc"),
+    vigicaen:::resolve_desc_vars(
+      df,
+      rlang::quo(list_vc),
+      col_arg = "drug_s",
+      allow_list = TRUE
+    ),
     "age"
   )
 

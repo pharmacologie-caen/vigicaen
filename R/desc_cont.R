@@ -277,7 +277,8 @@ resolve_desc_vars <-
     function(.data,
              cols_quo,
              col_arg = rlang::as_label(cols_quo),
-             call = rlang::caller_env()) {
+             call = rlang::caller_env(),
+             allow_list = FALSE) {
 
       legacy_cols <-
         tryCatch(
@@ -288,7 +289,7 @@ resolve_desc_vars <-
           error = function(...) NULL
         )
 
-      if (is.list(legacy_cols)) {
+      if (allow_list && is.list(legacy_cols)) {
         legacy_cols <-
           unlist(legacy_cols, recursive = TRUE, use.names = FALSE)
       }
