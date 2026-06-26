@@ -275,10 +275,12 @@
       -- tb_vigibase() ---------------------------------------------------------------
       v All expected csv files found in `path_base` and `path_sub`
       i Checking for existing tables.
-      The following tables were found as .parquet files in `path_base`: "adr.parquet", "demo.parquet", "drug.parquet", "followup.parquet", "link.parquet", "out.parquet", "srce.parquet", and "suspdup.parquet"
+      The following tables were found as .parquet files in `path_base`:
+      "adr.parquet", "demo.parquet", "drug.parquet", "followup.parquet",
+      "link.parquet", "out.parquet", "srce.parquet", and "suspdup.parquet"
       Subsidiary files were found as .parquet files.
       i These tables won't be built again.
-      > Set `overwrite_existing_tables` to TRUE to rewrite them.
+      Set `overwrite_existing_tables` to TRUE to rewrite them.
       i Creating vigibase tables.
       This process must only be done once per database version.
       It can take up to 30minutes.
@@ -300,10 +302,12 @@
       -- tb_vigibase() ---------------------------------------------------------------
       v All expected csv files found in `path_base` and `path_sub`
       i Checking for existing tables.
-      The following tables were found as .parquet files in `path_base`: "adr.parquet", "demo.parquet", "drug.parquet", "followup.parquet", "out.parquet", "srce.parquet", and "suspdup.parquet"
+      The following tables were found as .parquet files in `path_base`:
+      "adr.parquet", "demo.parquet", "drug.parquet", "followup.parquet",
+      "out.parquet", "srce.parquet", and "suspdup.parquet"
       Subsidiary files were found as .parquet files.
       i These tables won't be built again.
-      > Set `overwrite_existing_tables` to TRUE to rewrite them.
+      Set `overwrite_existing_tables` to TRUE to rewrite them.
       i Creating vigibase tables.
       This process must only be done once per database version.
       It can take up to 30minutes.
@@ -329,10 +333,12 @@
       -- tb_vigibase() ---------------------------------------------------------------
       v All expected csv files found in `path_base` and `path_sub`
       i Checking for existing tables.
-      The following tables were found as .parquet files in `path_base`: "demo.parquet", "drug.parquet", "followup.parquet", "out.parquet", "srce.parquet", and "suspdup.parquet"
+      The following tables were found as .parquet files in `path_base`:
+      "demo.parquet", "drug.parquet", "followup.parquet", "out.parquet",
+      "srce.parquet", and "suspdup.parquet"
       Subsidiary files were found as .parquet files.
       i These tables won't be built again.
-      > Set `overwrite_existing_tables` to TRUE to rewrite them.
+      Set `overwrite_existing_tables` to TRUE to rewrite them.
       i Creating vigibase tables.
       This process must only be done once per database version.
       It can take up to 30minutes.
@@ -361,10 +367,12 @@
       -- tb_vigibase() ---------------------------------------------------------------
       v All expected csv files found in `path_base` and `path_sub`
       i Checking for existing tables.
-      The following tables were found as .parquet files in `path_base`: "demo.parquet", "followup.parquet", "out.parquet", "srce.parquet", and "suspdup.parquet"
+      The following tables were found as .parquet files in `path_base`:
+      "demo.parquet", "followup.parquet", "out.parquet", "srce.parquet", and
+      "suspdup.parquet"
       Subsidiary files were found as .parquet files.
       i These tables won't be built again.
-      > Set `overwrite_existing_tables` to TRUE to rewrite them.
+      Set `overwrite_existing_tables` to TRUE to rewrite them.
       i Creating vigibase tables.
       This process must only be done once per database version.
       It can take up to 30minutes.
@@ -396,9 +404,12 @@
       -- tb_vigibase() ---------------------------------------------------------------
       v All expected csv files found in `path_base` and `path_sub`
       i Checking for existing tables.
-      The following tables were found as .parquet files in `path_base`: "adr.parquet", "demo.parquet", "drug.parquet", "followup.parquet", "ind.parquet", "link.parquet", "out.parquet", "srce.parquet", and "suspdup.parquet"
+      The following tables were found as .parquet files in `path_base`:
+      "adr.parquet", "demo.parquet", "drug.parquet", "followup.parquet",
+      "ind.parquet", "link.parquet", "out.parquet", "srce.parquet", and
+      "suspdup.parquet"
       i These tables won't be built again.
-      > Set `overwrite_existing_tables` to TRUE to rewrite them.
+      Set `overwrite_existing_tables` to TRUE to rewrite them.
       i Creating vigibase tables.
       This process must only be done once per database version.
       It can take up to 30minutes.
@@ -463,10 +474,12 @@
       -- tb_vigibase() ---------------------------------------------------------------
       v All expected csv files found in `path_base` and `path_sub`
       i Checking for existing tables.
-      The following tables were found as .parquet files in `path_base`: "adr.parquet", "demo.parquet", "followup.parquet", "ind.parquet", "link.parquet", "out.parquet", "srce.parquet", and "suspdup.parquet"
+      The following tables were found as .parquet files in `path_base`:
+      "adr.parquet", "demo.parquet", "followup.parquet", "ind.parquet",
+      "link.parquet", "out.parquet", "srce.parquet", and "suspdup.parquet"
       Subsidiary files were found as .parquet files.
       i These tables won't be built again.
-      > Set `overwrite_existing_tables` to TRUE to rewrite them.
+      Set `overwrite_existing_tables` to TRUE to rewrite them.
       i Creating vigibase tables.
       This process must only be done once per database version.
       It can take up to 30minutes.
@@ -485,10 +498,13 @@
       -- tb_vigibase() ---------------------------------------------------------------
       v All expected csv files found in `path_base` and `path_sub`
       i Checking for existing tables.
-      The following tables were found as .parquet files in `path_base`: "adr.parquet", "demo.parquet", "drug.parquet", "followup.parquet", "ind.parquet", "link.parquet", "out.parquet", "srce.parquet", and "suspdup.parquet"
+      The following tables were found as .parquet files in `path_base`:
+      "adr.parquet", "demo.parquet", "drug.parquet", "followup.parquet",
+      "ind.parquet", "link.parquet", "out.parquet", "srce.parquet", and
+      "suspdup.parquet"
       Subsidiary files were found as .parquet files.
       i These tables won't be built again.
-      > Set `overwrite_existing_tables` to TRUE to rewrite them.
+      Set `overwrite_existing_tables` to TRUE to rewrite them.
       i Creating vigibase tables.
       This process must only be done once per database version.
       It can take up to 30minutes.

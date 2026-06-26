@@ -236,7 +236,10 @@ get_llt_smq <-
       cli_h1("get_llt_smq()")
 
     if (verbose == TRUE && any_match) {
-      cli_h2("{col_green({symbol$tick})} Matched SMQs (number of LLT codes)")
+
+       cli_h2("{col_green({symbol$tick})} Matched SMQs (number of LLT codes)")
+
+       ul <- cli_ul()
 
       purrr::iwalk(
         llt_list,
@@ -245,7 +248,7 @@ get_llt_smq <-
             matched_smq_names <- names(res_list_codes[[one_name]])
             matched_smq_label <- paste0(matched_smq_names, collapse = " and ")
 
-            cli::cli_inform(
+            cli::cli_li(
               c(">" = paste0(
                 "{.code {one_name}}: ",
                 "{.val {matched_smq_label}}",
@@ -257,6 +260,7 @@ get_llt_smq <-
           }
         }
       )
+      cli_end(ul)
 
       cli::cli_alert_info(
         "Set {.arg verbose} to FALSE to suppress this section."

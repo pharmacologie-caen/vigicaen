@@ -171,11 +171,13 @@ get_atc_code <-
 
       cli_h2("{col_green({symbol$tick})} Matched ATC classes ({.arg atc_sel})")
 
+      ul <- cli_ul()
+
       purrr::iwalk(
         output,
         function(one_ids, one_name) {
           if (length(one_ids) > 0) {
-            cli::cli_inform(
+            cli::cli_li(
               c(">" = paste0(
                 "{.code {one_name}}: ",
                 length(unique(one_ids)),
@@ -187,7 +189,12 @@ get_atc_code <-
         }
       )
 
+      cli_end(ul)
+
       if(vigilyze){
+
+        cli_par()
+
         cli::cli_alert_info(
           "vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)"
         )

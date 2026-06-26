@@ -9,7 +9,7 @@
       
       -- v Matched SMQs (number of LLT codes) --
       
-      > `embolism`: "Embolic and thrombotic events, venous (SMQ)" (348)
+      * `embolism`: "Embolic and thrombotic events, venous (SMQ)" (348)
       i Set `verbose` to FALSE to suppress this section.
       --------------------------------------------------------------------------------
 
@@ -24,7 +24,8 @@
       
       -- v Matched SMQs (number of LLT codes) --
       
-      > `ischemic_heart_disease`: "Ischaemic heart disease (SMQ) and Myocardial infarction (SMQ) and Other ischaemic heart disease (SMQ)" (404)
+      * `ischemic_heart_disease`: "Ischaemic heart disease (SMQ) and Myocardial
+      infarction (SMQ) and Other ischaemic heart disease (SMQ)" (404)
       i Set `verbose` to FALSE to suppress this section.
       
       -- i Sub-SMQs found 

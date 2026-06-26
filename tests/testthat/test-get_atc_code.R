@@ -240,19 +240,15 @@ test_that("verbose controls success messages", {
       l03_j01 = c("L03AA", "J01CA")
     )
 
-  expect_message(
-    expect_message(
+  expect_snapshot({
     get_atc_code(
       atc_sel = atc_sel,
       mp = mp_,
       thg_data = thg_,
       vigilyze = TRUE,
       verbose = TRUE
-    ),
-    "get_atc_code\\(\\)"
-  ),
-    "DrecNo values"
-  )
+    )
+  })
 
   expect_no_message(
     get_atc_code(
@@ -264,16 +260,15 @@ test_that("verbose controls success messages", {
     )
   )
 
-  expect_message(
+  expect_snapshot({
     get_atc_code(
       atc_sel = atc_sel,
       mp = mp_,
       thg_data = thg_,
       vigilyze = FALSE,
       verbose = TRUE
-    ),
-    "Record_Id values"
-  )
+    )
+    })
 })
 
 test_that("verbose reports unmatched ATC classes", {
