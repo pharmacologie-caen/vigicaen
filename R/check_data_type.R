@@ -196,6 +196,54 @@ check_data_meddra <-
     }
   }
 
+check_data_out <-
+  function(.data,
+           arg = rlang::caller_arg(.data),
+           call = rlang::caller_env()){
+
+    out_cols <-
+      c("UMCReportId", "Seriousness", "Serious")
+
+    if (!all(out_cols %in% names(.data))) {
+
+      missing_cols <-
+        out_cols[!out_cols %in% names(.data)]
+
+      cli::cli_abort(
+        c(
+          "{.arg {arg}} must be an {.arg out} table.",
+          "x" = "Missing columns: {missing_cols}",
+          ">" = "Supply an {.arg out} table to {.arg {arg}}. See ?out_."
+        ),
+        call = call
+      )
+    }
+  }
+
+check_data_fup <-
+  function(.data,
+           arg = rlang::caller_arg(.data),
+           call = rlang::caller_env()){
+
+    fup_cols <-
+      c("UMCReportId", "ReplacedUMCReportId")
+
+    if (!all(fup_cols %in% names(.data))) {
+
+      missing_cols <-
+        fup_cols[!fup_cols %in% names(.data)]
+
+      cli::cli_abort(
+        c(
+          "{.arg {arg}} must be a {.arg followup} table.",
+          "x" = "Missing columns: {missing_cols}",
+          ">" = "Supply a {.arg followup} table to {.arg {arg}}. See ?followup_."
+        ),
+        call = call
+      )
+    }
+  }
+
 check_data_smqlist <-
   function(.data,
            arg = rlang::caller_arg(.data),

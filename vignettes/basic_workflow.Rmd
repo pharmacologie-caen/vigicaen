@@ -672,35 +672,20 @@ the patient experienced a fatal issue during his/her follow-up.
 
 out <- out_
 
-demo <- 
-  demo |> 
-  mutate(
-    serious = 
-      ifelse(
-        UMCReportId %in% out$UMCReportId,
-        UMCReportId %in% 
-          (out |> 
-          filter(Serious == "Y") |> 
-          pull(UMCReportId)
-          ),
-        NA)
-    )
+demo <-
+  demo |>
+  add_serious(out_data = out)
 
 # ---- Death + outcome availability ---- ####
 
-demo <- 
-  demo |> 
-  mutate(death = 
-           ifelse(UMCReportId %in% out$UMCReportId,
-                  UMCReportId %in% 
-                    (out |> 
-                    filter(Seriousness == "1") |> 
-                    pull(UMCReportId)
-                    ),
-                  NA)
-         )
+demo <-
+  demo |>
+  add_death(out_data = out)
 
 ```
+
+-  `add_serious()` and `add_death()` handle both in-memory and
+out-of-memory (Arrow) tables transparently.
 
 -  The `serious` and `death` columns are coded with TRUE/FALSE values in
 this example. There is no particular reason to prefer it over 1/0
