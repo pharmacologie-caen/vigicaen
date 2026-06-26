@@ -90,14 +90,12 @@ a_llt <-
 #> 
 #> ── ✔ Matched reactions at `pt` level (number of codes) ──
 #> 
-#> → `colitis`: "Autoimmune colitis (1)", "Colitis (25)", "Colitis microscopic
-#>   (3)", "Diarrhoea (53)", "Diarrhoea haemorrhagic (8)", "Duodenitis (5)",
-#>   "Enteritis (8)", "Enterocolitis (4)", "Enterocolitis haemorrhagic (10)", and
-#>   "Ulcerative gastritis (1)"
-#> → `pneumonitis`: "Organising pneumonia (9)" and "Pneumonitis (6)"
-#> 
+#> • `colitis`: "Autoimmune colitis (1)", "Colitis (25)", "Colitis microscopic
+#> (3)", "Diarrhoea (53)", "Diarrhoea haemorrhagic (8)", "Duodenitis (5)",
+#> "Enteritis (8)", "Enterocolitis (4)", "Enterocolitis haemorrhagic (10)", and
+#> "Ulcerative gastritis (1)"
+#> • `pneumonitis`: "Organising pneumonia (9)" and "Pneumonitis (6)"
 #> ℹ Set `verbose` to FALSE to suppress this section.
-#> 
 
 demo <-
   demo |>

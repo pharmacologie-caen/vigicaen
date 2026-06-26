@@ -166,14 +166,10 @@ d_code <-
 #> 
 #> ── `d_sel`: Matching drugs ──
 #> 
-#> ── ✔ Matched drugs
+#> ── ✔ Matched drugs ──
 #> 
-#> → `ipilimumab`: "ipilimumab" and "ipilimumab;nivolumab"
-#> 
-#> 
+#> • `ipilimumab`: "ipilimumab" and "ipilimumab;nivolumab"
 #> ℹ Set `verbose` to FALSE to suppress this section.
-#> 
-#> 
 #> 
 #> ────────────────────────────────────────────────────────────────────────────────
 
@@ -184,7 +180,7 @@ a_code <-
 #> 
 #> ── ✔ Matched reactions at `hlt` level (number of codes) ──
 #> 
-#> → `colitis`: "Colitis (excl infective) (39)"
+#> • `colitis`: "Colitis (excl infective) (39)"
 #> ℹ Set `verbose` to FALSE to suppress this section.
 ```
 

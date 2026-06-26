@@ -306,14 +306,10 @@ message.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">`d_sel`: Matching drugs</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ── <span style="color: #00BB00;">✔</span> Matched drugs</span></span>
+<span><span class="co">#&gt; ── <span style="color: #00BB00; font-weight: bold;">✔</span><span style="font-weight: bold;"> Matched drugs</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; → `nivolumab`: <span style="color: #0000BB;">"nivolumab"</span> and <span style="color: #0000BB;">"ipilimumab;nivolumab"</span></span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; • `nivolumab`: <span style="color: #0000BB;">"nivolumab"</span> and <span style="color: #0000BB;">"ipilimumab;nivolumab"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Set `verbose` to FALSE to suppress this section.</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ────────────────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; $nivolumab</span></span>
@@ -438,7 +434,16 @@ It is therefore necessary to make a second correspondence with
 <span>    mp <span class="op">=</span> <span class="va">mp</span>,</span>
 <span>    thg_data <span class="op">=</span> <span class="va">thg_</span></span>
 <span>    <span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)</span></span></code></pre></div>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">get_atc_code()</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── <span style="color: #00BB00; font-weight: bold;">✔</span><span style="font-weight: bold;"> Matched ATC classes (`atc_sel`)</span> ──</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; • `l03`: 13 DrecNo values</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Set `verbose` to FALSE to suppress this section.</span></span>
+<span><span class="co">#&gt; ────────────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; </span></span></code></pre></div>
 <p>The <code><a href="../reference/get_atc_code.html">get_atc_code()</a></code> function requires the <code>mp</code>
 and <code>thg</code> tables, as well as the selection of ATC
 classes.</p>
@@ -552,15 +557,11 @@ can change the selection.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">`d_sel`: Matching drugs</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ── <span style="color: #00BB00;">✔</span> Matched drugs</span></span>
+<span><span class="co">#&gt; ── <span style="color: #00BB00; font-weight: bold;">✔</span><span style="font-weight: bold;"> Matched drugs</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; → `nivolumab`: <span style="color: #0000BB;">"nivolumab"</span> and <span style="color: #0000BB;">"ipilimumab;nivolumab"</span></span></span>
-<span><span class="co">#&gt; → `pembrolizumab`: <span style="color: #0000BB;">"pembrolizumab"</span></span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; • `nivolumab`: <span style="color: #0000BB;">"nivolumab"</span> and <span style="color: #0000BB;">"ipilimumab;nivolumab"</span></span></span>
+<span><span class="co">#&gt; • `pembrolizumab`: <span style="color: #0000BB;">"pembrolizumab"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Set `verbose` to FALSE to suppress this section.</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ────────────────────────────────────────────────────────────────────────────────</span></span>
 <span></span>
@@ -600,15 +601,11 @@ classes do not match your needs perfectly, you can group them in the
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">`d_sel`: Matching drugs</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ── <span style="color: #00BB00;">✔</span> Matched drugs</span></span>
+<span><span class="co">#&gt; ── <span style="color: #00BB00; font-weight: bold;">✔</span><span style="font-weight: bold;"> Matched drugs</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; → `analgesics`: <span style="color: #0000BB;">"paracetamol"</span> and <span style="color: #0000BB;">"tramadol"</span></span></span>
-<span><span class="co">#&gt; → `ici`: <span style="color: #0000BB;">"nivolumab"</span> and <span style="color: #0000BB;">"pembrolizumab"</span></span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; • `analgesics`: <span style="color: #0000BB;">"paracetamol"</span> and <span style="color: #0000BB;">"tramadol"</span></span></span>
+<span><span class="co">#&gt; • `ici`: <span style="color: #0000BB;">"nivolumab"</span> and <span style="color: #0000BB;">"pembrolizumab"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Set `verbose` to FALSE to suppress this section.</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ────────────────────────────────────────────────────────────────────────────────</span></span>
 <span></span>
@@ -707,12 +704,10 @@ Terms.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="color: #00BB00; font-weight: bold;">✔</span><span style="font-weight: bold;"> Matched reactions at `pt` level (number of codes)</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; → `a_colitis`: <span style="color: #0000BB;">"Autoimmune colitis (1)"</span>, <span style="color: #0000BB;">"Colitis (25)"</span>, <span style="color: #0000BB;">"Colitis microscopic</span></span></span>
-<span><span class="co">#&gt;   <span style="color: #0000BB;">(3)"</span>, <span style="color: #0000BB;">"Diarrhoea (53)"</span>, <span style="color: #0000BB;">"Diarrhoea haemorrhagic (8)"</span>, <span style="color: #0000BB;">"Duodenitis (5)"</span>,</span></span>
-<span><span class="co">#&gt;   <span style="color: #0000BB;">"Enteritis (8)"</span>, <span style="color: #0000BB;">"Enterocolitis (4)"</span>, <span style="color: #0000BB;">"Enterocolitis haemorrhagic (10)"</span>, and</span></span>
-<span><span class="co">#&gt;   <span style="color: #0000BB;">"Ulcerative gastritis (1)"</span></span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; • `a_colitis`: <span style="color: #0000BB;">"Autoimmune colitis (1)"</span>, <span style="color: #0000BB;">"Colitis (25)"</span>, <span style="color: #0000BB;">"Colitis microscopic</span></span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">(3)"</span>, <span style="color: #0000BB;">"Diarrhoea (53)"</span>, <span style="color: #0000BB;">"Diarrhoea haemorrhagic (8)"</span>, <span style="color: #0000BB;">"Duodenitis (5)"</span>,</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">"Enteritis (8)"</span>, <span style="color: #0000BB;">"Enterocolitis (4)"</span>, <span style="color: #0000BB;">"Enterocolitis haemorrhagic (10)"</span>, and</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">"Ulcerative gastritis (1)"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Set `verbose` to FALSE to suppress this section.</span></span>
 <span></span>
 <span><span class="va">a_llt</span></span>
@@ -1034,19 +1029,19 @@ it.</p>
 <span><span class="va">mod_or</span></span>
 <span><span class="co">#&gt;             rn    Estimate  Std..Error     z.value   Pr...z..           or</span></span>
 <span><span class="co">#&gt;         &lt;char&gt;       &lt;num&gt;       &lt;num&gt;       &lt;num&gt;      &lt;num&gt;        &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1: (Intercept) -14.8881304 882.7435177 -0.01686575 0.98654372 3.421111e-07</span></span>
+<span><span class="co">#&gt; 1: (Intercept) -14.8881304 882.7435188 -0.01686575 0.98654372 3.421111e-07</span></span>
 <span><span class="co">#&gt; 2:   nivolumab   0.4613151   0.2679460  1.72167184 0.08512898 1.586159e+00</span></span>
 <span><span class="co">#&gt; 3:         sex   0.1610313   0.2516929  0.63979269 0.52230739 1.174722e+00</span></span>
-<span><span class="co">#&gt; 4:    age18-45  12.7789374 882.7434881  0.01447639 0.98844992 3.546680e+05</span></span>
-<span><span class="co">#&gt; 5:    age45-64  12.7361773 882.7434122  0.01442795 0.98848856 3.398220e+05</span></span>
-<span><span class="co">#&gt; 6:    age65-74  13.1714980 882.7434123  0.01492109 0.98809513 5.251809e+05</span></span>
-<span><span class="co">#&gt; 7:      age75+  12.6701788 882.7434398  0.01435318 0.98854821 3.181184e+05</span></span>
+<span><span class="co">#&gt; 4:    age18-45  12.7789374 882.7434892  0.01447639 0.98844992 3.546680e+05</span></span>
+<span><span class="co">#&gt; 5:    age45-64  12.7361773 882.7434133  0.01442795 0.98848856 3.398220e+05</span></span>
+<span><span class="co">#&gt; 6:    age65-74  13.1714980 882.7434134  0.01492109 0.98809513 5.251809e+05</span></span>
+<span><span class="co">#&gt; 7:      age75+  12.6701788 882.7434409  0.01435318 0.98854821 3.181184e+05</span></span>
 <span><span class="co">#&gt;       low_ci    up_ci        orl          ci ci_level signif_ror</span></span>
 <span><span class="co">#&gt;        &lt;num&gt;    &lt;num&gt;     &lt;char&gt;      &lt;char&gt;   &lt;char&gt;      &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1: 0.0000000      Inf       0.00  (0.00-Inf)      95%          0</span></span>
 <span><span class="co">#&gt; 2: 0.9381463 2.681777       1.59 (0.94-2.68)      95%          0</span></span>
 <span><span class="co">#&gt; 3: 0.7172881 1.923873       1.17 (0.72-1.92)      95%          0</span></span>
-<span><span class="co">#&gt; 4: 0.0000000      Inf 354,667.99  (0.00-Inf)      95%          0</span></span>
+<span><span class="co">#&gt; 4: 0.0000000      Inf 354,668.00  (0.00-Inf)      95%          0</span></span>
 <span><span class="co">#&gt; 5: 0.0000000      Inf 339,822.03  (0.00-Inf)      95%          0</span></span>
 <span><span class="co">#&gt; 6: 0.0000000      Inf 525,180.88  (0.00-Inf)      95%          0</span></span>
 <span><span class="co">#&gt; 7: 0.0000000      Inf 318,118.36  (0.00-Inf)      95%          0</span></span></code></pre></div>

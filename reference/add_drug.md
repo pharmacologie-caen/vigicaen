@@ -108,10 +108,9 @@ d_drecno <- get_drecno(d_sel_names,
 #> 
 #> ── `d_sel`: Matching drugs ──
 #> 
-#> ── ✔ Matched drugs 
+#> ── ✔ Matched drugs ──
 #> 
-#> → `nivolumab`: "nivolumab" and "ipilimumab;nivolumab"
-#> 
+#> • `nivolumab`: "nivolumab" and "ipilimumab;nivolumab"
 #> ℹ Set `verbose` to FALSE to suppress this section.
 #> 
 #> ────────────────────────────────────────────────────────────────────────────────

@@ -228,14 +228,10 @@ get_drecno(
 #> 
 #> ── `d_sel`: Matching drugs ──
 #> 
-#> ── ✔ Matched drugs
+#> ── ✔ Matched drugs ──
 #> 
-#> → `nivolumab`: "nivolumab" and "ipilimumab;nivolumab"
-#> 
-#> 
+#> • `nivolumab`: "nivolumab" and "ipilimumab;nivolumab"
 #> ℹ Set `verbose` to FALSE to suppress this section.
-#> 
-#> 
 #> 
 #> ────────────────────────────────────────────────────────────────────────────────
 #> $nivolumab
@@ -385,7 +381,16 @@ atc_drecno <-
     mp = mp,
     thg_data = thg_
     )
+#> 
+#> ── get_atc_code() ──────────────────────────────────────────────────────────────
+#> 
+#> ── ✔ Matched ATC classes (`atc_sel`) ──
+#> 
+#> • `l03`: 13 DrecNo values
 #> ℹ vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)
+#> ℹ Set `verbose` to FALSE to suppress this section.
+#> ────────────────────────────────────────────────────────────────────────────────
+#> 
 ```
 
 The
@@ -517,15 +522,11 @@ d_drecno <-
 #> 
 #> ── `d_sel`: Matching drugs ──
 #> 
-#> ── ✔ Matched drugs
+#> ── ✔ Matched drugs ──
 #> 
-#> → `nivolumab`: "nivolumab" and "ipilimumab;nivolumab"
-#> → `pembrolizumab`: "pembrolizumab"
-#> 
-#> 
+#> • `nivolumab`: "nivolumab" and "ipilimumab;nivolumab"
+#> • `pembrolizumab`: "pembrolizumab"
 #> ℹ Set `verbose` to FALSE to suppress this section.
-#> 
-#> 
 #> 
 #> ────────────────────────────────────────────────────────────────────────────────
 
@@ -567,15 +568,11 @@ d_drecno <-
 #> 
 #> ── `d_sel`: Matching drugs ──
 #> 
-#> ── ✔ Matched drugs
+#> ── ✔ Matched drugs ──
 #> 
-#> → `analgesics`: "paracetamol" and "tramadol"
-#> → `ici`: "nivolumab" and "pembrolizumab"
-#> 
-#> 
+#> • `analgesics`: "paracetamol" and "tramadol"
+#> • `ici`: "nivolumab" and "pembrolizumab"
 #> ℹ Set `verbose` to FALSE to suppress this section.
-#> 
-#> 
 #> 
 #> ────────────────────────────────────────────────────────────────────────────────
 
@@ -682,12 +679,10 @@ a_llt <-
 #> 
 #> ── ✔ Matched reactions at `pt` level (number of codes) ──
 #> 
-#> → `a_colitis`: "Autoimmune colitis (1)", "Colitis (25)", "Colitis microscopic
-#>   (3)", "Diarrhoea (53)", "Diarrhoea haemorrhagic (8)", "Duodenitis (5)",
-#>   "Enteritis (8)", "Enterocolitis (4)", "Enterocolitis haemorrhagic (10)", and
-#>   "Ulcerative gastritis (1)"
-#> 
-#> 
+#> • `a_colitis`: "Autoimmune colitis (1)", "Colitis (25)", "Colitis microscopic
+#> (3)", "Diarrhoea (53)", "Diarrhoea haemorrhagic (8)", "Duodenitis (5)",
+#> "Enteritis (8)", "Enterocolitis (4)", "Enterocolitis haemorrhagic (10)", and
+#> "Ulcerative gastritis (1)"
 #> ℹ Set `verbose` to FALSE to suppress this section.
 
 a_llt
@@ -1063,19 +1058,19 @@ mod_or <-
 mod_or
 #>             rn    Estimate  Std..Error     z.value   Pr...z..           or
 #>         <char>       <num>       <num>       <num>      <num>        <num>
-#> 1: (Intercept) -14.8881304 882.7435177 -0.01686575 0.98654372 3.421111e-07
+#> 1: (Intercept) -14.8881304 882.7435188 -0.01686575 0.98654372 3.421111e-07
 #> 2:   nivolumab   0.4613151   0.2679460  1.72167184 0.08512898 1.586159e+00
 #> 3:         sex   0.1610313   0.2516929  0.63979269 0.52230739 1.174722e+00
-#> 4:    age18-45  12.7789374 882.7434881  0.01447639 0.98844992 3.546680e+05
-#> 5:    age45-64  12.7361773 882.7434122  0.01442795 0.98848856 3.398220e+05
-#> 6:    age65-74  13.1714980 882.7434123  0.01492109 0.98809513 5.251809e+05
-#> 7:      age75+  12.6701788 882.7434398  0.01435318 0.98854821 3.181184e+05
+#> 4:    age18-45  12.7789374 882.7434892  0.01447639 0.98844992 3.546680e+05
+#> 5:    age45-64  12.7361773 882.7434133  0.01442795 0.98848856 3.398220e+05
+#> 6:    age65-74  13.1714980 882.7434134  0.01492109 0.98809513 5.251809e+05
+#> 7:      age75+  12.6701788 882.7434409  0.01435318 0.98854821 3.181184e+05
 #>       low_ci    up_ci        orl          ci ci_level signif_ror
 #>        <num>    <num>     <char>      <char>   <char>      <num>
 #> 1: 0.0000000      Inf       0.00  (0.00-Inf)      95%          0
 #> 2: 0.9381463 2.681777       1.59 (0.94-2.68)      95%          0
 #> 3: 0.7172881 1.923873       1.17 (0.72-1.92)      95%          0
-#> 4: 0.0000000      Inf 354,667.99  (0.00-Inf)      95%          0
+#> 4: 0.0000000      Inf 354,668.00  (0.00-Inf)      95%          0
 #> 5: 0.0000000      Inf 339,822.03  (0.00-Inf)      95%          0
 #> 6: 0.0000000      Inf 525,180.88  (0.00-Inf)      95%          0
 #> 7: 0.0000000      Inf 318,118.36  (0.00-Inf)      95%          0

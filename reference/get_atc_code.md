@@ -6,7 +6,7 @@ one or more ATC classes.
 ## Usage
 
 ``` r
-get_atc_code(atc_sel, mp, thg_data, vigilyze = TRUE)
+get_atc_code(atc_sel, mp, thg_data, vigilyze = TRUE, verbose = TRUE)
 ```
 
 ## Arguments
@@ -29,6 +29,10 @@ get_atc_code(atc_sel, mp, thg_data, vigilyze = TRUE)
 
   A logical. Should ATC classes be retrieved using the vigilyze style?
   See details
+
+- verbose:
+
+  A logical. Allows you to see matching ATC classes in the console.
 
 ## Value
 
@@ -72,7 +76,17 @@ atc_drecno <-
                mp = mp_,
                thg_data = thg_,
                vigilyze = TRUE)
+#> 
+#> ── get_atc_code() ──────────────────────────────────────────────────────────────
+#> 
+#> ── ✔ Matched ATC classes (`atc_sel`) ──
+#> 
+#> • `penicillins_gcsf`: 77 DrecNo values
+#> • `ace_inhibitors`: 26 DrecNo values
 #> ℹ vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)
+#> ℹ Set `verbose` to FALSE to suppress this section.
+#> ────────────────────────────────────────────────────────────────────────────────
+#> 
 
 # Or you can get Record_Ids (if vigilyze is FALSE)
 
@@ -81,5 +95,13 @@ atc_mpi <-
                mp = mp_,
                thg_data = thg_,
                vigilyze = FALSE)
+#> ── get_atc_code() ──────────────────────────────────────────────────────────────
+#> 
+#> ── ✔ Matched ATC classes (`atc_sel`) ──
+#> 
+#> • `penicillins_gcsf`: 1721 Record_Id values
+#> • `ace_inhibitors`: 2185 Record_Id values
 #> ℹ vigilyze set to FALSE, extracting Record_Ids (?get_atc_code for details)
+#> ℹ Set `verbose` to FALSE to suppress this section.
+#> ────────────────────────────────────────────────────────────────────────────────
 ```

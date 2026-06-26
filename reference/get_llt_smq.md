@@ -11,6 +11,7 @@ get_llt_smq(
   smq_scope = c("narrow", "broad"),
   smq_list,
   smq_content,
+  verbose = TRUE,
   smq_list_content = deprecated()
 )
 ```
@@ -32,6 +33,10 @@ get_llt_smq(
 - smq_content:
 
   A data.table. A list of SMQs content.
+
+- verbose:
+
+  Logical. Allows you to see matching SMQs in the console.
 
 - smq_list_content:
 

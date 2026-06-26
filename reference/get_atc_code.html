@@ -56,7 +56,7 @@ Drug Record Numbers or Record_Ids associated to one or more ATC classes.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_atc_code</span><span class="op">(</span><span class="va">atc_sel</span>, <span class="va">mp</span>, <span class="va">thg_data</span>, vigilyze <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_atc_code</span><span class="op">(</span><span class="va">atc_sel</span>, <span class="va">mp</span>, <span class="va">thg_data</span>, vigilyze <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -77,6 +77,10 @@ Drug Record Numbers or Record_Ids associated to one or more ATC classes.</p>
 
 <dt id="arg-vigilyze">vigilyze<a class="anchor" aria-label="anchor" href="#arg-vigilyze"></a></dt>
 <dd><p>A logical. Should ATC classes be retrieved using the vigilyze style? See details</p></dd>
+
+
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
+<dd><p>A logical. Allows you to see matching ATC classes in the console.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -117,7 +121,17 @@ This is the default behavior in vigilyze.</p>
 <span class="r-in"><span>               mp <span class="op">=</span> <span class="va">mp_</span>,</span></span>
 <span class="r-in"><span>               thg_data <span class="op">=</span> <span class="va">thg_</span>,</span></span>
 <span class="r-in"><span>               vigilyze <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">get_atc_code()</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #00BB00; font-weight: bold;">✔</span><span style="font-weight: bold;"> Matched ATC classes (`atc_sel`)</span> ──</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • `penicillins_gcsf`: 77 DrecNo values</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • `ace_inhibitors`: 26 DrecNo values</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> vigilyze set to TRUE, extracting DrecNos (?get_atc_code for details)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Set `verbose` to FALSE to suppress this section.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ────────────────────────────────────────────────────────────────────────────────</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or you can get Record_Ids (if vigilyze is FALSE)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -126,7 +140,15 @@ This is the default behavior in vigilyze.</p>
 <span class="r-in"><span>               mp <span class="op">=</span> <span class="va">mp_</span>,</span></span>
 <span class="r-in"><span>               thg_data <span class="op">=</span> <span class="va">thg_</span>,</span></span>
 <span class="r-in"><span>               vigilyze <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">get_atc_code()</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #00BB00; font-weight: bold;">✔</span><span style="font-weight: bold;"> Matched ATC classes (`atc_sel`)</span> ──</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • `penicillins_gcsf`: 1721 Record_Id values</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • `ace_inhibitors`: 2185 Record_Id values</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> vigilyze set to FALSE, extracting Record_Ids (?get_atc_code for details)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Set `verbose` to FALSE to suppress this section.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ────────────────────────────────────────────────────────────────────────────────</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

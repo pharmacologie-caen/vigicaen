@@ -43,6 +43,13 @@ The most important point is:
   problematic name(s) and their positions in the list.
   ([\#142](https://github.com/pharmacologie-caen/vigicaen/issues/142))
 
+- [`get_atc_code()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_atc_code.md)
+  and
+  [`get_llt_smq()`](https://pharmacologie-caen.github.io/vigicaen/reference/get_llt_smq.md)
+  now provide verbose success-path CLI messages (with a `verbose`
+  argument to suppress them).
+  ([\#177](https://github.com/pharmacologie-caen/vigicaen/issues/177))
+
 - [`tb_vigibase()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_vigibase.md)
   and
   [`tb_who()`](https://pharmacologie-caen.github.io/vigicaen/reference/tb_who.md)
