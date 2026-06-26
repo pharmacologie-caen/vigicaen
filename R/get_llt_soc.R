@@ -162,18 +162,18 @@ msg_getlltsoc_match <-
             dplyr::pull(.data$lab)
         )
 
-      cli_par()
+      cli_h2(
+        "{col_green({symbol$tick})} Matched reactions at {.code {term_level}} level (number of codes)"
+      )
 
-      cli_h2("{col_green({symbol$tick})} Matched reactions at {.code {term_level}} level (number of codes)")
+      ul <- cli_ul()
 
-      cli_end()
-      cli_par()
       lines_cli <-
         lines |> purrr::imap(function(l_, n_){
 
           l_lab <- if(length(l_) == 0) "{symbol$cross} No match" else "{.val {l_}}"
 
-          cli::cli_inform(
+          cli::cli_li(
             c(">" = paste0(
               "{.code {n_}}: ",
               l_lab)
@@ -181,12 +181,12 @@ msg_getlltsoc_match <-
           )
         })
 
-      cli_end()
-      cli_par()
+      cli_end(ul)
+
       cli::cli_alert_info(
         "Set {.arg verbose} to FALSE to suppress this section."
       )
-      cli_end()
+
 
     }
     msg_match()

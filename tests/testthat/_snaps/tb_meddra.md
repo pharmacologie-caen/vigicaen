@@ -28,7 +28,7 @@
     Code
       msg_tb_onceperdatabase()
     Message
-      [1m[22mThis process must only be done [1m[33monce[39m[22m per database version.
+      This process must only be done [1m[33monce[39m[22m per database version.
 
 # msg_tb_onceperdatabase prints in different formats / format is ok [unicode]
 
@@ -42,5 +42,5 @@
     Code
       msg_tb_onceperdatabase()
     Message
-      [1m[22mThis process must only be done [1m[33monce[39m[22m per database version.
+      This process must only be done [1m[33monce[39m[22m per database version.
 

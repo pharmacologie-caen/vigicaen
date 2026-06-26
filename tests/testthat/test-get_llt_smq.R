@@ -3,7 +3,8 @@ test_that("basic use works", {
     get_llt_smq(
       list(a = "Embolic and thrombotic events, venous (SMQ)"),
       smq_list = smq_list_,
-      smq_content = smq_content_)
+      smq_content = smq_content_,
+      verbose = FALSE)
 
   expect_equal(
     sum(llt_extraction_smq[[1]]
@@ -19,7 +20,8 @@ test_that("there is no duplicates in extracted llts", {
     get_llt_smq(
       list(a = "Embolic and thrombotic events, venous (SMQ)"),
       smq_list = smq_list_,
-      smq_content = smq_content_)
+      smq_content = smq_content_,
+      verbose = FALSE)
 
   expect_equal(length(llt_extraction_smq),
                length(unique(llt_extraction_smq)))
@@ -37,7 +39,8 @@ test_that("find the appropriate number of codes", {
     get_llt_smq(smq_sel,
                 smq_scope = "narrow",
                 smq_list = smq_list_,
-                smq_content = smq_content_)
+                smq_content = smq_content_,
+                verbose = FALSE)
 
   purrr::iwalk(adr_llt,
                function(p, p_n)
@@ -65,7 +68,8 @@ test_that("works with broad definitions", {
     get_llt_smq(smq_sel,
                 smq_scope = "broad",
                 smq_list = smq_list_,
-                smq_content = smq_content_)
+                smq_content = smq_content_,
+                verbose = FALSE)
 
   purrr::iwalk(adr_llt,
                function(p, p_n)
@@ -75,13 +79,15 @@ test_that("works with broad definitions", {
     get_llt_smq(smq_sel_2,
                 smq_scope = "broad",
                 smq_list = smq_list_,
-                smq_content = smq_content_)
+                smq_content = smq_content_,
+                verbose = FALSE)
 
   adr_llt2_n <-
     get_llt_smq(smq_sel_2,
                 smq_scope = "narrow",
                 smq_list = smq_list_,
-                smq_content = smq_content_)
+                smq_content = smq_content_,
+                verbose = FALSE)
 
   purrr::iwalk(adr_llt2_b,
                function(p, p_n)
@@ -103,9 +109,53 @@ test_that("omitting ' (SMQ)' is corrected", {
     get_llt_smq(smq_sel,
                 smq_scope = "narrow",
                 smq_list = smq_list_,
-                smq_content = smq_content_)
+                smq_content = smq_content_,
+                verbose = FALSE)
 
   expect_equal(r1[["embolism"]], r1[["embolism2"]])
+})
+
+test_that("verbose controls success messages", {
+  smq_sel <- rlang::list2(
+    embolism = "Embolic and thrombotic events, venous (SMQ)"
+  )
+
+  expect_snapshot({
+    r1 <- get_llt_smq(
+      smq_sel,
+      smq_scope = "narrow",
+      smq_list = smq_list_,
+      smq_content = smq_content_,
+      verbose = TRUE
+    )
+  })
+
+  expect_no_message(
+    r1 <- get_llt_smq(
+      smq_sel,
+      smq_scope = "narrow",
+      smq_list = smq_list_,
+      smq_content = smq_content_,
+      verbose = FALSE
+    )
+  )
+})
+
+test_that("verbose can show matched section with sub-smq and failures", {
+  smq_sel <- rlang::list2(
+    ischemic_heart_disease = c("Ischaemic heart disease (SMQ)"),
+    smq_failure = c("Not an SMQ")
+  )
+
+ expect_snapshot({
+      r1 <- get_llt_smq(
+        smq_sel,
+        smq_scope = "narrow",
+        smq_list = smq_list_,
+        smq_content = smq_content_,
+        verbose = TRUE
+      )
+      })
 })
 
 test_that("errors and warnings pop as needed", {
@@ -134,33 +184,38 @@ test_that("errors and warnings pop as needed", {
   expect_snapshot(
     r1 <- get_llt_smq(s1,
                 smq_list = smq_list_,
-                smq_content = smq_content_)
+                smq_content = smq_content_,
+                verbose = FALSE)
   )
 
   expect_error(
     get_llt_smq(s_algorithmic,
                 smq_list = smq_list_,
-                smq_content = smq_content_),
+                smq_content = smq_content_,
+                verbose = FALSE),
     "algorithmic"
   )
 
   expect_snapshot(
     r1 <- get_llt_smq(s2,
                 smq_list = smq_list_,
-                smq_content = smq_content_)
+                smq_content = smq_content_,
+                verbose = FALSE)
   )
 
   expect_snapshot(
    r2 <- get_llt_smq(s3,
                 smq_list = smq_list_,
-                smq_content = smq_content_)
+                smq_content = smq_content_,
+                verbose = FALSE)
   )
 
   expect_equal(
     r2$good,
     get_llt_smq(smq_sel,
                 smq_list = smq_list_,
-                smq_content = smq_content_)[[1]]
+                smq_content = smq_content_,
+                verbose = FALSE)[[1]]
   )
 
 })
@@ -200,7 +255,8 @@ test_that("works with multiple smqs in a single item", {
     get_llt_smq(smq_sel,
                 smq_scope =  "narrow",
                 smq_list_,
-                smq_content_)
+                smq_content_,
+                verbose = FALSE)
 
 
   # no higher level smq found when querying lower ones
@@ -209,14 +265,16 @@ test_that("works with multiple smqs in a single item", {
     r1 <- get_llt_smq(smq_sel_low,
                 smq_scope =  "narrow",
                 smq_list_,
-                smq_content_)
+                smq_content_,
+                verbose = FALSE)
   )
 
   adr_llt2 <-
     get_llt_smq(smq_sel2,
                   smq_scope =  "narrow",
                   smq_list_,
-                  smq_content_)
+                  smq_content_,
+                  verbose = FALSE)
 
   # complex behaviors
 
@@ -226,7 +284,8 @@ test_that("works with multiple smqs in a single item", {
     get_llt_smq(smq_sel3,
                   smq_scope =  "narrow",
                   smq_list_,
-                smq_content_)
+                smq_content_,
+                verbose = FALSE)
   )
 
   # same with a non matching smq
@@ -235,7 +294,8 @@ test_that("works with multiple smqs in a single item", {
     get_llt_smq(smq_sel4,
                 smq_scope =  "narrow",
                 smq_list_,
-                smq_content_)
+                smq_content_,
+                verbose = FALSE)
   )
 
   true_ihd_length <-
@@ -269,7 +329,8 @@ test_that("works with smq_list and smq_content as Table (out of memory)", {
                 smq_list = smq_list_ |>
                   arrow::as_arrow_table(),
                 smq_content = smq_content_ |>
-                  arrow::as_arrow_table())
+                  arrow::as_arrow_table(),
+                verbose = FALSE)
 
   expect_equal(sum(llt_extraction_smq[[1]]), 26895551000)
 
@@ -280,6 +341,7 @@ test_that("smq_list_content is deprecated", {
     r1 <- get_llt_smq(list(a = "Embolic and thrombotic events, venous (SMQ)"),
                 smq_list = smq_list_,
                 smq_content = smq_content_,
+                verbose = FALSE,
                 smq_list_content = smq_list_content_),
     "deprecated"
   )

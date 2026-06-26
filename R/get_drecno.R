@@ -633,19 +633,22 @@ msg_getdrecno_match <-
         function(d_sel,
                  arg = rlang::caller_arg(d_sel),
                  call = rlang::caller_env()) {
-          cli_h3(paste0(col_green("{symbol$tick}"), " Matched drugs"))
+          cli_h2("{col_green({symbol$tick})} Matched drugs")
         }
 
       cli_par()
       drug_match_printer(d_sel)
       cli_end()
-      cli_par()
+
+
+      ul <- cli_ul()
+
       lines_cli <-
         lines |> purrr::imap(function(l_, n_){
 
           l_lab <- if(length(l_) == 0) "{symbol$cross} No match" else "{.val {l_}}"
 
-          cli::cli_inform(
+          cli::cli_li(
             c(">" = paste0(
               "{.code {n_}}: ",
               l_lab)
@@ -653,7 +656,8 @@ msg_getdrecno_match <-
           )
         })
 
-      cli_end()
+      cli_end(ul)
+
       cli_par()
       cli::cli_alert_info(
         "Set {.arg verbose} to FALSE to suppress this section."

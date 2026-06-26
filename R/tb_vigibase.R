@@ -140,7 +140,7 @@ tb_vigibase <-
       if(!length(main_parquet_tables) == 0 |
          !length(sub_parquet_tables) == 0) {
         cli::cli_alert_info("These tables won't be built again.")
-        cli::cli_inform(c(">" = "Set {.arg overwrite_existing_tables} to TRUE to rewrite them."))
+        cli::cli_text(c(">" = "Set {.arg overwrite_existing_tables} to TRUE to rewrite them."))
       }
     } else {
       main_parquet_tables <- character(0)
@@ -151,7 +151,7 @@ tb_vigibase <-
     "Creating vigibase tables.")
 
     msg_tb_onceperdatabase()
-    cli::cli_inform("It can take up to 30minutes.")
+    cli::cli_text("It can take up to 30minutes.")
 
     cli_progress_bar(
       "Creating vigibase",
@@ -528,7 +528,7 @@ tb_screen_main <- function(path_base,
   if (length(files) > 0 && ext == ".parquet") {
     # only displayed if parquet checking - part of user info linked to
     # overwrite_existing_tables arg.
-    cli::cli_inform(
+    cli::cli_text(
       "The following tables were found as {ext} files in {.arg path_base}: {.val {files}}"
     )
   }
@@ -576,7 +576,7 @@ tb_screen_sub <- function(path_sub,
 
   files <- list.files(path_sub, pattern = pattern, full.names = FALSE)
   if (length(files) == length(pattern_tables) && ext == ".parquet") {
-    cli::cli_inform("Subsidiary files were found as {ext} files.")
+    cli::cli_text("Subsidiary files were found as {ext} files.")
   }
   return(files)
 }

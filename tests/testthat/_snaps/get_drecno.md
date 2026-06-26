@@ -13,12 +13,11 @@
       
       -- `d_sel`: Matching drugs --
       
-      -- v Matched drugs 
+      -- v Matched drugs --
       
-      > `nivolumab`: "nivolumab"
-      > `ipilimumab`: "ipilimumab"
-      > `nivo_ipi`: "nivolumab" and "ipilimumab"
-      
+      * `nivolumab`: "nivolumab"
+      * `ipilimumab`: "ipilimumab"
+      * `nivo_ipi`: "nivolumab" and "ipilimumab"
       i Set `verbose` to FALSE to suppress this section.
       
       --------------------------------------------------------------------------------
@@ -38,12 +37,11 @@
       
       -- `d_sel`: Matching drugs --
       
-      -- v Matched drugs 
+      -- v Matched drugs --
       
-      > `nivolumab`: "nivolumab" and "ipilimumab;nivolumab"
-      > `ipilimumab`: "ipilimumab" and "ipilimumab;nivolumab"
-      > `nivo_ipi`: "nivolumab", "ipilimumab;nivolumab", and "ipilimumab"
-      
+      * `nivolumab`: "nivolumab" and "ipilimumab;nivolumab"
+      * `ipilimumab`: "ipilimumab" and "ipilimumab;nivolumab"
+      * `nivo_ipi`: "nivolumab", "ipilimumab;nivolumab", and "ipilimumab"
       i Set `verbose` to FALSE to suppress this section.
       
       --------------------------------------------------------------------------------
@@ -59,10 +57,28 @@
       
       -- `d_sel`: Matching drugs --
       
-      -- v Matched drugs 
+      -- v Matched drugs --
       
-      > `a`: "chlorphenamine;guaifenesin;paracetamol;pseudoephedrine;tipepidine", "cinnamomum spp.;ephedra spp.;glycyrrhiza spp.;paeonia spp.;paracetamol;pueraria spp.;zingiber officinale;ziziphus spp.", "eperisone;paracetamol", "guaifenesin;paracetamol;pseudoephedrine", "caffeine;chlorphenamine;guaifenesin;methylephedrine;paracetamol;phenylephrine", "ascorbic acid;chlorphenamine;cloperastine;coptis spp.;lysozyme;methylephedrine;paracetamol;platycodon grandiflorus", "cetirizine;paracetamol;phenylephrine;zinc", "chlorphenamine;cloperastine;lysozyme;paracetamol", "allobarbital;codeine;paracetamol;salicylamide", "atropine;codeine;papaverine;paracetamol", "codeine;paracetamol;pentobarbital", "amobarbital;caffeine;codeine;paracetamol", "amobarbital;caffeine;codeine;octibenzonium bromide;paracetamol", "amobarbital;caffeine;codeine;dihydroergotamine;paracetamol", "caffeine;codeine;meprobamate;paracetamol", "codeine;meprobamate;paracetamol", "caffeine;codeine;paracetamol;phenazone;prothipendyl", "codeine;methaqualone;paracetamol", ..., "atropa bella-donna;caffeine;dihydrocodeine;diphenylpyraline;guaifenesin;methylephedrine;noscapine;paracetamol", and "ascorbic acid;caffeine;chlorphenamine;dextromethorphan;guaifenesin;herbal nos;paracetamol;pseudoephedrine"
-      
+      * `a`: "chlorphenamine;guaifenesin;paracetamol;pseudoephedrine;tipepidine",
+      "cinnamomum spp.;ephedra spp.;glycyrrhiza spp.;paeonia
+      spp.;paracetamol;pueraria spp.;zingiber officinale;ziziphus spp.",
+      "eperisone;paracetamol", "guaifenesin;paracetamol;pseudoephedrine",
+      "caffeine;chlorphenamine;guaifenesin;methylephedrine;paracetamol;phenylephrine",
+      "ascorbic acid;chlorphenamine;cloperastine;coptis
+      spp.;lysozyme;methylephedrine;paracetamol;platycodon grandiflorus",
+      "cetirizine;paracetamol;phenylephrine;zinc",
+      "chlorphenamine;cloperastine;lysozyme;paracetamol",
+      "allobarbital;codeine;paracetamol;salicylamide",
+      "atropine;codeine;papaverine;paracetamol", "codeine;paracetamol;pentobarbital",
+      "amobarbital;caffeine;codeine;paracetamol",
+      "amobarbital;caffeine;codeine;octibenzonium bromide;paracetamol",
+      "amobarbital;caffeine;codeine;dihydroergotamine;paracetamol",
+      "caffeine;codeine;meprobamate;paracetamol", "codeine;meprobamate;paracetamol",
+      "caffeine;codeine;paracetamol;phenazone;prothipendyl",
+      "codeine;methaqualone;paracetamol", ..., "atropa
+      bella-donna;caffeine;dihydrocodeine;diphenylpyraline;guaifenesin;methylephedrine;noscapine;paracetamol",
+      and "ascorbic acid;caffeine;chlorphenamine;dextromethorphan;guaifenesin;herbal
+      nos;paracetamol;pseudoephedrine"
       i Set `verbose` to FALSE to suppress this section.
       
       --------------------------------------------------------------------------------
@@ -286,13 +302,12 @@
       
       -- `d_sel`: Matching drugs --
       
-      -- v Matched drugs 
+      -- v Matched drugs --
       
-      > `medi`: "enalapril"
-      > `mix`: "enalaprilat" and "enalapril"
-      > `notwho2`: x No match
-      > `who`: "nivolumab"
-      
+      * `medi`: "enalapril"
+      * `mix`: "enalaprilat" and "enalapril"
+      * `notwho2`: x No match
+      * `who`: "nivolumab"
       i Set `verbose` to FALSE to suppress this section.
       
       -- ! Some drugs were not found 
@@ -328,13 +343,13 @@
       
       -- `d_sel`: Matching drugs --
       
-      -- v Matched drugs 
+      -- v Matched drugs --
       
-      > `medi`: "enalapril", "enalapril;folic acid", and "captopril;enalapril"
-      > `mix`: "enalaprilat", "enalapril", "enalapril;folic acid", and "captopril;enalapril"
-      > `notwho2`: x No match
-      > `who`: "nivolumab" and "ipilimumab;nivolumab"
-      
+      * `medi`: "enalapril", "enalapril;folic acid", and "captopril;enalapril"
+      * `mix`: "enalaprilat", "enalapril", "enalapril;folic acid", and
+      "captopril;enalapril"
+      * `notwho2`: x No match
+      * `who`: "nivolumab" and "ipilimumab;nivolumab"
       i Set `verbose` to FALSE to suppress this section.
       
       -- ! Some drugs were not found 
@@ -362,10 +377,9 @@
       
       -- `d_sel`: Matching drugs --
       
-      -- v Matched drugs 
+      -- v Matched drugs --
       
-      > `para`: "paracetamol"
-      
+      * `para`: "paracetamol"
       i Set `verbose` to FALSE to suppress this section.
       
 
@@ -380,10 +394,9 @@
       
       -- `d_sel`: Matching drugs --
       
-      -- v Matched drugs 
+      -- v Matched drugs --
       
-      > `set1`: "enalapril"
-      
+      * `set1`: "enalapril"
       i Set `verbose` to FALSE to suppress this section.
       
       --------------------------------------------------------------------------------
@@ -399,10 +412,9 @@
       
       -- `d_sel`: Matching drugs --
       
-      -- v Matched drugs 
+      -- v Matched drugs --
       
-      > `set1`: "nivolumab" and "ipilimumab;nivolumab"
-      
+      * `set1`: "nivolumab" and "ipilimumab;nivolumab"
       i Set `verbose` to FALSE to suppress this section.
       
       --------------------------------------------------------------------------------
@@ -418,10 +430,9 @@
       
       -- `d_sel`: Matching drugs --
       
-      -- v Matched drugs 
+      -- v Matched drugs --
       
-      > `set1`: "ipilimumab", "ipilimumab;nivolumab", and "nivolumab"
-      
+      * `set1`: "ipilimumab", "ipilimumab;nivolumab", and "nivolumab"
       i Set `verbose` to FALSE to suppress this section.
       
       --------------------------------------------------------------------------------
@@ -435,10 +446,9 @@
       
       -- `d_sel`: Matching drugs --
       
-      -- v Matched drugs 
+      -- v Matched drugs --
       
-      > `set1`: "enalapril"
-      
+      * `set1`: "enalapril"
       i Set `verbose` to FALSE to suppress this section.
       
 

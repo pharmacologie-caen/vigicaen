@@ -199,6 +199,6 @@ tb_meddra <-
 
 msg_tb_onceperdatabase <-
   function(){
-    cli::cli_inform(
+    cli::cli_text(
       "This process must only be done {.strong {cli::col_yellow('once')}} per database version.")
   }

@@ -86,6 +86,17 @@ test_that("unmatched terms management", {
       verbose = FALSE
     )
   )
+
+  # showing both matched and unmatched
+
+  expect_snapshot(
+    r1 <- get_llt_soc(
+      wrong_list,
+      term_level = "pt",
+      meddra = meddra_,
+      verbose = TRUE
+    )
+  )
 })
 
 test_that("works with unique and multiple terms", {
