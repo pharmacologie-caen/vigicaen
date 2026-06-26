@@ -222,6 +222,10 @@ By contributing to this project, you agree to abide by its terms.
   **\[stable\]** : Add drug column(s) to a dataset
 - [`add_ind()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_ind.md)
   **\[experimental\]** : Add indication column(s) to a dataset
+- [`add_death()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_outcomes.md)
+  [`add_serious()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_outcomes.md)
+  [`add_fup()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_outcomes.md)
+  **\[experimental\]** : Add outcome columns to a dataset
 - [`cff()`](https://pharmacologie-caen.github.io/vigicaen/reference/cff.md)
   : Fast formatting of numbers
 - [`check_dm()`](https://pharmacologie-caen.github.io/vigicaen/reference/check_dm.md)

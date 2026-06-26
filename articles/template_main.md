@@ -126,34 +126,16 @@ demo <-
 
 # Death + outcome availability
 
-demo <- 
-  demo |> 
-  mutate(death = 
-           ifelse(UMCReportId %in% out$UMCReportId,
-                  UMCReportId %in% 
-                    (out |> 
-                    filter(Seriousness == "1") |> 
-                    pull(UMCReportId)
-                    ),
-                  NA)
-         )
+demo <-
+  demo |>
+  add_death(out_data = out)
 
 # follow-up, seriousness
 
 demo <-
   demo |>
-  mutate(
-    fup = ifelse(UMCReportId %in% followup$UMCReportId, 1, 0),
-    serious = 
-      ifelse(
-        UMCReportId %in% out$UMCReportId,
-        UMCReportId %in% 
-          (out |> 
-          filter(Serious == "Y") |> 
-          pull(UMCReportId)
-          ),
-        NA)
-  )
+  add_fup(fup_data = followup) |>
+  add_serious(out_data = out)
 
 # year
 

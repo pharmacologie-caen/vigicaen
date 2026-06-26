@@ -2,6 +2,20 @@
 
 ## vigicaen (development version)
 
+### New features
+
+- *New*
+  [`add_death()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_outcomes.md),
+  [`add_serious()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_outcomes.md),
+  and
+  [`add_fup()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_outcomes.md)
+  functions add outcome columns to a dataset using the `out` and
+  `followup` tables. These functions work transparently with both
+  in-memory and out-of-memory (Arrow) tables, fixing the
+  `match requires vector arguments` error that occurred when using these
+  tables in Arrow format
+  ([\#144](https://github.com/pharmacologie-caen/vigicaen/issues/144)).
+
 ## vigicaen 2.0.0
 
 CRAN release: 2026-06-24

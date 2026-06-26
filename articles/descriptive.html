@@ -181,34 +181,19 @@ table).</p>
 <span></span>
 <span><span class="co"># Death + outcome availability</span></span>
 <span></span>
-<span><span class="va">demo</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">demo</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>death <span class="op">=</span> </span>
-<span>           <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">UMCReportId</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">out</span><span class="op">$</span><span class="va">UMCReportId</span>,</span>
-<span>                  <span class="va">UMCReportId</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> </span>
-<span>                    <span class="op">(</span><span class="va">out</span> <span class="op">|&gt;</span> </span>
-<span>                    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Seriousness</span> <span class="op">==</span> <span class="st">"1"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>                    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">UMCReportId</span><span class="op">)</span></span>
-<span>                    <span class="op">)</span>,</span>
-<span>                  <span class="cn">NA</span><span class="op">)</span></span>
-<span>         <span class="op">)</span></span>
+<span><span class="va">demo</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">demo</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/add_outcomes.html">add_death</a></span><span class="op">(</span>out_data <span class="op">=</span> <span class="va">out</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> `.data` detected as `demo` table.</span></span>
 <span></span>
 <span><span class="co"># follow-up, seriousness</span></span>
 <span></span>
 <span><span class="va">demo</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">demo</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    fup <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">UMCReportId</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">followup</span><span class="op">$</span><span class="va">UMCReportId</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
-<span>    serious <span class="op">=</span> </span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
-<span>        <span class="va">UMCReportId</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">out</span><span class="op">$</span><span class="va">UMCReportId</span>,</span>
-<span>        <span class="va">UMCReportId</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> </span>
-<span>          <span class="op">(</span><span class="va">out</span> <span class="op">|&gt;</span> </span>
-<span>          <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Serious</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>          <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">UMCReportId</span><span class="op">)</span></span>
-<span>          <span class="op">)</span>,</span>
-<span>        <span class="cn">NA</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/add_outcomes.html">add_fup</a></span><span class="op">(</span>fup_data <span class="op">=</span> <span class="va">followup</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/add_outcomes.html">add_serious</a></span><span class="op">(</span>out_data <span class="op">=</span> <span class="va">out</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> `.data` detected as `demo` table.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> `.data` detected as `demo` table.</span></span>
 <span></span>
 <span><span class="co"># year</span></span>
 <span></span>
@@ -303,8 +288,8 @@ variables provides little information and can be omitted.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 4</span></span></span>
 <span><span class="co">#&gt;   var     level value         n_avail</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> serious FALSE 181/747 (24%)     747</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> serious TRUE  566/747 (76%)     747</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> serious 0     181/747 (24%)     747</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> serious 1     566/747 (76%)     747</span></span></code></pre></div>
 <p>The “serious” variable takes the values TRUE/FALSE, and not 1/0, but
 it is interpreted in the same way (it is only an artifact of
 construction).</p>

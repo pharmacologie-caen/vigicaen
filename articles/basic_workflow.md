@@ -896,34 +896,23 @@ a fatal issue during his/her follow-up.
 
 out <- out_
 
-demo <- 
-  demo |> 
-  mutate(
-    serious = 
-      ifelse(
-        UMCReportId %in% out$UMCReportId,
-        UMCReportId %in% 
-          (out |> 
-          filter(Serious == "Y") |> 
-          pull(UMCReportId)
-          ),
-        NA)
-    )
+demo <-
+  demo |>
+  add_serious(out_data = out)
+#> ℹ `.data` detected as `demo` table.
 
 # ---- Death + outcome availability ---- ####
 
-demo <- 
-  demo |> 
-  mutate(death = 
-           ifelse(UMCReportId %in% out$UMCReportId,
-                  UMCReportId %in% 
-                    (out |> 
-                    filter(Seriousness == "1") |> 
-                    pull(UMCReportId)
-                    ),
-                  NA)
-         )
+demo <-
+  demo |>
+  add_death(out_data = out)
+#> ℹ `.data` detected as `demo` table.
 ```
+
+- [`add_serious()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_outcomes.md)
+  and
+  [`add_death()`](https://pharmacologie-caen.github.io/vigicaen/reference/add_outcomes.md)
+  handle both in-memory and out-of-memory (Arrow) tables transparently.
 
 - The `serious` and `death` columns are coded with TRUE/FALSE values in
   this example. There is no particular reason to prefer it over 1/0
@@ -1074,19 +1063,19 @@ mod_or <-
 mod_or
 #>             rn    Estimate  Std..Error     z.value   Pr...z..           or
 #>         <char>       <num>       <num>       <num>      <num>        <num>
-#> 1: (Intercept) -14.8881304 882.7435188 -0.01686575 0.98654372 3.421111e-07
+#> 1: (Intercept) -14.8881304 882.7435177 -0.01686575 0.98654372 3.421111e-07
 #> 2:   nivolumab   0.4613151   0.2679460  1.72167184 0.08512898 1.586159e+00
 #> 3:         sex   0.1610313   0.2516929  0.63979269 0.52230739 1.174722e+00
-#> 4:    age18-45  12.7789374 882.7434892  0.01447639 0.98844992 3.546680e+05
-#> 5:    age45-64  12.7361773 882.7434133  0.01442795 0.98848856 3.398220e+05
-#> 6:    age65-74  13.1714980 882.7434134  0.01492109 0.98809513 5.251809e+05
-#> 7:      age75+  12.6701788 882.7434409  0.01435318 0.98854821 3.181184e+05
+#> 4:    age18-45  12.7789374 882.7434881  0.01447639 0.98844992 3.546680e+05
+#> 5:    age45-64  12.7361773 882.7434122  0.01442795 0.98848856 3.398220e+05
+#> 6:    age65-74  13.1714980 882.7434123  0.01492109 0.98809513 5.251809e+05
+#> 7:      age75+  12.6701788 882.7434398  0.01435318 0.98854821 3.181184e+05
 #>       low_ci    up_ci        orl          ci ci_level signif_ror
 #>        <num>    <num>     <char>      <char>   <char>      <num>
 #> 1: 0.0000000      Inf       0.00  (0.00-Inf)      95%          0
 #> 2: 0.9381463 2.681777       1.59 (0.94-2.68)      95%          0
 #> 3: 0.7172881 1.923873       1.17 (0.72-1.92)      95%          0
-#> 4: 0.0000000      Inf 354,668.00  (0.00-Inf)      95%          0
+#> 4: 0.0000000      Inf 354,667.99  (0.00-Inf)      95%          0
 #> 5: 0.0000000      Inf 339,822.03  (0.00-Inf)      95%          0
 #> 6: 0.0000000      Inf 525,180.88  (0.00-Inf)      95%          0
 #> 7: 0.0000000      Inf 318,118.36  (0.00-Inf)      95%          0

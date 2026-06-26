@@ -184,5 +184,5 @@ vigi_routine(
   export_to = paste0(tempdir(), "/", "vigicaen_graph.png")
 )
 
-#> Plot exported to /tmp/Rtmp4VEutl/vigicaen_graph.png
+#> Plot exported to /tmp/Rtmppk9v3U/vigicaen_graph.png
 ```

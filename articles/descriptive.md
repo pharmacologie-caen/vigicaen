@@ -107,34 +107,19 @@ demo <-
 
 # Death + outcome availability
 
-demo <- 
-  demo |> 
-  mutate(death = 
-           ifelse(UMCReportId %in% out$UMCReportId,
-                  UMCReportId %in% 
-                    (out |> 
-                    filter(Seriousness == "1") |> 
-                    pull(UMCReportId)
-                    ),
-                  NA)
-         )
+demo <-
+  demo |>
+  add_death(out_data = out)
+#> ℹ `.data` detected as `demo` table.
 
 # follow-up, seriousness
 
 demo <-
   demo |>
-  mutate(
-    fup = ifelse(UMCReportId %in% followup$UMCReportId, 1, 0),
-    serious = 
-      ifelse(
-        UMCReportId %in% out$UMCReportId,
-        UMCReportId %in% 
-          (out |> 
-          filter(Serious == "Y") |> 
-          pull(UMCReportId)
-          ),
-        NA)
-  )
+  add_fup(fup_data = followup) |>
+  add_serious(out_data = out)
+#> ℹ `.data` detected as `demo` table.
+#> ℹ `.data` detected as `demo` table.
 
 # year
 
@@ -238,8 +223,8 @@ desc_facvar(
 #> # A tibble: 2 × 4
 #>   var     level value         n_avail
 #>   <chr>   <chr> <chr>           <int>
-#> 1 serious FALSE 181/747 (24%)     747
-#> 2 serious TRUE  566/747 (76%)     747
+#> 1 serious 0     181/747 (24%)     747
+#> 2 serious 1     566/747 (76%)     747
 ```
 
 The “serious” variable takes the values TRUE/FALSE, and not 1/0, but it

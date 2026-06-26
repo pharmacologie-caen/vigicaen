@@ -884,34 +884,20 @@ the patient experienced a fatal issue during his/her follow-up.</p>
 <span></span>
 <span><span class="va">out</span> <span class="op">&lt;-</span> <span class="va">out_</span></span>
 <span></span>
-<span><span class="va">demo</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">demo</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    serious <span class="op">=</span> </span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
-<span>        <span class="va">UMCReportId</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">out</span><span class="op">$</span><span class="va">UMCReportId</span>,</span>
-<span>        <span class="va">UMCReportId</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> </span>
-<span>          <span class="op">(</span><span class="va">out</span> <span class="op">|&gt;</span> </span>
-<span>          <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Serious</span> <span class="op">==</span> <span class="st">"Y"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>          <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">UMCReportId</span><span class="op">)</span></span>
-<span>          <span class="op">)</span>,</span>
-<span>        <span class="cn">NA</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
+<span><span class="va">demo</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">demo</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/add_outcomes.html">add_serious</a></span><span class="op">(</span>out_data <span class="op">=</span> <span class="va">out</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> `.data` detected as `demo` table.</span></span>
 <span></span>
 <span><span class="co"># ---- Death + outcome availability ---- ####</span></span>
 <span></span>
-<span><span class="va">demo</span> <span class="op">&lt;-</span> </span>
-<span>  <span class="va">demo</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>death <span class="op">=</span> </span>
-<span>           <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">UMCReportId</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">out</span><span class="op">$</span><span class="va">UMCReportId</span>,</span>
-<span>                  <span class="va">UMCReportId</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> </span>
-<span>                    <span class="op">(</span><span class="va">out</span> <span class="op">|&gt;</span> </span>
-<span>                    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Seriousness</span> <span class="op">==</span> <span class="st">"1"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>                    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">UMCReportId</span><span class="op">)</span></span>
-<span>                    <span class="op">)</span>,</span>
-<span>                  <span class="cn">NA</span><span class="op">)</span></span>
-<span>         <span class="op">)</span></span></code></pre></div>
+<span><span class="va">demo</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">demo</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/add_outcomes.html">add_death</a></span><span class="op">(</span>out_data <span class="op">=</span> <span class="va">out</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> `.data` detected as `demo` table.</span></span></code></pre></div>
 <ul>
+<li><p><code><a href="../reference/add_outcomes.html">add_serious()</a></code> and <code><a href="../reference/add_outcomes.html">add_death()</a></code> handle
+both in-memory and out-of-memory (Arrow) tables transparently.</p></li>
 <li><p>The <code>serious</code> and <code>death</code> columns are coded
 with TRUE/FALSE values in this example. There is no particular reason to
 prefer it over 1/0 codes. It is just a matter of preference.</p></li>
@@ -1048,19 +1034,19 @@ it.</p>
 <span><span class="va">mod_or</span></span>
 <span><span class="co">#&gt;             rn    Estimate  Std..Error     z.value   Pr...z..           or</span></span>
 <span><span class="co">#&gt;         &lt;char&gt;       &lt;num&gt;       &lt;num&gt;       &lt;num&gt;      &lt;num&gt;        &lt;num&gt;</span></span>
-<span><span class="co">#&gt; 1: (Intercept) -14.8881304 882.7435188 -0.01686575 0.98654372 3.421111e-07</span></span>
+<span><span class="co">#&gt; 1: (Intercept) -14.8881304 882.7435177 -0.01686575 0.98654372 3.421111e-07</span></span>
 <span><span class="co">#&gt; 2:   nivolumab   0.4613151   0.2679460  1.72167184 0.08512898 1.586159e+00</span></span>
 <span><span class="co">#&gt; 3:         sex   0.1610313   0.2516929  0.63979269 0.52230739 1.174722e+00</span></span>
-<span><span class="co">#&gt; 4:    age18-45  12.7789374 882.7434892  0.01447639 0.98844992 3.546680e+05</span></span>
-<span><span class="co">#&gt; 5:    age45-64  12.7361773 882.7434133  0.01442795 0.98848856 3.398220e+05</span></span>
-<span><span class="co">#&gt; 6:    age65-74  13.1714980 882.7434134  0.01492109 0.98809513 5.251809e+05</span></span>
-<span><span class="co">#&gt; 7:      age75+  12.6701788 882.7434409  0.01435318 0.98854821 3.181184e+05</span></span>
+<span><span class="co">#&gt; 4:    age18-45  12.7789374 882.7434881  0.01447639 0.98844992 3.546680e+05</span></span>
+<span><span class="co">#&gt; 5:    age45-64  12.7361773 882.7434122  0.01442795 0.98848856 3.398220e+05</span></span>
+<span><span class="co">#&gt; 6:    age65-74  13.1714980 882.7434123  0.01492109 0.98809513 5.251809e+05</span></span>
+<span><span class="co">#&gt; 7:      age75+  12.6701788 882.7434398  0.01435318 0.98854821 3.181184e+05</span></span>
 <span><span class="co">#&gt;       low_ci    up_ci        orl          ci ci_level signif_ror</span></span>
 <span><span class="co">#&gt;        &lt;num&gt;    &lt;num&gt;     &lt;char&gt;      &lt;char&gt;   &lt;char&gt;      &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1: 0.0000000      Inf       0.00  (0.00-Inf)      95%          0</span></span>
 <span><span class="co">#&gt; 2: 0.9381463 2.681777       1.59 (0.94-2.68)      95%          0</span></span>
 <span><span class="co">#&gt; 3: 0.7172881 1.923873       1.17 (0.72-1.92)      95%          0</span></span>
-<span><span class="co">#&gt; 4: 0.0000000      Inf 354,668.00  (0.00-Inf)      95%          0</span></span>
+<span><span class="co">#&gt; 4: 0.0000000      Inf 354,667.99  (0.00-Inf)      95%          0</span></span>
 <span><span class="co">#&gt; 5: 0.0000000      Inf 339,822.03  (0.00-Inf)      95%          0</span></span>
 <span><span class="co">#&gt; 6: 0.0000000      Inf 525,180.88  (0.00-Inf)      95%          0</span></span>
 <span><span class="co">#&gt; 7: 0.0000000      Inf 318,118.36  (0.00-Inf)      95%          0</span></span></code></pre></div>

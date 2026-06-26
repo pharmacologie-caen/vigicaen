@@ -48,6 +48,11 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="vigicaen-development-version">vigicaen (development version)<a class="anchor" aria-label="anchor" href="#vigicaen-development-version"></a></h2>
+<div class="section level3">
+<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<ul><li>
+<em>New</em> <code><a href="../reference/add_outcomes.html">add_death()</a></code>, <code><a href="../reference/add_outcomes.html">add_serious()</a></code>, and <code><a href="../reference/add_outcomes.html">add_fup()</a></code> functions add outcome columns to a dataset using the <code>out</code> and <code>followup</code> tables. These functions work transparently with both in-memory and out-of-memory (Arrow) tables, fixing the <code>match requires vector arguments</code> error that occurred when using these tables in Arrow format (<a href="https://github.com/pharmacologie-caen/vigicaen/issues/144" class="external-link">#144</a>).</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.0.0" id="vigicaen-200">vigicaen 2.0.0<a class="anchor" aria-label="anchor" href="#vigicaen-200"></a></h2><p class="text-muted">CRAN release: 2026-06-24</p>
