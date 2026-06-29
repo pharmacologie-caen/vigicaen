@@ -124,6 +124,16 @@ test_that("screen_adr returns empty data table for high freq_threshold", {
   expect_equal(nrow(result), 0)  # Should return empty data table if threshold is too high
 })
 
+test_that("screen_adr errors on empty input data", {
+  empty_adr <- data.frame(UMCReportId = integer(0), MedDRA_Id = integer(0))
+  meddra_min <- data.frame(llt_code = 1L, pt_name = "x")
+
+  expect_error(
+    screen_adr(empty_adr, meddra_min, term_level = "pt"),
+    class = "empty_data_no_reports"
+  )
+})
+
 test_that("error if term_level mismatches", {
 
   # Through rlang::arg_match
