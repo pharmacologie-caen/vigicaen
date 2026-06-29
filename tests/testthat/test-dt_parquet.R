@@ -80,3 +80,39 @@ test_that("alternative path syntaxes work",{
 
   unlink(paste0(path_data, "demo_altsynt.parquet"), recursive = TRUE)
 })
+
+test_that("col_select loads only the requested columns (in memory)", {
+  tmp <- file.path(tempdir(), "dtp_colselect")
+  dir.create(tmp)
+  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
+  df <- data.frame(UMCReportId = 1:3, DrecNo = 4:6, extra = 7:9)
+  arrow::write_parquet(df, file.path(tmp, "t.parquet"))
+
+  # character selection
+  sel <- dt_parquet(tmp, "t", col_select = c("UMCReportId", "DrecNo"))
+  expect_true(data.table::is.data.table(sel))
+  expect_equal(names(sel), c("UMCReportId", "DrecNo"))
+
+  # bare tidy-select
+  sel2 <- dt_parquet(tmp, "t", col_select = c(UMCReportId, extra))
+  expect_equal(names(sel2), c("UMCReportId", "extra"))
+})
+
+test_that("col_select works out of memory, default loads all columns", {
+  tmp <- file.path(tempdir(), "dtp_colselect_oom")
+  dir.create(tmp)
+  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
+  df <- data.frame(UMCReportId = 1:3, DrecNo = 4:6, extra = 7:9)
+  arrow::write_parquet(df, file.path(tmp, "t.parquet"))
+
+  # out of memory, default: all columns
+  ds_all <- dt_parquet(tmp, "t", in_memory = FALSE)
+  expect_false(data.table::is.data.table(ds_all))
+  expect_setequal(names(ds_all), c("UMCReportId", "DrecNo", "extra"))
+
+  # out of memory, col_select restricts the columns
+  ds_sel <- dt_parquet(tmp, "t", in_memory = FALSE,
+                       col_select = c("UMCReportId", "DrecNo"))
+  expect_equal(names(ds_sel), c("UMCReportId", "DrecNo"))
+  expect_equal(nrow(dplyr::collect(ds_sel)), 3L)
+})

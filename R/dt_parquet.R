@@ -17,6 +17,10 @@
 #' @param name Optional. A character string. The file name (if absent from `path_base`).
 #' @param ext Optional. A character string. The file extension.
 #' @param in_memory Logical, should data be loaded in memory?
+#' @param col_select Optional. A <[`tidy-select`][dplyr::dplyr_tidy_select]>
+#' selection of columns to read (e.g. `c("UMCReportId", "DrecNo")`). Defaults to
+#' `NULL`, meaning all columns. Loading only the columns you need can greatly
+#' reduce memory use on the large main tables.
 #' @returns A data.table if `in_memory` is set to `TRUE`,
 #' a parquet Table if `in_memory` is set to `FALSE`.
 #' @keywords import
@@ -53,7 +57,8 @@
 dt_parquet <- function(path_base,
                    name = NULL,
                    ext = ".parquet",
-                   in_memory = TRUE){
+                   in_memory = TRUE,
+                   col_select = NULL){
 
   ext <-
     if(!is.null(name) && !grepl(".parquet$", name, perl = TRUE)) {
@@ -73,10 +78,15 @@ dt_parquet <- function(path_base,
 
   if(in_memory == TRUE){
     path |>
-    arrow::read_parquet(as_data_frame = TRUE) |>
+    arrow::read_parquet(as_data_frame = TRUE, col_select = {{ col_select }}) |>
     data.table::as.data.table()
   } else {
-    path |>
-      arrow::open_dataset()
+    ds <- arrow::open_dataset(path)
+
+    if (!rlang::quo_is_null(rlang::enquo(col_select))) {
+      ds <- dplyr::select(ds, {{ col_select }})
+    }
+
+    ds
   }
 }
