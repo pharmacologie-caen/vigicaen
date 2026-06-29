@@ -24,3 +24,9 @@ articles:
   - template_dictionary
   - template_main
   - template_routine
+
+- title: Help
+  navbar: Help
+  desc: Troubleshooting and frequently asked questions
+  contents:
+  - articles/faq
