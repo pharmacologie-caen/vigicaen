@@ -191,30 +191,9 @@ vigi_routine <-
       check_length_one(d_code_2, "vigi_routine()")
       d_name2 <- names(d_code_2)
 
-      umc_drug_1 <-
-        drug_data |>
-        dplyr::filter(.data$DrecNo %in% d_code[[1]] &
-                        .data$Basis %in% basis_sel) |>
-        dplyr::pull(.data$UMCReportId) |>
-        unique()
-
-      umc_drug_2 <-
-        drug_data |>
-        dplyr::filter(.data$DrecNo %in% d_code_2[[1]] &
-                        .data$Basis %in% basis_sel) |>
-        dplyr::pull(.data$UMCReportId) |>
-        unique()
-
-      umc_drug <- intersect(umc_drug_1, umc_drug_2)
-
-      umc_adr <-
-        adr_data |>
-        dplyr::filter(.data$MedDRA_Id %in% a_code[[1]])  |>
-        dplyr::pull(.data$UMCReportId) |>
-        unique()
-
-
-      umc_cases <- intersect(umc_drug, umc_adr)
+      case_sets <-
+        vr_case_sets(drug_data, adr_data, d_code, a_code, basis_sel,
+                     d_code_2 = d_code_2)
 
       cli::cli_alert_info(
         "Dual drug analysis: only cases exposed to both '{d_name}' and '{d_name2}' are included.")
@@ -223,23 +202,15 @@ vigi_routine <-
 
     } else {
 
-      umc_drug <-
-        drug_data |>
-        dplyr::filter(.data$DrecNo %in% d_code[[1]] &
-                        .data$Basis %in% basis_sel) |>
-        dplyr::pull(.data$UMCReportId) |>
-        unique()
-
-      umc_adr <-
-        adr_data |>
-        dplyr::filter(.data$MedDRA_Id %in% a_code[[1]]) |>
-        dplyr::pull(.data$UMCReportId) |>
-        unique()
-
-      umc_cases <- intersect(umc_drug, umc_adr)
+      case_sets <-
+        vr_case_sets(drug_data, adr_data, d_code, a_code, basis_sel)
 
       d_name_after_dm <- d_name
     }
+
+    umc_drug  <- case_sets$umc_drug
+    umc_adr   <- case_sets$umc_adr
+    umc_cases <- case_sets$umc_cases
 
     n_drug <-
       length(umc_drug)
@@ -278,54 +249,8 @@ vigi_routine <-
 
     # ---- compute ic ----
 
-    # args of compute_dispro
-    alpha <- 0.05
-
-    min_n_obs <- 0
-
-    na_format = "-"
-
-    dig = 2
-
     res_ic <-
-      data.frame(a = a, b = b, c = c, d = d) |>
-      dplyr::mutate(
-        dplyr::across(dplyr::all_of(c("a", "b", "c", "d")), ~ as.numeric(.x)),
-        n_obs = .data$a,
-        n_exp = (.data$a + .data$b) * # n drug
-          (.data$a + .data$c) / # n event
-          (.data$a + .data$b + .data$c + .data$d), # n pop
-        ic = log((.data$a + .5) / (.data$n_exp + .5), base = 2),
-        ic_tail = ic_tail(
-          n_obs = .data$a,
-          n_exp = .data$n_exp,
-          p = .env$alpha / 2
-        ),
-        ci_level  = paste0((1 - .env$alpha) * 100, "%"),
-        signif_ic = ifelse(.data$ic_tail > 0, 1, 0),
-        # don't show results for pairs with less than min_n_obs
-        dplyr::across(
-          dplyr::all_of(
-            c("n_exp", "ic", "ic_tail",
-              "a", "b", "c", "d",
-              "signif_ic")
-          ),
-          function(num_col)
-            dplyr::if_else(.data$a < .env$min_n_obs,
-                           NA_real_,
-                           num_col)
-        ),
-        dplyr::across(
-          dplyr::all_of(
-            c("ci_level"
-            )
-          ),
-          function(chr_col)
-            dplyr::if_else(.data$a < .env$min_n_obs,
-                           .env$na_format,
-                           chr_col)
-        )
-      )
+      vr_ic_from_counts(a = a, b = b, c = c, d = d)
 
     # ---- build link ----
 
