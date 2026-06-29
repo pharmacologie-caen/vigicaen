@@ -19,7 +19,10 @@
 #' Equivalent for continuous data is [desc_cont()].
 #'
 #' @param .data A data.frame, where `vf` are column names of categorical variables
-#' @param vf A character vector
+#' @param vf <[`tidy-select`][dplyr::dplyr_tidy_select]> Columns to summarise.
+#' Accepts a character vector of column names (e.g. `c("sex", "country")`), bare
+#' column names, or tidy-select helpers such as `where(is.character)` or
+#' `starts_with()`.
 #' @param format A character string, formatting options.
 #' @param digits A numeric. Number of digits for the percentage (passed to interval formatting function).
 #' @param pad_width A numeric. Minimum character length of value output (passed to `stringr::str_pad()`).
@@ -79,6 +82,10 @@ desc_facvar <-
             pad_width = 12,
             ncat_max = 20,
             export_raw_values = FALSE){
+
+    # resolve tidy-select / character selection to column names
+
+    vf <- resolve_columns(.data, rlang::enquo(vf))
 
     # only columns present in the dataset
 
