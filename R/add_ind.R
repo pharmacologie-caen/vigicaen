@@ -60,11 +60,12 @@ add_ind <-
 
     # 0. arrow options
 
-    # keep original user option, then set it
+    # keep original user option, then set it (restored on exit, even on error)
 
-    original_user_option <- options("arrow.pull_as_vector")
+    original_user_option <- getOption("arrow.pull_as_vector")
 
     options(arrow.pull_as_vector = FALSE)
+    on.exit(options(arrow.pull_as_vector = original_user_option), add = TRUE)
 
     # 1. checkers
 
@@ -197,13 +198,9 @@ add_ind <-
       dest_data_withcols |>
       dplyr::rename(dplyr::all_of(back_renamer))
 
-    # 8. restore user option
-
-    options(arrow.pull_as_vector = original_user_option)
-
     # 9. compute everything (this is strictly required only for arrow objects)
 
-    if(any(c("Table", "Dataset") %in% class(.data))){
+    if(is_arrow(.data)){
       final_data |>
         dplyr::compute()
     } else {

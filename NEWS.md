@@ -8,6 +8,21 @@ work transparently with both in-memory and out-of-memory (Arrow) tables,
 fixing the `match requires vector arguments` error that occurred when using
 these tables in Arrow format (#144).
 
+## Bug fixes and internal
+
+* `repbasis` is now validated: an empty or malformed value (e.g. `""` or
+`"xyz"`) raises a clear error instead of silently producing an empty selection
+and filtering the drug table to zero rows. (#183)
+
+* `add_dose()`, `add_ind()` and `vigi_routine()` now restore the global
+`arrow.pull_as_vector` option via `on.exit()`, so an error mid-function no
+longer leaves the user's option altered. (#183)
+
+* Internal: arrow-object detection is unified behind a single `is_arrow()`
+helper (previously written inline in two inconsistent spellings, so chained
+`arrow_dplyr_query` inputs were handled differently across functions); the
+`repbasis` parsing is consolidated into `parse_repbasis()`. (#183)
+
 # vigicaen 2.0.0
 
 ## Breaking changes

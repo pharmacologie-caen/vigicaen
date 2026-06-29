@@ -130,7 +130,7 @@ desc_cont <-
       vc_s <- rlang::ensym(one_var)
 
       check_all_na <-
-        if (any(c("Table", "Dataset", "arrow_dplyr_query") %in% class(.data))) {
+        if (is_arrow(.data)) {
 
           n_na <-
             .data |>
@@ -288,7 +288,7 @@ error_columns_numeric_integer <-
 check_columns_numeric_integer <-
   function(.data, cols, call = rlang::caller_env())  {
 
-    if (any(c("Table", "Dataset", "arrow_dplyr_query") %in% class(.data))) {
+    if (is_arrow(.data)) {
       # for arrow objects, extract type from schema
       col_classes <-
         arrow::schema(.data)$fields |>

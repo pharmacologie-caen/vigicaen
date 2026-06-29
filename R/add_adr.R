@@ -115,7 +115,7 @@ add_adr <-
 
     t_ids <-
       purrr::map(a_code, function(a_code_batch){
-        if(any(c("Table", "Dataset") %in% class(.data))){
+        if(is_arrow(.data)){
           ad_rn |>
             dplyr::filter(.data$MedDRA_Id %in% a_code_batch) |>
             dplyr::pull(.data$t_id, as_vector = FALSE)
@@ -164,7 +164,7 @@ add_adr <-
 
     # compute everything (this is strictly required only for arrow objects)
 
-    if(any(c("Table", "Dataset") %in% class(.data))){
+    if(is_arrow(.data)){
       final_data |>
         dplyr::compute()
     } else {
