@@ -4,7 +4,13 @@
 \alias{dt_parquet}
 \title{Read parquet and convert to data.table}
 \usage{
-dt_parquet(path_base, name = NULL, ext = ".parquet", in_memory = TRUE)
+dt_parquet(
+  path_base,
+  name = NULL,
+  ext = ".parquet",
+  in_memory = TRUE,
+  col_select = NULL
+)
 }
 \arguments{
 \item{path_base}{A character string, providing the path to read from.}
@@ -14,6 +20,11 @@ dt_parquet(path_base, name = NULL, ext = ".parquet", in_memory = TRUE)
 \item{ext}{Optional. A character string. The file extension.}
 
 \item{in_memory}{Logical, should data be loaded in memory?}
+
+\item{col_select}{Optional. A <\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}>
+selection of columns to read (e.g. \code{c("UMCReportId", "DrecNo")}). Defaults to
+\code{NULL}, meaning all columns. Loading only the columns you need can greatly
+reduce memory use on the large main tables.}
 }
 \value{
 A data.table if \code{in_memory} is set to \code{TRUE},
