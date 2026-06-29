@@ -60,46 +60,10 @@ add_death <-
            col_name = "death") {
 
     check_data_out(out_data, "out_data")
+    abort_if_ind(.data, "add_death()")
 
-    data_type <- query_data_type(.data, ".data")
-
-    if (data_type == "ind") {
-      cli::cli_abort(
-        c(
-          '{.arg .data} must be one of {.code {c("demo", "drug", "adr", "link")}}.',
-          "x" = "{.code ind} tables not supported in {.code add_death()}."
-        )
-      )
-    }
-
-    old_opt <- getOption("arrow.pull_as_vector")
-    options(arrow.pull_as_vector = TRUE)
-    on.exit(options(arrow.pull_as_vector = old_opt), add = TRUE)
-
-    all_out_ids <-
-      out_data |>
-      dplyr::pull("UMCReportId")
-
-    death_ids <-
-      out_data |>
-      dplyr::filter(.data$Seriousness == "1") |>
-      dplyr::pull("UMCReportId")
-
-    result <-
-      .data |>
-      dplyr::mutate(
-        "{col_name}" := ifelse(
-          UMCReportId %in% .env$all_out_ids,
-          as.integer(UMCReportId %in% .env$death_ids),
-          NA_integer_
-        )
-      )
-
-    if (any(c("Table", "Dataset") %in% class(.data))) {
-      result |> dplyr::compute()
-    } else {
-      result
-    }
+    add_outcome_flag(.data, out_data, col_name,
+                     positive = rlang::quo(.data$Seriousness == "1"))
   }
 
 #' @rdname add_outcomes
@@ -110,46 +74,10 @@ add_serious <-
            col_name = "serious") {
 
     check_data_out(out_data, "out_data")
+    abort_if_ind(.data, "add_serious()")
 
-    data_type <- query_data_type(.data, ".data")
-
-    if (data_type == "ind") {
-      cli::cli_abort(
-        c(
-          '{.arg .data} must be one of {.code {c("demo", "drug", "adr", "link")}}.',
-          "x" = "{.code ind} tables not supported in {.code add_serious()}."
-        )
-      )
-    }
-
-    old_opt <- getOption("arrow.pull_as_vector")
-    options(arrow.pull_as_vector = TRUE)
-    on.exit(options(arrow.pull_as_vector = old_opt), add = TRUE)
-
-    all_out_ids <-
-      out_data |>
-      dplyr::pull("UMCReportId")
-
-    serious_ids <-
-      out_data |>
-      dplyr::filter(.data$Serious == "Y") |>
-      dplyr::pull("UMCReportId")
-
-    result <-
-      .data |>
-      dplyr::mutate(
-        "{col_name}" := ifelse(
-          UMCReportId %in% .env$all_out_ids,
-          as.integer(UMCReportId %in% .env$serious_ids),
-          NA_integer_
-        )
-      )
-
-    if (any(c("Table", "Dataset") %in% class(.data))) {
-      result |> dplyr::compute()
-    } else {
-      result
-    }
+    add_outcome_flag(.data, out_data, col_name,
+                     positive = rlang::quo(.data$Serious == "Y"))
   }
 
 #' @rdname add_outcomes
@@ -160,35 +88,69 @@ add_fup <-
            col_name = "fup") {
 
     check_data_fup(fup_data, "fup_data")
+    abort_if_ind(.data, "add_fup()")
 
-    data_type <- query_data_type(.data, ".data")
+    add_outcome_flag(.data, fup_data, col_name, positive = NULL)
+  }
 
-    if (data_type == "ind") {
+# ---- internal helpers --------------------------------------------------------
+
+# Abort if `.data` is an `ind` table (the add_outcome_* functions don't support
+# it). `fn` is the calling-function label shown in the message.
+abort_if_ind <-
+  function(.data, fn, call = rlang::caller_env()) {
+    if (query_data_type(.data, ".data") == "ind") {
       cli::cli_abort(
         c(
           '{.arg .data} must be one of {.code {c("demo", "drug", "adr", "link")}}.',
-          "x" = "{.code ind} tables not supported in {.code add_fup()}."
-        )
+          "x" = "{.code ind} tables not supported in {.code {fn}}."
+        ),
+        call = call
       )
     }
+  }
+
+# Shared core for add_death() / add_serious() / add_fup().
+#
+# `positive` is a quosure giving the per-row positive condition (e.g.
+# `Seriousness == "1"`). When `NULL` (followup), any case present in
+# `source_data` is coded 1 and others 0. With a `positive` condition, cases
+# present in `source_data` are coded 0/1 and cases absent from it are coded NA.
+# Works on both in-memory and arrow `.data` (compute()d for arrow).
+add_outcome_flag <-
+  function(.data, source_data, col_name, positive = NULL) {
 
     old_opt <- getOption("arrow.pull_as_vector")
     options(arrow.pull_as_vector = TRUE)
     on.exit(options(arrow.pull_as_vector = old_opt), add = TRUE)
 
-    fup_ids <-
-      fup_data |>
+    present_ids <-
+      source_data |>
       dplyr::pull("UMCReportId")
 
     result <-
-      .data |>
-      dplyr::mutate(
-        "{col_name}" := ifelse(
-          UMCReportId %in% .env$fup_ids,
-          1L,
-          0L
-        )
-      )
+      if (is.null(positive)) {
+        # presence-only (followup): in source -> 1, else 0
+        .data |>
+          dplyr::mutate(
+            "{col_name}" := ifelse(UMCReportId %in% .env$present_ids, 1L, 0L)
+          )
+      } else {
+        positive_ids <-
+          source_data |>
+          dplyr::filter(!!positive) |>
+          dplyr::pull("UMCReportId")
+
+        # present in source -> 0/1 ; absent from source -> NA
+        .data |>
+          dplyr::mutate(
+            "{col_name}" := ifelse(
+              UMCReportId %in% .env$present_ids,
+              as.integer(UMCReportId %in% .env$positive_ids),
+              NA_integer_
+            )
+          )
+      }
 
     if (any(c("Table", "Dataset") %in% class(.data))) {
       result |> dplyr::compute()

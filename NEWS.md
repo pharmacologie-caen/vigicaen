@@ -8,6 +8,12 @@ work transparently with both in-memory and out-of-memory (Arrow) tables,
 fixing the `match requires vector arguments` error that occurred when using
 these tables in Arrow format (#144).
 
+## Internal
+
+* `add_death()`, `add_serious()` and `add_fup()` (which were ~95% identical) now
+share a single internal core (`add_outcome_flag()`) and an `abort_if_ind()`
+helper; the exported functions are thin wrappers. No change in behaviour. (#191)
+
 # vigicaen 2.0.0
 
 ## Breaking changes
