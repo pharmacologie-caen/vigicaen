@@ -92,10 +92,11 @@ add_dose <-
 
     # keep original user option, then set it
 
-    original_user_option <- options("arrow.pull_as_vector")
+    original_user_option <- getOption("arrow.pull_as_vector")
 
     options(arrow.pull_as_vector = TRUE) # ! different from other add_* functions
     # as purpose is different (only used for a summary table)
+    on.exit(options(arrow.pull_as_vector = original_user_option), add = TRUE)
 
     # 1. checkers
 
@@ -106,11 +107,7 @@ add_dose <-
     data_type <-
       query_data_type(.data, ".data")
 
-    basis_sel <- c(
-      if (grepl("s", repbasis)) { 1 },
-      if (grepl("c", repbasis)) { 2 },
-      if (grepl("i", repbasis)) { 3 }
-    )
+    basis_sel <- parse_repbasis(repbasis)
 
     d_d_names_full <-
       paste0(d_dose_names, "_dose_mg_per_day")
@@ -247,14 +244,10 @@ add_dose <-
 
     }
 
-    # 8. restore user option
-
-    options(arrow.pull_as_vector = original_user_option)
-
     # compute everything (this is strictly
     # required only for arrow objects)
 
-    if(any(c("Table", "Dataset", "arrow_dplyr_query") %in% class(.data))){
+    if(is_arrow(.data)){
       return(.data |>
         dplyr::compute()
       )

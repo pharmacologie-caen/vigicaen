@@ -95,7 +95,7 @@ add_death <-
         )
       )
 
-    if (any(c("Table", "Dataset") %in% class(.data))) {
+    if (is_arrow(.data)) {
       result |> dplyr::compute()
     } else {
       result
@@ -145,7 +145,7 @@ add_serious <-
         )
       )
 
-    if (any(c("Table", "Dataset") %in% class(.data))) {
+    if (is_arrow(.data)) {
       result |> dplyr::compute()
     } else {
       result
@@ -190,7 +190,7 @@ add_fup <-
         )
       )
 
-    if (any(c("Table", "Dataset") %in% class(.data))) {
+    if (is_arrow(.data)) {
       result |> dplyr::compute()
     } else {
       result

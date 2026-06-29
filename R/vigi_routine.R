@@ -135,11 +135,12 @@ vigi_routine <-
   ){
     # #### 0. arrow options #### ####
 
-    # keep original user option, then set it
+    # keep original user option, then set it (restored on exit, even on error)
 
-    original_user_option <- options("arrow.pull_as_vector")
+    original_user_option <- getOption("arrow.pull_as_vector")
 
     options(arrow.pull_as_vector = FALSE)
+    on.exit(options(arrow.pull_as_vector = original_user_option), add = TRUE)
 
     # #### 0. checkers #### ####
     check_id_list_numeric(d_code)
@@ -175,12 +176,7 @@ vigi_routine <-
       if (suspect_only) {"s"} else {"sci"}
 
     basis_sel <-
-      c(
-        if(grepl("s", repbasis_sel)){ 1 },
-        # subsidiary_files / Repbasis_Lx
-        if(grepl("c", repbasis_sel)){ 2 },
-        if(grepl("i", repbasis_sel)){ 3 }
-      )
+      parse_repbasis(repbasis_sel)
 
     use_two_drugs <-
       !rlang::is_missing(d_code_2)
@@ -883,11 +879,6 @@ vigi_routine <-
     if(nrow(ttos) <= 2){
       cli::cli_alert_info("Not enough data to plot time to onset")
     }
-
-    # #### 7. restore user option #### ####
-
-    options(arrow.pull_as_vector = original_user_option)
-
 
     # #### 8.Display #### ####
     invisible(g_assembled)
