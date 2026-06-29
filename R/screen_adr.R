@@ -98,85 +98,82 @@ screen_adr <-
   term_level <-
     rlang::arg_match(term_level)
 
-  term_level_name <- paste0(term_level, "_name")  # Use term_level_name directly
+  term_level_name <- paste0(term_level, "_name")
 
-  # Convert to data.table if necessary
-  if (!inherits(.data, "data.table")) {
-    .data <- data.table::as.data.table(.data)
+  # Validate only the columns actually used. A full `adr` / `meddra` table is
+  # not required (e.g. Adr_Id / Outcome and the other hierarchy levels are
+  # unused here), so we check the used columns rather than the whole schema.
+  check_columns_in_data(.data, c("UMCReportId", "MedDRA_Id"))
+  check_columns_in_data(meddra, c("llt_code", term_level_name))
+
+  # `meddra` is a dictionary: collect a small `llt_code` -> `term` map. The key
+  # is cast to integer so the join works on every backend (incl. arrow, where a
+  # type mismatch would otherwise error).
+  term_map <-
+    meddra |>
+    dplyr::select(dplyr::all_of(c("llt_code", term_level_name))) |>
+    dplyr::collect() |>
+    dplyr::rename(term = dplyr::all_of(term_level_name)) |>
+    dplyr::mutate(llt_code = as.integer(.data$llt_code)) |>
+    dplyr::distinct()
+
+  # Total number of unique reports, kept lazy so an arrow Dataset streams.
+  total_reports <-
+    .data |>
+    dplyr::distinct(UMCReportId) |>
+    dplyr::count() |>
+    dplyr::collect() |>
+    dplyr::pull(n)
+
+  if (total_reports == 0) {
+    cli::cli_abort(
+      c("{.arg .data} contains no reports.",
+        "x" = "Cannot compute term frequencies on an empty {.arg .data}."),
+      class = "empty_data_no_reports"
+    )
   }
 
-  if (!inherits(meddra, "data.table")) {
-    meddra <- data.table::as.data.table(meddra)
-  }
+  # Count distinct cases per term. The aggregation streams in arrow when `.data`
+  # is out-of-memory; only the small per-term result is pulled into R. A single
+  # `llt_code` may map to several terms (a code used in two groups), so the join
+  # is intentionally many-to-many.
+  adr_keyed <-
+    .data |>
+    dplyr::select(dplyr::all_of(c("UMCReportId", "MedDRA_Id"))) |>
+    dplyr::mutate(MedDRA_Id = as.integer(MedDRA_Id))
 
-  # ---- Create the unique MedDRA ID table ----
-  create_mid_unique_table <- function(.data, MedDRA_Id, N) {
-    .data[, .N, by = MedDRA_Id]
-    # Counts the occurrences of each MedDRA_Id
-  }
-
-  m_id_unique <-
-    create_mid_unique_table(
-      .data,
-      MedDRA_Id = "MedDRA_Id",
-      N = "N"
-      )
-
-  # ---- Create a mapping between terms and MedDRA IDs ----
-  create_term_to_mid_table <-
-    function(meddra,
-             m_id_unique,
-             llt_code) {
-
-    meddra[llt_code %in% m_id_unique$MedDRA_Id,
-           list(term = get(term_level_name), llt_code)
-    ]
+  joined <-
+    if (inherits(.data, c("Table", "Dataset", "arrow_dplyr_query"))) {
+      adr_keyed |>
+        dplyr::left_join(arrow::arrow_table(term_map),
+                         by = c("MedDRA_Id" = "llt_code"))
+    } else {
+      adr_keyed |>
+        dplyr::left_join(term_map,
+                         by = c("MedDRA_Id" = "llt_code"),
+                         relationship = "many-to-many")
     }
 
-  t_to_mid <-
-    create_term_to_mid_table(
-      meddra,
-      m_id_unique,
-      llt_code = "llt_code")
-
-  t_to_mid <- unique(t_to_mid) # to avoid duplicates
-
-  # ---- Count the number of distinct reports for each term ----
-  n_case_counts <-
-    .data |>
-    dplyr::left_join(
-      t_to_mid,
-      by = c("MedDRA_Id" = "llt_code"),
-      relationship = "many-to-many"
-      ) |>
+  output <-
+    joined |>
     dplyr::distinct(UMCReportId, term) |>
-    # Unique UMCReportId and term combinations
+    dplyr::count(term) |>
+    dplyr::collect() |>
+    dplyr::mutate(percentage = (n / .env$total_reports) * 100) |>
+    # ties broken alphabetically by term, matching the previous output
+    dplyr::arrange(dplyr::desc(percentage), term)
 
-    dplyr::count(term)
-    # Count the number of distinct reports for each term
-
-  # ---- Calculate the percentage per report ----
-  total_reports <-
-    dplyr::n_distinct(.data$UMCReportId)  # Total unique reports
-
-  n_case_counts <- n_case_counts |>
-    dplyr::mutate(percentage = (n / total_reports) * 100) |>  # Calculate percentage based on unique reports
-    dplyr::arrange(dplyr::desc(percentage))  # Arrange terms by percentage
-
-  # ---- Filter terms based on the frequency threshold if specified ----
+  # Filter terms based on the frequency threshold if specified
   if (!is.null(freq_threshold)) {
-    n_case_counts <- n_case_counts |>
-      dplyr::filter(percentage >= freq_threshold * 100)
-    # Apply the frequency threshold
+    output <- output |>
+      dplyr::filter(percentage >= .env$freq_threshold * 100)
   }
 
   # Keep only the top_n most frequent terms if specified
   if (!is.null(top_n)) {
-    n_case_counts <- n_case_counts |>
+    output <- output |>
       dplyr::slice_head(n = top_n)
-    # Select the top_n most frequent terms
   }
 
-  return(n_case_counts)
-  # Return filtered counts with percentages
+  data.table::as.data.table(output)
 }
