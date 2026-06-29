@@ -19,7 +19,10 @@
 #' The analogous for categorical variables is [desc_facvar()].
 #'
 #' @param .data A data.frame, where `vc` are column names of continuous variables
-#' @param vc A character vector, list of column names. Should only contain continuous variables
+#' @param vc <[`tidy-select`][dplyr::dplyr_tidy_select]> Columns to summarise.
+#' Should only resolve to continuous variables. Accepts a character vector of
+#' column names (e.g. `c("age", "bmi")`), bare column names, or tidy-select
+#' helpers such as `where(is.numeric)` or `starts_with()`.
 #' @param format A character string. How would you like the output? See details.
 #' @param digits A numeric. How many digits? This argument calls internal formatting function
 #' @param export_raw_values A logical. Should the raw values be exported?
@@ -77,6 +80,10 @@ desc_cont <-
            digits = 1,
            export_raw_values = FALSE
            ){
+
+    # resolve tidy-select / character selection to column names
+
+    vc <- resolve_columns(.data, rlang::enquo(vc))
 
     # checkers ----
 
@@ -221,11 +228,15 @@ desc_cont <-
 
     # ---- apply cc_core ----
 
+    # `as.data.frame()` enforces the documented return type: arrow's `collect()`
+    # returns a tibble for in-memory `Table`s, which would otherwise make the
+    # output class depend on the input backend.
     purrr::map(
       vc,
       cc_core
     ) |>
-      purrr::list_rbind()
+      purrr::list_rbind() |>
+      as.data.frame()
   }
 
 # Helpers ------------

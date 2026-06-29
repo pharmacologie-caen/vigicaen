@@ -47,6 +47,8 @@ Imports:
     purrr,
     rlang,
     stringr,
-    tidyr
+    tidyr,
+    tidyselect,
+    utils
 VignetteBuilder: knitr
 Config/roxygen2/version: 8.0.0
