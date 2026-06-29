@@ -8,6 +8,15 @@ work transparently with both in-memory and out-of-memory (Arrow) tables,
 fixing the `match requires vector arguments` error that occurred when using
 these tables in Arrow format (#144).
 
+## Performance and robustness
+
+* `screen_adr()` no longer coerces its inputs to data.table up front. It now
+aggregates with dplyr/arrow, so an out-of-memory arrow `Dataset` **streams**
+instead of being fully materialised in memory: peak memory on the full `adr`
+table dropped from ~10.5 GB to ~2.8 GB in testing (the old path also pulled
+every column). It also validates the columns it uses and guards the
+empty-input case. The output is unchanged. (#189)
+
 # vigicaen 2.0.0
 
 ## Breaking changes
