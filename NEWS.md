@@ -8,6 +8,12 @@ work transparently with both in-memory and out-of-memory (Arrow) tables,
 fixing the `match requires vector arguments` error that occurred when using
 these tables in Arrow format (#144).
 
+## Documentation
+
+* *New* "FAQ and frequent errors" article collecting common errors (e.g. the
+arrow `malloc ... failed` out-of-memory error, and drug/effect name mismatches
+in `vigi_routine()`) together with proposed solutions. (#159)
+
 # vigicaen 2.0.0
 
 ## Breaking changes
