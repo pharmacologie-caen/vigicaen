@@ -5,7 +5,7 @@ tags:
 - Pharmacovigilance
 - Database
 - Disproportionality analysis
-date: "2026-06-23"
+date: "2026-07-27"
 output:
   pdf_document:
     keep_md: true
@@ -170,8 +170,8 @@ Packages, 2nd edition. @rpackag It is accompanied by a comprehensive set
 of unit tests (covering 100% of the code), in-depth documentation for
 each function and object, and several tutorial vignettes for both
 newcomers and advanced users. The source code is available on
-GitHub.com, so as to provide a unified platform to submit issues and
-propose pull requests. It is made available under the open-source CeCILL
+GitHub.com, which is also used to submit issues and
+propose pull requests. It is available under the open-source CeCILL
 2.1 license.
 
 # Development history
@@ -185,10 +185,9 @@ available as a public repository on GitHub under the name vigicaen in
 2024, and was accepted on CRAN in 2025. In the first versions, the
 package was mainly focused on performing vectorized data management so
 as to identify a large number of drugs and reactions in a compiled way.
-As there was a wide variety of settings under which drugs and reactions
-could be identified, bug fixing and handling edge cases were the main concerns
-for several years. Then, additional functionalities like building
-datasets from text files and descriptive statistics were added. Contacts were made
+Handling edge cases was the main concern for several years.
+Then, additional features like building
+datasets from source files and descriptive statistics were added. Contacts were made
 with members of the Uppsala Monitoring Centre regarding their own
 work on other topics. These exchanges helped define the exact
 perimeter of vigicaen, as well as its potential articulation with other
@@ -236,13 +235,13 @@ tb_vigibase(path_base, path_sub)
 
 The `get_*` and `add_*` functions are built with a named list as
 their first argument. This structure may seem a bit complex, especially for
-# Descriptive features
+newcomers, but it allows for genuine flexibility when analysis plans
+increment. As an example, one may create
+`list(drug_group_1 = c("ipilimumab", "nivolumab"))` to automatically
+gather all ICSRs reporting one of these two drugs through
+`get_drecno()` and `add_drug()`.
 
-Descriptive features often play an important role in pharmacovigilance
-studies. They can be as important as producing statistical estimates to
-assess the liability of a given drug. Among them, the time to onset is
-rather challenging to compute. The main reasons are the uncertainty
-around the exact reported time to onset, and the potential for multiple
+# Descriptive features
 
 Descriptive features often play an important role in pharmacovigilance
 studies. They can be as important as producing statistical estimates to
@@ -275,11 +274,15 @@ vigi_routine(
 
 
 \includegraphics[alt={Example of vigi_routine with case data.}]{paper_files/figure-latex/vigi_routine-1} 
+
+# AI usage disclosure
+
+GitHub Copilot and other AI assistants were episodically used during the
+software development. The main goals were to draft pull requests from
+existing issues, to assist with code syntax, and to improve the English writing
 in the documentation. It was especially useful for drafting variants of
 existing checkers or avoiding typographical errors when transforming
-larger sections due to architectural changes. It is foreseeable that
-such tools will play a growing role in the development of vigicaen, as
-is the case in many other settings. All AI-written code was
+larger sections due to architectural changes. All AI-written code was
 human-checked by one of the package authors before being accepted.
 Generative AI was used to check spelling and improve the syntax of this 
 manuscript.
