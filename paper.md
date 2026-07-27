@@ -134,36 +134,34 @@ platforms such as CRAN.[@embry_vaersvax_2018; @embry_vaersndvax_2016]
 # Research impact and significance
 
 Our team and collaborators have already published several
-pharmacovigilance studies using vigicaen.[@legallois2025,
-@dolladille2020, @alexandre2021, @chretien2025, @nishida2025,
-@minoc2025]. Vigicaen streamlines the data management process of
-pharmacovigilance studies, allowing for easier collaboration across
-centers around the world. The potential gain has already convinced
-several academic centers. The French Network of Regional
-Pharmacovigilance Centres is on its way to implementing vigicaen as part of
-routine practice across the 31 Pharmacovigilance Centres in France.
+pharmacovigilance studies using vigicaen.[@legallois2025;
+@dolladille2020; @alexandre2021; @chretien2025; @nishida2025;
+@minoc2025]. The French Network of Regional
+Pharmacovigilance Centers is on its way to implementing vigicaen as part of
+routine practice across the 31 Pharmacovigilance Centers in France.
 The University of Nagoya has functional routines relying on vigicaen for
-disproportionality analyses. Vigicaen does not compete with existing open-source tools, but rather addresses an unmet need.
+disproportionality analyses. Vigicaen does not compete with existing 
+open-source tools, but rather addresses an unmet need.
 
 # Software design
 
-Key concepts were fundamental to building vigicaen: First, it should be
-open source, built on top of state-of-the-art practices to deal with
+Key choices were made to build vigicaen: 
+
+- Open source design, built on top of state-of-the-art practices to deal with
 large datasets (e.g., arrow), especially on low-specification computers,
 using a widespread and consistent syntax R users are familiar with
-(e.g., tidyverse). Although other syntaxes like `data.table` were once at
-the core of the package, they have now been phased out, as they were
-thought less fit for the project when considering the balance between
-performance and the user-facing interface. Second, it should address the
-most technically challenging issues for beginners in R or biostatistical
-software in general. Third, it should maintain as much rigor and
-consistency as possible in function naming, expected input formats,
-and outputs. Fourth, it should provide help, e.g., messages to users, to
-allow external checking of what is produced by the package. Fifth, it is
-not intended to implement model functions (like `glm`) per se, but
-rather to prepare the dataset so as to let the user run any model of
-their choice. Simple computations are nevertheless within scope (like
-bivariate disproportionality analysis or basic interaction analysis).
+(e.g., tidyverse). In line with this first point, other syntaxes 
+like `data.table`, once at the core of the package, have now been phased out.
+- Focus on the most technically challenging issues for beginners in R or biostatistics
+software in general. 
+- Consistency in function naming, expected input formats,
+and outputs, aligning with the tidyverse style guide.[@wickham2023] 
+- Provide help, e.g., messages to users in a command-line interface, to
+allow external checking of what is produced by the package.
+- Absence of model functions implementation, except for basic disproportionality
+metrics.[@norén2013] Users will build datasets with vigicaen, 
+then run any model of their
+choice.
 
 # Open-source software practice
 
