@@ -43,9 +43,24 @@ editor_options:
 
 # Summary
 
+For decades, the World Health Organization (WHO) has been collecting
+adverse drug reaction reports, called Individual Case Safety Reports
+(ICSRs), from its member countries, populating more than 40 million
+reports to date. This pharmacovigilance database is called VigiBase® and
+is managed by the Uppsala Monitoring Centre in Sweden.[@vigibase] These
+ICSRs describe the course of patients who experienced an adverse event
+(a medical condition) after taking a drug. The burning question is
+whether this adverse event was actually related to the drug intake, e.g.,
+if it is an adverse drug *reaction* (ADR). A pharmacovigilance
+database analysis aims at uncovering the very first potential signals of
+association between drugs and ADRs.[@montastruc2011]
+
+Disproportionality analysis, a method of safety signal detection,
+represents an essential component of pharmacovigilance.
 Advanced methodologies are essential when conducting disproportionality
-analyses using pharmacovigilance data, as traditional approaches are
+analyses, as traditional approaches are
 susceptible to various biases such as reporting bias and confounding.
+
 The aim of vigicaen is to provide a toolbox for the VigiBase® Extract
 Case Level database, resolving technical challenges related to the
 large size of the database, and providing easier and reproducible access to
@@ -61,46 +76,32 @@ use to support the daily assessment of drug liability.
 
 # Statement of need
 
-Disproportionality analysis represents an essential component in the
-domain of drug safety signal detection. Advanced methodologies are
-required to address common biases within pharmacovigilance databases.
-These analyses necessitate expertise in biostatistical software, such as
-R, which may present substantial challenges in terms of acquiring and
-maintaining the requisite skills — in addition to a solid understanding
-of pharmacovigilance principles and reporting systems.
-
-For decades, the World Health Organization (WHO) has been collecting
-adverse drug reaction reports, called Individual Case Safety Reports
-(ICSRs), from its member countries, populating more than 40 million
-reports to date. This pharmacovigilance database is called VigiBase® and
-is managed by the Uppsala Monitoring Centre in Sweden.[@vigibase] These
-ICSRs describe the course of patients who experienced an adverse event
-(a medical condition) after taking a drug. The burning question is
-whether this adverse event was actually related to the drug intake, e.g.,
-if it is an adverse drug *reaction* (ADR). The pharmacovigilance
-database aims at uncovering the very first potential signals of
-association between drugs and ADRs.[@montastruc2011]
-
-It relies on disproportionality analysis, a statistical method that
+Disproportionality analysis is a statistical method that
 produces estimators of how unlikely the number of observed ICSRs
 reporting on a specific drug and adverse event is to be attributable to
 chance alone. Together with an uncertainty margin, these estimators are
 used to raise safety signals on drugs.[@montastruc2011]
 
+Advanced methodologies are required to address common biases 
+of disproportionality analysis in pharmacovigilance databases.
+These analyses necessitate expertise in biostatistical software, such as
+R, which may present substantial challenges in terms of acquiring and
+maintaining the requisite skills — in addition to a solid understanding
+of pharmacovigilance principles and reporting systems.
+
 The Uppsala Monitoring Centre grants access to VigiBase® to researchers,
 either academic or industrial, under a license contract. The most
 extensive available version is called Extract Case Level: it contains
-all the ICSRs, with information such as patient demographics, drug intake,
-adverse events, outcomes, dechallenge and rechallenge outcomes, and
-time to onset. However, this version is provided as large text files and
-requires a lot of processing before being usable for analysis. Those
-text files might be particularly challenging to use in R, as they would
+all the ICSRs, with information such as patient demographics, drug and
+adverse events related features. However, this version is provided as large text files and
+requires a substantial processing prior to analysis. Those
+text files would
 often exceed the size of the available Random Access Memory, thus
 requiring advanced knowledge of R computing techniques. Clinicians and
 pharmacovigilance practitioners typically lack these skills and therefore
 struggle to use VigiBase® data for their research. As a result, they
-often rely on partial data with limited statistical modeling options.
-Alternatively, they might develop home-made biostatistical scripts that are
+often rely on partial data with limited statistical modeling options, or
+might develop home-made biostatistics scripts that are
 typically used once, often left undocumented, and highly heterogeneous
 across research teams.
 
