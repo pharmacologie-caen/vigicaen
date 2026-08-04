@@ -85,7 +85,7 @@ get_llt_soc <-
         lcd |>
           dplyr::filter(!is.na(.data$match)) |>
           dplyr::distinct(.data$term) |>
-          dplyr::pull(term)
+          dplyr::pull(.data$term)
       })
 
     unmatching_terms <-
@@ -94,7 +94,7 @@ get_llt_soc <-
         lcd |>
           dplyr::filter(is.na(.data$match)) |>
           dplyr::distinct(.data$term) |>
-          dplyr::pull(term)
+          dplyr::pull(.data$term)
       }) |>
       purrr::compact()
 
@@ -158,7 +158,7 @@ msg_getlltsoc_match <-
             dplyr::filter(!is.na(.data$match)) |>
             dplyr::group_by(.data$term) |>
             dplyr::summarise(lab =
-                        paste0(unique(term), " (",dplyr::n(), ")")) |>
+                        paste0(unique(.data$term), " (",dplyr::n(), ")")) |>
             dplyr::pull(.data$lab)
         )
 

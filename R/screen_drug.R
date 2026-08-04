@@ -116,14 +116,14 @@ screen_drug <-
   # compute percentage and arrange columns
   output <-
     drug_count |>
-    dplyr::mutate(percentage = (n / total_reports) * 100) |>
+    dplyr::mutate(percentage = (.data$n / total_reports) * 100) |>
     dplyr::rename("Drug name" = "drug_name_t", "N" = "n") |>
     dplyr::relocate("Drug name")
 
   # Filter substances based on the frequency threshold if specified
   if (!is.null(freq_threshold)) {
     output <- output |>
-      dplyr::filter(percentage >= freq_threshold * 100)
+      dplyr::filter(.data$percentage >= freq_threshold * 100)
   }
 
   # Keep only the top_n most frequent substances if specified

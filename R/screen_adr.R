@@ -25,11 +25,11 @@
 #' that are linked to a specific MedDRA hierarchy
 #' level (`soc`, `hlgt`, `hlt`, `pt`, or `llt`).
 #'
-#' @param .data, An `adr` data.table. See \code{\link{adr_}}
-#' @param meddra A `meddra` data.table. See \code{\link{meddra_}}
+#' @param .data, An `adr` data.table.
+#' @param meddra A `meddra` data.table.
 #' @param term_level A character string specifying the
 #'   MedDRA hierarchy level. Must be one
-#'   of `"soc"`, `"hlgt"`, `"hlt"`, `"pt"`, or `"llt"`.
+#'   of "soc", "hlgt", "hlt", "pt", or "llt".
 #' @param freq_threshold A numeric value indicating
 #'   the minimum frequency (as a proportion) of cases
 #'   where a term must appear to be included in the results.
@@ -53,6 +53,11 @@
 #' @export
 #' @keywords descriptive adr
 #'
+#' @importFrom data.table .N
+#' @importFrom data.table as.data.table
+#'
+#' @seealso \code{\link{adr_}}, \code{\link{meddra_}}
+#'
 #' @examples
 #' # Example 1: Filter terms appearing in at least 5% of reports
 #' screen_adr(
@@ -69,11 +74,6 @@
 #'   term_level = "hlt",
 #'   top_n = 5
 #' )
-#'
-#' @importFrom data.table .N
-#' @importFrom data.table as.data.table
-
-utils::globalVariables(c("UMCReportId", "term", "n", "percentage"))
 
 screen_adr <-
   function (
@@ -82,6 +82,12 @@ screen_adr <-
     term_level = c("soc", "hlgt", "hlt", "pt", "llt"),
     freq_threshold = NULL,
     top_n = NULL) {
+
+    # issue of no visible binding when using data.table
+    UMCReportId <- NULL
+    term <- NULL
+    n <- NULL
+    percentage <- NULL
 
   # Check if both freq_threshold and top_n are provided,
   # and issue a warning if so

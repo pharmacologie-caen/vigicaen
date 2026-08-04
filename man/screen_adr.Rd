@@ -3,14 +3,23 @@
 \name{screen_adr}
 \alias{screen_adr}
 \title{Screening of adverse drug reactions}
+\usage{
+screen_adr(
+  .data,
+  meddra,
+  term_level = c("soc", "hlgt", "hlt", "pt", "llt"),
+  freq_threshold = NULL,
+  top_n = NULL
+)
+}
 \arguments{
-\item{.data, }{An \code{adr} data.table. See \code{\link{adr_}}}
+\item{.data, }{An \code{adr} data.table.}
 
-\item{meddra}{A \code{meddra} data.table. See \code{\link{meddra_}}}
+\item{meddra}{A \code{meddra} data.table.}
 
 \item{term_level}{A character string specifying the
 MedDRA hierarchy level. Must be one
-of \code{"soc"}, \code{"hlgt"}, \code{"hlt"}, \code{"pt"}, or \code{"llt"}.}
+of "soc", "hlgt", "hlt", "pt", or "llt".}
 
 \item{freq_threshold}{A numeric value indicating
 the minimum frequency (as a proportion) of cases
@@ -76,7 +85,9 @@ screen_adr(
   term_level = "hlt",
   top_n = 5
 )
-
+}
+\seealso{
+\code{\link{adr_}}, \code{\link{meddra_}}
 }
 \keyword{adr}
 \keyword{descriptive}

@@ -89,8 +89,8 @@ add_death <-
       .data |>
       dplyr::mutate(
         "{col_name}" := ifelse(
-          UMCReportId %in% .env$all_out_ids,
-          as.integer(UMCReportId %in% .env$death_ids),
+          .data$UMCReportId %in% .env$all_out_ids,
+          as.integer(.data$UMCReportId %in% .env$death_ids),
           NA_integer_
         )
       )
@@ -139,8 +139,8 @@ add_serious <-
       .data |>
       dplyr::mutate(
         "{col_name}" := ifelse(
-          UMCReportId %in% .env$all_out_ids,
-          as.integer(UMCReportId %in% .env$serious_ids),
+          .data$UMCReportId %in% .env$all_out_ids,
+          as.integer(.data$UMCReportId %in% .env$serious_ids),
           NA_integer_
         )
       )
@@ -184,7 +184,7 @@ add_fup <-
       .data |>
       dplyr::mutate(
         "{col_name}" := ifelse(
-          UMCReportId %in% .env$fup_ids,
+          .data$UMCReportId %in% .env$fup_ids,
           1L,
           0L
         )
