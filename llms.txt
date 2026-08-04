@@ -291,7 +291,7 @@ By contributing to this project, you agree to abide by its terms.
   : Sample of WHODrug
 - [`nice_p()`](https://pharmacologie-caen.github.io/vigicaen/reference/nice_p.md)
   **\[stable\]** : Nice printing of p-values
-- [`screen_adr`](https://pharmacologie-caen.github.io/vigicaen/reference/screen_adr.md)
+- [`screen_adr()`](https://pharmacologie-caen.github.io/vigicaen/reference/screen_adr.md)
   **\[stable\]** : Screening of adverse drug reactions
 - [`screen_drug()`](https://pharmacologie-caen.github.io/vigicaen/reference/screen_drug.md)
   **\[stable\]** : Screening of drugs

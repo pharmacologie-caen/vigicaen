@@ -5,22 +5,32 @@ drug reaction (ADR) terms in a dataset, based on a specified MedDRA term
 level. It allows users to filter terms by a frequency threshold or
 extract the top `n` most frequently occurring terms.
 
+## Usage
+
+``` r
+screen_adr(
+  .data,
+  meddra,
+  term_level = c("soc", "hlgt", "hlt", "pt", "llt"),
+  freq_threshold = NULL,
+  top_n = NULL
+)
+```
+
 ## Arguments
 
 - .data, :
 
-  An `adr` data.table. See
-  [`adr_`](https://pharmacologie-caen.github.io/vigicaen/reference/demo_.md)
+  An `adr` data.table.
 
 - meddra:
 
-  A `meddra` data.table. See
-  [`meddra_`](https://pharmacologie-caen.github.io/vigicaen/reference/meddra_.md)
+  A `meddra` data.table.
 
 - term_level:
 
   A character string specifying the MedDRA hierarchy level. Must be one
-  of `"soc"`, `"hlgt"`, `"hlt"`, `"pt"`, or `"llt"`.
+  of "soc", "hlgt", "hlt", "pt", or "llt".
 
 - freq_threshold:
 
@@ -64,6 +74,11 @@ The results are sorted in descending order of `percentage`.
 The function processes an ADR dataset (`adr_`) and a MedDRA dataset
 (`meddra_`) to generate results that are linked to a specific MedDRA
 hierarchy level (`soc`, `hlgt`, `hlt`, `pt`, or `llt`).
+
+## See also
+
+[`adr_`](https://pharmacologie-caen.github.io/vigicaen/reference/demo_.md),
+[`meddra_`](https://pharmacologie-caen.github.io/vigicaen/reference/meddra_.md)
 
 ## Examples
 
