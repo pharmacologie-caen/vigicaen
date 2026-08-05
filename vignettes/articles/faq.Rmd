@@ -1,0 +1,75 @@
+---
+title: "FAQ and frequent errors"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This page collects errors and warnings you may run into while using vigicaen,
+together with a proposed solution for each.
+
+It is meant to grow over time. If you hit an error that is not listed here ---
+or if a proposed solution does not work for you --- please
+[open an issue](https://github.com/pharmacologie-caen/vigicaen/issues).
+
+## General errors
+
+### 🔴 `malloc of size XXX failed`
+
+❓ This error comes from the [arrow](https://arrow.apache.org/docs/r/)
+back-end. It means the computer does not have enough RAM (memory) to process
+the tables any further. It is more likely to happen when large tables are
+loaded **in memory**.
+
+vigicaen is optimized for low-specification computers (e.g. with 16 GB of RAM),
+but not all use-cases will work on every computer. In some cases, the error may
+also point to a sub-optimal process inside vigicaen itself, which is worth
+reporting.
+
+✅ **How to solve it?**
+
+- Load tables **out of memory**, e.g. with `dt_parquet("xx", in_memory = FALSE)`,
+  or `arrow::open_dataset("xx")`.
+- Free up RAM by closing other programs running on your computer.
+- Analyse a **subset** of VigiBase rather than the full dataset.
+- Use a more powerful computer.
+- Consider
+  [reporting an issue](https://github.com/pharmacologie-caen/vigicaen/issues),
+  especially if a routine analysis exhausts memory unexpectedly.
+
+## `vigi_routine()`
+
+### 🔴 The drug and effect names on the graphic do not match my request
+
+❓ `vigi_routine()` produced a graphic, but the names displayed at the top of
+the figure do not match the ones you asked for. This usually happens when the
+names used to build `d_drecno` or `a_llt` get out of sync with the names passed
+to `vigi_routine()`. Two common situations:
+
+1. You changed the drug and/or effect name when creating `d_drecno` or `a_llt`,
+   but did not re-run that code.
+2. You did change the name and re-ran the code, but only updated the *value* of
+   the list item, not its *name*:
+
+``` r
+# the list item is still named "old_drug"
+d_drecno <- get_drecno(list(old_drug = "new_drug"), mp)
+```
+
+Both the name and the value of the list item should be updated, e.g.
+`"old_drug"` -> `"new_drug"`:
+
+``` r
+d_drecno <- get_drecno(list(new_drug = "new_drug"), mp)
+```
+
+✅ **How to solve it?**
+
+- Re-run the code that builds `d_drecno` and/or `a_llt`.
+- Make sure the **name** of each list item matches what you expect (see above).
+- Alternatively, set the labels explicitly with the `d_label` and `a_label`
+  arguments of `vigi_routine()`.
