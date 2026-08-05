@@ -8,6 +8,14 @@ work transparently with both in-memory and out-of-memory (Arrow) tables,
 fixing the `match requires vector arguments` error that occurred when using
 these tables in Arrow format (#144).
 
+## Internal
+
+* `vigi_routine()`'s low-memory bypasses (case-set identification and the
+single-pair Information Component) are now factored into tested internal
+helpers (`vr_case_sets()`, `vr_ic_from_counts()`), making that logic
+unit-testable outside the graphics-producing function. No change in behaviour.
+(#158)
+
 # vigicaen 2.0.0
 
 ## Breaking changes
