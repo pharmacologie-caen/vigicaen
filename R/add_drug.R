@@ -107,12 +107,7 @@ add_drug <-
       query_data_type(.data, ".data")
 
     basis_sel <-
-      c(
-        if(grepl("s", repbasis)){ 1 },
-        # subsidiary_files / Repbasis_Lx
-        if(grepl("c", repbasis)){ 2 },
-        if(grepl("i", repbasis)){ 3 }
-      )
+      parse_repbasis(repbasis)
 
     dd_rb <-
       drug_data |>
@@ -148,7 +143,7 @@ add_drug <-
 
     t_ids <-
       purrr::map(d_code, function(d_code_batch){
-        if(any(c("Table", "Dataset") %in% class(.data))){
+        if(is_arrow(.data)){
           dd_rb |>
             dplyr::filter(.data$did_col %in% d_code_batch) |>
             dplyr::pull(.data$t_id, as_vector = FALSE)
@@ -197,7 +192,7 @@ add_drug <-
 
     # compute everything (this is strictly required only for arrow objects)
 
-    if(any(c("Table", "Dataset") %in% class(.data))){
+    if(is_arrow(.data)){
       final_data |>
         dplyr::compute()
     } else {

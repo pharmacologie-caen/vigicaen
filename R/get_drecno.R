@@ -134,7 +134,7 @@ get_drecno <- function(
 
   check_data_mp(mp)
 
-  if(any(c("Table", "Dataset") %in% class(mp))){
+  if(is_arrow(mp)){
     # automatically collect mp if out of memory
     # since it's a small table
     mp <-
