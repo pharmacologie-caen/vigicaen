@@ -17,7 +17,10 @@ desc_facvar(
 \arguments{
 \item{.data}{A data.frame, where \code{vf} are column names of categorical variables}
 
-\item{vf}{A character vector}
+\item{vf}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> Columns to summarise.
+Accepts a character vector of column names (e.g. \code{c("sex", "country")}), bare
+column names, or tidy-select helpers such as \code{where(is.character)} or
+\code{starts_with()}.}
 
 \item{format}{A character string, formatting options.}
 

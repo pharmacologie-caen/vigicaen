@@ -15,7 +15,10 @@ desc_cont(
 \arguments{
 \item{.data}{A data.frame, where \code{vc} are column names of continuous variables}
 
-\item{vc}{A character vector, list of column names. Should only contain continuous variables}
+\item{vc}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> Columns to summarise.
+Should only resolve to continuous variables. Accepts a character vector of
+column names (e.g. \code{c("age", "bmi")}), bare column names, or tidy-select
+helpers such as \code{where(is.numeric)} or \code{starts_with()}.}
 
 \item{format}{A character string. How would you like the output? See details.}
 

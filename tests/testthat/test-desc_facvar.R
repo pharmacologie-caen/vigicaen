@@ -370,6 +370,126 @@ test_that(
 )
 
 test_that(
+  "tidy-select selection works and matches character input", {
+    df <-
+      data.frame(
+        smoke_status = c("smoker", "non-smoker",
+                         "smoker", "smoker",
+                         "smoker", "smoker",
+                         "non-smoker"
+        ),
+        hta = c(1, 1, 0, 1, 0, 0, 0)
+      )
+
+    ref <- desc_facvar(.data = df, vf = c("hta", "smoke_status"),
+                       pad_width = 0)
+
+    # bare column names
+    expect_equal(
+      desc_facvar(.data = df, vf = c(hta, smoke_status), pad_width = 0),
+      ref
+    )
+
+    # everything() selects all columns, in column order
+    expect_equal(
+      desc_facvar(.data = df, vf = tidyselect::everything(), pad_width = 0),
+      desc_facvar(.data = df, vf = c("smoke_status", "hta"), pad_width = 0)
+    )
+
+    # predicate helper
+    expect_equal(
+      desc_facvar(.data = df, vf = tidyselect::where(is.character),
+                  pad_width = 0)$var,
+      c("smoke_status", "smoke_status")
+    )
+
+    # name-pattern helper
+    expect_equal(
+      desc_facvar(.data = df, vf = tidyselect::starts_with("hta"),
+                  pad_width = 0)$var,
+      c("hta", "hta")
+    )
+
+    # external character vector keeps using the legacy path
+    vars <- c("hta", "smoke_status")
+    expect_equal(
+      desc_facvar(.data = df, vf = vars, pad_width = 0),
+      ref
+    )
+  }
+)
+
+test_that(
+  "tidy-select results are identical to the character-vector form", {
+    df <-
+      data.frame(
+        sex = c("m", "f", "m", "f", "m"),
+        grp = c("a", "a", "b", "b", "b"),
+        hta = c(1, 0, 1, 1, 0)
+      )
+
+    expect_equal(
+      desc_facvar(df, tidyselect::everything(), pad_width = 0),
+      desc_facvar(df, c("sex", "grp", "hta"), pad_width = 0)
+    )
+
+    expect_equal(
+      desc_facvar(df, tidyselect::where(is.character), pad_width = 0),
+      desc_facvar(df, c("sex", "grp"), pad_width = 0)
+    )
+
+    expect_equal(
+      desc_facvar(df, c(grp, hta), pad_width = 0),
+      desc_facvar(df, c("grp", "hta"), pad_width = 0)
+    )
+
+    # complement selection
+    expect_equal(
+      desc_facvar(df, !tidyselect::where(is.numeric), pad_width = 0),
+      desc_facvar(df, c("sex", "grp"), pad_width = 0)
+    )
+  }
+)
+
+test_that(
+  "tidy-select preserves legacy error classes and errors on bare typos", {
+    df <-
+      data.frame(sex = c("m", "f"), hta = c(1, 0))
+
+    # character vector with an absent column keeps the historical error class
+    expect_error(
+      desc_facvar(df, c("absent")),
+      class = "columns_not_in_data"
+    )
+
+    expect_error(
+      desc_facvar(df, c("sex", "absent")),
+      class = "columns_not_in_data"
+    )
+
+    # a bare, non-existent name routes to tidy-select and errors there
+    expect_error(
+      desc_facvar(df, absent),
+      regexp = "absent"
+    )
+  }
+)
+
+test_that(
+  "tidy-select honours export_raw_values", {
+    df <-
+      data.frame(sex = c("m", "f", "m"), hta = c(1, 0, 1))
+
+    expect_equal(
+      desc_facvar(df, tidyselect::everything(),
+                  pad_width = 0, export_raw_values = TRUE),
+      desc_facvar(df, c("sex", "hta"),
+                  pad_width = 0, export_raw_values = TRUE)
+    )
+  }
+)
+
+test_that(
   "exporting raw values work", {
     df <-
       data.frame(

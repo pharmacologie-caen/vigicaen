@@ -275,6 +275,158 @@ test_that(
   }
 )
 
+test_that("tidy-select selection works and matches character input", {
+  df <-
+    data.frame(
+      smoke_status = c("smoker", "non-smoker",
+                       "smoker", "smoker",
+                       "smoker", "smoker",
+                       "non-smoker"
+      ),
+      age = c(60, 50, 56, 49, 75, 69, 85),
+      bmi = c(18, 30, 25, 22, 23, 21, 22)
+    )
+
+  ref <- desc_cont(.data = df, vc = c("age", "bmi"))
+
+  # bare column names
+  expect_equal(
+    desc_cont(.data = df, vc = c(age, bmi)),
+    ref
+  )
+
+  # predicate helper picks the numeric columns only
+  expect_equal(
+    desc_cont(.data = df, vc = tidyselect::where(is.numeric)),
+    ref
+  )
+
+  # name-pattern helper
+  expect_equal(
+    desc_cont(.data = df, vc = tidyselect::starts_with("a"))$var,
+    "age"
+  )
+
+  # external character vector keeps using the legacy path
+  vars <- c("age", "bmi")
+  expect_equal(
+    desc_cont(.data = df, vc = vars),
+    ref
+  )
+
+  # tidy-select also works on arrow objects (type-preserving prototype)
+  df_arrow <- arrow::as_arrow_table(df)
+  expect_equal(
+    desc_cont(.data = df_arrow, vc = tidyselect::where(is.numeric))$var,
+    c("age", "bmi")
+  )
+})
+
+test_that("tidy-select results are identical to the character-vector form", {
+  df <-
+    data.frame(
+      grp = c("a", "a", "b", "b", "b", "a", "b"),
+      age = c(60, 50, 56, 49, 75, 69, 85),
+      bmi = c(18, 30, 25, 22, 23, 21, 22),
+      wt  = c(60, 80, 75, 62, 91, 70, 66)
+    )
+
+  expect_equal(
+    desc_cont(df, tidyselect::where(is.numeric)),
+    desc_cont(df, c("age", "bmi", "wt"))
+  )
+
+  expect_equal(
+    desc_cont(df, c(age, wt)),
+    desc_cont(df, c("age", "wt"))
+  )
+
+  expect_equal(
+    desc_cont(df, tidyselect::starts_with("b")),
+    desc_cont(df, "bmi")
+  )
+
+  expect_equal(
+    desc_cont(df, 2:3),
+    desc_cont(df, c("age", "bmi"))
+  )
+})
+
+test_that("tidy-select preserves legacy error classes", {
+  df <-
+    data.frame(age = c(60, 50), txt = c("a", "b"))
+
+  # absent character column -> historical 'not in data' error
+  expect_error(
+    desc_cont(df, c("absent")),
+    class = "columns_not_in_data"
+  )
+
+  # a character column selected by name -> 'not numeric/integer' error
+  expect_error(
+    desc_cont(df, c("txt")),
+    class = "columns_not_numeric_integer"
+  )
+
+  # a bare, non-existent name routes to tidy-select and errors there
+  expect_error(
+    desc_cont(df, absent),
+    regexp = "absent"
+  )
+})
+
+test_that("tidy-select works on arrow tables and datasets", {
+  df <-
+    data.frame(
+      grp = c("a", "b", "a", "b"),
+      age = c(60, 50, 56, 49),
+      bmi = c(18, 30, 25, 22)
+    )
+
+  # in-memory arrow Table: where() picks the numeric columns only, and the
+  # result is identical to the data.frame computation (same class and values)
+  at <- arrow::as_arrow_table(df)
+  expect_equal(
+    desc_cont(at, tidyselect::where(is.numeric)),
+    desc_cont(df, c("age", "bmi"))
+  )
+
+  # on-disk arrow Dataset
+  skip_on_cran()
+  tmp_folder <- file.path(tempdir(), "desc_cont_ds_tidyselect")
+  dir.create(tmp_folder)
+  on.exit(unlink(tmp_folder, recursive = TRUE), add = TRUE)
+  arrow::write_parquet(df, file.path(tmp_folder, "d.parquet"))
+  ds <- arrow::open_dataset(tmp_folder)
+
+  expect_equal(
+    desc_cont(ds, tidyselect::where(is.numeric))$var,
+    c("age", "bmi")
+  )
+})
+
+test_that("desc_cont returns a plain data.frame for every backend", {
+  df <- data.frame(grp = c("a", "b", "a"), age = c(60, 50, 56))
+
+  expect_identical(class(desc_cont(df, "age")), "data.frame")
+  expect_identical(
+    class(desc_cont(data.table::as.data.table(df), "age")),
+    "data.frame"
+  )
+  expect_identical(
+    class(desc_cont(arrow::as_arrow_table(df), "age")),
+    "data.frame"
+  )
+
+  skip_on_cran()
+  tmp_folder <- file.path(tempdir(), "desc_cont_type_ds")
+  dir.create(tmp_folder)
+  on.exit(unlink(tmp_folder, recursive = TRUE), add = TRUE)
+  arrow::write_parquet(df, file.path(tmp_folder, "d.parquet"))
+  ds <- arrow::open_dataset(tmp_folder)
+  expect_identical(class(desc_cont(ds, "age")), "data.frame")
+})
+
 test_that("exporting raw values works", {
   df <-
     data.frame(

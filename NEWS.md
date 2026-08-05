@@ -2,11 +2,24 @@
 
 ## New features
 
+* `desc_facvar()` and `desc_cont()` now accept
+[tidy-select](https://tidyselect.r-lib.org/) syntax in their `vf` and `vc`
+arguments, in addition to a character vector of column names. You can now write
+e.g. `desc_cont(df, where(is.numeric))` or `desc_facvar(df, starts_with("g"))`.
+Passing a character vector keeps working unchanged. (#168)
+
 * *New* `add_death()`, `add_serious()`, and `add_fup()` functions add outcome
 columns to a dataset using the `out` and `followup` tables. These functions
 work transparently with both in-memory and out-of-memory (Arrow) tables,
 fixing the `match requires vector arguments` error that occurred when using
 these tables in Arrow format (#144).
+
+## Bug fixes
+
+* `desc_cont()` now always returns a plain `data.frame`, as documented.
+Previously the class of the result depended on the input backend (an in-memory
+Arrow `Table` produced a `tibble`), which made the output inconsistent with
+data.frame, data.table and on-disk Arrow `Dataset` inputs.
 
 # vigicaen 2.0.0
 
