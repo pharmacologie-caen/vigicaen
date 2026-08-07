@@ -1,4 +1,4 @@
-# vigicaen (development version)
+# vigicaen 2.1.0
 
 ## New features
 
@@ -7,6 +7,12 @@ columns to a dataset using the `out` and `followup` tables. These functions
 work transparently with both in-memory and out-of-memory (Arrow) tables,
 fixing the `match requires vector arguments` error that occurred when using
 these tables in Arrow format (#144).
+
+## Bug fixes
+
+* Fixed a note in cran check for global binding of some variables, especially
+in `screen_adr()`. The previous version led to an incomplete documentation of
+this function.
 
 # vigicaen 2.0.0
 
