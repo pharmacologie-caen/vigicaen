@@ -1,6 +1,6 @@
 # Changelog
 
-## vigicaen (development version)
+## vigicaen 2.1.0
 
 ### New features
 
@@ -15,6 +15,14 @@
   `match requires vector arguments` error that occurred when using these
   tables in Arrow format
   ([\#144](https://github.com/pharmacologie-caen/vigicaen/issues/144)).
+
+### Bug fixes
+
+- Fixed a note in cran check for global binding of some variables,
+  especially in
+  [`screen_adr()`](https://pharmacologie-caen.github.io/vigicaen/reference/screen_adr.md).
+  The previous version led to an incomplete documentation of this
+  function.
 
 ## vigicaen 2.0.0
 
