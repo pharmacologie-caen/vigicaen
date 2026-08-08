@@ -5,7 +5,7 @@ tags:
 - Pharmacovigilance
 - Database
 - Disproportionality analysis
-date: "2026-07-27"
+date: "2026-08-07"
 output:
   pdf_document:
     keep_md: true
@@ -136,7 +136,7 @@ platforms such as CRAN.[@embry_vaersvax_2018; @embry_vaersndvax_2016]
 Our team and collaborators have already published several
 pharmacovigilance studies using vigicaen.[@legallois2025;
 @dolladille2020; @alexandre2021; @chretien2025; @nishida2025;
-@minoc2025]. The French Network of Regional
+@minoc2025] The French Network of Regional
 Pharmacovigilance Centers is on its way to implementing vigicaen as part of
 routine practice across the 31 Pharmacovigilance Centers in France.
 The University of Nagoya has functional routines relying on vigicaen for
@@ -166,7 +166,7 @@ choice.
 # Open-source software practice
 
 The package was developed according to best practices as promoted by R
-Packages, 2nd edition. @rpackag It is accompanied by a comprehensive set
+Packages, 2nd edition.[@rpackag] It is accompanied by a comprehensive set
 of unit tests (covering 100% of the code), in-depth documentation for
 each function and object, and several tutorial vignettes for both
 newcomers and advanced users. The source code is available on
