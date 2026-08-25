@@ -1,11 +1,11 @@
 ---
-title: 'Vigicaen: A `vigibase®` Pharmacovigilance Database Toolbox.'
+title: 'Vigicaen: A vigibase® Pharmacovigilance Database Toolbox.'
 tags:
 - R
 - Pharmacovigilance
 - Database
 - Disproportionality analysis
-date: "2026-08-07"
+date: "2026-08-25"
 output:
   pdf_document:
     keep_md: true
@@ -47,13 +47,13 @@ For decades, the World Health Organization (WHO) has been collecting
 adverse drug reaction reports, called Individual Case Safety Reports
 (ICSRs), from its member countries, populating more than 40 million
 reports to date. This pharmacovigilance database is called VigiBase® and
-is managed by the Uppsala Monitoring Centre in Sweden.[@vigibase] These
+is managed by the Uppsala Monitoring Centre in Sweden. [@vigibase] These
 ICSRs describe the course of patients who experienced an adverse event
 (a medical condition) after taking a drug. The burning question is
 whether this adverse event was actually related to the drug intake, e.g.,
 if it is an adverse drug *reaction* (ADR). A pharmacovigilance
 database analysis aims at uncovering the very first potential signals of
-association between drugs and ADRs.[@montastruc2011]
+association between drugs and ADRs. [@montastruc2011]
 
 Disproportionality analysis, a method of safety signal detection,
 represents an essential component of pharmacovigilance.
@@ -80,7 +80,7 @@ Disproportionality analysis is a statistical method that
 produces estimators of how unlikely the number of observed ICSRs
 reporting on a specific drug and adverse event is to be attributable to
 chance alone. Together with an uncertainty margin, these estimators are
-used to raise safety signals on drugs.[@montastruc2011]
+used to raise safety signals on drugs. [@montastruc2011]
 
 Advanced methodologies are required to address common biases 
 of disproportionality analysis in pharmacovigilance databases.
@@ -101,14 +101,14 @@ requiring advanced knowledge of R computing techniques. Clinicians and
 pharmacovigilance practitioners typically lack these skills and therefore
 struggle to use VigiBase® data for their research. As a result, they
 often rely on partial data with limited statistical modeling options, or
-might develop home-made biostatistics scripts that are
+might develop homemade biostatistics scripts that are
 typically used once, often left undocumented, and highly heterogeneous
 across research teams.
 
 The vigicaen package aims at providing a toolbox for the VigiBase®
 Extract Case Level database, tackling several technical challenges to run
 on low-specification computers, and providing easy and reproducible access
-to advanced features.[@dolladille2025] This article will explain the
+to advanced features. [@dolladille2025] This article will explain the
 technical choices and computing logic of the package. Examples and use
 cases are covered in the package vignettes, available on the
 package website at <https://pharmacologie-caen.github.io/vigicaen/>. 
@@ -123,18 +123,18 @@ There are very few packages related to pharmacovigilance in R. Most are
 focused on interfacing with the Food and Drug Administration Adverse
 Event Reporting System (FAERS), and most attempt to visualize existing
 data, run basic disproportionality analyses, or perform web scraping.
-[@mukhopadhyay2026] None of them actually allow browsing the entirety
+ [@mukhopadhyay2026] None of them actually allow browsing the entirety
 of a worldwide database such as VigiBase®, including all types of drugs
 and adverse events. Also, there is no existing package in the open-source community
 that prepares pharmacovigilance data in order to build advanced disproportionality
 metrics, such as machine or deep learning models.
 Finally, only a few of these packages are available on mainstream
-platforms such as CRAN.[@embry_vaersvax_2018; @embry_vaersndvax_2016]
+platforms such as CRAN. [@embry_vaersvax_2018; @embry_vaersndvax_2016]
 
 # Research impact and significance
 
 Our team and collaborators have already published several
-pharmacovigilance studies using vigicaen.[@legallois2025;
+pharmacovigilance studies using vigicaen. [@legallois2025;
 @dolladille2020; @alexandre2021; @chretien2025; @nishida2025;
 @minoc2025] The French Network of Regional
 Pharmacovigilance Centers is on its way to implementing vigicaen as part of
@@ -155,18 +155,18 @@ like `data.table`, once at the core of the package, have now been phased out.
 - Focus on the most technically challenging issues for beginners in R or biostatistics
 software in general. 
 - Consistency in function naming, expected input formats,
-and outputs, aligning with the tidyverse style guide.[@wickham2023] 
-- Provide help, e.g., messages to users in a command-line interface, to
+and outputs, aligning with the tidyverse style guide. [@wickham2023] 
+- Provision of help, e.g., messages to users in a command-line interface, to
 allow external checking of what is produced by the package.
 - Absence of model functions implementation, except for basic disproportionality
-metrics.[@norén2013] Users will build datasets with vigicaen, 
+metrics. [@norén2013] Users will build datasets with vigicaen, 
 then run any model of their
 choice.
 
 # Open-source software practice
 
 The package was developed according to best practices as promoted by R
-Packages, 2nd edition.[@rpackag] It is accompanied by a comprehensive set
+Packages, 2nd edition. [@rpackag] It is accompanied by a comprehensive set
 of unit tests (covering 100% of the code), in-depth documentation for
 each function and object, and several tutorial vignettes for both
 newcomers and advanced users. The source code is available on
@@ -195,13 +195,13 @@ open-source software in the future. Also, vigicaen was discussed with
 end-users from pharmacovigilance centers in France, which led to the
 development of specific functions like `vigi_routine`.
 
-# Processing `vigibase®` source files.
+# Processing vigibase® source files.
 
 VigiBase® Extract Case Level files
 currently exceed 30GB once unpacked, which is too large to be loaded
 in-memory by mainstream readers like `read.table()` on most computers. Vigicaen 
 relies on `parquet` files, a recent format based on open
-standards, supported by Arrow.[@parquet; @apachea; @arrowr] Datasets remain out of
+standards, supported by Arrow. [@parquet; @apachea; @arrowr] Datasets remain out of
 memory. Various tests of vigicaen on 16GB RAM computers succeeded in
 processing the source files.
 
