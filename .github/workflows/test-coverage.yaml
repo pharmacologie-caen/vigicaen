@@ -12,9 +12,15 @@ name: test-coverage
 
 permissions: read-all
 
+# Cancel superseded runs on the same ref.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test-coverage:
     runs-on: ubuntu-latest
+    timeout-minutes: 45 # slowest healthy run ~16.5 min (median ~3)
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
