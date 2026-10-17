@@ -10,9 +10,15 @@ on:
 
 name: R-CMD-check
 
+# Cancel superseded runs on the same ref.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
+    timeout-minutes: 60 # slowest healthy run ~21 min (ubuntu devel); other legs 4-7 min
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
