@@ -2,6 +2,11 @@
 
 ## New features
 
+* `dt_parquet()` gains an optional `col_select` argument (tidy-select) to load
+only a subset of columns, which can greatly reduce memory use on the large main
+tables. Defaults to `NULL` (all columns), so existing calls are unchanged.
+Works for both in-memory and out-of-memory (`in_memory = FALSE`) loads. (#193)
+
 * *New* `add_death()`, `add_serious()`, and `add_fup()` functions add outcome
 columns to a dataset using the `out` and `followup` tables. These functions
 work transparently with both in-memory and out-of-memory (Arrow) tables,
